@@ -87,12 +87,15 @@ def strunk_white_EoS(text):
     msg = "Don't use the word {}.{}"
 
     bad_words = [
-        "obvious"
+        "obviously",
+        "utilize"
     ]
 
     explanations = {
-        "obvious":
-        "It should be obvious why this is an inadvisable word to use."
+        "obviously":
+        "This is obviously an inadvisable word to use.",
+        "utilize":
+        r"Do you know anyone who *needs* to utilize the word utilize?"
     }
 
     errors = []
