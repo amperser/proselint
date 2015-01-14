@@ -12,6 +12,7 @@ categories: writing
 ---
 
 David Foster Wallace says:
+
 > This is one of a class of adjectives, sometimes called “uncomparables”, that
 can be a little tricky. Among other uncomparables are precise, exact, correct,
 entire, accurate, preferable, inevitable, possible, false; there are probably
