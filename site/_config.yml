@@ -4,7 +4,7 @@ email:       hello@lifelinter.com
 author:      Jordan Suchow
 description: "Linting your life."
 baseurl:     ""
-url:         "http://lifelinter.com"
+url:         "http://prose.lifelinter.com"
 
 # Google analytics
 google_analytics:
