@@ -13,6 +13,7 @@ before_script:
 - cd site
 script:
 - jekyll build
+- python scripts/generate_posts.py
 after_success:
 - s3_website push
 - check-links 'http://www.lifelinter.com'
