@@ -79,11 +79,3 @@ def check(text):
             for o in occurrences:
                 errors.append((1, o, error_code, msg.format(uncomp)))
     return errors
-
-
-def test_pass():
-    return True
-
-
-def test_fail():
-    return False
