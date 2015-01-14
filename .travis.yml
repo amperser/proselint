@@ -10,10 +10,10 @@ install:
 - gem install kramdown
 - gem install link-checker
 before_script:
+- python scripts/generate_posts.py
 - cd site
 script:
 - jekyll build
-- python scripts/generate_posts.py
 after_success:
 - s3_website push
 - check-links 'http://www.lifelinter.com'
