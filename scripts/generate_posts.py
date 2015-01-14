@@ -6,8 +6,12 @@ grandparent = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 checks_dir = os.path.join(grandparent, "proselint", "checks")
 listing = os.listdir(checks_dir)
 
+
+def is_check(fn):
+    return fn[-3:] == ".py" and not fn == "__init__.py"
+
 for fn in listing:
-    if fn[-3:] == ".py":
+    if is_check(fn):
         M = ast.parse(''.join(open(os.path.join(checks_dir, fn))))
         docstring = ast.get_docstring(M)
 
