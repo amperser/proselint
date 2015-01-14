@@ -2,12 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """Command line utility for proselint."""
-#  to access: run python setup.py develop from the main directory
 
 import click
 import os
 import imp
-import re
 
 
 def log_error(line, column, error_code, msg):
@@ -48,12 +46,3 @@ def proselint(version, file):
                 errors = check(text)
                 for error in errors:
                     log_error(*error)
-
-
-def example_check(text):
-    """docstring for example_check"""
-
-    error_code = "PL000"
-    msg = "First line always has an error."
-
-    return [(1, 1, error_code, msg)]
