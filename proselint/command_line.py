@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Command line utility for proselint."""
+#  to access: run python setup.py develop from the main directory
 
 import click
 import re
@@ -25,6 +26,7 @@ def proselint(version, file):
     checks = [
         example_check,
         dfw_uncomparables,
+        strunk_white_EoS,
     ]
 
     if version:
@@ -51,7 +53,7 @@ def example_check(text):
 def dfw_uncomparables(text):
 
     error_code = "PL001"
-    msg = "Comparison of an uncomparable."  # do formatting thing
+    msg = "Comparison of an uncomparable: {} is not comparable."  # do formatting thing
 
     comparators = [
         "very",
@@ -73,8 +75,31 @@ def dfw_uncomparables(text):
     errors = []
     for comp in comparators:
         for uncomp in uncomparables:
-            occurences = [
+            occurrences = [
                 m.start() for m in re.finditer(comp + "\s" + uncomp, text)]
-            for o in occurences:
-                errors.append((1, o, error_code, msg))
+            for o in occurrences:
+                errors.append((1, o, error_code, msg.format(uncomp)))
+    return errors
+
+
+def strunk_white_EoS(text):
+    error_code = "PL002"
+    msg = "Don't use the word {}.{}"
+
+    bad_words = [
+        "obvious"
+    ]
+
+    explanations = {
+        "obvious":
+        "It should be obvious why this is an inadvisable word to use."
+    }
+
+    errors = []
+    for word in bad_words:
+        occurrences = [
+            m.start() for m in re.finditer(word, text.lower())
+        ]
+        for o in occurrences:
+            errors.append((1, o, error_code, msg.format(word, explanations[word])))
     return errors
