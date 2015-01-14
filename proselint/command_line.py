@@ -76,7 +76,7 @@ def dfw_uncomparables(text):
     for comp in comparators:
         for uncomp in uncomparables:
             occurrences = [
-                m.start() for m in re.finditer(comp + "\s" + uncomp, text)]
+                m.start() for m in re.finditer(comp + "\s" + uncomp, text.lower())]
             for o in occurrences:
                 errors.append((1, o, error_code, msg.format(uncomp)))
     return errors
