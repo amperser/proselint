@@ -22,11 +22,3 @@ def check(text):
     msg = "First line always has an error."
 
     return [(1, 1, error_code, msg)]
-
-
-def test_pass():
-    return True
-
-
-def test_fail():
-    return False
