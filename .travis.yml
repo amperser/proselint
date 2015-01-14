@@ -16,7 +16,7 @@ script:
 - jekyll build
 after_success:
 - s3_website push
-- check-links 'http://www.lifelinter.com'
+- check-links 'http://prose.lifelinter.com'
 - cd ..
 env:
   global:
