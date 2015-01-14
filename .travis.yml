@@ -9,11 +9,13 @@ install:
 - gem install compass --version 0.12.5
 - gem install kramdown
 - gem install link-checker
+- pip install nose
 before_script:
 - python scripts/generate_posts.py
 - cd site
 script:
 - jekyll build
+- nosetests
 after_success:
 - s3_website push
 - check-links 'http://prose.lifelinter.com'
