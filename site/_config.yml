@@ -1,0 +1,39 @@
+# Site settings
+title:       LifeLinter
+email:       hello@lifelinter.com
+author:      Jordan Suchow
+description: "Linting your life."
+baseurl:     ""
+url:         "http://lifelinter.com"
+
+# Google analytics
+google_analytics:
+
+# Optional features
+animated:           false
+show_related_posts: false
+show_post_footers:  false
+
+# Disqus post comments
+# (leave blank to disable Disqus)
+disqus_shortname:
+
+# Social icons
+show_social_icons: false
+github_username:
+stackoverflow_id:
+twitter_username:
+google_plus_id:
+linkedin_username:
+bitcoin_url:
+paypal_url:
+flattr_button:
+
+# Build settings
+markdown:     kramdown
+permalink:    /:title
+paginate:     3
+sass:
+  compressed: true
+gems:
+  - jekyll-sitemap
