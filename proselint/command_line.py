@@ -23,6 +23,9 @@ def log_error(line, column, error_code, msg):
 def proselint(version, file):
     """Run the linter."""
 
+    if not file:
+        raise ValueError("Specify a file to lint using the --file flag.")
+
     # Extract functions from the checks folder.
     checks = []
 
