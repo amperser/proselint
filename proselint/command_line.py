@@ -47,5 +47,6 @@ def proselint(version, file):
             text = f.read()
             for check in checks:
                 errors = check(text)
-                for error in errors:
-                    log_error(*error)
+                if errors:
+                    for error in errors:
+                        log_error(*error)
