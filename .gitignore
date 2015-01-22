@@ -1,2 +1,3 @@
 *.egg-info
 *.pyc
+cached_func_calls/*
