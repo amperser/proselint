@@ -28,11 +28,9 @@ def memoize(f):
         # handle instance methods
         if hasattr(f, '__self__'):
             args = args[1:]
-            # argdict['classname'] = f.__self__.__class__
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
-        # handle numpy arrays
         for k, v in tempargdict.iteritems():
             argdict[k] = v
 
@@ -46,8 +44,9 @@ def memoize(f):
             cache.sync()
             return value
         except TypeError:
-            print 'Warning: could not disk cache call to %s; it probably has unhashable args' \
-                % (f.__module__ + '.' + f.__name__)
+            call_to = f.__module__ + '.' + f.__name__
+            print ['Warning: could not disk cache call to ',
+                   '%s; it probably has unhashable args'] % (call_to)
             return f(*args, **kwargs)
 
     return wrapped
