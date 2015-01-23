@@ -1,3 +1,7 @@
+Consider the lobster
+*Gourmet*
+By David Forster Wallace
+
 For 56 years, the Maine Lobster Festival has been drawing crowds with the promise of sun, fun, and fine food. One visitor would argue that the celebration involves a whole lot more.
 
 The enormous, pungent, and extremely well marketed Maine Lobster Festival is held every late July in the state’s midcoast region, meaning the western side of Penobscot Bay, the nerve stem of Maine’s lobster industry. What’s called the midcoast runs from Owl’s Head and Thomaston in the south to Belfast in the north. (Actually, it might extend all the way up to Bucksport, but we were never able to get farther north than Belfast on Route 1, whose summer traffic is, as you can imagine, unimaginable.) The region’s two main communities are Camden, with its very old money and yachty harbor and five-star restaurants and phenomenal B&Bs, and Rockland, a serious old fishing town that hosts the Festival every summer in historic Harbor Park, right along the water.
