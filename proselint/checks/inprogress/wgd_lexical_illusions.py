@@ -5,7 +5,7 @@ layout:     post
 error_code: WGD200
 source:     write-good
 source_url: https://github.com/btford/write-good
-title:      WGD200&#58; Lexical illusion present
+title:      Lexical illusion present
 date:       2014-06-10 12:31:19
 categories: writing
 ---

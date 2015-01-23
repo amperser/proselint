@@ -6,7 +6,7 @@ layout:     post
 error_code: DFW200
 source:     David Foster Wallace
 source_url: http://bit.ly/1qudVuC
-title:      DFW200&#58; Comparing an uncomparable
+title:      Comparing an uncomparable
 date:       2014-06-10 12:31:19
 categories: writing
 ---

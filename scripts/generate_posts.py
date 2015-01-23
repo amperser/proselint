@@ -1,6 +1,8 @@
 import os
 import ast
 import datetime
+import re
+
 
 grandparent = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 checks_dir = os.path.join(grandparent, "proselint", "checks")
@@ -14,6 +16,9 @@ for fn in listing:
     if is_check(fn):
         M = ast.parse(''.join(open(os.path.join(checks_dir, fn))))
         docstring = ast.get_docstring(M)
+        error_code = re.search("error_code: (.*)\n", docstring).group(1)
+        head, sep, tail = docstring.partition("title: ")
+        docstring = head + sep + "     " + error_code + ":" + tail[4:]
 
         post_filename = os.path.join(
             os.path.join(grandparent, "site", "_posts"),

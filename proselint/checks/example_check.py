@@ -6,7 +6,7 @@ layout:     post
 error_code: ERR100
 source:     Nobody
 source_url: ???
-title:      ERR100&#58; Firse line is always wrong.
+title:      Firse line is always wrong.
 date:       2014-06-10 12:31:19
 categories: writing
 ---

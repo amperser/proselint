@@ -5,7 +5,7 @@ layout:     post
 error_code: WGD101
 source:     write-good
 source_url: https://github.com/btford/write-good
-title:      WGD101&#58; Cliches
+title:      Cliches
 date:       2014-06-10 12:31:19
 categories: writing
 ---
