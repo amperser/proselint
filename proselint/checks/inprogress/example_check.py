@@ -16,7 +16,6 @@ The first line always is always wrong.
 """
 from proselint.reverse import reverse
 
-
 def check(text):
 
     reversed_text = reverse(text)
