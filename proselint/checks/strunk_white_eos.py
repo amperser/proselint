@@ -5,7 +5,7 @@ layout:     post
 error_code: STW100
 source:     Strunk & White
 source_url: ???
-title:      STW100&#58; Use of greylisted words
+title:      Use of greylisted words
 date:       2014-06-10 12:31:19
 categories: writing
 ---

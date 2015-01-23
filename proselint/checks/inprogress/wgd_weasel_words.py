@@ -5,7 +5,7 @@ layout:     post
 error_code: WGD200
 source:     write-good
 source_url: https://github.com/btford/write-good
-title:      WGD100&#58; Weasel words.
+title:      Weasel words.
 date:       2014-06-10 12:31:19
 categories: writing
 ---
