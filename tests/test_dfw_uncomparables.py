@@ -1,12 +1,14 @@
 from check import Check
-from proselint.checks import dfw_uncomparables
+from proselint.checks import dfw_uncomparables as chk
 
 
 class TestCheck(Check):
 
+    __test__ = True
+
     @property
     def this_check(self):
-        return dfw_uncomparables
+        return chk
 
     def test_sample_phrases(self):
         assert not self.check(
@@ -15,5 +17,5 @@ class TestCheck(Check):
 
     def test_linebreaks(self):
         assert not self.check(
-            """This sentence is very\n unique."""
+            """This sentence is very\nunique."""
         )
