@@ -36,9 +36,7 @@ def check(text):
 
     errors = []
     for word in bad_words:
-        occurrences = [
-            m.start() for m in re.finditer(word, text.lower())
-        ]
+        occurrences = [m.start() for m in re.finditer(word, text.lower())]
         for o in occurrences:
             errors.append((1, o, error_code, msg.format(word, explanations[word])))
 
