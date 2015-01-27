@@ -48,7 +48,7 @@ def check(text):
             return None
 
     errors = []
-    regex = re.compile("(^|\s+)(A|a|An|an)\s(\S*)\W")
+    regex = re.compile("(?:^|\W)(an?)\s+(\w+)", re.IGNORECASE)
 
     # Find all occurences of the regex in the text.
     for m in regex.finditer(text):
