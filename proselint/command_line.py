@@ -25,6 +25,11 @@ def log_error(line, column, error_code, msg):
 def proselint(version, file):
     """Run the linter."""
 
+    # Return the version number.
+    if version:
+        print "v0.0.1"
+        return
+
     if not file:
         raise ValueError("Specify a file to lint using the --file flag.")
 
@@ -38,10 +43,6 @@ def proselint(version, file):
         if f[-3:] == ".py" and not f == "__init__.py":
             m = imp.load_source("rule", os.path.join("proselint", "checks", f))
             checks.append(getattr(m, 'check'))
-
-    # Return the version number.
-    if version:
-        print "v0.0.1"
 
     # Apply all the checks.
     else:
