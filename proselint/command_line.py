@@ -7,6 +7,8 @@ import click
 import os
 import imp
 
+base_url = "prose.lifelinter.com/"
+
 
 def log_error(line, column, error_code, msg):
     """Print a message to the command line."""
@@ -14,7 +16,7 @@ def log_error(line, column, error_code, msg):
                str(column) + " \t" +
                error_code + ": " +
                msg + " " +
-               "http://lifelinter.com/" + error_code)
+               base_url + error_code)
 
 
 @click.command()
