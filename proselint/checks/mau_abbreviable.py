@@ -14,16 +14,6 @@ categories: writing
 It's abbreviable, not abbreviatable.
 
 """
-import re
+from proselint.tools.supersede import supersede
 
-
-def check(text):
-
-    error_code = "MAU101"
-    msg = "It's abbreviable, not abbreviatable."
-
-    errors = []
-    for o in re.finditer("abbreviatable", text):
-        errors.append((o.start(), o.end(), error_code, msg))
-
-    return errors
+check = supersede("abbreviable", "abbreviatable", "MAU101")
