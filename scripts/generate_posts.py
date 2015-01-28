@@ -18,7 +18,7 @@ for fn in listing:
         docstring = ast.get_docstring(M)
         error_code = re.search("error_code: (.*)\n", docstring).group(1)
         head, sep, tail = docstring.partition("title: ")
-        docstring = head + sep + "     " + error_code + ":" + tail[4:]
+        docstring = head + sep + "     " + error_code + "&#58;" + tail[4:]
 
         post_filename = os.path.join(
             os.path.join(grandparent, "site", "_posts"),
