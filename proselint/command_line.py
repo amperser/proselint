@@ -8,6 +8,7 @@ import os
 import imp
 
 base_url = "prose.lifelinter.com/"
+proselint_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def log_error(line, column, error_code, msg):
@@ -37,17 +38,18 @@ def proselint(version, file):
     checks = []
 
     listing = os.listdir(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), "checks"))
+        os.path.join(proselint_path, "checks"))
 
     for f in listing:
         if f[-3:] == ".py" and not f == "__init__.py":
-            m = imp.load_source("rule", os.path.join("proselint", "checks", f))
+            m = imp.load_source("", os.path.join(proselint_path, "checks", f))
             checks.append(getattr(m, 'check'))
 
     # Apply all the checks.
     else:
         with open(file, "r") as f:
             text = f.read()
+
             for check in checks:
                 errors = check(text)
                 if errors:
