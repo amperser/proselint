@@ -5,7 +5,6 @@
 # Written by Jordan Suchow
 # Copyright (c) 2015 Jordan Suchow
 #
-# License: MIT
 #
 
 """This module exports the Proselint plugin class."""
