@@ -61,10 +61,10 @@ def check(text):
 
         # A apple.
         if words[0] in ["A", "a"] and vowel_sound:
-            errors.append((m.start(), m.end(), error_code, msg_a))
+            errors.append((g.start(), g.start()+1, error_code, msg_a))
 
         # An day.
         elif words[0] in ["An", "an"] and not vowel_sound:
-            errors.append((m.start(), m.end(), error_code, msg_an))
+            errors.append((g.start(), g.start()+2, error_code, msg_an))
 
     return errors

@@ -6,6 +6,7 @@
 import click
 import os
 import imp
+from proselint.tools import line_and_column
 
 base_url = "prose.lifelinter.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
@@ -53,4 +54,6 @@ def proselint(version, file):
                 errors = check(text)
                 if errors:
                     for error in errors:
-                        log_error(file, *error)
+                        (start, end, error_code, msg) = error
+                        (line, column) = line_and_column(text, start)
+                        log_error(file, line, column, error_code, msg)
