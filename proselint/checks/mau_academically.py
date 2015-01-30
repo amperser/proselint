@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU102: academically
+"""MAU102: Misspelling of 'academically'.
 
 ---
 layout:     post

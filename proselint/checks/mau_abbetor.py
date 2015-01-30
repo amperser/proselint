@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU102: abbetor
+"""MAU102: Preferred spelling is 'abbetor'.
 
 ---
 layout:     post

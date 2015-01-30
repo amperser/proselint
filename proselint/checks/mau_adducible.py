@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU106: adducible
+"""MAU106: Misspelling of 'adducible'.
 
 ---
 layout:     post
@@ -11,7 +11,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-adducible. So spelled—not *adduceable. See -ABLE (A).
+adducible. So spelled---not *adduceable. See -ABLE (A).
 
 """
 from proselint.tools import supersede
