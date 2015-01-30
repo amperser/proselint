@@ -20,6 +20,6 @@ Advertiser, 2 Oct. 1997, at C2. See -IC.
 LANGUAGE-CHANGE INDEX academically misspelled *academicly: Stage 1
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("academically", "academicly", "MAU103")

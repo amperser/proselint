@@ -16,7 +16,7 @@ The first line is always wrong.
 """
 import re
 from nltk.corpus import cmudict
-from proselint.memoize import memoize
+from proselint.tools import memoize
 
 
 def check(text):

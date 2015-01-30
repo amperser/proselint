@@ -14,6 +14,6 @@ categories: writing
 acquirer. So spelled—not *acquiror.
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("acquirer", "acquiror", "MAU104")

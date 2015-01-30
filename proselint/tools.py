@@ -2,11 +2,25 @@ import os
 import shelve
 import inspect
 import functools
+import re
 
-cache_dirname = 'cached_func_calls'
+
+def supersede(new, old, error_code):
+    def check(text):
+        msg = "It's '{}', not '{}'.".format(new, old)
+        errors = []
+        for o in re.finditer(old, text, flags=re.IGNORECASE):
+            errors.append((o.start(), o.end(), error_code, msg))
+
+        return errors
+
+    return check
 
 
 def memoize(f):
+
+    cache_dirname = 'cached_func_calls'
+
     if not os.path.isdir(cache_dirname):
         os.mkdir(cache_dirname)
         print 'Created cache directory %s' \
@@ -50,3 +64,8 @@ def memoize(f):
             return f(*args, **kwargs)
 
     return wrapped
+
+
+@memoize
+def reverse(text):
+    return text[::-1]

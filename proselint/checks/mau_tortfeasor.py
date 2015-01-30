@@ -16,7 +16,7 @@ tortfeasor (= one who commits a civil wrong) was once spelled as two words
 
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("tortfeasor", "tort feasor", "MAU104")
 check = supersede("tortfeasor", "tort-feasor", "MAU104")
