@@ -11,13 +11,13 @@ base_url = "prose.lifelinter.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 
 
-def log_error(line, column, error_code, msg):
+def log_error(filename, line, column, error_code, msg):
     """Print a message to the command line."""
-    click.echo(str(line) + ":" +
-               str(column) + " \t" +
-               error_code + ": " +
-               msg + " " +
-               base_url + error_code)
+    click.echo(filename + ":" +
+               str(1 + line) + ":" +
+               str(1 + column) + ": " +
+               error_code + " " +
+               msg + " " + base_url + error_code)
 
 
 @click.command()
@@ -49,9 +49,8 @@ def proselint(version, file):
     else:
         with open(file, "r") as f:
             text = f.read()
-
             for check in checks:
                 errors = check(text)
                 if errors:
                     for error in errors:
-                        log_error(*error)
+                        log_error(file, *error)
