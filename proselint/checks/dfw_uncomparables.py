@@ -51,7 +51,7 @@ import re
 
 def check(text):
 
-    error_code = "DFW200"
+    err = "DFW200"
     msg = "Comparison of an uncomparable: {} is not comparable."
 
     comparators = [
@@ -74,9 +74,8 @@ def check(text):
     errors = []
     for comp in comparators:
         for uncomp in uncomparables:
-            occurrences = [m.start() for m in
-                           re.finditer(comp + "\s" + uncomp, text.lower())]
-            for o in occurrences:
-                errors.append((1, o, error_code, msg.format(uncomp)))
+            occ = [m for m in re.finditer(comp + "\s" + uncomp, text.lower())]
+            for o in occ:
+                errors.append((m.start(), m.end(), err, msg.format(uncomp)))
 
     return errors

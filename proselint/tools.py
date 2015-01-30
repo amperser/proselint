@@ -1,3 +1,4 @@
+"""General-purpose tools shared across linting checks."""
 import os
 import shelve
 import inspect
@@ -6,11 +7,12 @@ import re
 
 
 def supersede(new, old, error_code):
+    """Replace one word with another."""
     def check(text):
         msg = "It's '{}', not '{}'.".format(new, old)
         errors = []
-        for o in re.finditer(old, text, flags=re.IGNORECASE):
-            errors.append((o.start(), o.end(), error_code, msg))
+        for m in re.finditer(old, text, flags=re.IGNORECASE):
+            errors.append((m.start(), m.end(), error_code, msg))
 
         return errors
 
@@ -18,7 +20,7 @@ def supersede(new, old, error_code):
 
 
 def memoize(f):
-
+    """Cache results of computations on disk."""
     cache_dirname = 'cached_func_calls'
 
     if not os.path.isdir(cache_dirname):

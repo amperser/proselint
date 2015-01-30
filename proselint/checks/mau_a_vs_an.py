@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU100: a vs. an
+"""MAU100: Misuse of 'a' vs. 'an'.
 
 ---
 layout:     post
@@ -21,7 +21,7 @@ from proselint.tools import memoize
 
 def check(text):
 
-    error_code = "MAU101"
+    err = "MAU101"
     msg_a = "'a' should be 'an'."
     msg_an = "'an' should be 'a'."
 
@@ -29,7 +29,7 @@ def check(text):
 
     @memoize
     def starts_with_vowel_sound(word):
-        """Does the word start with a vowel sound?"""
+        """Check whether the word starts with a vowel sound."""
 
         # Get the pronunciations of the word.
         pronunciations = dic.get(word)
@@ -51,8 +51,8 @@ def check(text):
     regex = re.compile("(?:^|\W)(an?)\s+(\w+)", re.IGNORECASE)
 
     # Find all occurences of the regex in the text.
-    for m in regex.finditer(text):
-        words = [group for group in m.groups()]
+    for g in regex.finditer(text):
+        words = [w for w in g.groups()]
 
         vowel_sound = starts_with_vowel_sound(words[1])
 
@@ -61,10 +61,10 @@ def check(text):
 
         # A apple.
         if words[0] in ["A", "a"] and vowel_sound:
-            errors.append((g.start(), g.start()+1, error_code, msg_a))
+            errors.append((g.start(), g.start()+1, err, msg_a))
 
         # An day.
         elif words[0] in ["An", "an"] and not vowel_sound:
-            errors.append((g.start(), g.start()+2, error_code, msg_an))
+            errors.append((g.start(), g.start()+2, err, msg_an))
 
     return errors

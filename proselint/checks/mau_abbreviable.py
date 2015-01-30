@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU101: abbreviable
+"""MAU101: Misspelling of 'abbreviable'.
 
 ---
 layout:     post

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU102: acquirer
+"""MAU102: Preferred spelling is 'acquirer'.
 
 ---
 layout:     post
@@ -11,7 +11,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-acquirer. So spelled—not *acquiror.
+acquirer. So spelled---not *acquiror.
 
 """
 from proselint.tools import supersede

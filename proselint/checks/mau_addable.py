@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU105: addable
+"""MAU105: Misspelling of 'addable'.
 
 ---
 layout:     post
@@ -11,7 +11,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-addable. So spelled—not *addible. See - ABLE (A).
+addable. So spelled---not *addible. See - ABLE (A).
 
 """
 from proselint.tools import supersede
