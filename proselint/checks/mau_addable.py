@@ -14,6 +14,6 @@ categories: writing
 addable. So spelled—not *addible. See - ABLE (A).
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("addable", "addible", "MAU105")

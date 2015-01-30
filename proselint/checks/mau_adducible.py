@@ -14,6 +14,6 @@ categories: writing
 adducible. So spelled—not *adduceable. See -ABLE (A).
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("adducible", "adduceable", "MAU106")

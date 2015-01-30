@@ -14,6 +14,6 @@ categories: writing
 In both AmE and BrE, abettor is the more usual spelling.
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("abbetor", "abbeter", "MAU102")

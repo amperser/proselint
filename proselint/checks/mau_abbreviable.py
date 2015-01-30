@@ -14,6 +14,6 @@ categories: writing
 It's abbreviable, not abbreviatable.
 
 """
-from proselint.tools.supersede import supersede
+from proselint.tools import supersede
 
 check = supersede("abbreviable", "abbreviatable", "MAU101")
