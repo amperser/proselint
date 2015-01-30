@@ -3,20 +3,6 @@ import os
 import shelve
 import inspect
 import functools
-import re
-
-
-def supersede(new, old, error_code):
-    """Replace one word with another."""
-    def check(text):
-        msg = "It's '{}', not '{}'.".format(new, old)
-        errors = []
-        for m in re.finditer(old, text, flags=re.IGNORECASE):
-            errors.append((m.start(), m.end(), error_code, msg))
-
-        return errors
-
-    return check
 
 
 def memoize(f):
