@@ -1,0 +1,11 @@
+language: python
+python:
+  - "3.3"
+# command to install dependencies
+install:
+  - pip install flake8
+  - pip install pep257
+# command to run tests
+script:
+  - flake8 . --max-line-length=120
+  - pep257 . --ignore=D202
