@@ -68,4 +68,15 @@ def memoize(f):
 
 @memoize
 def reverse(text):
+    """Reverse a string. This is here as a demo of memoization."""
     return text[::-1]
+
+
+def line_and_column(text, position):
+    """Return the line number and column of a position in a string."""
+    position_counter = 0
+    for idx_line, line in enumerate(text.splitlines(True)):
+        if (position_counter + len(line.rstrip())) > position:
+            return (idx_line, position - position_counter)
+        else:
+            position_counter += len(line)
