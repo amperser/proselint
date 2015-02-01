@@ -14,7 +14,7 @@ categories: writing
 The first line always is always wrong.
 
 """
-from proselint.reverse import reverse
+from proselint.tools import reverse
 
 def check(text):
 
