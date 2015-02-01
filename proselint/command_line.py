@@ -5,8 +5,9 @@
 
 import click
 import os
-import imp
 from proselint.tools import line_and_column
+import proselint.checks as pl
+import pkgutil
 
 base_url = "prose.lifelinter.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
@@ -37,26 +38,26 @@ def proselint(version, file):
 
     # Extract functions from the checks folder.
     checks = []
-
-    listing = os.listdir(
-        os.path.join(proselint_path, "checks"))
-
-    for f in listing:
-        if f[-3:] == ".py" and not f == "__init__.py":
-            m = imp.load_source("", os.path.join(proselint_path, "checks", f))
-            checks.append(getattr(m, 'check'))
+    for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
+        module = loader.find_module(module_name).load_module(module_name)
+        try:
+            assert(hasattr(module.check, '__call__'))
+            checks.append(module.check)
+        except Exception:
+            pass
 
     # Apply all the checks.
-    else:
-        with open(file, "r") as f:
-            text = f.read()
-            errors = []
-            for check in checks:
-                errors += check(text)
+    with open(file, "r") as f:
+        text = f.read()
+        errors = []
+        for check in checks:
+            errors += check(text)
 
-            errors = sorted(errors)
+        # Sort the errors by line and column number.
+        errors = sorted(errors)
 
-            for error in errors:
-                (start, end, error_code, msg) = error
-                (line, column) = line_and_column(text, start)
-                log_error(file, line, column, error_code, msg)
+        # Display the errors.
+        for error in errors:
+            (start, end, error_code, msg) = error
+            (line, column) = line_and_column(text, start)
+            log_error(file, line, column, error_code, msg)
