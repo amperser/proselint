@@ -7,7 +7,7 @@ import functools
 
 def memoize(f):
     """Cache results of computations on disk."""
-    cache_dirname = 'cached_func_calls'
+    cache_dirname = 'cache'
 
     if not os.path.isdir(cache_dirname):
         os.mkdir(cache_dirname)
