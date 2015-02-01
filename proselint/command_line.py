@@ -50,10 +50,13 @@ def proselint(version, file):
     else:
         with open(file, "r") as f:
             text = f.read()
+            errors = []
             for check in checks:
-                errors = check(text)
-                if errors:
-                    for error in errors:
-                        (start, end, error_code, msg) = error
-                        (line, column) = line_and_column(text, start)
-                        log_error(file, line, column, error_code, msg)
+                errors += check(text)
+
+            errors = sorted(errors)
+
+            for error in errors:
+                (start, end, error_code, msg) = error
+                (line, column) = line_and_column(text, start)
+                log_error(file, line, column, error_code, msg)
