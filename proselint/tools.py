@@ -7,12 +7,11 @@ import functools
 
 def memoize(f):
     """Cache results of computations on disk."""
-    cache_dirname = 'cache'
+    path_of_this_file = os.path.dirname(os.path.realpath(__file__))
+    cache_dirname = os.path.join(path_of_this_file, "cache")
 
     if not os.path.isdir(cache_dirname):
         os.mkdir(cache_dirname)
-        print 'Created cache directory %s' \
-            % os.path.join(os.path.abspath(__file__), cache_dirname)
 
     cache_filename = f.__module__ + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)

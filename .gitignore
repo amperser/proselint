@@ -2,3 +2,4 @@
 *.pyc
 cached_func_calls/*
 site/_posts/*
+proselint/cache/*
