@@ -77,7 +77,7 @@ def check(text):
     errors = []
     for p in preferences:
         for r in p[1]:
-            for m in re.finditer(r, text, flags=re.IGNORECASE):
+            for m in re.finditer("\s{}\s".format(r), text, flags=re.IGNORECASE):
                 errors.append((m.start(), m.end(), err, msg.format(p[0])))
 
     return errors
