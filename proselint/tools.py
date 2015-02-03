@@ -3,6 +3,7 @@ import os
 import shelve
 import inspect
 import functools
+import re
 
 
 def memoize(f):
@@ -67,3 +68,29 @@ def line_and_column(text, position):
             return (idx_line, position - position_counter)
         else:
             position_counter += len(line)
+
+
+def consistency_check(word_pairs, err, msg):
+    """Build a consistency checker for the given word_pairs"""
+
+    def check(text):
+
+        errors = []
+        for w in word_pairs:
+            match1 = [m for m in re.finditer(w[0], text)]
+            match2 = [m for m in re.finditer(w[1], text)]
+
+            if len(match1) > 0 and len(match2) > 0:
+
+                if len(match1) > len(match2):
+                    for m in match2:
+                        errors.append((m.start(), m.end(), err,
+                                      msg.format(m.group(0), w[0])))
+                else:
+                    for m in match1:
+                        errors.append((m.start(), m.end(), err,
+                                      msg.format(m.group(0), w[1])))
+
+        return errors
+
+    return check
