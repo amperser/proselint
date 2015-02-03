@@ -20,7 +20,7 @@ import re
 def check(text):
 
     err = "MAU101"
-    msg = u"'{}' is a cliché."
+    msg = u"'{}' is cliché."
 
     cliches = [
         "a fate worse than death",
