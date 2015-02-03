@@ -52,6 +52,9 @@ def check(text):
         ["convertible",      ["conversible"]],
         ["neglectful",       ["neglective"]],
         ["transposition",    ["transposal"]],
+        ["enigmas",          ["enigmatas"]],
+        ["endow",            ["indow"]],
+        ["eyeing",           ["eying"]],
 
         # Misc. misspellings
         ["academically",     ["academicly"]],
