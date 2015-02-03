@@ -21,7 +21,7 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
-from proselint.tools import consistency_check
+from proselint.tools import consistency_check, memoize
 
 err = "IEL100"
 msg = "Inconsistent spelling of '{}' (vs. '{}')."
@@ -41,4 +41,7 @@ word_pairs = [
     ["recognise", "recognize"],
 ]
 
-check = consistency_check(word_pairs, err, msg)
+
+@memoize
+def check(text):
+    return consistency_check(text, word_pairs, err, msg)

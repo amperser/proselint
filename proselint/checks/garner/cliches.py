@@ -15,8 +15,10 @@ Cliches are cliché.
 
 """
 import re
+from proselint.tools import memoize
 
 
+@memoize
 def check(text):
 
     err = "MAU101"

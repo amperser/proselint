@@ -14,7 +14,7 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import blacklist
+from proselint.tools import blacklist, memoize
 
 err = "MAU103"
 msg = u"'{}' is archaic."
@@ -76,4 +76,7 @@ archaisms = [
     # "abortive" Abortive is archaic in reference to abortions of fetuses, except in the sense “causing an abortion.”
 ]
 
-check = blacklist(archaisms, err, msg)
+
+@memoize
+def check(text):
+    return blacklist(text, archaisms, err, msg)

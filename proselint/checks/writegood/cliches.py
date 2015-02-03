@@ -14,7 +14,7 @@ categories: writing
 Cliches are cliché.
 
 """
-from proselint.tools import blacklist
+from proselint.tools import blacklist, memoize
 
 err = "WGD101"
 msg = u"'{}' is a cliché."
@@ -719,4 +719,7 @@ cliches = [
     "young and vibrant",
 ]
 
-check = blacklist(cliches, err, msg)
+
+@memoize
+def check(text):
+    return blacklist(text, cliches, err, msg)
