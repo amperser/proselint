@@ -26,25 +26,25 @@ commercialese = [
     "enclosed please find",
     "further to yours of",
     "in regard to",
-    "inst.",
+    "inst\.",
     "in the amount of",
     "of even date",
     "pending receipt of",
     "please be advised that",
     "please return same",
     "pleasure of a reply",
-    "prox.",
+    "prox\.",
     "pursuant to your request",
     "regarding the matter",
     "regret to inform",
     "thanking you in advance",
     "the undersigned",
     "this acknowledges your letter",
-    "ult."
+    "ult\."
     "we are pleased to note",
     "with regard to",
     "your favor has come to hand",
-    "yours of even date",
+    "yours of even date"
 ]
 
 check = blacklist(commercialese, err, msg)
