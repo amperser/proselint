@@ -14,7 +14,7 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import blacklist
+from proselint.tools import blacklist, memoize
 
 err = "MAU104"
 msg = u"'{}' is commercialese."
@@ -47,4 +47,7 @@ commercialese = [
     "yours of even date"
 ]
 
-check = blacklist(commercialese, err, msg)
+
+@memoize
+def check(text):
+    return blacklist(text, commercialese, err, msg)

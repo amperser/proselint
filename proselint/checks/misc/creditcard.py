@@ -14,7 +14,7 @@ categories: writing
 Credit card number printed.
 
 """
-from proselint.tools import blacklist
+from proselint.tools import blacklist, memoize
 
 err = "MSC102"
 msg = u"Don't put credit card numbers in plain text."
@@ -27,4 +27,7 @@ credit_card_numbers = [
     "6011\d{12}",
 ]
 
-check = blacklist(credit_card_numbers, err, msg)
+
+@memoize
+def check(text):
+    return blacklist(text, credit_card_numbers, err, msg)

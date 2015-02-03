@@ -14,7 +14,7 @@ categories: writing
 Hyperbolic language.
 
 """
-from proselint.tools import blacklist
+from proselint.tools import blacklist, memoize
 
 err = "MSC100"
 msg = u"'{}' is hyperbolic."
@@ -24,4 +24,7 @@ words = [
     "[a-z]*\?{2,}"
 ]
 
-check = blacklist(words, err, msg)
+
+@memoize
+def check(text):
+    return blacklist(text, words, err, msg)

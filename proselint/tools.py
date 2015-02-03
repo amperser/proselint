@@ -14,7 +14,7 @@ def memoize(f):
     if not os.path.isdir(cache_dirname):
         os.mkdir(cache_dirname)
 
-    cache_filename = f.__module__ + f.__name__
+    cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
 
     try:
@@ -70,33 +70,29 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def consistency_check(word_pairs, err, msg):
+def consistency_check(text, word_pairs, err, msg):
     """Build a consistency checker for the given word_pairs"""
 
-    def check(text):
+    errors = []
+    for w in word_pairs:
+        match1 = [m for m in re.finditer(w[0], text)]
+        match2 = [m for m in re.finditer(w[1], text)]
 
-        errors = []
-        for w in word_pairs:
-            match1 = [m for m in re.finditer(w[0], text)]
-            match2 = [m for m in re.finditer(w[1], text)]
+        if len(match1) > 0 and len(match2) > 0:
 
-            if len(match1) > 0 and len(match2) > 0:
+            if len(match1) > len(match2):
+                for m in match2:
+                    errors.append((m.start(), m.end(), err,
+                                  msg.format(m.group(0), w[0])))
+            else:
+                for m in match1:
+                    errors.append((m.start(), m.end(), err,
+                                  msg.format(m.group(0), w[1])))
 
-                if len(match1) > len(match2):
-                    for m in match2:
-                        errors.append((m.start(), m.end(), err,
-                                      msg.format(m.group(0), w[0])))
-                else:
-                    for m in match1:
-                        errors.append((m.start(), m.end(), err,
-                                      msg.format(m.group(0), w[1])))
-
-        return errors
-
-    return check
+    return errors
 
 
-def blacklist(blacklist, err, msg, ignore_case=True):
+def blacklist(text, list, err, msg, ignore_case=True):
     """Build a checker that blacklists certain words."""
 
     if ignore_case:
@@ -104,14 +100,10 @@ def blacklist(blacklist, err, msg, ignore_case=True):
     else:
         flags = 0
 
-    def check(text):
+    errors = []
+    for w in list:
+        for m in re.finditer("\s{}\s".format(w), text, flags=flags):
+            txt = m.group(0).strip()
+            errors.append((m.start(), m.end(), err, msg.format(txt)))
 
-        errors = []
-        for w in blacklist:
-            for m in re.finditer("\s{}\s".format(w), text, flags=flags):
-                txt = m.group(0).strip()
-                errors.append((m.start(), m.end(), err, msg.format(txt)))
-
-        return errors
-
-    return check
+    return errors
