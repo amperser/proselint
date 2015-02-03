@@ -37,7 +37,25 @@ def check(text):
         ["circumstances of",  ["circumstances surrounding"]],
         ["close",             ["close proximity"]],
         ["collaborator",      ["fellow collaborator"]],
-        ["collaborators",     ["fellow collaborators"]]
+        ["collaborators",     ["fellow collaborators"]],
+        ["repeat",            ["repeat the same"]],
+        ["repeated",          ["repeated the same"]],
+        ["repeat",            ["repeat again"]],
+        ["repeat",            ["repeat back"]],
+        ["repay them",        ["repay them back"]],
+        ["repay",             ["repay back"]],
+        ["RSVP",              ["please RSVP"]],
+        ["confessed",         ["self-confessed"]],
+        ["software",          ["software program"]],
+        ["affadavit",         ["sworn affadavit"]],
+        ["blend",             ["blend together"]],
+        ["connect",           ["connect together"]],
+        ["consolidate",       ["consolidate together"]],
+        ["couple",            ["couple together"]],
+        ["merge",             ["merge together"]],
+        ["while",             ["while at the same time"]],
+        ["the nation",        ["the whole entire nation"]],
+        ["facts",             ["true facts"]],
     ]
 
     errors = []
