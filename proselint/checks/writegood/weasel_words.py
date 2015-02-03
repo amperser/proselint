@@ -15,9 +15,9 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 
 
-def check(text):
+# def check(text):
 
-    error_code = "WGD200"
-    msg = "Weasel words present."
+#     error_code = "WGD200"
+#     msg = "Weasel words present."
 
-    return [(1, 1, error_code, msg)]
+#     return [(1, 1, error_code, msg)]

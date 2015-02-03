@@ -16,9 +16,9 @@ and this happens most often between line breaks.
 """
 
 
-def check(text):
+# def check(text):
 
-    error_code = "WGD200"
-    msg = "Lexical illusion present."
+#     error_code = "WGD200"
+#     msg = "Lexical illusion present."
 
-    return [(1, 1, error_code, msg)]
+#     return [(1, 1, error_code, msg)]
