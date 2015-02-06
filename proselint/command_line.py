@@ -24,8 +24,9 @@ def log_error(filename, line, column, error_code, msg):
 
 @click.command()
 @click.option('--version/--whatever', default=False)
+@click.option('--initialize/--i', default=False)
 @click.argument('file', default=False)
-def proselint(version, file):
+def proselint(file=None, version=None, initialize=None):
     """Run the linter."""
 
     # Return the version number.
@@ -34,17 +35,32 @@ def proselint(version, file):
         return
 
     if not file:
-        raise ValueError("Specify a file to lint using the --file flag.")
+        file = "test.md"
 
     # Extract functions from the checks folder.
     checks = []
     for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
         module = loader.find_module(module_name).load_module(module_name)
+
+        # Run the initialization.
+        if initialize:
+            try:
+                assert(hasattr(module.initialize, '__call__'))
+                module.initialize()
+            except Exception, e:
+                print e
+                pass
+
+        # Add the check to the list of checks.
         try:
             assert(hasattr(module.check, '__call__'))
             checks.append(module.check)
         except Exception:
             pass
+
+    if initialize:
+        print "Initialization complete."
+        return
 
     # Apply all the checks.
     with open(file, "r") as f:
@@ -61,3 +77,6 @@ def proselint(version, file):
             (start, end, error_code, msg) = error
             (line, column) = line_and_column(text, start)
             log_error(file, line, column, error_code, msg)
+
+if __name__ == '__main__':
+    proselint()

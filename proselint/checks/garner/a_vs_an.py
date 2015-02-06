@@ -15,7 +15,6 @@ The first line is always wrong.
 
 """
 import re
-from nltk.corpus import cmudict
 from proselint.tools import memoize
 
 
@@ -24,28 +23,6 @@ def check(text):
     err = "MAU101"
     msg_a = "'a' should be 'an'."
     msg_an = "'an' should be 'a'."
-
-    dic = cmudict.dict()
-
-    @memoize
-    def starts_with_vowel_sound(word):
-        """Check whether the word starts with a vowel sound."""
-
-        # Get the pronunciations of the word.
-        pronunciations = dic.get(word)
-        if pronunciations is None:
-            return None
-
-        # For each pronunciation, see if it starts with a vowel sound.
-        is_vowel = [p[0][-1].isdigit() for p in pronunciations]
-
-        # Return the appropriate value only if all the pronunciations match.
-        if all(is_vowel):
-            return True
-        elif not any(is_vowel):
-            return False
-        else:
-            return None
 
     errors = []
     regex = re.compile("(?:^|\W)(an?)\s+(\w+)", re.IGNORECASE)
@@ -61,10 +38,51 @@ def check(text):
 
         # A apple.
         if words[0] in ["A", "a"] and vowel_sound:
-            errors.append((g.start(), g.start()+1, err, msg_a))
+            errors.append((g.start(), g.start() + 1, err, msg_a))
 
         # An day.
         elif words[0] in ["An", "an"] and not vowel_sound:
-            errors.append((g.start(), g.start()+2, err, msg_an))
+            errors.append((g.start(), g.start() + 2, err, msg_an))
 
     return errors
+
+
+@memoize
+def starts_with_vowel_sound(word):
+    """Check whether the word starts with a vowel sound."""
+
+    # Get the pronunciations of the word.
+    if 'd' not in globals():
+        from nltk.corpus import cmudict
+        d = cmudict.dict()
+
+    global d
+    pronunciations = d.get(word)
+    if pronunciations is None:
+        return None
+
+    # For each pronunciation, see if it starts with a vowel sound.
+    is_vowel = [p[0][-1].isdigit() for p in pronunciations]
+
+    # Return the appropriate value only if all the pronunciations match.
+    if all(is_vowel):
+        return True
+    elif not any(is_vowel):
+        return False
+    else:
+        return None
+
+
+def initialize():
+    print "Running initialization for garner.a_vs_an (may take a few minutes)"
+    from nltk.corpus import cmudict
+
+    global d
+    d = cmudict.dict()
+
+    for i, word in enumerate(d):
+        starts_with_vowel_sound(word)
+        if not (i % 1000):
+            print i
+
+    assert(d)
