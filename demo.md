@@ -40,10 +40,11 @@ atm machine
 we associate together
 it's blatantly obvious that this obviously works.
 a very unique idea
+a more perfect union
+the surrounding circumstances
 
 # Clichés
 under the weather
-the surrounding circumstances
 a chip off the old block
 a quantum leap
 
@@ -63,3 +64,6 @@ boughten
 
 # Dismissive tone
 this obviously works
+# Chatspeak
+brb 
+rofl
