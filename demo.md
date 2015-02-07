@@ -1,5 +1,6 @@
 a very unique idea
 an banana
+truly unique
 abbreviatable to NASA
 i wonder what tort-feasor means
 this obviously works
@@ -10,13 +11,17 @@ this line is okay.
 academicly superior.
 abbeter
 transhipped
-Start of sentence. One space.
-Start of sentence.  Two spaces.
-Start of sentence.  Two spaces.
-Start of sentence. One space.
-Start of sentence. One space.
-Start of sentence. One space.
-Start of sentence. One space.
+Start of sentence.  One space.
+Start of sentence. Two spaces.
+Start of sentence. Two spaces.
+Start of sentence.  One space.
+Start of sentence.  One space.
+Start of sentence.  One space.
+Start of sentence.  One space.
+
+hello hello hello
+
+the the meter
 
 atm machine
 an European country
@@ -29,6 +34,12 @@ the surrounding circumstances
 a apple and an banana
 a historic
 a chip off the old block
+
+the password is tnoernturpn
+
+my password is long and 'long'
+
+my password is amazing
 
 a quantum leap
 
