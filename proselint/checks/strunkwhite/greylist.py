@@ -14,9 +14,11 @@ Strunk & White say:
 
 
 """
+from proselint.tools import memoize
 import re
 
 
+@memoize
 def check(text):
     err = "STW100"
     msg = "Use of '{}'. {}"

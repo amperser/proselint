@@ -15,19 +15,19 @@ Don't put pass
 """
 from proselint.tools import blacklist, memoize
 
-err = "MSC103"
-msg = u"Don't put passwords in plain text."
-
-pwd_regex = "[:]* [\S]{6,30}"
-
-password = [
-    "the password is{}".format(pwd_regex),
-    "my password is{}".format(pwd_regex),
-    "the password's{}".format(pwd_regex),
-    "my password's{}".format(pwd_regex),
-]
-
 
 @memoize
 def check(text):
+    err = "MSC103"
+    msg = u"Don't put passwords in plain text."
+
+    pwd_regex = "[:]* [\S]{6,30}"
+
+    password = [
+        "the password is{}".format(pwd_regex),
+        "my password is{}".format(pwd_regex),
+        "the password's{}".format(pwd_regex),
+        "my password's{}".format(pwd_regex),
+    ]
+
     return blacklist(text, password, err, msg)

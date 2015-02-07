@@ -15,8 +15,10 @@ Points out use of needless variants and less preferred forms.
 
 """
 import re
+from proselint.tools import memoize
 
 
+@memoize
 def check(text):
     """Suggest the preferred forms."""
     err = "MAU102"
@@ -50,15 +52,22 @@ def check(text):
         ["anilingus",        ["anilinctus"]],
         ["anticipatory",     ["anticipative"]],
         ["convertible",      ["conversible"]],
-        ["neglectful",       ["neglective"]],
-        ["transposition",    ["transposal"]],
-        ["enigmas",          ["enigmatas"]],
         ["endow",            ["indow"]],
+        ["enigmas",          ["enigmatas"]],
         ["eyeing",           ["eying"]],
+        ["neglectful",       ["neglective"]],
+        ["precedence",       ["precedency"]],
+        ["preceptorial",     ["preceptoral"]],
+        ["transposition",    ["transposal"]],
+        ["precipitate",      ["precipitant"]],
+        ["precipitancy",     ["precipitance"]],
 
         # Misc. misspellings
         ["academically",     ["academicly"]],
         ["anilingus",        ["analingus"]],
+        ["praying mantis",   ["preying mantis"]],
+        ["aren't i",         ["amn't i"]],
+        ["aren't i",         ["an't i"]],
 
         # Hyphenated words
         ["tortfeasor",       ["tort feasor", "tort-feasor"]],
@@ -81,6 +90,6 @@ def check(text):
     for p in preferences:
         for r in p[1]:
             for m in re.finditer("\s{}\s".format(r), text, flags=re.IGNORECASE):
-                errors.append((m.start(), m.end(), err, msg.format(p[0])))
+                errors.append((m.start()+1, m.end(), err, msg.format(p[0])))
 
     return errors
