@@ -16,10 +16,11 @@ Too much yelling.
 """
 from proselint.tools import blacklist, memoize
 
-err = "MAU103"
-msg = u"Too much yelling."
-
 
 @memoize
 def check(text):
+
+    err = "MAU103"
+    msg = u"Too much yelling."
+
     return blacklist(text, ["[A-Z]+ [A-Z]+ [A-Z]+"], err, msg, ignore_case=False)

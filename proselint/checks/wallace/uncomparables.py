@@ -45,35 +45,79 @@ better chance of penetrating — and simple penetration is what AE is all about.
 One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
-
 import re
+from proselint.tools import memoize
 
 
+@memoize
 def check(text):
 
     err = "DFW200"
     msg = "Comparison of an uncomparable: {} is not comparable."
 
     comparators = [
-        "very",
+        "most",
         "more",
         "less",
+        "least",
+        "very",
+        "quite",
+        "largely",
         "extremely",
         "increasingly"
     ]
 
     uncomparables = [
-        "unique",
+        "absolute",
+        "adequate",
+        "chief",
+        "complete",
         "correct",
-        "inevitable",
-        "possible",
+        "devoid",
+        "entire",
         "false",
-        "true"
+        "fatal",
+        "favorite",
+        "final",
+        "ideal",
+        "impossible",
+        "inevitable",
+        "infinite",
+        "irrevocable",
+        "main",
+        "manifest",
+        "only",
+        "paramount",
+        "perfect",
+        "perpetual",
+        "possible",
+        "preferable",
+        "principal",
+        "singular",
+        "stationary",
+        "sufficient",
+        "true",
+        "unanimous",
+        "unavoidable",
+        "unbroken",
+        "uniform",
+        "unique",
+        "universal",
+        "void",
+        "whole",
+    ]
+
+    exceptions = [
+        "more perfect"
     ]
 
     errors = []
     for comp in comparators:
         for uncomp in uncomparables:
+
+            if "{} {}".format(comp, uncomp) in exceptions:
+                continue
+
             occ = [m for m in re.finditer(comp + "\s" + uncomp, text.lower())]
             for o in occ:
                 errors.append((m.start(), m.end(), err, msg.format(uncomp)))

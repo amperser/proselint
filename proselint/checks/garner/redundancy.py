@@ -15,8 +15,10 @@ Points out use redundant phrases.
 
 """
 import re
+from proselint.tools import memoize
 
 
+@memoize
 def check(text):
     """Suggest the preferred forms."""
     err = "MAU103"
@@ -55,6 +57,7 @@ def check(text):
         ["merge",             ["merge together"]],
         ["while",             ["while at the same time"]],
         ["the nation",        ["the whole entire nation"]],
+        ["potable water",     ["potable drinking water"]],
         ["facts",             ["true facts"]],
     ]
 

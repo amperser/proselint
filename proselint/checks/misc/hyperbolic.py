@@ -16,15 +16,16 @@ Hyperbolic language.
 """
 from proselint.tools import blacklist, memoize
 
-err = "MSC100"
-msg = u"'{}' is hyperbolic."
-
-words = [
-    "[a-z]*[!]{2,}",
-    "[a-z]*\?{2,}"
-]
-
 
 @memoize
 def check(text):
+
+    err = "MSC100"
+    msg = u"'{}' is hyperbolic."
+
+    words = [
+        "[a-z]*[!]{2,}",
+        "[a-z]*\?{2,}"
+    ]
+
     return blacklist(text, words, err, msg)

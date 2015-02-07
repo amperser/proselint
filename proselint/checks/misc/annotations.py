@@ -16,19 +16,20 @@ Annotation left in text.
 """
 from proselint.tools import blacklist, memoize
 
-err = "ANN100"
-msg = u"Annotation left in text."
-
-annotations = [
-    "FIXME",
-    "FIX ME",
-    "TODO",
-    "todo",
-    "ERASE THIS",
-    "FIX THIS",
-]
-
 
 @memoize
 def check(text):
+
+    err = "ANN100"
+    msg = u"Annotation left in text."
+
+    annotations = [
+        "FIXME",
+        "FIX ME",
+        "TODO",
+        "todo",
+        "ERASE THIS",
+        "FIX THIS",
+    ]
+
     return blacklist(text, annotations, err, msg, ignore_case=False)

@@ -14,11 +14,17 @@ A lexical illusion happens when a word word is unintentiall repeated twice, and
 and this happens most often between line breaks.
 
 """
+from proselint.tools import blacklist, memoize
 
 
-# def check(text):
+@memoize
+def check(text):
 
-#     error_code = "WGD200"
-#     msg = "Lexical illusion present."
+    err = "WGD105"
+    msg = u"There's a lexical illusion here: a word is repeated."
 
-#     return [(1, 1, error_code, msg)]
+    commercialese = [
+        "the\sthe"
+    ]
+
+    return blacklist(text, commercialese, err, msg)

@@ -23,25 +23,26 @@ spellings in the same document.
 """
 from proselint.tools import consistency_check, memoize
 
-err = "IEL100"
-msg = "Inconsistent spelling of '{}' (vs. '{}')."
-
-word_pairs = [
-    ["advisor", "adviser"],
-    ["analyse", "analyze"],
-    ["centre", "center"],
-    ["emphasise", "emphasize"],
-    ["finalise", "finalize"],
-    ["focussed", "focused"],
-    ["labour", "labor"],
-    ["learnt", "learned"],
-    ["organise", "organize"],
-    ["organised", "organized"],
-    ["organising", "organizing"],
-    ["recognise", "recognize"],
-]
-
 
 @memoize
 def check(text):
+
+    err = "IEL100"
+    msg = "Inconsistent spelling of '{}' (vs. '{}')."
+
+    word_pairs = [
+        ["advisor", "adviser"],
+        ["analyse", "analyze"],
+        ["centre", "center"],
+        ["emphasise", "emphasize"],
+        ["finalise", "finalize"],
+        ["focussed", "focused"],
+        ["labour", "labor"],
+        ["learnt", "learned"],
+        ["organise", "organize"],
+        ["organised", "organized"],
+        ["organising", "organizing"],
+        ["recognise", "recognize"],
+    ]
+
     return consistency_check(text, word_pairs, err, msg)
