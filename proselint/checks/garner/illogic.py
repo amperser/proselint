@@ -28,6 +28,10 @@ def check(text):
         "more than .{1,10} all",
         "appraisal valuations?",
         "(?:i|you|he|she|it|y'all|all y'all|you all|they) could care less",
+        "least worst",
+        "much-needed gaps?",
+        "much-needed voids?",
+        "no longer requires oxygen",
     ]
 
     return blacklist(text, illogics, err, msg)

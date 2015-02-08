@@ -21,7 +21,7 @@ def check(text):
     err = "MSC103"
     msg = u"Don't put passwords in plain text."
 
-    pwd_regex = "[:]* [\S]{6,30}"
+    pwd_regex = "[:]? [\S]{6,30}"
 
     password = [
         "the password is{}".format(pwd_regex),
