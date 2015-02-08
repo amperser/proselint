@@ -8,6 +8,8 @@ import os
 from proselint.tools import line_and_column
 import proselint.checks as pl
 import pkgutil
+import subprocess
+
 
 base_url = "prose.lifelinter.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
@@ -23,16 +25,23 @@ def log_error(filename, line, column, error_code, msg):
 
 
 @click.command()
-@click.option('--version/--whatever', default=False)
-@click.option('--initialize/--i', default=False)
-@click.argument('file', default=False)
-def proselint(file=None, version=None, initialize=None):
+@click.option('--version/--whatever', default=None)
+@click.option('--initialize/--i', default=None)
+@click.option('--debug/--d', default=False)
+@click.argument('file', default=None)
+def proselint(file, version, initialize, debug):
     """Run the linter."""
 
     # Return the version number.
     if version:
         print "v0.0.1"
         return
+
+    # In debug mode, delete the cache and *.pyc files before running.
+    if debug:
+        subprocess.call("find . -name '*.pyc' -delete", shell=True)
+        subprocess.call("find . -name '*.check' -delete", shell=True)
+        print "got here"
 
     if not file:
         file = "test.md"
