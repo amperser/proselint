@@ -10,6 +10,9 @@ centre centre center
 organize, organized, organizing, organise
 recognize, recognise, recognise, recognise
 
+# Symbols
+$1000 USD
+
 # Grammar
 the the meter
 a apple and an banana
@@ -42,6 +45,7 @@ it's blatantly obvious that this obviously works.
 a very unique idea
 a more perfect union
 the surrounding circumstances
+he filled a much-needed gap
 
 # Clichés
 under the weather
@@ -64,6 +68,25 @@ boughten
 
 # Dismissive tone
 this obviously works
+
 # Chatspeak
 brb 
 rofl
+
+# Airlinese
+enplanement
+I'll be with you momentarily
+
+# Tense present
+Save up to 50%—or More!
+between you and i
+I did it on accident
+I feel nauseous
+
+# Various misspellings
+highfaluting
+the statement was inadmissable in court
+Nikita Khruschev
+I feel innundated with email
+Nicknack
+He's a shoe-in
