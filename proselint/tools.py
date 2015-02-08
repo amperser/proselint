@@ -92,17 +92,23 @@ def consistency_check(text, word_pairs, err, msg):
     return errors
 
 
-def blacklist(text, list, err, msg, ignore_case=True):
+def blacklist(text, list, err, msg, ignore_case=True, unicode=False):
     """Build a checker that blacklists certain words."""
 
-    if ignore_case:
+    flags = 0
+
+    if ignore_case and unicode:
+        flags = re.IGNORECASE | re.UNICODE
+    elif ignore_case:
         flags = re.IGNORECASE
+    elif unicode:
+        flags = re.UNICODE
     else:
         flags = 0
 
     errors = []
     for w in list:
-        for m in re.finditer("\s{}\s".format(w), text, flags=flags):
+        for m in re.finditer(u"\s{}\s".format(w), text, flags=flags):
             txt = m.group(0).strip()
             errors.append((m.start(), m.end(), err, msg.format(txt)))
 
