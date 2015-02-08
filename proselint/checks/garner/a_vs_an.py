@@ -55,9 +55,9 @@ def starts_with_vowel_sound(word):
     # Get the pronunciations of the word.
     if 'd' not in globals():
         from nltk.corpus import cmudict
+        global d
         d = cmudict.dict()
 
-    global d
     pronunciations = d.get(word)
     if pronunciations is None:
         return None
