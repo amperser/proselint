@@ -1,0 +1,47 @@
+# -*- coding: utf-8 -*-
+"""DFW201: Tense present.
+
+---
+layout:     post
+error_code: MAU103
+source:     DFW's Tense Present
+source_url: http://bit.ly/1c85lgR
+title:      Tense present
+date:       2014-06-10 12:31:19
+categories: writing
+---
+
+Archaism.
+
+"""
+from proselint.tools import memoize
+import re
+
+
+@memoize
+def check(text):
+
+    err = "DFW201"
+    msg = u"'{}'."
+
+    illogics = [
+        u"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+        "between you and I",
+        "on accident",
+        "somewhat of a",
+        "all it's own",
+        "reason is because",
+        "audible to the ear",
+        "in regards to",
+        "would of",
+        "and so",
+        "i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
+    ]
+
+    errors = []
+    for i in illogics:
+        for m in re.finditer(i, text, flags=re.UNICODE | re.IGNORECASE):
+            txt = m.group(0).strip()
+            errors.append((m.start(), m.end(), err, msg.format(txt)))
+
+    return errors
