@@ -8,6 +8,7 @@ import os
 from proselint.tools import line_and_column
 import proselint.checks as pl
 import pkgutil
+import codecs
 import subprocess
 
 
@@ -72,7 +73,7 @@ def proselint(file, version, initialize, debug):
         return
 
     # Apply all the checks.
-    with open(file, "r") as f:
+    with codecs.open(file, "r", encoding='utf-8') as f:
         text = f.read()
         errors = []
         for check in checks:
