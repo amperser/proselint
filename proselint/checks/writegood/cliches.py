@@ -15,6 +15,7 @@ Cliches are cliché.
 
 """
 from proselint.tools import blacklist, memoize
+import re
 
 
 @memoize
@@ -723,4 +724,9 @@ def check(text):
         "young and vibrant",
     ]
 
-    return blacklist(text, cliches, err, msg)
+    errors = []
+    for c in cliches:
+        for m in re.finditer(c, text, flags=re.IGNORECASE):
+            errors.append((m.start(), m.end(), err, msg.format(c)))
+
+    return errors
