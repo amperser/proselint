@@ -90,3 +90,8 @@ Nikita Khruschev
 I feel innundated with email
 Nicknack
 He's a shoe-in
+
+(c) 2015
+Copy­right © 2015
+(R) The Corporation
+This is so awesome ...
