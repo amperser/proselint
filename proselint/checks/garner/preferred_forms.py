@@ -62,7 +62,6 @@ def check(text):
         ["precipitate",       ["precipitant"]],
         ["precipitancy",      ["precipitance"]],
         ["kaffeeklatsch",     ["Coffee klatsch", "coffee klatch"]],
-        ["Khrushchev",        ["Khruschev", "Kruschev"]],
         ["knickknack",        ["nicknack"]],
         ["movable",           ["moveable"]],
         ["murk",              ["mirk"]],
@@ -70,6 +69,9 @@ def check(text):
         ["password",          ["passcode"]],
         ["pederast",          ["paederast"]],
         ["pejorative",        ["perjorative"]],
+
+        # Proper nouns
+        ["Khrushchev",        ["Khruschev", "Kruschev"]],
 
         # Plurals
         ["sopranos",          ["soprani"]],
