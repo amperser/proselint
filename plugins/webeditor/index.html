@@ -1,0 +1,199 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+        <script src="codemirror/lib/codemirror.js"></script>
+        <script src="codemirror/mode/markdown/markdown.js"></script>
+        <script src="codemirror/addon/edit/matchbrackets.js"></script>
+        <script src="codemirror/addon/selection/active-line.js"></script>
+        <link rel="stylesheet" href="codemirror/addon/lint/lint.css">
+        <script src="codemirror/addon/lint/lint.js"></script>
+        <script src="codemirror/addon/lint/javascript-lint.js"></script>
+        <script src="cm-validator-remote.js"></script>
+        <style type="text/css">
+            body {
+                width: 800px;
+                margin-left: 100px;
+                background: #f2f2f2;
+            }
+            .CodeMirror {
+                font-size: 125%;
+                color: #222222;
+                background: #f2f2f2;
+                height: auto;
+                line-height: 1.7;
+            }
+            .CodeMirror-gutters {
+                font-size: 50%;
+                color: #222222;
+                background: #f2f2f2;
+                margin-right: 10px;
+                border-right: none;
+            }
+            .CodeMirror-linenumbers {
+                background: #f2f2f2;
+                margin-right: 20px;
+            }
+            .CodeMirror-linenumber {
+                font-size: 75%;
+                color: #cccccc;
+                padding-top: 4px;
+            }
+            .CodeMirror-empty {
+                outline: 1px
+                solid #c22;
+            }
+            .CodeMirror-selected {
+                background: #A7DBD8;
+            }
+            .CodeMirror-focused .CodeMirror-selected {
+                background: #A7DBD8;
+            }
+            .cm-s-default .cm-header {
+                color: #444444;
+            }
+            .cm-invalidchar {
+                color: #cccccc;
+            }
+        </style>
+    </head>
+    <body>
+    <div><textarea id="code" name="code" placeholder="Code goes here...">
+# Consistency
+This is a sentence.  One space after a period.
+This is a sentence. Two spaces after a period.
+This is a sentence. Two spaces after a period.
+This is a sentence.  One space after a period.
+This is a sentence.  One space after a period.
+This is a sentence.  One space after a period.
+This is a sentence.  One space after a period.
+centre centre center
+organize, organized, organizing, organise
+recognize, recognise, recognise, recognise
+
+# Symbols
+$1000 USD
+
+# Grammar
+the the meter
+a apple and an banana
+an European country
+a historic
+an banana
+
+# Hyperbolic language
+PLEASE STOP YELLING
+so excited!
+so excited!!
+so excited!!!
+so excited!!!!
+really??
+
+# Preferred forms
+abbreviatable to NASA
+academicly superior.
+transhipped
+an aider and abbeter
+it's adduceable
+let's look for an acquiror
+i wonder what tort-feasor means
+
+# Illogic and redundancy
+approximately about 5 atm machines
+atm machine
+we associate together
+it's blatantly obvious that this obviously works.
+a very unique idea
+a more perfect union
+the surrounding circumstances
+he filled a much-needed gap
+
+# Clichés
+under the weather
+a chip off the old block
+a quantum leap
+
+# Security
+John's cc#:
+378282246310005
+the password is tnoernturpn
+my password is long and 'long'
+my password is amazing
+
+# Commercialese
+inst.
+please be advised that
+
+# Archaism
+boughten
+
+# Dismissive tone
+this obviously works
+
+# Chatspeak
+brb
+rofl
+
+# Airlinese
+enplanement
+I'll be with you momentarily
+
+# Tense present
+Save up to 50%—or More!
+between you and i
+I did it on accident
+I feel nauseous
+
+# Various misspellings
+highfaluting
+the statement was inadmissable in court
+Nikita Khruschev
+I feel innundated with email
+Nicknack
+He's a shoe-in
+
+(c) 2015
+Copy­right © 2015
+(R) The Corporation
+This is so awesome ...
+    </textarea></div>
+    </body>
+    <script type="text/javascript">
+function check_syntax(code, result_cb)
+{
+    var error_list = [{
+            line_no: 1,
+            column_no_start: 12,
+            column_no_stop: 18,
+            fragment: "def doesNothing:\n",
+            message: "invalid syntax",
+            severity: "error"
+        }, {
+            line_no: 5,
+            column_no_start: 40,
+            column_no_stop: 42,
+            fragment: "a__ = 5\n",
+            message: "convention violation",
+            severity: "warning"
+        }]
+
+    result_cb(error_list);
+}
+
+var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    mode: { name: "markdown",
+            version: 2,
+            singleLineStringErrors: false },
+    lineNumbers: true,
+    lineWrapping: true,
+    indentUnit: 4,
+    tabMode: "shift",
+    gutters: ["CodeMirror-lint-markers"],
+    lintWith: {
+        "getAnnotations": CodeMirror.remoteValidator,
+        "async": true,
+        "check_cb": check_syntax
+    }
+});
+    </script>
+</html>
+
