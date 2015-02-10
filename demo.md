@@ -6,7 +6,7 @@ This is a sentence.  One space after a period.
 This is a sentence.  One space after a period.
 This is a sentence.  One space after a period.
 This is a sentence.  One space after a period.
-centre centre center 
+centre centre center
 organize, organized, organizing, organise
 recognize, recognise, recognise, recognise
 
@@ -70,7 +70,7 @@ boughten
 this obviously works
 
 # Chatspeak
-brb 
+brb
 rofl
 
 # Airlinese
