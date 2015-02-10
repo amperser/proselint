@@ -29,8 +29,8 @@ def log_error(filename, line, column, error_code, msg):
 @click.option('--version/--whatever', default=None)
 @click.option('--initialize/--i', default=None)
 @click.option('--debug/--d', default=False)
-@click.argument('file', default=None)
-def proselint(file, version, initialize, debug):
+@click.argument('file', default=False)
+def proselint(file=None, version=None, initialize=None, debug=None):
     """Run the linter."""
 
     # Return the version number.
@@ -42,7 +42,6 @@ def proselint(file, version, initialize, debug):
     if debug:
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
         subprocess.call("find . -name '*.check' -delete", shell=True)
-        print "got here"
 
     if not file:
         file = "test.md"
