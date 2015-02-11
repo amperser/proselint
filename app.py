@@ -8,7 +8,7 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/api/v1/', methods=["GET"])
+@app.route('/v1/', methods=["GET"])
 def lint():
 
     id = uuid.uuid4()
