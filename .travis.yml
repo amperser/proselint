@@ -24,3 +24,10 @@ env:
   - secure: Ri3M0/J5J11LpMSSD3XoJdB/rkINP3Ir9leoUfrUlws89IiGQiscmvp8WamFnY3Z9HMzwSqV0Aj62SjPM811Iog+uRY2thH+wunVHDovj1NNI1bfGgmu1LEIivoRwnUKd3wyx7HurgQxt4hrN2AhOvCQsUms6NU/n/cGBbo1J2s=
   on:
     branch: master
+deploy:
+  provider: heroku
+  api_key:
+    secure: KstfXEL5DlmEoXS7ooIEV9QT+/cAitgFd2Y/E5ZbJyWPicpfrjZGga91KVT+WB4V8wFMsPaP7Ash2cWRi2d50mBvvRIm//93rfVEeOEpv1WX6gpyo6P3pzImdBreuCW1v1wHIDXTW/vc643HLgbrIpIT5fa9SEzCm1HjDUomDvE=
+  app: proselint
+  on:
+    repo: suchow/proselint
