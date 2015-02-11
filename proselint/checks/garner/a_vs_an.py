@@ -16,6 +16,7 @@ The first line is always wrong.
 """
 import re
 from proselint.tools import memoize
+import os
 
 
 @memoize
@@ -54,9 +55,14 @@ def starts_with_vowel_sound(word):
 
     # Get the pronunciations of the word.
     if 'd' not in globals():
-        from nltk.corpus import cmudict
+        import nltk
+        nltk.data.path.append(
+            os.path.join(
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+                "data"))
+        print nltk.data.path
         global d
-        d = cmudict.dict()
+        d = nltk.corpus.cmudict.dict()
 
     pronunciations = d.get(word)
     if pronunciations is None:
