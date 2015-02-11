@@ -60,7 +60,6 @@ def starts_with_vowel_sound(word):
             os.path.join(
                 os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
                 "data"))
-        print nltk.data.path
         global d
         d = nltk.corpus.cmudict.dict()
 
