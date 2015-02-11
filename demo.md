@@ -96,8 +96,9 @@ I did not pay for the check. Honestly, attention to detail is useful.
 I did not pay attention to detail.
 I did not pay any attention to detail.
 
+# Typography
 (c) 2015
 Copy­right © 2015
 (R) The Corporation
-This is so awesome…
 This is so awesome...
+Bose-Einstein condensate
