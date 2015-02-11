@@ -44,7 +44,7 @@ def proselint(file=None, version=None, initialize=None, debug=None):
         subprocess.call("find . -name '*.check' -delete", shell=True)
 
     if not file:
-        file = "test.md"
+        file = "demo.md"
 
     # Extract functions from the checks folder.
     checks = []
