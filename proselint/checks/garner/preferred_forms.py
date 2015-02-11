@@ -71,7 +71,10 @@ def check(text):
         ["pejorative",        ["perjorative"]],
 
         # Proper nouns
+        ["Halloween",         ["haloween", "hallowe'en"]],
         ["Khrushchev",        ["Khruschev", "Kruschev"]],
+        ["Ku Klux Klan",      ["Klu Klux Klan"]],
+        ["Pontius Pilate",    ["Pontius Pilot"]],
 
         # Plurals
         ["sopranos",          ["soprani"]],
@@ -86,8 +89,6 @@ def check(text):
         ["glamour",           ["glamor"]],
         ["granddad",          ["grandad"]],
         ["grandpa",           ["granpa"]],
-        ["Halloween",         ["haloween"]],
-        ["Halloween",         ["hallowe'en"]],
         ["highfalutin",       ["highfaluting", "highfalutin'", "hifalutin"]],
         ["financeable",       ["financable"]],
         ["praying mantis",    ["preying mantis"]],
@@ -107,7 +108,6 @@ def check(text):
         ["iridescent",        ["irridescent"]],
         ["kaleidoscope",      ["kaleidascope"]],
         ["knickknack",        ["knicknack"]],
-        ["Ku Klux Klan",      ["Klu Klux Klan"]],
         ["cummerbund",        ["kummerbund"]],
         ["lessor",            ["leasor"]],
         ["lessee",            ["leasee"]],
@@ -120,7 +120,6 @@ def check(text):
         ["occurred",          ["occured"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
         ["pledgeable",        ["pledgable", "pledgeble"]],
-        ["Pontius Pilate",    ["Pontius Pilot"]],
         ["portentous",        ["portentuous", "portentious"]],
         ["preestablished",    ["prestablished"]],
         ["preexisting",       ["prexisting"]],
@@ -162,6 +161,7 @@ def check(text):
     for p in preferences:
         for r in p[1]:
             for m in re.finditer("\s{}\s".format(r), text, flags=re.IGNORECASE):
+
                 errors.append((m.start()+1, m.end(), err, msg.format(p[0])))
 
     return errors

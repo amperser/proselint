@@ -28,7 +28,7 @@ def check(text):
         ["\s\(TM\)\s", u"'{}' is a goofy alphabetic approximation. Use ™."],
         ["\s\(R\)\s", u"'{}' is a goofy alphabetic approximation. Use ®."],
         [u"Copy­right ©", u"'{}' is redundant. Use the word or the symbol."],
-        # [ur"...", "'...' is an approximation, use the ellipsis symbol '…'."]
+        [r"\.\.\.", u"'...' is an approximation, use the ellipsis symbol '…'."]
     ]
 
     errors = []
