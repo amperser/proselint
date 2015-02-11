@@ -54,7 +54,7 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 @app.route('/v1/', methods=["GET"])
-@crossdomain(origin='*', headers=['Access-Control-Allow-Origin'])
+@crossdomain(origin='*', headers=['Origin, X-Requested-With, Content-Type, Accept'])
 def lint():
 
     id = uuid.uuid4()
