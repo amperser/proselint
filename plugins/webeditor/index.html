@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="codemirror/lib/codemirror.css">
         <script src="codemirror/lib/codemirror.js"></script>
+        <script src="reqwest.min.js"></script>
         <script src="codemirror/mode/markdown/markdown.js"></script>
         <script src="codemirror/addon/edit/matchbrackets.js"></script>
         <script src="codemirror/addon/selection/active-line.js"></script>
@@ -158,8 +159,22 @@ This is so awesome ...
     </textarea></div>
     </body>
     <script type="text/javascript">
-function check_syntax(code, result_cb)
-{
+function check_syntax(code, result_cb) {
+
+    reqwest({
+        url: "http://api.prose.lifelinter.com/v1/",
+        method: 'get',
+        type: 'json',
+        success: function (resp) {
+            console.log(resp);
+        },
+        error: function (err) {
+            console.log(err);
+        },
+        data: {
+            text: "very unique less unique indeed",
+        }
+    });
     var error_list = [{
             line_no: 1,
             column_no_start: 12,
@@ -174,7 +189,8 @@ function check_syntax(code, result_cb)
             fragment: "a__ = 5\n",
             message: "convention violation",
             severity: "warning"
-        }]
+        }
+    ];
 
     result_cb(error_list);
 }
