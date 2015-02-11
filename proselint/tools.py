@@ -54,7 +54,6 @@ def memoize(f):
     return wrapped
 
 
-@memoize
 def reverse(text):
     """Reverse a string. This is here as a demo of memoization."""
     return text[::-1]
