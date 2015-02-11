@@ -1,4 +1,4 @@
-# ProseLinter
+# proselint
 
 This is `proselint`, a linter for writing. Get advice whispered from the greats.
 
@@ -10,4 +10,4 @@ To get this up and running as a command line utility, run `python setup.py devel
 2. Edit your check.
 3. Create a new test file `test_abc_checkname.py` and place it in `tests`.
 4. Run the test suite using `nosetests`.
-5. Submit a pull request to suchow/ProseLinter.
+5. Submit a pull request to suchow/proselint.
