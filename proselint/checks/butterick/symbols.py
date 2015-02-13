@@ -24,12 +24,13 @@ def check(text):
     err = "BTR100"
 
     symbols = [
-        ["\s\(c\)\s",    u"'{}' is a goofy alphabetic approximation. Use ©."],
-        ["\s\(TM\)\s",   u"'{}' is a goofy alphabetic approximation. Use ™."],
-        ["\s\(R\)\s",    u"'{}' is a goofy alphabetic approximation. Use ®."],
+        ["\s\(c\)\s",       u"'{}' is a goofy alphabetic approximation. Use ©."],
+        ["\s\(TM\)\s",      u"'{}' is a goofy alphabetic approximation. Use ™."],
+        ["\s\(R\)\s",       u"'{}' is a goofy alphabetic approximation. Use ®."],
         [u"[Cc]opy­right ©", u"'{}' is redundant. Use the word or the symbol."],
-        [r"\.\.\.",      u"'...' is an approximation, use the ellipsis symbol '…'."],
+        [r"\.\.\.",         u"'...' is an approximation, use the ellipsis symbol '…'."],
         [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}", u"Use an en dash (–) to separate names."],
+        ["\. {3}",          "More than two spaces after the period; use 1 or 2."],
     ]
 
     errors = []
