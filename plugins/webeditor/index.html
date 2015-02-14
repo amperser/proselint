@@ -160,39 +160,34 @@ This is so awesome ...
     </body>
     <script type="text/javascript">
 function check_syntax(code, result_cb) {
-
     reqwest({
         url: "http://api.prose.lifelinter.com/v1/",
         method: 'get',
         type: 'json',
         success: function (resp) {
-            console.log(resp);
+            error_list = [];
+            for (var x in resp) {
+                e = resp[x];
+                new_entry = {
+                    line_no: e.line,
+                    column_no_start: parseInt(e.column),
+                    column_no_stop: parseInt(e.column) + 1,
+                    fragment: "",
+                    message: e.msg,
+                    severity: "warning",
+                };
+                error_list.push(new_entry);
+            }
+            console.log(error_list);
+            result_cb(error_list);
         },
         error: function (err) {
             console.log(err);
         },
         data: {
-            text: "very unique less unique indeed",
+            text: encodeURIComponent(code),
         }
     });
-    var error_list = [{
-            line_no: 1,
-            column_no_start: 12,
-            column_no_stop: 18,
-            fragment: "def doesNothing:\n",
-            message: "invalid syntax",
-            severity: "error"
-        }, {
-            line_no: 5,
-            column_no_start: 40,
-            column_no_stop: 42,
-            fragment: "a__ = 5\n",
-            message: "convention violation",
-            severity: "warning"
-        }
-    ];
-
-    result_cb(error_list);
 }
 
 var editor = CodeMirror.fromTextArea(document.getElementById("code"), {

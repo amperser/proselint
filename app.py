@@ -8,6 +8,7 @@ import re
 import json
 from datetime import timedelta
 from functools import update_wrapper
+import urllib2
 
 app = Flask(__name__)
 
@@ -64,8 +65,10 @@ def lint():
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
 
+    text = urllib2.unquote(request.values['text'])
+
     with open(filename, "w+") as f:
-        f.write(request.values['text'])
+        f.write(text)
 
     out = subprocess.check_output("proselint {}".format(filename), shell=True)
 
