@@ -1,11 +1,11 @@
 # Consistency
-This is a sentence.  One space after a period.
-This is a sentence. Two spaces after a period.
-This is a sentence. Two spaces after a period.
-This is a sentence.  One space after a period.
-This is a sentence.  One space after a period.
-This is a sentence.  One space after a period.
-This is a sentence.  One space after a period.
+This is a sentence. One space after a period.
+This is a sentence.  Two spaces after a period.
+This is a sentence.  Two spaces after a period.
+This is a sentence. One space after a period.
+This is a sentence. One space after a period.
+This is a sentence. One space after a period.
+This is a sentence. One space after a period.
 centre centre center
 organize, organized, organizing, organise
 recognize, recognise, recognise, recognise
@@ -102,3 +102,6 @@ Copy­right © 2015
 (R) The Corporation
 This is so awesome...
 Bose-Einstein condensate
+
+# Denizen labels
+He's a Michiganite

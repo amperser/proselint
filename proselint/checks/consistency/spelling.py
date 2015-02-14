@@ -26,7 +26,7 @@ from proselint.tools import consistency_check, memoize
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "IEL100"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."
 

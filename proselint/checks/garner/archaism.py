@@ -14,12 +14,12 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU103"
     msg = u"'{}' is archaic."
 
@@ -78,7 +78,8 @@ def check(text):
         # "demean", when used to mean "to behave" in legal contexts
         # "by the bye", # variant, modern is "by the by"
         # "comptroller" # in british english
-        # "abortive" Abortive is archaic in reference to abortions of fetuses, except in the sense “causing an abortion.”
+        # "abortive" Abortive is archaic in reference to abortions of fetuses,
+        # except in the sense “causing an abortion.”
     ]
 
-    return blacklist(text, archaisms, err, msg)
+    return existence_check(text, archaisms, err, msg)

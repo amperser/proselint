@@ -1,3 +1,5 @@
+"""Web app that serves proselint's API."""
+
 from flask import Flask, request, make_response, current_app
 import subprocess
 import uuid
@@ -13,6 +15,7 @@ app = Flask(__name__)
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
                 automatic_options=True):
+    """Allow cross-domain requests."""
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, basestring):
@@ -54,9 +57,10 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 @app.route('/v1/', methods=["GET"])
-@crossdomain(origin='*', headers=['Origin, X-Requested-With, Content-Type, Accept'])
+@crossdomain(
+    origin='*', headers=['Origin, X-Requested-With, Content-Type, Accept'])
 def lint():
-
+    """Run proselint on the provided text and return the results."""
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
 

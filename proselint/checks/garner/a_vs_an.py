@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU100: Misuse of 'a' vs. 'an'.
+u"""MAU100: Misuse of 'a' vs. 'an'.
 
 ---
 layout:     post
@@ -21,7 +21,7 @@ import os
 
 @memoize
 def check(text):
-
+    """Define the check."""
     err = "MAU101"
     msg_a = "'a' should be 'an'."
     msg_an = "'an' should be 'a'."
@@ -52,7 +52,6 @@ def check(text):
 @memoize
 def starts_with_vowel_sound(word):
     """Check whether the word starts with a vowel sound."""
-
     # Get the pronunciations of the word.
     if 'd' not in globals():
         import nltk
@@ -80,6 +79,7 @@ def starts_with_vowel_sound(word):
 
 
 def initialize():
+    """Initialize the cache of pronunciations."""
     print "Running initialization for garner.a_vs_an (may take a few minutes)"
     from nltk.corpus import cmudict
 

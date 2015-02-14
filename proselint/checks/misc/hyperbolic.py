@@ -14,12 +14,12 @@ categories: writing
 Hyperbolic language.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MSC100"
     msg = u"'{}' is hyperbolic."
 
@@ -28,4 +28,4 @@ def check(text):
         "[a-z]*\?{2,}"
     ]
 
-    return blacklist(text, words, err, msg)
+    return existence_check(text, words, err, msg)

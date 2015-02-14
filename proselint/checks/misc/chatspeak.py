@@ -14,12 +14,12 @@ categories: writing
 Chatspeak.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MSC104"
     msg = u"'{}' is chatspeak. Write it out."
 
@@ -49,4 +49,4 @@ def check(text):
         "XOXO"
     ]
 
-    return blacklist(text, words, err, msg)
+    return existence_check(text, words, err, msg)

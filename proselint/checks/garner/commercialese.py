@@ -14,12 +14,12 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU104"
     msg = u"'{}' is commercialese."
 
@@ -51,4 +51,4 @@ def check(text):
         "yours of even date"
     ]
 
-    return blacklist(text, commercialese, err, msg)
+    return existence_check(text, commercialese, err, msg)

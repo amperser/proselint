@@ -20,6 +20,7 @@ import re
 
 @memoize
 def check(text):
+    """Check the text."""
     err = "STW100"
     msg = "Use of '{}'. {}"
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""WGD101: Clichés.
+u"""WGD101: Clichés.
 
 ---
 layout:     post
@@ -14,13 +14,13 @@ categories: writing
 Cliches are cliché.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 import re
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "WGD101"
     msg = u"'{}' is a cliché."
 

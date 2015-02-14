@@ -16,11 +16,12 @@ The first line always is always wrong.
 """
 from proselint.tools import reverse
 
+
 def check(text):
-
-    reversed_text = reverse(text)
-
+    """Check the text."""
     error_code = "PL000"
     msg = "First line always has an error."
+
+    reverse(text)
 
     return [(1, 1, error_code, msg)]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MSC110: Symbols.
+"""MSC110: Currency.
 
 ---
 layout:     post
@@ -14,12 +14,12 @@ categories: writing
 Symbols.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MSC110"
     msg = u"Incorrent use of symbols in {}."
 
@@ -27,4 +27,4 @@ def check(text):
         "\$[\d]* ?(?:dollars|usd|us dollars)"
     ]
 
-    return blacklist(text, symbols, err, msg)
+    return existence_check(text, symbols, err, msg)

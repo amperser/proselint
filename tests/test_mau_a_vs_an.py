@@ -1,3 +1,5 @@
+"""Unit tests for MAU101."""
+
 from check import Check
 from proselint.checks import mau_a_vs_an as chk
 

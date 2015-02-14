@@ -1,16 +1,22 @@
+"""Check that a check is working."""
+
 from unittest import TestCase
 import os
 
 
 class Check(TestCase):
 
+    """All tests inherit from Check."""
+
     __test__ = False
 
     @property
     def this_check(self):
+        """The specific check."""
         raise NotImplementedError
 
     def check(self, lst):
+        """Check if the test runs cleanly on the given text."""
         if isinstance(lst, basestring):
             lst = [lst]
 
@@ -21,6 +27,7 @@ class Check(TestCase):
         return len(errors[0]) == 0
 
     def test_wpe(self):
+        """Check whether the check is too noisy."""
         min_wpe = 50
 
         examples_dir = os.path.join(os.getcwd(), "tests", "samples")
@@ -36,7 +43,7 @@ class Check(TestCase):
                 num_words = len(text.split(' '))
 
             try:
-                wpe = 1.0*num_words / num_errors
+                wpe = 1.0 * num_words / num_errors
             except ZeroDivisionError:
                 wpe = float('Inf')
 

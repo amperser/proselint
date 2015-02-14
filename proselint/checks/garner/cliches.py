@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU100: Cliches.
+u"""MAU100: Cliches.
 
 ---
 layout:     post
@@ -20,7 +20,7 @@ from proselint.tools import memoize
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU101"
     msg = u"'{}' is cliché."
 

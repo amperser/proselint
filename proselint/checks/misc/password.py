@@ -13,11 +13,12 @@ categories: writing
 
 Don't put pass
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
+    """Check the text."""
     err = "MSC103"
     msg = u"Don't put passwords in plain text."
 
@@ -30,4 +31,4 @@ def check(text):
         "my password's{}".format(pwd_regex),
     ]
 
-    return blacklist(text, password, err, msg)
+    return existence_check(text, password, err, msg)
