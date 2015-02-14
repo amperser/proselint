@@ -14,13 +14,14 @@ categories: writing
 Too much yelling.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU103"
     msg = u"Too much yelling."
 
-    return blacklist(text, ["[A-Z]+ [A-Z]+ [A-Z]+"], err, msg, ignore_case=False)
+    regex = "[A-Z]+ [A-Z]+ [A-Z]+"
+    return existence_check(text, [regex], err, msg, ignore_case=False)

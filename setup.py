@@ -1,3 +1,5 @@
+"""Installation script for proselint."""
+
 from setuptools import setup
 
 setup(

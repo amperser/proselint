@@ -14,12 +14,12 @@ categories: writing
 Airlinese.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU108"
     msg = u"'{}' is airlinese."
 
@@ -28,4 +28,4 @@ def check(text):
         "momentarily",
     ]
 
-    return blacklist(text, airlinese, err, msg)
+    return existence_check(text, airlinese, err, msg)

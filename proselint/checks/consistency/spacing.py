@@ -20,8 +20,9 @@ from proselint.tools import consistency_check, memoize
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "CST200"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
 
-    return consistency_check(text, [["[^\w\s] [A-Z]", "[^\w\s]  [A-Z]"]], err, msg)
+    regex = "[^\w\s] [A-Z]", "[^\w\s]  [A-Z]"
+    return consistency_check(text, [regex], err, msg)

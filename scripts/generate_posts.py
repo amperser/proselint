@@ -1,3 +1,5 @@
+"""Generate blog posts from check docstrings."""
+
 import os
 import ast
 import datetime
@@ -10,7 +12,17 @@ listing = os.walk(checks_dir)
 
 
 def is_check(fn):
-    return fn[-3:] == ".py" and (not fn[-11:] == "__init__.py") and (not "inprogress" in fn)
+    """Check whether a file contains a check."""
+    if not fn[-3:] == ".py":
+        return False
+
+    if fn[-11:] == "__init__.py":
+        return False
+
+    if "inprogress" in fn:
+        return False
+
+    return True
 
 for root, subdirs, files in listing:
     for file in files:

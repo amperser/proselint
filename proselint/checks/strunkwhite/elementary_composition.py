@@ -14,11 +14,14 @@ Strunk & White say:
 1. Choose a suitable design and hold to it.
     * MDPNB: Sounds like a principle of `consistency`.
 2. Make the paragraph the unit of composition.
-    * MDPNB: This can be generalized to say something about variability in the length of paragraphs and sentences. When any device is too often used it becomes a mannerism.
+    * MDPNB: This can be generalized to say something about variability in the
+    length of paragraphs and sentences. When any device is too often used it
+    becomes a mannerism.
     * MDPNB: Sounds like a principle of `variation`.
 3. Use the active voice.
 4. Put statements in positive form.
-    * MDPNB: In some cases this will apply as an invective against the use of a double negative.
+    * MDPNB: In some cases this will apply as an invective against the use of
+    a double negative.
     * Ex: He was not very often on time. -> He usually came late.
     * Ex:
 4.1. Placing negative and positive in oposition makes for a stronger structure.
@@ -45,21 +48,21 @@ Strunk & White say:
 from proselint.tools import memoize
 import re
 
-# recomment when done
-# @memoize
+
+@memoize
 def check(text):
     """Suggest the preferred forms."""
     err = "STW102"
     msg = "'{}' is better than '{}'."
 
     bad_forms = [
-    # Put statements in positive form
+        # Put statements in positive form
         ["dishonest",               ["not honest"]],
         ["trifling",                ["not important"]],
         ["forgot",                  ["did not remember"]],
         ["ignored",                 ["did not pay (any )?attention to"]],
         ["distrusted",              ["did not have much confidence in"]],
-    # Omit needless words
+        # Omit needless words
         ["whether",                 ["the question as to whether"]],
         ["no doubt",                ["there is no doubt but that"]],
         ["used for fuel",           ["used for fuel purposes"]],
@@ -81,8 +84,8 @@ def check(text):
     errors = []
     for p in bad_forms:
         for r in p[1]:
-            for m in re.finditer("\s{}\s".format(r), text, flags=re.IGNORECASE):
-
-                errors.append((m.start()+1, m.end(), err, msg.format(p[0], m.group(0))))
+            for m in re.finditer("\s{}\s".format(r), text, flags=re.I):
+                e = (m.start()+1, m.end(), err, msg.format(p[0], m.group(0)))
+                errors.append(e)
 
     return errors

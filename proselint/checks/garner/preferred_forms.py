@@ -160,8 +160,7 @@ def check(text):
     errors = []
     for p in preferences:
         for r in p[1]:
-            for m in re.finditer("\s{}\s".format(r), text, flags=re.IGNORECASE):
-
+            for m in re.finditer("\s{}\s".format(r), text, flags=re.I):
                 errors.append((m.start()+1, m.end(), err, msg.format(p[0])))
 
     return errors

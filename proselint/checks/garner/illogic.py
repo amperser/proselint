@@ -14,12 +14,12 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "MAU105"
     msg = u"'{}' is illogical."
 
@@ -34,4 +34,4 @@ def check(text):
         "no longer requires oxygen",
     ]
 
-    return blacklist(text, illogics, err, msg)
+    return existence_check(text, illogics, err, msg)

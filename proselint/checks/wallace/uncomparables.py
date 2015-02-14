@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""DFW200: Comparing uncomparables.
+u"""DFW200: Comparing uncomparables.
 
 ---
 layout:     post
@@ -51,7 +51,7 @@ from proselint.tools import memoize
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "DFW200"
     msg = "Comparison of an uncomparable: {} is not comparable."
 

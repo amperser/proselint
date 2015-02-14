@@ -14,12 +14,12 @@ categories: writing
 Annotation left in text.
 
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
-
+    """Check the text."""
     err = "ANN100"
     msg = u"Annotation left in text."
 
@@ -32,4 +32,4 @@ def check(text):
         "FIX THIS",
     ]
 
-    return blacklist(text, annotations, err, msg, ignore_case=False)
+    return existence_check(text, annotations, err, msg, ignore_case=False)

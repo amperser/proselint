@@ -70,8 +70,7 @@ def line_and_column(text, position):
 
 
 def consistency_check(text, word_pairs, err, msg):
-    """Build a consistency checker for the given word_pairs"""
-
+    """Build a consistency checker for the given word_pairs."""
     errors = []
     for w in word_pairs:
         match1 = [m for m in re.finditer(w[0], text)]
@@ -91,9 +90,8 @@ def consistency_check(text, word_pairs, err, msg):
     return errors
 
 
-def blacklist(text, list, err, msg, ignore_case=True, unicode=False):
+def existence_check(text, list, err, msg, ignore_case=True, unicode=False):
     """Build a checker that blacklists certain words."""
-
     flags = 0
 
     if ignore_case and unicode:
