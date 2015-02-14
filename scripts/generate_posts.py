@@ -44,4 +44,4 @@ for root, subdirs, files in listing:
 
             # Create a new post in the blog.
             with open(post_filename, 'w') as f:
-                f.write(docstring)
+                f.write(docstring.encode('utf8'))
