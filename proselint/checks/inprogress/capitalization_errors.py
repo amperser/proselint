@@ -26,13 +26,10 @@ def check(text):
     err = "MSC104"
     msg = u"Don't fail to capitalize roman numeral abbreviations."
 
-    pwd_regex = "[:]? [\S]{6,30}"
+    pwd_regex = " (I*)"
 
     password = [
         "World War{}".format(pwd_regex),
-        "my password is{}".format(pwd_regex),
-        "the password's{}".format(pwd_regex),
-        "my password's{}".format(pwd_regex),
     ]
 
     return blacklist(text, password, err, msg)
