@@ -26,7 +26,7 @@ def check(text):
     err = "MSC104"
     msg = u"Don't fail to capitalize roman numeral abbreviations."
 
-    pwd_regex = " (I*)"
+    pwd_regex = " (I(i*)|i*)"
 
     password = [
         "World War{}".format(pwd_regex),
