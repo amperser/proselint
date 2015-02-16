@@ -724,9 +724,4 @@ def check(text):
         "young and vibrant",
     ]
 
-    errors = []
-    for c in cliches:
-        for m in re.finditer(c, text, flags=re.IGNORECASE):
-            errors.append((m.start(), m.end(), err, msg.format(c)))
-
-    return errors
+    return existence_check(text, cliches, err, msg)

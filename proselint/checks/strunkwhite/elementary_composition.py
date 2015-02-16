@@ -45,15 +45,14 @@ Strunk & White say:
 11. Place the emphatic word of a sentence at the end.
     * MDPNB: Principle of recency.
 """
-from proselint.tools import memoize
-import re
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
 def check(text):
     """Suggest the preferred forms."""
     err = "STW102"
-    msg = "'{}' is better than '{}'."
+    msg = "Try '{}' instead of '{}'."
 
     bad_forms = [
         # Put statements in positive form
@@ -62,6 +61,7 @@ def check(text):
         ["forgot",                  ["did not remember"]],
         ["ignored",                 ["did not pay (any )?attention to"]],
         ["distrusted",              ["did not have much confidence in"]],
+
         # Omit needless words
         ["whether",                 ["the question as to whether"]],
         ["no doubt",                ["there is no doubt but that"]],
@@ -71,21 +71,14 @@ def check(text):
         ["this subject",            ["this is a subject that"]],
         ["Her story is strange.",   ["Her story is a strange one."]],
         ["because",                 ["the reason why is that"]],
-        ["because or since",        ["owing to the fact that"]],
-        ["although or though",      ["in spite of the fact that"]],
-        ["remind you or notify you",
+        ["because / since",         ["owing to the fact that"]],
+        ["although / though",       ["in spite of the fact that"]],
+        ["remind you / notify you",
             ["call your attention to the fact that"]],
-        ["I did not know that or I was unaware that",
+        ["I did not know that / I was unaware that",
             ["I was unaware of the fact that"]],
         ["his failure",             ["the fact that he had not succeeded"]],
         ["my arrival",              ["the fact that i had arrived"]]
     ]
 
-    errors = []
-    for p in bad_forms:
-        for r in p[1]:
-            for m in re.finditer("\s{}\s".format(r), text, flags=re.I):
-                e = (m.start()+1, m.end(), err, msg.format(p[0], m.group(0)))
-                errors.append(e)
-
-    return errors
+    return preferred_forms_check(text, bad_forms, err, msg)

@@ -14,15 +14,14 @@ categories: writing
 Points out use redundant phrases.
 
 """
-import re
-from proselint.tools import memoize
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
 def check(text):
     """Suggest the preferred forms."""
     err = "MAU103"
-    msg = "'{}' is redundant, try '{}'."
+    msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
         ["antithetical",      ["directly antithetical"]],
@@ -61,10 +60,4 @@ def check(text):
         ["facts",             ["true facts"]],
     ]
 
-    errors = []
-    for p in redundancies:
-        for r in p[1]:
-            for m in re.finditer(r, text, flags=re.IGNORECASE):
-                errors.append((m.start(), m.end(), err, msg.format(r, p[0])))
-
-    return errors
+    return preferred_forms_check(text, redundancies, err, msg)
