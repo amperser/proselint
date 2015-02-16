@@ -95,7 +95,7 @@ def preferred_forms_check(text, list, err, msg):
     errors = []
     for p in list:
         for r in p[1]:
-            for m in re.finditer(r, text, flags=re.IGNORECASE):
+            for m in re.finditer(u"\s{}\s".format(r), text, flags=re.I):
                 txt = m.group(0).strip()
                 errors.append((m.start(), m.end(), err, msg.format(p[0], txt)))
 
