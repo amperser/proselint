@@ -67,7 +67,6 @@
 }
 
 .CodeMirror-lint-marker-multiple {
-  padding-top: 7px;
   background-image: url("warning.png");
   background-size: 7px 7px;
 }
