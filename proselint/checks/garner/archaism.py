@@ -44,6 +44,7 @@ def check(text):
         "durst",
         "fain",
         "forsooth",
+        "foreclose from",
         "haply",
         "howbeit",
         "illumine",

@@ -21,7 +21,7 @@ from proselint.tools import memoize, preferred_forms_check
 def check(text):
     """Suggest the preferred forms."""
     err = "MAU102"
-    msg = "'{}' is the preferred form."
+    msg = "Misspelling. '{}' is the preferred form."
 
     misspellings = [
 
@@ -30,6 +30,8 @@ def check(text):
         ["fluoride",          ["flouride"]],
         ["fluoridation",      ["flouridation"]],
         ["fluorescent",       ["flourescent"]],
+        ["forswear",          ["foreswear"]],
+        ["free rein",         ["free reign"]],
         ["gist",              ["jist"]],
         ["glamour",           ["glamor"]],
         ["granddad",          ["grandad"]],
@@ -63,6 +65,7 @@ def check(text):
         ["liquefy",           ["liquify"]],
         ["loathsome",         ["loathesome"]],
         ["mademoiselle",      ["madamoiselle"]],
+        ["newsstand",         ["newstand"]],
         ["jujitsu",           ["jiujutsu"]],
         ["minuscule",         ["miniscule"]],
         ["mischievous",       ["mischievious"]],

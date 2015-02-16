@@ -26,46 +26,48 @@ def check(text):
     preferences = [
 
         # Obsolete words
-        ["imprimatur",        ["imprimature"]],
+        ["imprimatur",          ["imprimature"]],
 
         # Proper nouns
-        ["Halloween",         ["haloween", "hallowe'en"]],
-        ["Khrushchev",        ["Khruschev", "Kruschev"]],
-        ["Ku Klux Klan",      ["Klu Klux Klan"]],
-        ["Pontius Pilate",    ["Pontius Pilot"]],
+        ["Halloween",           ["haloween", "hallowe'en"]],
+        ["Khrushchev",          ["Khruschev", "Kruschev"]],
+        ["Ku Klux Klan",        ["Klu Klux Klan"]],
+        ["Pontius Pilate",      ["Pontius Pilot"]],
 
         # Plurals
-        ["sopranos",          ["soprani"]],
-        ["hippopotamuses",    ["hippopotami"]],
+        ["sopranos",            ["soprani"]],
+        ["hippopotamuses",      ["hippopotami"]],
 
         # Hyphenated words
-        ["tortfeasor",        ["tort feasor", "tort-feasor"]],
-        ["transship",         ["tranship", "trans-ship"]],
-        ["transshipped",      ["transhipped", "trans-shipped"]],
-        ["transshipping",     ["transhipping", "trans-shipping"]],
-        ["long-standing",     ["longstanding"]],
-        # ["longtime",         ["long time"]],
+        ["tortfeasor",          ["tort feasor", "tort-feasor"]],
+        ["transship",           ["tranship", "trans-ship"]],
+        ["transshipped",        ["transhipped", "trans-shipped"]],
+        ["transshipping",       ["transhipping", "trans-shipping"]],
+        ["long-standing",       ["longstanding"]],
+        # ["longtime",           ["long time"]],
 
         # able vs. ible
-        ["addable",           ["addible"]],
-        ["adducible",         ["adduceable"]],
-        ["impermissible",     ["impermissable"]],
-        ["inadmissible",      ["inadmissable"]],
-        ["inculcatable",      ["inculcatible"]],
+        ["addable",             ["addible"]],
+        ["adducible",           ["adduceable"]],
+        ["impermissible",       ["impermissable"]],
+        ["inadmissible",        ["inadmissable"]],
+        ["inculcatable",        ["inculcatible"]],
 
         # er vs. or
-        ["abettor",           ["abbeter"]],
-        ["acquirer",          ["acquiror"]],
-        ["promoter",          ["promotor"]],
-        ["reckless",          ["wreckless"]],
+        ["abettor",             ["abbeter"]],
+        ["acquirer",            ["acquiror"]],
+        ["promoter",            ["promotor"]],
+        ["reckless",            ["wreckless"]],
 
         # in vs. un
-        ["inadvisable",       ["unadvisable"]],
-        ["inalienable",       ["unalienable"]],
+        ["inadvisable",         ["unadvisable"]],
+        ["inalienable",         ["unalienable"]],
 
         # Misc
-        ["musical revue",     ["musical review"]],
-        ["shoo-in",           ["shoe-in"]],
+        ["musical revue",       ["musical review"]],
+        ["shoo-in",             ["shoe-in"]],
+        ["foreclose on",        ["foreclose againt"]],
+        ["during / throughout", ["for the duration of"]],
 
         # TODO, entries that are a bit complicated
         # announce
