@@ -34,7 +34,7 @@ def check(text):
         "audible to the ear",
         "in regards to",
         "would of",
-        "and so",
+        # "and so",
         "i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
 

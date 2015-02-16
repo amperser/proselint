@@ -27,8 +27,9 @@ def check(text):
 
         ["Michigander",       ["Michiganite"]],
         ["Indianan",          ["Indianian"]],
-
+        ["Illinoisan",        ["Illinoisian"]],
     ]
+
     errors = []
     for p in preferences:
         errors += existence_check(text, p[1], err, msg)
