@@ -14,8 +14,7 @@ categories: writing
 Cliches are cliché.
 
 """
-import re
-from proselint.tools import memoize
+from proselint.tools import memoize, existence_check
 
 
 @memoize
@@ -105,9 +104,4 @@ def check(text):
         "writ large",
     ]
 
-    errors = []
-    for c in cliches:
-        for m in re.finditer(c, text, flags=re.IGNORECASE):
-            errors.append((m.start(), m.end(), err, msg.format(c)))
-
-    return errors
+    return existence_check(text, cliches, err, msg)

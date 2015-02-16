@@ -14,8 +14,7 @@ categories: writing
 Points out use of needless variants and less preferred forms.
 
 """
-import re
-from proselint.tools import memoize
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
@@ -157,10 +156,5 @@ def check(text):
         # TODO, entries that are a bit complicated
         # announce
     ]
-    errors = []
-    for p in preferences:
-        for r in p[1]:
-            for m in re.finditer("\s{}\s".format(r), text, flags=re.I):
-                errors.append((m.start()+1, m.end(), err, msg.format(p[0])))
 
-    return errors
+    return preferred_forms_check(text, preferences, err, msg)
