@@ -29,6 +29,7 @@ def check(text):
         "enclosed herewith",
         "enclosed please find",
         "further to yours of",
+        "further to your letter",
         "in regard to",
         "inst\.",
         "in the amount of",
