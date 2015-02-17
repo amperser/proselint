@@ -106,3 +106,11 @@ Bose-Einstein condensate
 
 # Denizen labels
 He's a Michiganite
+
+Our cutting edge decision-making process will make your life's crystal clear.
+He's a thought leader.
+
+# Sexism
+The lady lawyer handled my case.  
+John and Mary married. Now they are man and wife.
+Chairman Mao was the chairman of the communist party. 

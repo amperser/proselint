@@ -37,6 +37,8 @@ def check(text):
         # Plurals
         ["sopranos",            ["soprani"]],
         ["hippopotamuses",      ["hippopotami"]],
+        ["titmice",             ["titmouses"]],
+        ["retinas",             ["retinae"]],
 
         # Hyphenated words
         ["tortfeasor",          ["tort feasor", "tort-feasor"]],
@@ -52,16 +54,19 @@ def check(text):
         ["impermissible",       ["impermissable"]],
         ["inadmissible",        ["inadmissable"]],
         ["inculcatable",        ["inculcatible"]],
+        ["reversible",          ["reversable"]],
 
         # er vs. or
         ["abettor",             ["abbeter"]],
         ["acquirer",            ["acquiror"]],
         ["promoter",            ["promotor"]],
-        ["reckless",            ["wreckless"]],
+        ["reviser",             ["revisor"]],
 
         # in vs. un
         ["inadvisable",         ["unadvisable"]],
         ["inalienable",         ["unalienable"]],
+        ["inexpressive",        ["unexpressive"]],
+        ["infeasible",          ["unfea"]],
 
         # Misc
         ["musical revue",       ["musical review"]],

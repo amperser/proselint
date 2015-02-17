@@ -91,6 +91,7 @@ def check(text):
         ["password",          ["passcode"]],
         ["pederast",          ["paederast"]],
         ["pejorative",        ["perjorative"]],
+        ["retributive",       ["retributional", "retributionary"]],
         ["succubus",          ["succuba"]],
     ]
 
