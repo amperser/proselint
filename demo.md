@@ -1,7 +1,7 @@
 # Consistency
-This is a sentence. One space after a period.
+This is a sentence! One space after a period.
 This is a sentence.  Two spaces after a period.
-This is a sentence.  Two spaces after a period.
+This is a sentence?  Two spaces after a period.
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
