@@ -120,6 +120,6 @@ def check(text):
 
             occ = [m for m in re.finditer(comp + "\s" + uncomp, text.lower())]
             for o in occ:
-                errors.append((m.start(), m.end(), err, msg.format(uncomp)))
+                errors.append((o.start(), o.end(), err, msg.format(uncomp)))
 
     return errors
