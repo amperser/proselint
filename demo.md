@@ -90,6 +90,7 @@ Nikita Khruschev
 I feel innundated with email
 Nicknack
 He's a shoe-in
+Did you know that Brett Farve and Dwayne Wade are good friends?
 
 # Strunk & White composition & regex checks
 I did not pay for the check. Honestly, attention to detail is useful.
