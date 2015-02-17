@@ -90,12 +90,18 @@ def consistency_check(text, word_pairs, err, msg):
     return errors
 
 
-def preferred_forms_check(text, list, err, msg):
+def preferred_forms_check(text, list, err, msg, ignore_case=True):
     """Build a checker that suggests the preferred form."""
+
+    if ignore_case:
+        flags = re.IGNORECASE
+    else:
+        flags = 0
+
     errors = []
     for p in list:
         for r in p[1]:
-            for m in re.finditer(u"\s{}\s".format(r), text, flags=re.I):
+            for m in re.finditer(u"\W{}\W".format(r), text, flags=flags):
                 txt = m.group(0).strip()
                 errors.append(
                     (m.start()+1, m.end(), err, msg.format(p[0], txt)))

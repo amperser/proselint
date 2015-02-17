@@ -24,6 +24,7 @@ def check(text):
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
+        ["admitted",          ["self-admitted"]],
         ["affidavit",         ["sworn affidavit"]],
         ["alumnus",           ["former alumnus"]],
         ["antithetical",      ["directly antithetical"]],
@@ -42,6 +43,7 @@ def check(text):
         ["collaborators",     ["fellow collaborators"]],
         ["colleagues",        ["fellow colleagues"]],
         ["combine",           ["combine together"]],
+        ["complacent",        ["self-complacent"]],
         ["confessed",         ["self-confessed"]],
         ["connect",           ["connect together"]],
         ["consensus",         ["(?:general )?consensus of opinion"]],
@@ -82,11 +84,15 @@ def check(text):
         ["repeated",          ["repeated the same"]],
         ["reprieve",          ["temporary reprieve"]],
         ["respite",           ["brief respite"]],
+        ["retirement",        ["retiral", "retiracy"]],
+        ["retreat",           ["retreat back"]],
+        ["return",            ["return back"]],
         ["RSVP",              ["please RSVP"]],
         ["scrutinize",        ["closely scrutinize"]],
         ["software",          ["software program"]],
         ["surrounded",        ["surrounded on all sides"]],
         ["the nation",        ["the whole entire nation"]],
+        ["timpani",           ["timpani drum"]],
         ["throughout the",    ["throughout the entire"]],
         ["twins",             ["pair of twins"]],
         ["vacancy",           ["unfilled vacancy"]],
