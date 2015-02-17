@@ -118,7 +118,7 @@ def existence_check(text, list, err, msg, ignore_case=True, unicode=False):
 
     errors = []
     for w in list:
-        for m in re.finditer(u"\s{}\s".format(w), text, flags=flags):
+        for m in re.finditer(u"\W{}\W".format(w), text, flags=flags):
             txt = m.group(0).strip()
             errors.append((m.start()+1, m.end(), err, msg.format(txt)))
 
