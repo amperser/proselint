@@ -24,5 +24,5 @@ def check(text):
     err = "CST200"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
 
-    regex = "[^\w\s] [A-Z]", "[^\w\s]  [A-Z]"
+    regex = ["[\.\?!] [A-Z]", "[\.\?!]  [A-Z]"]
     return consistency_check(text, [regex], err, msg)
