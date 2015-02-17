@@ -80,11 +80,11 @@ def consistency_check(text, word_pairs, err, msg):
 
             if len(match1) > len(match2):
                 for m in match2:
-                    errors.append((m.start(), m.end(), err,
+                    errors.append((m.start()+1, m.end(), err,
                                   msg.format(m.group(0), w[0])))
             else:
                 for m in match1:
-                    errors.append((m.start(), m.end(), err,
+                    errors.append((m.start()+1, m.end(), err,
                                   msg.format(m.group(0), w[1])))
 
     return errors
@@ -97,7 +97,8 @@ def preferred_forms_check(text, list, err, msg):
         for r in p[1]:
             for m in re.finditer(u"\s{}\s".format(r), text, flags=re.I):
                 txt = m.group(0).strip()
-                errors.append((m.start(), m.end(), err, msg.format(p[0], txt)))
+                errors.append(
+                    (m.start()+1, m.end(), err, msg.format(p[0], txt)))
 
     return errors
 
@@ -119,6 +120,6 @@ def existence_check(text, list, err, msg, ignore_case=True, unicode=False):
     for w in list:
         for m in re.finditer(u"\s{}\s".format(w), text, flags=flags):
             txt = m.group(0).strip()
-            errors.append((m.start(), m.end(), err, msg.format(txt)))
+            errors.append((m.start()+1, m.end(), err, msg.format(txt)))
 
     return errors
