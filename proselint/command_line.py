@@ -11,6 +11,7 @@ import pkgutil
 import codecs
 import subprocess
 import ntpath
+import re
 
 
 base_url = "prose.lifelinter.com/"
@@ -45,13 +46,9 @@ def lint(path):
     checks = []
     for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
         module = loader.find_module(module_name).load_module(module_name)
-
-        # Add the check to the list of checks.
-        try:
-            assert(hasattr(module.check, '__call__'))
-            checks.append(module.check)
-        except Exception:
-            pass
+        for d in dir(module):
+            if re.match("check", d):
+                checks.append(getattr(module, d))
 
     # Apply all the checks.
     with codecs.open(path, "r", encoding='utf-8') as f:
