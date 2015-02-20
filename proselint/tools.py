@@ -92,7 +92,6 @@ def consistency_check(text, word_pairs, err, msg):
 
 def preferred_forms_check(text, list, err, msg, ignore_case=True):
     """Build a checker that suggests the preferred form."""
-
     if ignore_case:
         flags = re.IGNORECASE
     else:
