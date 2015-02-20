@@ -57,10 +57,31 @@ def check(text):
         ["reversible",          ["reversable"]],
 
         # er vs. or
+        ["abductor",            ["abducter"]],
         ["abettor",             ["abbeter"]],
         ["acquirer",            ["acquiror"]],
+        ["adapter",             ["adaptor"]],
+        ["collector",           ["collecter"]],
+        ["conjurer",            ["conjuror"]],
+        ["corrupter",           ["corruptor"]],
+        ["digester",            ["digestor"]],
+        ["dispenser",           ["dispensor"]],
+        ["distributor",         ["distributer"]],
+        ["endorser",            ["endorsor"]],
+        ["eraser",              ["erasor"]],
+        ["idolater",            ["idolator"]],
+        ["impostor",            ["imposter"]],
+        ["infiltrator",         ["infiltrater"]],
+        ["investor",            ["invester"]],
+        ["manipulator",         ["manipulater"]],
+        ["persecutor",          ["persecuter"]],
         ["promoter",            ["promotor"]],
+        ["promoter",            ["promotor"]],
+        ["purveyor",            ["purveyer"]],
+        ["requester",           ["requestor"]],
         ["reviser",             ["revisor"]],
+        ["surveyor",            ["surveyer"]],
+
 
         # in vs. un
         ["inadvisable",         ["unadvisable"]],
