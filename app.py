@@ -1,6 +1,6 @@
 """Web app that serves proselint's API."""
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import subprocess
 from flask_cors import CORS, cross_origin
 import uuid
