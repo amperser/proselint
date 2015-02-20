@@ -24,7 +24,8 @@ def check(text):
     msg = u"There's a lexical illusion here: a word is repeated."
 
     commercialese = [
-        "the\sthe"
+        "the\sthe",
+        "is\sis"
     ]
 
     return existence_check(text, commercialese, err, msg)
