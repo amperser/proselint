@@ -24,11 +24,8 @@ def check_decade_apostrophes(text):
     err = "MAU103"
     msg = u"Apostrophes aren't needed for decades."
 
-    list = [
-        "(?:\d\d)?\d0\'s",
-    ]
-
-    return existence_check(text, list, err, msg)
+    regex = "(?:\d\d)?\d0\'s"
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
@@ -37,11 +34,8 @@ def check_dash_and_from(text):
     err = "MAU103"
     msg = u"When specifying a date range, write 'from X to Y'."
 
-    list = [
-        "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+",
-    ]
-
-    return existence_check(text, list, err, msg)
+    regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+",
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
@@ -50,11 +44,8 @@ def check_month_year_comma(text):
     err = "MAU103"
     msg = u"When specifying a month and year, no comma is needed."
 
-    list = [
-        "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}",
-    ]
-
-    return existence_check(text, list, err, msg)
+    regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}",
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
@@ -63,8 +54,5 @@ def check_month_of_year(text):
     err = "MAU103"
     msg = u"When specifying a month and year, 'of' is unnecessary."
 
-    list = [
-        "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}",
-    ]
-
-    return existence_check(text, list, err, msg)
+    regex = "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}",
+    return existence_check(text, [regex], err, msg)
