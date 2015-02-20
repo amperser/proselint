@@ -12,11 +12,11 @@ recognize, recognise, recognise, recognise
 
 # Symbols
 $1000 USD
- 
+
 # Links
-http://google.com
-http://google.com/brokenlink
-http://suchow.io/sitaosnhtiaohesnt
+www.google.com
+http://broken.lifelinter.com
+http://news.ycombinator.com
 
 # Grammar
 the the meter is is great

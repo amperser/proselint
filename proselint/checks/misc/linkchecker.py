@@ -25,16 +25,19 @@ def check(text):
     err = "ANN100"
     msg = u"Broken link: {}"
 
-    r = ur"""(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)
-        (?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|
-        (\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d
-        \u2018\u2019]))"""
-
-    regex = re.compile(r, re.U)
+    regex = re.compile(
+        r"""(?i)\b((?:https?://|www\d{0,3}[.]
+        |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
+        |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
+        |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))""",
+        re.U)
 
     errors = []
     for m in re.finditer(regex, text):
         url = m.group(0).strip()
+
+        if "http://" not in url and "https://" not in url:
+            url = "http://" + url
 
         if is_broken_link(url):
             errors.append((m.start()+1, m.end(), err, msg.format(url)))
@@ -44,7 +47,6 @@ def check(text):
 
 @memoize
 def is_broken_link(url):
-    print url
     try:
         urllib2.urlopen(url)
         return False
