@@ -114,3 +114,10 @@ He's a thought leader.
 The lady lawyer handled my case.  
 John and Mary married. Now they are man and wife.
 Chairman Mao was the chairman of the communist party. 
+
+# Dates
+The 1980's came before the 90's.
+Things happened from 1980-1999 and from 240-398 A.D.
+March, 2013.
+January, 2010.
+February of 2010
