@@ -14,7 +14,7 @@ recognize, recognise, recognise, recognise
 $1000 USD
 
 # Grammar
-the the meter
+the the meter is is great
 a apple and an banana
 an European country
 a historic
@@ -121,3 +121,6 @@ Things happened from 1980-1999 and from 240-398 A.D.
 March, 2013.
 January, 2010.
 February of 2010
+
+# Punctuation
+Smith, et. al (2006) said ...
