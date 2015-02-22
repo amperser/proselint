@@ -108,7 +108,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True):
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True, unicode=False):
+def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
+                    max_errors=float("inf")):
     """Build a checker that blacklists certain words."""
     flags = 0
 
@@ -126,5 +127,18 @@ def existence_check(text, list, err, msg, ignore_case=True, unicode=False):
         for m in re.finditer(u"\W{}\W".format(w), text, flags=flags):
             txt = m.group(0).strip()
             errors.append((m.start()+1, m.end(), err, msg.format(txt)))
+
+    # If max_errors was specified, truncate the list of errors and let the
+    # user know the total number of times that the error was found elsewhere.
+    if len(errors) > max_errors:
+        start1, end1, err1, msg1 = errors[0]
+
+        if len(errors) == (max_errors + 1):
+            msg1 += " Found once elsewhere."
+        else:
+            msg1 += " Found {} times elsewhere.".format(len(errors))
+
+        errors = errors[1:max_errors]
+        errors = [(start1, end1, err1, msg1)] + errors
 
     return errors
