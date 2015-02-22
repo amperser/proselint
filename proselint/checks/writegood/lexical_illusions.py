@@ -25,7 +25,6 @@ def check(text):
 
     commercialese = [
         "the\sthe",
-        "is\sis"
     ]
 
     return existence_check(text, commercialese, err, msg)
