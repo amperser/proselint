@@ -24,4 +24,6 @@ def check(text):
     msg = u"Too much yelling."
 
     regex = "[A-Z]+ [A-Z]+ [A-Z]+"
-    return existence_check(text, [regex], err, msg, ignore_case=False)
+
+    return existence_check(
+        text, [regex], err, msg, ignore_case=False, max_errors=1)
