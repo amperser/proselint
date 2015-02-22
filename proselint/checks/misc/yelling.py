@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""EES: Too much yelling..
+"""EES: Too much yelling.
 
 ---
 layout:     post
