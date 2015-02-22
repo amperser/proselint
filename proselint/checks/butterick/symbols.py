@@ -14,36 +14,60 @@ categories: writing
 Use the symbols.
 
 """
-from proselint.tools import memoize
-import re
+from proselint.tools import memoize, existence_check
 
 
 @memoize
-def check(text):
-    """Check the text."""
-    err = "BTR100"
+def check_ellipsis(text):
+    """Use an ellipsis instead of three dots."""
+    err = "BTR101"
+    msg = u"'...' is an approximation, use the ellipsis symbol '…'."
+    regex = "\.\.\."
 
-    symbols = [
-        ["\s\(c\)\s",
-            u"'{}' is a goofy alphabetic approximation. Use ©."],
-        ["\s\(TM\)\s",
-            u"'{}' is a goofy alphabetic approximation. Use ™."],
-        ["\s\(R\)\s",
-            u"'{}' is a goofy alphabetic approximation. Use ®."],
-        [u"[Cc]opy­right ©",
-            u"'{}' is redundant. Use the word or the symbol."],
-        [r"\.\.\.",
-            u"'...' is an approximation, use the ellipsis symbol '…'."],
-        # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
-        #     u"Use an en dash (–) to separate names."],
-        ["\. {3}",
-            "More than two spaces after the period; use 1 or 2."],
-    ]
+    return existence_check(text, [regex], err, msg, max_errors=1)
 
-    errors = []
-    for i in symbols:
-        for m in re.finditer(i[0], text, flags=re.UNICODE):
-            txt = m.group(0).strip()
-            errors.append((m.start(), m.end(), err, i[1].format(txt)))
 
-    return errors
+@memoize
+def check_copyright_symbol(text):
+    """Use the copyright symbol instead of (c)."""
+    err = "BTR102"
+    msg = u"(c) is a goofy alphabetic approximation, use the symbol ©."
+    regex = "\s\([cC]\)\s"
+
+    return existence_check(text, [regex], err, msg, max_errors=1)
+
+
+@memoize
+def check_trademark_symbol(text):
+    """Use the trademark symbol instead of (c)."""
+    err = "BTR103"
+    msg = u"(TM) is a goofy alphabetic approximation, use the symbol ™."
+    regex = "\s\(TM\)\s"
+
+    return existence_check(text, [regex], err, msg, max_errors=1)
+
+
+@memoize
+def check_registered_trademark_symbol(text):
+    """Use the registered trademark symbol instead of (R)."""
+    err = "BTR103"
+    msg = u"(R) is a goofy alphabetic approximation, use the symbol ®."
+    regex = "\s\([rR]\)\s"
+
+    return existence_check(text, [regex], err, msg, max_errors=1)
+
+
+@memoize
+def check_sentence_spacing(text):
+    """Use the registered trademark symbol instead of (R)."""
+    err = "BTR104"
+    msg = u"More than two spaces after the period; use 1 or 2."
+    regex = "\. {3}"
+
+    return existence_check(text, [regex], err, msg, max_errors=1)
+
+# @memoize
+# def check_en_dash_separated_names(text):
+#     """Use an en-dash to separate names."""
+#     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
+#     #     u"Use an en dash (–) to separate names."],
