@@ -89,7 +89,9 @@ def proselint(file=None, version=None, initialize=None, debug=None):
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
-        subprocess.call("find . -name '*.check' -delete", shell=True)
+        subprocess.call(
+            "rm -rfv proselint/cache > /dev/null && mkdir proselint/cache",
+            shell=True)
 
     # Use the demo file by default.
     if not file:
