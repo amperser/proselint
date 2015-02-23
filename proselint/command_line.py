@@ -151,6 +151,7 @@ def proselint(
 
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
+        print "Deleting the cache..."
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
         subprocess.call(
             "rm -rfv proselint/cache > /dev/null && mkdir proselint/cache",
