@@ -24,8 +24,8 @@ def check_ellipsis(text):
     msg = u"'...' is an approximation, use the ellipsis symbol '…'."
     regex = "\.\.\."
 
-    return existence_check(text, [regex], err, msg, max_errors=1,
-                           require_padding=False, offset=-1)
+    return existence_check(text, [regex], err, msg, max_errors=3,
+                           require_padding=False, offset=0)
 
 
 @memoize
@@ -47,7 +47,7 @@ def check_trademark_symbol(text):
     regex = "\(TM\)"
 
     return existence_check(
-        text, [regex], err, msg, max_errors=1, require_padding=False)
+        text, [regex], err, msg, max_errors=3, require_padding=False)
 
 
 @memoize
@@ -58,7 +58,7 @@ def check_registered_trademark_symbol(text):
     regex = "\([rR]\)"
 
     return existence_check(
-        text, [regex], err, msg, max_errors=1, require_padding=False)
+        text, [regex], err, msg, max_errors=3, require_padding=False)
 
 
 @memoize
@@ -69,7 +69,7 @@ def check_sentence_spacing(text):
     regex = "\. {3}"
 
     return existence_check(
-        text, [regex], err, msg, max_errors=1, require_padding=False)
+        text, [regex], err, msg, max_errors=3, require_padding=False)
 
 
 # @memoize
