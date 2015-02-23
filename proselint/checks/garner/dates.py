@@ -44,7 +44,6 @@ def check_month_year_comma(text):
     msg = u"When specifying a month and year, no comma is needed."
 
     regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}"
-    print regex
     return existence_check(text, [regex], err, msg)
 
 
