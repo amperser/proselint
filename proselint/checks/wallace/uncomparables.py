@@ -118,7 +118,7 @@ def check(text):
             if "{} {}".format(comp, uncomp) in exceptions:
                 continue
 
-            occ = [m for m in re.finditer(comp + "\s" + uncomp, text.lower())]
+            occ = re.finditer(comp + "\s" + uncomp + "[\W$]", text.lower())
             for o in occ:
                 errors.append((o.start(), o.end(), err, msg.format(uncomp)))
 
