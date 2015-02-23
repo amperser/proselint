@@ -69,7 +69,7 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def consistency_check(text, word_pairs, err, msg):
+def consistency_check(text, word_pairs, err, msg, offset=0):
     """Build a consistency checker for the given word_pairs."""
     errors = []
     for w in word_pairs:
@@ -80,17 +80,23 @@ def consistency_check(text, word_pairs, err, msg):
 
             if len(match1) > len(match2):
                 for m in match2:
-                    errors.append((m.start()+1, m.end(), err,
-                                  msg.format(m.group(0), w[0])))
+                    errors.append((
+                        m.start() + offset,
+                        m.end() + offset,
+                        err,
+                        msg.format(m.group(0), w[0])))
             else:
                 for m in match1:
-                    errors.append((m.start()+1, m.end(), err,
-                                  msg.format(m.group(0), w[1])))
+                    errors.append((
+                        m.start() + offset,
+                        m.end() + offset,
+                        err,
+                        msg.format(m.group(0), w[1])))
 
     return errors
 
 
-def preferred_forms_check(text, list, err, msg, ignore_case=True):
+def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -100,16 +106,19 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True):
     errors = []
     for p in list:
         for r in p[1]:
-            for m in re.finditer(u"\W{}\W".format(r), text, flags=flags):
+            for m in re.finditer(u"[\W^]{}[\W$]".format(r), text, flags=flags):
                 txt = m.group(0).strip()
-                errors.append(
-                    (m.start()+1, m.end(), err, msg.format(p[0], txt)))
+                errors.append((
+                    m.start() + 1 + offset,
+                    m.end() + offset,
+                    err,
+                    msg.format(p[0], txt)))
 
     return errors
 
 
 def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
-                    max_errors=float("inf")):
+                    max_errors=float("inf"), offset=0, require_padding=True):
     """Build a checker that blacklists certain words."""
     flags = 0
 
@@ -122,11 +131,20 @@ def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
     else:
         flags = 0
 
+    if require_padding:
+        regex = u"[\W^]{}[\W$]"
+    else:
+        regex = u"{}"
+
     errors = []
     for w in list:
-        for m in re.finditer(u"\W{}\W".format(w), text, flags=flags):
+        for m in re.finditer(regex.format(w), text, flags=flags):
             txt = m.group(0).strip()
-            errors.append((m.start()+1, m.end(), err, msg.format(txt)))
+            errors.append((
+                m.start() + 1 + offset,
+                m.end() + offset,
+                err,
+                msg.format(txt)))
 
     # If max_errors was specified, truncate the list of errors and let the
     # user know the total number of times that the error was found elsewhere.

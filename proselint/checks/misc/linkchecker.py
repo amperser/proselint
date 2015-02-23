@@ -40,13 +40,14 @@ def check(text):
             url = "http://" + url
 
         if is_broken_link(url):
-            errors.append((m.start()+1, m.end(), err, msg.format(url)))
+            errors.append((m.start(), m.end(), err, msg.format(url)))
 
     return errors
 
 
 @memoize
 def is_broken_link(url):
+    """Check if the link return a 404 error."""
     try:
         urllib2.urlopen(url)
         return False

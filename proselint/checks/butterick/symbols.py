@@ -24,7 +24,8 @@ def check_ellipsis(text):
     msg = u"'...' is an approximation, use the ellipsis symbol '…'."
     regex = "\.\.\."
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(text, [regex], err, msg, max_errors=1,
+                           require_padding=False, offset=-1)
 
 
 @memoize
@@ -32,9 +33,10 @@ def check_copyright_symbol(text):
     """Use the copyright symbol instead of (c)."""
     err = "BTR102"
     msg = u"(c) is a goofy alphabetic approximation, use the symbol ©."
-    regex = "\s\([cC]\)\s"
+    regex = "\([cC]\)"
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(
+        text, [regex], err, msg, max_errors=1, require_padding=False)
 
 
 @memoize
@@ -42,9 +44,10 @@ def check_trademark_symbol(text):
     """Use the trademark symbol instead of (c)."""
     err = "BTR103"
     msg = u"(TM) is a goofy alphabetic approximation, use the symbol ™."
-    regex = "\s\(TM\)\s"
+    regex = "\(TM\)"
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(
+        text, [regex], err, msg, max_errors=1, require_padding=False)
 
 
 @memoize
@@ -52,9 +55,10 @@ def check_registered_trademark_symbol(text):
     """Use the registered trademark symbol instead of (R)."""
     err = "BTR103"
     msg = u"(R) is a goofy alphabetic approximation, use the symbol ®."
-    regex = "\s\([rR]\)\s"
+    regex = "\([rR]\)"
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(
+        text, [regex], err, msg, max_errors=1, require_padding=False)
 
 
 @memoize
@@ -64,7 +68,9 @@ def check_sentence_spacing(text):
     msg = u"More than two spaces after the period; use 1 or 2."
     regex = "\. {3}"
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(
+        text, [regex], err, msg, max_errors=1, require_padding=False)
+
 
 # @memoize
 # def check_en_dash_separated_names(text):
