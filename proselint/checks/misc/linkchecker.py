@@ -17,6 +17,7 @@ Check that links are not not broken.
 from proselint.tools import memoize
 import re
 import urllib2
+from socket import error as SocketError
 
 
 @memoize
@@ -26,10 +27,10 @@ def check(text):
     msg = u"Broken link: {}"
 
     regex = re.compile(
-        r"""(?i)\b((?:https?://|www\d{0,3}[.]
+        ur"""(?i)\b((?:https?://|www\d{0,3}[.]
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
-        |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))""",
+        |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
         re.U)
 
     errors = []
@@ -49,7 +50,9 @@ def check(text):
 def is_broken_link(url):
     """Check if the link return a 404 error."""
     try:
-        urllib2.urlopen(url)
+        urllib2.urlopen(url, timeout=2)
         return False
     except urllib2.URLError:
+        return True
+    except SocketError:
         return True
