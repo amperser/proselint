@@ -69,12 +69,71 @@ def lint(path):
     return errors
 
 
+def lintscore():
+    """Compute the linter's score on a corpus.
+
+    Proselint's score reflects the desire to have a linter that catches many
+    errors, but which takes false alarms seriously. It is better not to say
+    something than to say the wrong thing, and the harm from saying the wrong
+    thing is more than the benefit of saying the right thing. Thus our score
+    metric is defined as:
+        TP * (TP / (FP + TP)) ^ k,
+    where TP is the number of true positives (hits), FP is the number of
+    false positives (false alarms), and k > 0 is a temperature parameter that
+    determines the penalty for imprecision. In general, we should choose a
+    large value of k that strongly discourages the creating of rules that can't
+    be trusted. Suppose that k = 2. Then if the linter detects 100 errors, of
+    which 10 are false positives, the score is 81.
+    """
+    tp = 0
+    fp = 0
+
+    parent_directory = os.path.dirname(proselint_path)
+    path_to_corpus = os.path.join(parent_directory, "tests", "corpus")
+    for root, _, files in os.walk(path_to_corpus):
+        for f in files:
+            fullpath = os.path.join(root, f)
+
+            # Run the linter.
+            print "Linting {}".format(f)
+            out = subprocess.check_output(
+                "proselint {}".format(fullpath), shell=True)
+
+            # Determine the number of errors.
+            regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
+            num_errors = len(tuple(re.finditer(regex, out)))
+            print "Found {} errors.".format(num_errors)
+
+            # Open the document.
+            subprocess.call("{} {}".format("open", fullpath), shell=True)
+
+            # Ask the scorer how many of the errors were false alarms?
+            input = None
+            while not isinstance(input, (int, long)):
+                try:
+                    input = raw_input("# of false alarms? ")
+                    if input == "exit":
+                        return
+                    else:
+                        input = int(input)
+                        fp += input
+                        tp += (num_errors - input)
+                except:
+                    pass
+
+            print "Currently {} hits and {} false alarms\n---".format(tp, fp)
+
+    return tp * (1.0 * tp / (tp + fp)) ** 2
+
+
 @click.command()
 @click.option('--version/--whatever', default=None)
 @click.option('--initialize/--i', default=None)
 @click.option('--debug/--d', default=False)
+@click.option('--score/--s', default=False)
 @click.argument('file', default=False)
-def proselint(file=None, version=None, initialize=None, debug=None):
+def proselint(
+        file=None, version=None, initialize=None, debug=None, score=None):
     """Define the linter command line API."""
     # Return the version number.
     if version:
@@ -84,6 +143,10 @@ def proselint(file=None, version=None, initialize=None, debug=None):
     # Run the intialization.
     if initialize:
         run_initialization()
+        return
+
+    if score:
+        click.echo(lintscore())
         return
 
     # In debug mode, delete the cache and *.pyc files before running.
