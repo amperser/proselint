@@ -34,17 +34,17 @@ def check_dash_and_from(text):
     err = "MAU103"
     msg = u"When specifying a date range, write 'from X to Y'."
 
-    regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+",
+    regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+"
     return existence_check(text, [regex], err, msg)
 
 
-@memoize
 def check_month_year_comma(text):
     """Check the text."""
     err = "MAU103"
     msg = u"When specifying a month and year, no comma is needed."
 
-    regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}",
+    regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}"
+    print regex
     return existence_check(text, [regex], err, msg)
 
 
@@ -54,5 +54,5 @@ def check_month_of_year(text):
     err = "MAU103"
     msg = u"When specifying a month and year, 'of' is unnecessary."
 
-    regex = "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}",
+    regex = "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}"
     return existence_check(text, [regex], err, msg)

@@ -34,4 +34,4 @@ def check(text):
         "no longer requires oxygen",
     ]
 
-    return existence_check(text, illogics, err, msg)
+    return existence_check(text, illogics, err, msg, offset=1)

@@ -42,6 +42,6 @@ def check(text):
     for i in illogics:
         for m in re.finditer(u"\s{}\s".format(i), text, flags=re.U | re.I):
             txt = m.group(0).strip()
-            errors.append((m.start(), m.end(), err, msg.format(txt)))
+            errors.append((m.start() + 1, m.end(), err, msg.format(txt)))
 
     return errors

@@ -1,7 +1,7 @@
 # Consistency
 This is a sentence! One space after a period.
-This is a sentence.  Two spaces after a period.
-This is a sentence?  Two spaces after a period.
+This is a sentence.  Two spaces after a period. 
+This is a sentence?  Two spaces after a period. 
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
@@ -17,13 +17,13 @@ $1000 USD
 www.google.com
 http://broken.lifelinter.com
 http://news.ycombinator.com
-
+ 
 # Grammar
 the the meter is is great
 a apple and an banana
-an European country
 a historic
 an banana
+an European country
 
 # Hyperbolic language
 PLEASE STOP YELLING
@@ -83,7 +83,7 @@ enplanement
 I'll be with you momentarily
 
 # Tense present
-Save up to 50%—or More!
+Save up to 50% or More!
 between you and i
 I did it on accident
 I feel nauseous
@@ -123,9 +123,8 @@ Chairman Mao was the chairman of the communist party.
 # Dates
 The 1980's came before the 90's.
 Things happened from 1980-1999 and from 240-398 A.D.
-March, 2013.
-January, 2010.
-February of 2010
+March, 2013 was notable in that…
+In February of 2010, the mayor considered…
 
 # Punctuation
-Smith, et. al (2006) said ...
+Smith, et. al (2006) said...
