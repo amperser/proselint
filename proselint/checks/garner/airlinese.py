@@ -25,7 +25,7 @@ def check(text):
 
     airlinese = [
         "enplan(?:e|ed|ing|ement)",
-        "momentarily",
+        "taking off momentarily",
     ]
 
     return existence_check(text, airlinese, err, msg)
