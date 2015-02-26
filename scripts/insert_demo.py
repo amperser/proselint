@@ -2,14 +2,20 @@
 
 import os
 import fileinput
+import shutil
 
 proselint_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
-code_mirror_demo_path = os.path.join(
+code_mirror_path = os.path.join(
     proselint_path,
     "plugins",
-    "webeditor",
-    "index.html")
+    "webeditor")
+
+code_mirror_demo_path = os.path.join(code_mirror_path, "index.html")
+
+live_write_path = os.path.join(proselint_path, "site", "write")
+
+shutil.copytree(code_mirror_path, live_write_path)
 
 demo_path = os.path.join(proselint_path, "demo.md")
 
