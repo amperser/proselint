@@ -25,6 +25,8 @@ def check(text):
 
     misspellings = [
         ["academically",      ["academicly"]],
+        ["accidentally",      ["accidently"]],
+        ["accommodable",      ["accomodatable"]],
         ["anilingus",         ["analingus"]],
         ["aren't i",          ["amn't i"]],
         ["aren't i",          ["an't i"]],
