@@ -32,3 +32,9 @@ deploy:
   app: proselint
   on:
     repo: suchow/proselint
+notifications:
+  email:
+    recipients:
+      - suchow@post.harvard.edu
+    on_success: always
+    on_failure: always
