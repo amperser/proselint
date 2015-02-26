@@ -22,7 +22,8 @@ demo_path = os.path.join(proselint_path, "demo.md")
 with open(demo_path, "r") as f:
     demo = f.read()
 
-for line in fileinput.input(code_mirror_demo_path, inplace=True):
+for line in fileinput.input(
+        os.path.join(live_write_path, "index.html"), inplace=True):
 
     if "##DEMO_PLACEHOLDER##" in line:
         print demo,
