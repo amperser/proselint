@@ -11,6 +11,7 @@ install:
 - gem install link-checker
 before_script:
 - python scripts/generate_posts.py
+- python scripts/insert_demo.py
 - cd site
 script:
 - jekyll build
