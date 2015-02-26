@@ -1,0 +1,1 @@
+Work on proselint happens over at http://github.com/suchow/proselint. To contribute, create a new branch off of master and then open a pull request. You code should run cleanly through pep8 and pep257 linters. Comments, bug reports, and other feedback can be provided through GitHub issues.
