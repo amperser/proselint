@@ -24,13 +24,13 @@ def check(text):
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
+        ["adequate",          ["adequate enough"]],
         ["admitted",          ["self-admitted"]],
         ["affidavit",         ["sworn affidavit"]],
         ["alumnus",           ["former alumnus"]],
         ["antithetical",      ["directly antithetical"]],
         ["approximately",     ["approximately about"]],
         ["associate",         ["associate together(?: in groups)?"]],
-        ["ATM",               ["ATM machine"]],
         ["bivouac",           ["temporary bivouac", "bivouac camp"]],
         ["blend",             ["blend together"]],
         ["but",               ["but nevertheless"]],
@@ -87,7 +87,6 @@ def check(text):
         ["retirement",        ["retiral", "retiracy"]],
         ["retreat",           ["retreat back"]],
         ["return",            ["return back"]],
-        ["RSVP",              ["please RSVP"]],
         ["scrutinize",        ["closely scrutinize"]],
         ["software",          ["software program"]],
         ["surrounded",        ["surrounded on all sides"]],
@@ -100,6 +99,35 @@ def check(text):
         ["visible",           ["visible to the eye"]],
         ["vocation",          ["professional vocation"]],
         ["while",             ["while at the same time"]],
+    ]
+
+    return preferred_forms_check(text, redundancies, err, msg)
+
+
+@memoize
+def check_redundant_acronym_syndrome(text):
+    """Suggest the preferred forms."""
+    err = "MAU104"
+    msg = "RAS syndrome. Use '{}' instead of '{}'."
+
+    redundancies = [
+        ["ABM",               ["ABM missile"]],
+        ["ABMs",              ["ABM missiles"]],
+        ["ABS",               ["ABS braking system"]],
+        ["ATM",               ["ATM machine"]],
+        ["CPI",               ["CPI Index"]],
+        ["GPS",               ["GPS system"]],
+        ["GUI",               ["GUI interface"]],
+        ["HIV",               ["HIV virus"]],
+        ["LCD",               ["LCD display"]],
+        ["PDF",               ["PDF format"]],
+        ["PIN",               ["PIN number"]],
+        ["RAS",               ["RAS syndrome"]],
+        ["RIP",               ["RIP in peace"]],
+        ["RSVP",              ["please RSVP"]],
+        ["SALT",              ["SALT talks"]],
+        ["SAT",               ["SAT test"]],
+        ["UPC",               ["UPC codes"]],
     ]
 
     return preferred_forms_check(text, redundancies, err, msg)
