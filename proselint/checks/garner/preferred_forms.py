@@ -46,6 +46,7 @@ def check(text):
         ["transshipped",        ["transhipped", "trans-shipped"]],
         ["transshipping",       ["transhipping", "trans-shipping"]],
         ["long-standing",       ["longstanding"]],
+        ["sans serif",          ["sans-serif", "sanserif"]],
         # ["longtime",           ["long time"]],
 
         # er vs. or
