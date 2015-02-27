@@ -54,6 +54,7 @@ def check(text):
         ["catch fire",        ["catch on fire"]],
         ["ceasefire",         ["cease fire"]],
         ["cellphone",         ["cell phone", "cell-phone"]],
+        ["cigarette",         ["cigaret"]],
         ["endow",             ["indow"]],
         ["enigmas",           ["enigmatas"]],
         ["eyeing",            ["eying"]],
