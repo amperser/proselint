@@ -17,13 +17,14 @@ $1000 USD
 www.google.com
 http://broken.lifelinter.com
 http://news.ycombinator.com
- 
+
 # Grammar
 the the meter is is great
 a apple and an banana
 a historic
 an banana
 an European country
+a FBI investigation
 
 # Hyperbolic language
 PLEASE STOP YELLING
@@ -56,6 +57,8 @@ he filled a much-needed gap
 under the weather
 a chip off the old block
 a quantum leap
+Our cutting edge decision-making process will make your life crystal clear.
+He's a thought leader.
 
 # Security
 John's cc#:
@@ -110,10 +113,7 @@ This is so awesome...
 Bose-Einstein condensate
 
 # Denizen labels
-He's a Michiganite
-
-Our cutting edge decision-making process will make your life's crystal clear.
-He's a thought leader.
+Once a Saudi Arabian, now a Michiganite, forever a lover of baseball.
 
 # Sexism
 The lady lawyer handled my case.  
@@ -127,4 +127,5 @@ March, 2013 was notable in that…
 In February of 2010, the mayor considered…
 
 # Punctuation
-Smith, et. al (2006) said...
+Smith, et. al (2006) said..
+
