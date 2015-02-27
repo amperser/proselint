@@ -26,7 +26,6 @@ def check(text):
     preferences = [
 
         # Needless variants
-        ["abbreviable",       ["abbreviatable"]],
         ["abolition",         ["abolishment"]],
         ["accessory",         ["accessary"]],
         ["accrual",           ["accruement"]],
