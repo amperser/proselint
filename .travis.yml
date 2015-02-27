@@ -19,6 +19,7 @@ after_success:
 - s3_website push
 - check-links 'http://prose.lifelinter.com'
 - cd ..
+- nosetests
 env:
   global:
   - secure: cB2hODqR9V3P8c2BupySJnz825snT2vqhpB4RnnyYD5L1E+nzZK9KdApgx0U/f1YHZujhPnbdXAfq1QQztIf6EocbF1CrSKPCavJoJ/CSQ53X775++PegBZXL66PSYfMX28MFcuYCvqcBxSKX26kpT72IjtgHHEROz/NkrifHog=

@@ -30,7 +30,7 @@ class Check(TestCase):
         """Check whether the check is too noisy."""
         min_wpe = 50
 
-        examples_dir = os.path.join(os.getcwd(), "tests", "samples")
+        examples_dir = os.path.join(os.getcwd(), "tests", "corpus")
         examples = os.listdir(examples_dir)
 
         for example in examples:
