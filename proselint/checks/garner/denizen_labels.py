@@ -14,7 +14,7 @@ categories: writing
 Denizen labels.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
@@ -28,9 +28,7 @@ def check(text):
         ["Michigander",       ["Michiganite"]],
         ["Indianan",          ["Indianian"]],
         ["Illinoisan",        ["Illinoisian"]],
+        ["Saudi",             ["Saudi Arabian"]],
     ]
 
-    errors = []
-    for p in preferences:
-        errors += existence_check(text, p[1], err, msg)
-    return errors
+    return preferred_forms_check(text, preferences, err, msg)
