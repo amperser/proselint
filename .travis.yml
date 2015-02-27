@@ -9,7 +9,7 @@ install:
 - gem install compass --version 0.12.5
 - gem install kramdown
 - gem install link-checker
-- pip install nose
+- sudo pip install nose
 before_script:
 - python scripts/generate_posts.py
 - python scripts/insert_demo.py
