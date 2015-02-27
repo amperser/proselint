@@ -88,6 +88,7 @@ def check(text):
         ["movable",           ["moveable"]],
         ["murk",              ["mirk"]],
         ["murky",             ["mirky"]],
+        ["narcissism",        ["narcism"]],
         ["password",          ["passcode"]],
         ["pederast",          ["paederast"]],
         ["pejorative",        ["perjorative"]],

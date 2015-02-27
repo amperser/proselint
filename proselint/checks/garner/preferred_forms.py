@@ -67,6 +67,7 @@ def check(text):
         ["infiltrator",         ["infiltrater"]],
         ["investor",            ["invester"]],
         ["manipulator",         ["manipulater"]],
+        ["mortgagor",           ["mortgager"]],
         ["persecutor",          ["persecuter"]],
         ["promoter",            ["promotor"]],
         ["promoter",            ["promotor"]],
@@ -86,6 +87,10 @@ def check(text):
         ["shoo-in",             ["shoe-in"]],
         ["foreclose on",        ["foreclose againt"]],
         ["during / throughout", ["for the duration of"]],
+        ["mustache",            ["moustache"]],
+        ["friend in common",    ["mutual friend"]],
+        ["not nearly as",       ["nowhere near as"]],
+        ["off",                 ["off of"]],
 
         # TODO, entries that are a bit complicated
         # announce

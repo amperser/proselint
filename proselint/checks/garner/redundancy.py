@@ -65,6 +65,7 @@ def check(text):
         ["merge",             ["merge together"]],
         ["mingle",            ["mingle together"]],
         ["mix",               ["mix together"]],
+        ["native citizen",    ["native-born citizen"]],
         ["necessity",         ["absolute necessity"]],
         ["obvious",           ["blatantly obvious"]],
         ["pause",             ["pause for a moment"]],
