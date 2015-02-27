@@ -23,7 +23,8 @@ def check(text):
     err = "MAU103"
     msg = u"Too much yelling."
 
-    regex = "[A-Z]+ [A-Z]+ [A-Z]+"
+    regex = " [A-Z]+ [A-Z]+ [A-Z]+"
 
     return existence_check(
-        text, [regex], err, msg, ignore_case=False, max_errors=1)
+        text, [regex], err, msg, require_padding=False, ignore_case=False,
+        max_errors=1)
