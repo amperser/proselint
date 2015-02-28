@@ -12,6 +12,8 @@ import codecs
 import subprocess
 import ntpath
 import re
+import textblob
+import time
 
 
 base_url = "prose.lifelinter.com/"
@@ -52,10 +54,11 @@ def lint(path):
 
     # Apply all the checks.
     with codecs.open(path, "r", encoding='utf-8') as f:
-        text = f.read()
+        blob = textblob.TextBlob(f.read())
         errors = []
         for check in checks:
-            errors += check(text)
+            start = time.time()
+            errors += check(blob)
 
         # Sort the errors by line and column number.
         errors = sorted(errors)
@@ -63,7 +66,7 @@ def lint(path):
         # Display the errors.
         for error in errors:
             (start, end, error_code, msg) = error
-            (line, column) = line_and_column(text, start)
+            (line, column) = line_and_column(blob.raw, start)
             log_error(path, line, column, error_code, msg)
 
     return errors

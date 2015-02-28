@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC110"
     msg = u"Incorrent use of symbols in {}."
@@ -27,4 +27,4 @@ def check(text):
         "\$[\d]* ?(?:dollars|usd|us dollars)"
     ]
 
-    return existence_check(text, symbols, err, msg)
+    return existence_check(blob, symbols, err, msg)

@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MAU105"
     msg = u"'{}' is illogical."
@@ -34,4 +34,4 @@ def check(text):
         "no longer requires oxygen",
     ]
 
-    return existence_check(text, illogics, err, msg, offset=1)
+    return existence_check(blob, illogics, err, msg, offset=1)

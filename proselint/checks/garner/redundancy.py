@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU103"
     msg = "Redundancy. Use '{}' instead of '{}'."
@@ -51,6 +51,7 @@ def check(text):
         ["continues to",      ["still continues to"]],
         ["couple",            ["couple together"]],
         ["crisis",            ["serious crisis"]],
+        ["potable water",     ["potable drinking water"]],
         ["eliminate",         ["entirely eliminate"]],
         ["fact",              ["actual fact"]],
         ["facts",             ["true facts"]],
@@ -102,11 +103,11 @@ def check(text):
         ["while",             ["while at the same time"]],
     ]
 
-    return preferred_forms_check(text, redundancies, err, msg)
+    return preferred_forms_check(blob, redundancies, err, msg)
 
 
 @memoize
-def check_redundant_acronym_syndrome(text):
+def check_redundant_acronym_syndrome(blob):
     """Suggest the preferred forms."""
     err = "MAU104"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
@@ -131,4 +132,4 @@ def check_redundant_acronym_syndrome(text):
         ["UPC",               ["UPC codes"]],
     ]
 
-    return preferred_forms_check(text, redundancies, err, msg)
+    return preferred_forms_check(blob, redundancies, err, msg)

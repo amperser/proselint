@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MAU120"
     msg = u"'{}' is an oxymoron."
@@ -29,4 +29,4 @@ def check(text):
         "advancing backwards?"
     ]
 
-    return existence_check(text, oxymorons, err, msg, offset=1)
+    return existence_check(blob, oxymorons, err, msg, offset=1)

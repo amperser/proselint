@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Misspelling. '{}' is the preferred form."
@@ -91,4 +91,4 @@ def check(text):
         ["a timpani",         ["a timpano"]],
     ]
 
-    return preferred_forms_check(text, misspellings, err, msg)
+    return preferred_forms_check(blob, misspellings, err, msg)

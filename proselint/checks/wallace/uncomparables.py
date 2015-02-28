@@ -50,7 +50,7 @@ from proselint.tools import memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "DFW200"
     msg = "Comparison of an uncomparable: {} is not comparable."
@@ -118,7 +118,7 @@ def check(text):
             if "{} {}".format(comp, uncomp) in exceptions:
                 continue
 
-            occ = re.finditer(comp + "\s" + uncomp + "[\W$]", text.lower())
+            occ = re.finditer(comp + "\s" + uncomp + "[\W$]", blob.raw.lower())
             for o in occ:
                 errors.append((o.start(), o.end(), err, msg.format(uncomp)))
 

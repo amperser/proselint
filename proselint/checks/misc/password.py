@@ -17,7 +17,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC103"
     msg = u"Don't put passwords in plain text."
@@ -31,4 +31,4 @@ def check(text):
         "my password's{}".format(pwd_regex),
     ]
 
-    return existence_check(text, password, err, msg)
+    return existence_check(blob, password, err, msg)

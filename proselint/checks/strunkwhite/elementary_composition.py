@@ -49,7 +49,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "STW102"
     msg = "Try '{}' instead of '{}'."
@@ -81,4 +81,4 @@ def check(text):
         ["my arrival",              ["the fact that i had arrived"]]
     ]
 
-    return preferred_forms_check(text, bad_forms, err, msg)
+    return preferred_forms_check(blob, bad_forms, err, msg)

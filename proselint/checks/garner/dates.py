@@ -19,39 +19,39 @@ import calendar
 
 
 @memoize
-def check_decade_apostrophes(text):
+def check_decade_apostrophes(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"Apostrophes aren't needed for decades."
 
     regex = "(?:\d\d)?\d0\'s"
-    return existence_check(text, [regex], err, msg)
+    return existence_check(blob, [regex], err, msg)
 
 
 @memoize
-def check_dash_and_from(text):
+def check_dash_and_from(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"When specifying a date range, write 'from X to Y'."
 
     regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+"
-    return existence_check(text, [regex], err, msg)
+    return existence_check(blob, [regex], err, msg)
 
 
-def check_month_year_comma(text):
+def check_month_year_comma(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"When specifying a month and year, no comma is needed."
 
     regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}"
-    return existence_check(text, [regex], err, msg)
+    return existence_check(blob, [regex], err, msg)
 
 
 @memoize
-def check_month_of_year(text):
+def check_month_of_year(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"When specifying a month and year, 'of' is unnecessary."
 
     regex = "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}"
-    return existence_check(text, [regex], err, msg)
+    return existence_check(blob, [regex], err, msg)

@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "'{}' is the preferred form."
@@ -91,16 +91,17 @@ def check(text):
         ["friend in common",    ["mutual friend"]],
         ["not nearly as",       ["nowhere near as"]],
         ["off",                 ["off of"]],
+        ["knowing that",        ["in light of the fact that"]],
 
         # TODO, entries that are a bit complicated
         # announce
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)
 
 
 @memoize
-def check_able_ible(text):
+def check_able_ible(blob):
     """-able vs. -ible."""
 
     err = "MAU102"
@@ -265,11 +266,11 @@ def check_able_ible(text):
         ["visible",         ["visable"]]
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)
 
 
 @memoize
-def check_able_atable(text):
+def check_able_atable(blob):
     """-able vs. -ible."""
 
     err = "MAU102"
@@ -347,11 +348,11 @@ def check_able_atable(text):
         ["vitiable",          ["vitiatable"]]
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)
 
 
 @memoize
-def check_em_vs_em_and_en_vs_in(text):
+def check_em_vs_em_and_en_vs_in(blob):
     """em- vs. en-, im- vs. in-."""
 
     err = "MAU102"
@@ -410,4 +411,4 @@ def check_em_vs_em_and_en_vs_in(text):
         ["inure",       ["enure"]],
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)

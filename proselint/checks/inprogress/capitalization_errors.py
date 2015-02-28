@@ -21,7 +21,7 @@ from proselint.tools import blacklist, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC104"
     msg = u"Don't fail to capitalize roman numeral abbreviations."
@@ -32,4 +32,4 @@ def check(text):
         "World War{}".format(pwd_regex),
     ]
 
-    return blacklist(text, password, err, msg)
+    return blacklist(blob, password, err, msg)

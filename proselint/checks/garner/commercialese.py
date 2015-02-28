@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MAU104"
     msg = u"'{}' is commercialese."
@@ -52,4 +52,4 @@ def check(text):
         "yours of even date"
     ]
 
-    return existence_check(text, commercialese, err, msg)
+    return existence_check(blob, commercialese, err, msg)

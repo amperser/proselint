@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"Too much yelling."
@@ -26,5 +26,5 @@ def check(text):
     regex = " [A-Z]+ [A-Z]+ [A-Z]+"
 
     return existence_check(
-        text, [regex], err, msg, require_padding=False, ignore_case=False,
+        blob, [regex], err, msg, require_padding=False, ignore_case=False,
         max_errors=1)

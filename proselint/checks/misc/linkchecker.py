@@ -21,7 +21,7 @@ from socket import error as SocketError
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "ANN100"
     msg = u"Broken link: {}"
@@ -34,7 +34,7 @@ def check(text):
         re.U)
 
     errors = []
-    for m in re.finditer(regex, text):
+    for m in re.finditer(regex, blob.raw):
         url = m.group(0).strip()
 
         if "http://" not in url and "https://" not in url:
