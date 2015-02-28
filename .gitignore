@@ -4,5 +4,5 @@ cached_func_calls/*
 site/_posts/*
 proselint/cache/*
 profile_output
-
 site/write/*
+tests/corpus/newyorker/*
