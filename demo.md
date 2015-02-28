@@ -129,3 +129,7 @@ In February of 2010, the mayor considered…
 
 # Punctuation
 Smith, et. al (2006) said...
+
+# Quoted text
+John said that I am "very unique."
+John knows that I am very unique.

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """General-purpose tools shared across linting checks."""
 import os
 import shelve
@@ -161,3 +164,48 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
         errors = [(start1, end1, err1, msg1)] + errors
 
     return errors
+
+
+def is_quoted(position, blob):
+
+    def matching(quotemark1, quotemark2):
+        straight = u'\"\''
+        curly = u'“”'
+        if quotemark1 in straight and quotemark2 in straight:
+            return True
+        if quotemark1 in curly and quotemark2 in curly:
+            return True
+        else:
+            return False
+
+    def find_ranges(text):
+        s = 0
+        q = pc = ''
+        start = None
+        ranges = []
+        seps = " .,:;-\r\n"
+        quotes = [u'\"', u'“', u'”', u"'"]
+        for i, c in enumerate(text + "\n"):
+            if s == 0 and c in quotes and pc in seps:
+                start = i
+                s = 1
+                q = c
+            elif s == 1 and matching(c, q):
+                s = 2
+            elif s == 2:
+                if c in seps:
+                    ranges.append((start+1, i-1))
+                    start = None
+                    s = 0
+                else:
+                    s = 1
+            pc = c
+        return ranges
+
+    def position_in_ranges(ranges, position):
+        for start, end in ranges:
+            if start <= position < end:
+                return True
+        return False
+
+    return position_in_ranges(find_ranges(blob.raw), position)

@@ -5,7 +5,7 @@
 
 import click
 import os
-from proselint.tools import line_and_column
+from proselint.tools import line_and_column, is_quoted
 import proselint.checks as pl
 import pkgutil
 import codecs
@@ -67,7 +67,8 @@ def lint(path):
         for error in errors:
             (start, end, error_code, msg) = error
             (line, column) = line_and_column(blob.raw, start)
-            log_error(path, line, column, error_code, msg)
+            if not is_quoted(start, blob):
+                log_error(path, line, column, error_code, msg)
 
     return errors
 
