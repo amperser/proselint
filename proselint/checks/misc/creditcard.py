@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC102"
     msg = u"Don't put credit card numbers in plain text."
@@ -31,4 +31,4 @@ def check(text):
         "6011\d{12}",
     ]
 
-    return existence_check(text, credit_card_numbers, err, msg)
+    return existence_check(blob, credit_card_numbers, err, msg)

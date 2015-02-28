@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check_et_al(text):
+def check_et_al(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"Misplaced punctuation. It's 'et al.'"
@@ -28,4 +28,4 @@ def check_et_al(text):
         "et. al",
         "et. al."
     ]
-    return existence_check(text, list, err, msg)
+    return existence_check(blob, list, err, msg)

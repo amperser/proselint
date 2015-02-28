@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU103"
     msg = "Gender bias. Use '{}' instead of '{}'."
@@ -52,4 +52,4 @@ def check(text):
         # ["hero",             ["heroine"]]
     ]
 
-    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+    return preferred_forms_check(blob, sexism, err, msg, ignore_case=False)

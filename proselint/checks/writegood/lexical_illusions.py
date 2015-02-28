@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "WGD105"
     msg = u"There's a lexical illusion here: a word is repeated."
@@ -27,4 +27,4 @@ def check(text):
         "the\sthe",
     ]
 
-    return existence_check(text, commercialese, err, msg)
+    return existence_check(blob, commercialese, err, msg)

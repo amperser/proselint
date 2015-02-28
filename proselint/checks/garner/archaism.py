@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MAU103"
     msg = u"'{}' is archaic."
@@ -83,4 +83,4 @@ def check(text):
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(text, archaisms, err, msg)
+    return existence_check(blob, archaisms, err, msg)

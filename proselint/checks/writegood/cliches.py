@@ -19,7 +19,7 @@ import re
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "WGD101"
     msg = u"'{}' is a cliché."
@@ -724,4 +724,4 @@ def check(text):
         "young and vibrant",
     ]
 
-    return existence_check(text, cliches, err, msg)
+    return existence_check(blob, cliches, err, msg)

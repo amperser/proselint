@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC100"
     msg = u"'{}' is hyperbolic."
@@ -28,4 +28,4 @@ def check(text):
         "[a-z]*\?{2,}"
     ]
 
-    return existence_check(text, words, err, msg)
+    return existence_check(blob, words, err, msg)

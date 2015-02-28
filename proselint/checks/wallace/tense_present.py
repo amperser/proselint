@@ -19,7 +19,7 @@ import re
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "DFW201"
     msg = u"'{}'."
@@ -40,7 +40,7 @@ def check(text):
 
     errors = []
     for i in illogics:
-        for m in re.finditer(u"\s{}\s".format(i), text, flags=re.U | re.I):
+        for m in re.finditer(u"\s{}\s".format(i), blob.raw, flags=re.U | re.I):
             txt = m.group(0).strip()
             errors.append((m.start() + 1, m.end(), err, msg.format(txt)))
 

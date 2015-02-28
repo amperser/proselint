@@ -2,6 +2,8 @@
 
 from unittest import TestCase
 import os
+from textblob import TextBlob
+import codecs
 
 
 class Check(TestCase):
@@ -22,7 +24,8 @@ class Check(TestCase):
 
         errors = []
         for text in lst:
-            errors.append(self.this_check.check(text))
+            blob = TextBlob(text)
+            errors.append(self.this_check.check(blob))
 
         return len(errors[0]) == 0
 
@@ -37,10 +40,10 @@ class Check(TestCase):
             example_path = os.path.join(examples_dir, example)
 
             # Compute the number of words per (wpe) error.
-            with open(example_path, 'r') as f:
-                text = f.read()
-                num_errors = len(self.this_check.check(text))
-                num_words = len(text.split(' '))
+            with codecs.open(example_path, "r", encoding='utf-8') as f:
+                blob = TextBlob(f.read())
+                num_errors = len(self.this_check.check(blob))
+                num_words = len(blob.words)
 
             try:
                 wpe = 1.0 * num_words / num_errors

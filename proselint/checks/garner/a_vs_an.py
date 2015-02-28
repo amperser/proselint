@@ -20,7 +20,7 @@ import os
 
 
 @memoize
-def check(text):
+def check(blob):
     """Define the check."""
     err = "MAU101"
     msg_a = "'a' should be 'an'."
@@ -30,7 +30,7 @@ def check(text):
     regex = re.compile("(?:^|\W)(an?)\s+(\w+)", re.IGNORECASE)
 
     # Find all occurences of the regex in the text.
-    for g in regex.finditer(text):
+    for g in regex.finditer(blob.raw):
         words = [w for w in g.groups()]
 
         vowel_sound = starts_with_vowel_sound(words[1])

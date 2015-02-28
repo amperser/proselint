@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU109"
     msg = "'{}' is the preferred denizen label."
@@ -31,4 +31,4 @@ def check(text):
         ["Saudi",             ["Saudi Arabian"]],
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)

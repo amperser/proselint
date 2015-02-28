@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "ANN100"
     msg = u"Annotation left in text."
@@ -32,4 +32,4 @@ def check(text):
         "FIX THIS",
     ]
 
-    return existence_check(text, annotations, err, msg, ignore_case=False)
+    return existence_check(blob, annotations, err, msg, ignore_case=False)

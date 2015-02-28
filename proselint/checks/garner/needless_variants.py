@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Needless variant. '{}' is the preferred form."
@@ -96,4 +96,4 @@ def check(text):
         ["succubus",          ["succuba"]],
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(blob, preferences, err, msg)

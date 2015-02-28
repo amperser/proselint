@@ -18,7 +18,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(blob):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Back-formation. '{}' is the preferred form."
@@ -27,4 +27,4 @@ def check(text):
         ["improper",       ["improprietous"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(blob, list, err, msg)

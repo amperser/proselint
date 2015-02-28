@@ -25,7 +25,7 @@ from proselint.tools import consistency_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "IEL100"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."
@@ -45,4 +45,4 @@ def check(text):
         ["recognise", "recognize"],
     ]
 
-    return consistency_check(text, word_pairs, err, msg)
+    return consistency_check(blob, word_pairs, err, msg)

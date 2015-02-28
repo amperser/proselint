@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(blob):
     """Check the text."""
     err = "MSC104"
     msg = u"'{}' is chatspeak. Write it out."
@@ -49,4 +49,4 @@ def check(text):
         "XOXO"
     ]
 
-    return existence_check(text, words, err, msg)
+    return existence_check(blob, words, err, msg)
