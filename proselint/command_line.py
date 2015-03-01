@@ -95,6 +95,7 @@ def lintscore():
     parent_directory = os.path.dirname(proselint_path)
     path_to_corpus = os.path.join(parent_directory, "tests", "corpus")
     for root, _, files in os.walk(path_to_corpus):
+        files = [f for f in files if f.endswith(".md")]
         for f in files:
             fullpath = os.path.join(root, f)
 
