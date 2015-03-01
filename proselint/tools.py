@@ -122,18 +122,19 @@ def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
 
 
 def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
-                    max_errors=float("inf"), offset=0, require_padding=True):
+                    max_errors=float("inf"), offset=0, require_padding=True,
+                    dotall=False):
     """Build a checker that blacklists certain words."""
     flags = 0
 
-    if ignore_case and unicode:
-        flags = re.IGNORECASE | re.UNICODE
-    elif ignore_case:
-        flags = re.IGNORECASE
-    elif unicode:
-        flags = re.UNICODE
-    else:
-        flags = 0
+    if ignore_case:
+        flags = flags | re.IGNORECASE
+
+    if unicode:
+        flags = flags | re.UNICODE
+
+    if dotall:
+        flags = flags | re.DOTALL
 
     if require_padding:
         regex = u"[\W^]{}[\W$]"

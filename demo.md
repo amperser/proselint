@@ -27,13 +27,15 @@ an European country
 a FBI investigation
 
 # Hyperbolic language
-PLEASE STOP YELLING
 and so I said PLEASE STOP YELLING
 so excited!
 so excited!!
 so excited!!!
 so excited!!!!
 really??
+and so I said PLEASE STOP YELLING
+and so I said PLEASE STOP YELLING okay?
+THESE ARE SMALL CAPS at the beginning of a new line.
 
 # Preferred forms
 abbreviatable to NASA
