@@ -63,6 +63,7 @@ def check(blob):
         ["fundamentals",      ["basic fundamentals"]],
         ["gift",              ["free gift"]],
         ["interact",          ["interact with each other"]],
+        ["large",             ["large-size"]],
         ["merge",             ["merge together"]],
         ["mingle",            ["mingle together"]],
         ["mix",               ["mix together"]],

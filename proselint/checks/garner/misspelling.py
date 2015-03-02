@@ -61,6 +61,7 @@ def check(blob):
         ["jujitsu",           ["jiujutsu"]],
         ["kaleidoscope",      ["kaleidascope"]],
         ["knickknack",        ["knicknack"]],
+        ["lassos",            ["lassoes"]],
         ["lessee",            ["leasee"]],
         ["lessor",            ["leasor"]],
         ["liquefy",           ["liquify"]],

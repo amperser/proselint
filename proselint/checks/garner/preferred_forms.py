@@ -92,6 +92,9 @@ def check(blob):
         ["not nearly as",       ["nowhere near as"]],
         ["off",                 ["off of"]],
         ["knowing that",        ["in light of the fact that"]],
+        ["lanyard",             ["laniard"]],
+        ["largess",             ["largesse"]],
+        ["lasagna",             ["lasagne"]],
 
         # TODO, entries that are a bit complicated
         # announce
