@@ -167,6 +167,15 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
     return errors
 
 
+# def overuse_check(blob, list, err, msg):
+#     """Build a checker that looks for overuse of words in the given list."""
+#     total_count = 0
+#     for word in list:
+#         total_count += blob.count(word)
+
+#     if total_count
+
+
 def is_quoted(position, blob):
 
     def matching(quotemark1, quotemark2):

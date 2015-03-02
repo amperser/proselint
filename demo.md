@@ -45,6 +45,7 @@ an aider and abbeter
 it's adduceable
 let's look for an acquiror
 i wonder what tort-feasor means
+Get that off of me before I catch on fire!
 
 # Illogic and redundancy
 approximately about 5 atm machines
@@ -135,3 +136,13 @@ Smith, et. al (2006) said...
 # Quoted text
 John said that I am "very unique."
 John knows that I am very unique.
+
+# Metadiscourse
+The preceeding discussion
+
+# Narcisism, metadiscourse, latin, and hedging
+The 'take-home message' is that...
+more research is needed 
+The rest of this article argues that, to a certain degree
+in recent years, an increasing number of psychologists have 
+mutatis mutandis
