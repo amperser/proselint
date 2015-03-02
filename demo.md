@@ -17,6 +17,7 @@ $1000 USD
 www.google.com
 http://broken.lifelinter.com
 http://news.ycombinator.com
+http://tutsplus.com
 
 # Grammar
 the the meter is is great
