@@ -57,6 +57,7 @@ a very unique idea
 a more perfect union
 the surrounding circumstances
 he filled a much-needed gap
+To coin a phrase from the movie,
 
 # Clichés
 under the weather
@@ -104,6 +105,7 @@ I feel innundated with email
 Nicknack
 He's a shoe-in
 Did you know that Brett Farve and Dwayne Wade are good friends?
+The Chronicals of Narnia
 
 # Strunk & White composition & regex checks
 I did not pay for the check. Honestly, attention to detail is useful.

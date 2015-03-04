@@ -35,3 +35,14 @@ def check(blob):
     ]
 
     return existence_check(blob, illogics, err, msg, offset=1)
+
+
+@memoize
+def check_coin_a_phrase_from(blob):
+    """Check the text."""
+    err = "MAU104"
+    msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
+
+    regex = ["to coin a phrase from"]
+
+    return existence_check(blob, [regex], err, msg, offset=1)
