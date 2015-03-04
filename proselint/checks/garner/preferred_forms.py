@@ -95,6 +95,15 @@ def check(blob):
         ["lanyard",             ["laniard"]],
         ["largess",             ["largesse"]],
         ["lasagna",             ["lasagne"]],
+        ["Chief Justice of the United States",
+            ["Chief Justice of the United States Supreme Court",
+             "Chief Justice of the Supreme Court of the United States."]],
+        ["podiatry",            ["chiropody"]],
+        ["podiatrist",          ["chiropodist"]],
+        ["chitterlings",        ["chitlings", "chitlins"]],
+
+        # Idioms
+        ["madding crowd",       ["maddening crowd"]],
 
         # TODO, entries that are a bit complicated
         # announce
