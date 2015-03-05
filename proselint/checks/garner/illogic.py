@@ -43,6 +43,6 @@ def check_coin_a_phrase_from(blob):
     err = "MAU104"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
 
-    regex = ["to coin a phrase from"]
+    regex = "to coin a phrase from"
 
     return existence_check(blob, [regex], err, msg, offset=1)
