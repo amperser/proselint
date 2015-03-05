@@ -46,3 +46,15 @@ def check_coin_a_phrase_from(blob):
     regex = "to coin a phrase from"
 
     return existence_check(blob, [regex], err, msg, offset=1)
+
+
+@memoize
+def check_without_your_collusion(blob):
+    """Check the textself."""
+    err = "MAU838"
+    msg = "It's impossible to defraud yourself. Try 'aquiescence'."
+
+    regex = "without your collusion"
+
+    return existence_check(
+        blob, [regex], err, msg, require_padding=False, offset=-1)
