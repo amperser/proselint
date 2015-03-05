@@ -101,9 +101,20 @@ def check(blob):
         ["podiatry",            ["chiropody"]],
         ["podiatrist",          ["chiropodist"]],
         ["chitterlings",        ["chitlings", "chitlins"]],
+        ["combustion engine",   ["combustible engine"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
+        ["come off it",         ["come off of it"]],
+        ["was accused of"],     ["was accused with"],
+        ["all the time",        ["all of the time"]],
+        ["as follows",          ["as follow"]],
+        ["the last two",        ["both of the last two"]],
+        ["the last two",        ["both of the last"]],
+        ["bulk large",          ["bulk largely"]],
+        ["a couple of people",  ["a couple people"]],
+        ["dear departed",       ["dearly departed"]],
+        ["default on a loan",   ["default to a loan"]],
 
         # TODO, entries that are a bit complicated
         # announce

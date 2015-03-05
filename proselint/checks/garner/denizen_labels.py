@@ -29,6 +29,8 @@ def check(blob):
         ["Indianan",          ["Indianian"]],
         ["Illinoisan",        ["Illinoisian"]],
         ["Saudi",             ["Saudi Arabian"]],
+        ["Coloradan",         ["Coloradoan"]],
+        ["Iowan",             ["Iowegian"]],
     ]
 
     return preferred_forms_check(blob, preferences, err, msg)

@@ -120,7 +120,8 @@ This is so awesome...
 Bose-Einstein condensate
 
 # Denizen labels
-Once a Saudi Arabian, now a Michiganite, forever a lover of baseball.
+One from Michigan is not a Michiganite but a Michigander.
+One from Colorado is not a Coloradoan but a Coloradan.
 
 # Sexism
 The lady lawyer handled my case.  
