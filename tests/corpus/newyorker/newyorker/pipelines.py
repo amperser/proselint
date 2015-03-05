@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+"""Pipeline for extracting info from New Yorker archives."""
+
 from bs4 import BeautifulSoup
 import string
 
 
 class NewYorkerPipeline(object):
-    def process_item(self, item, spider):
 
+    """Define the pipeline."""
+
+    def process_item(self, item, spider):
+        """Process the item."""
         exclude = set(string.punctuation)
         filename = item['title'][0].lower()
         filename = ''.join(ch for ch in filename if ch not in exclude)

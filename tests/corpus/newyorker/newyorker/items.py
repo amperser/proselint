@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Define here the models for your scraped items
-#
-# See documentation in:
-# http://doc.scrapy.org/en/latest/topics/items.html
+"""Stuff to pull from a New Yorker article."""
 
 import scrapy
 
 
 class NewYorkerItem(scrapy.Item):
+
+    """Pull the title, author, text, and link."""
+
     title = scrapy.Field()
     author = scrapy.Field()
     text = scrapy.Field()
