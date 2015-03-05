@@ -39,6 +39,9 @@ class Check(TestCase):
         for example in examples:
             example_path = os.path.join(examples_dir, example)
 
+            if ".DS_Store" in example_path:
+                break
+
             # Compute the number of words per (wpe) error.
             with codecs.open(example_path, "r", encoding='utf-8') as f:
                 blob = TextBlob(f.read())
