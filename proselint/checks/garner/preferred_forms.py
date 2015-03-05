@@ -115,7 +115,6 @@ def check(blob):
 @memoize
 def check_able_ible(blob):
     """-able vs. -ible."""
-
     err = "MAU102"
     msg = "-able vs. -ible. '{}' is the preferred form."
 
@@ -284,7 +283,6 @@ def check_able_ible(blob):
 @memoize
 def check_able_atable(blob):
     """-able vs. -ible."""
-
     err = "MAU102"
     msg = "-able vs. -atable. '{}' is the preferred form."
 
@@ -366,7 +364,6 @@ def check_able_atable(blob):
 @memoize
 def check_em_vs_em_and_en_vs_in(blob):
     """em- vs. en-, im- vs. in-."""
-
     err = "MAU102"
     msg = "'{}' is the preferred form."
 

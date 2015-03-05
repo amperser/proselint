@@ -184,7 +184,7 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
 
 
 def is_quoted(position, blob):
-
+    """Determine if the position in the blob falls within a quote."""
     def matching(quotemark1, quotemark2):
         straight = u'\"\''
         curly = u'“”'

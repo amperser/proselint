@@ -1,8 +1,13 @@
+"""Define a spider."""
+
 import scrapy
 from newyorker.items import NewYorkerItem
 
 
 class NewYorkerSpider(scrapy.Spider):
+
+    """Visit the archives of The New Yorker and pull out articles."""
+
     name = "newyorker"
     allowed_domains = ["newyorker.com"]
 
@@ -14,8 +19,7 @@ class NewYorkerSpider(scrapy.Spider):
     print start_urls
 
     def parse(self, response):
-
-        # Get articles if any exist on this page.
+        """Get articles if any exist on this page."""
         for sel in response.xpath(
                 '//article[@itemtype="http://schema.org/Article"]'):
 

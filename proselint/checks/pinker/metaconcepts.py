@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""PKR101: Metaconcepts
+"""PKR101: Metaconcepts.
 
 ---
 layout:     post
@@ -11,7 +11,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Points out misuse of scare quotes.
+Point out misuse of scare quotes.
 
 """
 # from proselint.tools import memoize, existence_check
