@@ -19,12 +19,24 @@ import calendar
 
 
 @memoize
-def check_decade_apostrophes(blob):
-    """Check the text."""
+def check_decade_apostrophes_short(blob):
+    """Check the text for dates of the form X0's."""
     err = "MAU103"
     msg = u"Apostrophes aren't needed for decades."
 
-    regex = "(?:\d\d)?\d0\'s"
+    regex = "\d0\'s"
+
+    return existence_check(
+        blob, [regex], err, msg, excluded_topics=["50 Cent"])
+
+
+@memoize
+def check_decade_apostrophes_long(blob):
+    """Check the text for dates of the form XXX0's."""
+    err = "MAU103"
+    msg = u"Apostrophes aren't needed for decades."
+
+    regex = "\d\d\d0\'s"
     return existence_check(blob, [regex], err, msg)
 
 

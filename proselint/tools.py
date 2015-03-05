@@ -123,7 +123,7 @@ def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
 
 def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
                     max_errors=float("inf"), offset=0, require_padding=True,
-                    dotall=False):
+                    dotall=False, excluded_topics=None):
     """Build a checker that blacklists certain words."""
     flags = 0
 
@@ -142,6 +142,13 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
         regex = u"{}"
 
     errors = []
+
+    # If the topic of the text is in the excluded list, return immediately.
+    if excluded_topics:
+        tps = topics(blob)
+        if any([t in excluded_topics for t in tps]):
+            return errors
+
     for w in list:
         for m in re.finditer(regex.format(w), blob.raw, flags=flags):
             txt = m.group(0).strip()
@@ -219,3 +226,45 @@ def is_quoted(position, blob):
         return False
 
     return position_in_ranges(find_ranges(blob.raw), position)
+
+
+def detector_50_Cent(blob):
+    """Determine whether 50 Cent is a topic."""
+    keywords = [
+        "50 Cent",
+        "rap",
+        "hip hop",
+        "Curtis James Jackson III",
+        "Curtis Jackson",
+        "Eminem",
+        "Dre",
+        "Get Rich or Die Tryin'",
+        "G-Unit",
+        "Street King Immortal",
+        "In da Club",
+        "Interscope",
+    ]
+    num_keywords = sum(word in blob for word in keywords)
+    return ("50 Cent", float(num_keywords > 2))
+
+
+def topics(blob):
+    """Return a list of topics."""
+    detectors = [
+        detector_50_Cent
+    ]
+    ts = []
+    for detector in detectors:
+        ts.append(detector(blob))
+
+    return [t[0] for t in ts if t[1] > 0.95]
+
+
+def context(blob, position, level="paragraph"):
+    """Get sentence or paragraph that surrounds the given position."""
+    if level == "sentence":
+        pass
+    elif level == "paragraph":
+        pass
+
+    return ""
