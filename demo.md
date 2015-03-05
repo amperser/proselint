@@ -128,13 +128,14 @@ John and Mary married. Now they are man and wife.
 Chairman Mao was the chairman of the communist party. 
 
 # Dates
-The 1980's came before the 90's.
+The 1950's were a swell time.
+The 50's were a swell time.
 Things happened from 1980-1999 and from 240-398 A.D.
 March, 2013 was notable in that…
 In February of 2010, the mayor considered…
 
 # Punctuation
-Smith, et. al (2006) said...
+Smith, et. al (2006) said…
 
 # Quoted text
 John said that I am "very unique."
@@ -144,7 +145,7 @@ John knows that I am very unique.
 The preceeding discussion
 
 # Narcisism, metadiscourse, latin, and hedging
-The 'take-home message' is that...
+The 'take-home message' is that…
 more research is needed 
 The rest of this article argues that, to a certain degree
 in recent years, an increasing number of psychologists have 
