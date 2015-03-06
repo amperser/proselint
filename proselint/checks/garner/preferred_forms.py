@@ -102,6 +102,7 @@ def check(blob):
         ["podiatrist",          ["chiropodist"]],
         ["chitterlings",        ["chitlings", "chitlins"]],
         ["combustion engine",   ["combustible engine"]],
+        ["leery",               ["leary"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
@@ -115,6 +116,8 @@ def check(blob):
         ["a couple of people",  ["a couple people"]],
         ["dear departed",       ["dearly departed"]],
         ["default on a loan",   ["default to a loan"]],
+        ["punch up the lede",   ["punch up the lead"]],
+        ["burying the lede",    ["burying the lead"]],
 
         # TODO, entries that are a bit complicated
         # announce
