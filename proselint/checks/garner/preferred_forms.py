@@ -106,7 +106,7 @@ def check(blob):
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
         ["come off it",         ["come off of it"]],
-        ["was accused of"],     ["was accused with"],
+        ["was accused of",      ["was accused with"]],
         ["all the time",        ["all of the time"]],
         ["as follows",          ["as follow"]],
         ["the last two",        ["both of the last two"]],
