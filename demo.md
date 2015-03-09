@@ -116,8 +116,7 @@ I did not pay any attention to detail.
 (c) 2015
 Copy­right © 2015
 (R) The Corporation
-This is so awesome...
-Bose-Einstein condensate
+Use ellipsis not three dots...
 
 # Denizen labels
 One from Michigan is not a Michiganite but a Michigander.
