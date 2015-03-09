@@ -14,7 +14,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = "Origin, X-Requested-With,Content-Type, Accept"
 
 
-@app.route('/v1/')
+@app.route('/v1/', methods=['GET', 'POST'])
 @cross_origin()  # allow all origins all methods.
 def lint():
     """Run linter on the provided text and return the results."""
