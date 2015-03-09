@@ -118,6 +118,7 @@ def check(blob):
         ["default on a loan",   ["default to a loan"]],
         ["punch up the lede",   ["punch up the lead"]],
         ["burying the lede",    ["burying the lead"]],
+        ["Magna Carta",         ["Magna Charta"]],
 
         # TODO, entries that are a bit complicated
         # announce
