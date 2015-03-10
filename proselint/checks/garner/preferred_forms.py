@@ -80,7 +80,7 @@ def check(blob):
         ["inadvisable",         ["unadvisable"]],
         ["inalienable",         ["unalienable"]],
         ["inexpressive",        ["unexpressive"]],
-        ["infeasible",          ["unfea"]],
+        ["infeasible",          ["unfeasible"]],
 
         # Misc
         ["musical revue",       ["musical review"]],
@@ -103,6 +103,8 @@ def check(blob):
         ["chitterlings",        ["chitlings", "chitlins"]],
         ["combustion engine",   ["combustible engine"]],
         ["leery",               ["leary"]],
+        ["infectious",          ["infectuous"]],
+        ["inferable",           ["inferrable", "inferrible"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
@@ -119,6 +121,7 @@ def check(blob):
         ["punch up the lede",   ["punch up the lead"]],
         ["burying the lede",    ["burying the lead"]],
         ["Magna Carta",         ["Magna Charta"]],
+        ["draw an inference",   ["make an inference"]],
 
         # TODO, entries that are a bit complicated
         # announce
@@ -253,6 +256,7 @@ def check_able_ible(blob):
         ["inadmissible",    ["inadmissable"]],
         ["incorrigible",    ["incorrigable"]],
         ["indelible",       ["indelable"]],
+        ["inexpressible",   ["inexpressable"]],
         ["intelligible",    ["intelligable"]],
         ["interfusible",    ["interfusable"]],
         ["invincible",      ["invincable"]],
@@ -381,7 +385,7 @@ def check_able_atable(blob):
 def check_em_vs_em_and_en_vs_in(blob):
     """em- vs. en-, im- vs. in-."""
     err = "MAU102"
-    msg = "'{}' is the preferred form."
+    msg = "em-, im-, en-, and in-. '{}' is the preferred form."
 
     preferences = [
 
