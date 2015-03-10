@@ -250,6 +250,7 @@ def check_able_ible(blob):
         ["gullible",        ["gullable"]],
         ["horrible",        ["horrable"]],
         ["impressible",     ["impressable"]],
+        ["inadmissible",    ["inadmissable"]],
         ["incorrigible",    ["incorrigable"]],
         ["indelible",       ["indelable"]],
         ["intelligible",    ["intelligable"]],
