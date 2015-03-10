@@ -11,7 +11,7 @@ import json
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = "Origin, X-Requested-With,Content-Type, Accept"
+app.config['CORS_HEADERS'] = "Origin, X-Requested-With, Content-Type, Accept"
 
 
 @app.route('/v1/', methods=['GET', 'POST'])
