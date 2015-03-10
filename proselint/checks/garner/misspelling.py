@@ -63,6 +63,7 @@ def check(blob):
         ["inevitability",     ["inevitableness"]],
         ["innovate",          ["inovate"]],
         ["inoculation",       ["innoculation", "inocculation"]],
+        ["integral",          ["intergral"]],
         ["inundate",          ["innundate"]],
         ["inundated",         ["innundated"]],
         ["inundates",         ["innundates"]],
