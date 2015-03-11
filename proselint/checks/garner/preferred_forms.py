@@ -122,6 +122,8 @@ def check(blob):
         ["burying the lede",    ["burying the lead"]],
         ["Magna Carta",         ["Magna Charta"]],
         ["draw an inference",   ["make an inference"]],
+        ["oil magnate",         ["oil magnet"]],
+        ["railroad magnate",    ["railroard magnet"]],
 
         # TODO, entries that are a bit complicated
         # announce
