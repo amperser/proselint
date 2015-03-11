@@ -1,6 +1,6 @@
 # proselint
 
-This is `proselint`, a linter for writing. Get advice whispered from the greats.
+`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose.
 
 To get this up and running as a command line utility, run `python setup.py develop` from inside the root directory.
 
