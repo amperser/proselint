@@ -25,12 +25,28 @@ def check(blob):
 
     preferences = [
 
-        ["Michigander",       ["Michiganite"]],
-        ["Indianan",          ["Indianian"]],
-        ["Illinoisan",        ["Illinoisian"]],
-        ["Saudi",             ["Saudi Arabian"]],
+        ["Afrikaner",         ["Afrikaaner"]],
+        ["Afrikaner",         ["Afrikander"]],
+        ["Alabamian",         ["Alabaman"]],
+        ["Albuquerquean",     ["Albuquerquian"]],
+        ["Anchorageite",      ["Anchoragite"]],
         ["Coloradan",         ["Coloradoan"]],
+        ["Illinoisan",        ["Illinoisian"]],
         ["Iowan",             ["Iowegian"]],
+        ["Michigander",       ["Michiganite", "Michiganian"]],
+        ["Angeleno",          ["Los Angelean"]],
+        ["Arizonan",          ["Arizonian"]],
+        ["Arkansan",          ["Arkansawyer"]],
+        ["Belarusian",        ["Belarusan"]],
+        ["Fairbanksan",       ["Fairbanksian"]],
+        ["Fort Worthian",     ["Fort Worther"]],
+        ["Hong Konger",       ["Hong Kongite", "Hong Kongian"]],
+        ["Hoosier",           ["Indianan", "Indianian"]],
+        ["Louisianian",       ["Louisianan"]],
+        ["Missourian",        ["Missouran"]],
+        ["Monegasque",        ["Monacan"]],
+        ["Neapolitan",        ["Neopolitan"]],
+        ["Saudi",             ["Saudi Arabian"]],
     ]
 
     return preferred_forms_check(blob, preferences, err, msg)
