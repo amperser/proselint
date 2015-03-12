@@ -124,6 +124,7 @@ def check(blob):
         ["draw an inference",   ["make an inference"]],
         ["oil magnate",         ["oil magnet"]],
         ["railroad magnate",    ["railroard magnet"]],
+        ["long distances",      ["lengthy distances"]],
 
         # TODO, entries that are a bit complicated
         # announce
