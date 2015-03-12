@@ -101,6 +101,8 @@ def check(blob):
         ["labyrinthine",      ["labyrinthian"]],
         ["laudatory",         ["laudative"]],
         ["legitimize",        ["legitimatize"]],
+        ["legitimation",      ["legitimatization"]],
+        ["legitimation",      ["legitimization"]],
         ["lengthwise",        ["lengthways"]],
         ["life-size",         ["life-sized"]],
         ["lithe",             ["lithesome"]],
