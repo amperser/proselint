@@ -50,7 +50,7 @@ def memoize(f):
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
-        for k, v in tempargdict.iteritems():
+        for k, v in tempargdict.items():
             argdict[k] = v
 
         key = str(hash(frozenset(argdict.items())))
