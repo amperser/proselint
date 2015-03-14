@@ -7,3 +7,5 @@ site/write/*
 tests/corpus/newyorker/*
 cache/*
 proselint/cache/*
+proselintMDP.sublime-project
+proselintMDP.sublime-workspace
