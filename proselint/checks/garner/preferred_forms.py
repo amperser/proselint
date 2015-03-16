@@ -126,6 +126,11 @@ def check(blob):
         ["railroad magnate",    ["railroard magnet"]],
         ["long distances",      ["lengthy distances"]],
 
+        # Verbosity
+        ["try to",              ["make an attemp to"]],
+        ["try to",              ["make attempts to"]],
+        ["try to",              ["make efforts to"]],
+
         # TODO, entries that are a bit complicated
         # announce
     ]
