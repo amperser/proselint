@@ -50,7 +50,8 @@ def check(blob):
 def is_broken_link(url):
     """Check if the link return a 404 error."""
     try:
-        request = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        request = urllib.request.Request(
+            url, headers={'User-Agent': 'Mozilla/5.0'})
         urllib.request.urlopen(request).read()
         return False
     except urllib.error.URLError:
