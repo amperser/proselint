@@ -17,7 +17,7 @@ live_write_path = os.path.join(proselint_path, "site", "write")
 
 shutil.copytree(code_mirror_path, live_write_path)
 
-demo_path = os.path.join(proselint_path, "demo.md")
+demo_path = os.path.join(proselint_path, "proselint", "demo.md")
 
 with open(demo_path, "r") as f:
     demo = f.read()
