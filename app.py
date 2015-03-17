@@ -6,8 +6,14 @@ from flask_cors import CORS, cross_origin
 import uuid
 import os
 import re
-import urllib2
 import json
+try:
+    # For Python 3.0 and later
+    from urllib.parse import unquote
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import unquote
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,7 +27,7 @@ def lint():
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
 
-    text = urllib2.unquote(request.values['text'])
+    text = unquote(request.values['text'])
 
     with open(filename, "w+") as f:
         f.write(text)

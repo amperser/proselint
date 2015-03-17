@@ -7,6 +7,8 @@ import shelve
 import inspect
 import functools
 import re
+import hashlib
+from textblob import TextBlob
 
 
 def on_heroku():
@@ -37,12 +39,11 @@ def memoize(f):
     try:
         cache = shelve.open(cachepath, protocol=2)
     except:
-        print 'Could not open cache file %s, maybe name collision' % cachepath
+        print('Could not open cache file %s, maybe name collision' % cachepath)
         cache = None
 
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
-        argdict = {}
 
         # handle instance methods
         if hasattr(f, '__self__'):
@@ -50,10 +51,13 @@ def memoize(f):
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
-        for k, v in tempargdict.iteritems():
-            argdict[k] = v
+        signature = f.__module__ + '.' + f.__name__
 
-        key = str(hash(frozenset(argdict.items())))
+        for item in tempargdict.items():
+            if isinstance(item, TextBlob):
+                signature += tempargdict['blob'].raw
+
+        key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
         try:
             return cache[key]
@@ -64,8 +68,8 @@ def memoize(f):
             return value
         except TypeError:
             call_to = f.__module__ + '.' + f.__name__
-            print ['Warning: could not disk cache call to ',
-                   '%s; it probably has unhashable args'] % (call_to)
+            print('Warning: could not disk cache call to ',
+                  '%s; it probably has unhashable args' % (call_to))
             return f(*args, **kwargs)
 
     return wrapped
