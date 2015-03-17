@@ -164,7 +164,7 @@ def proselint(
 
     # Use the demo file by default.
     if not file:
-        file = os.path.join(os.path.dirname(proselint_path), "demo.md")
+        file = os.path.join(proselint_path, "demo.md")
 
     return lint(file)
 

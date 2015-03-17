@@ -10,7 +10,8 @@ setup(
     author='Jordan Suchow',
     author_email='suchow@post.harvard.edu',
     license='MIT',
-    packages=['proselint'],
+    packages=['proselint', 'proselint.checks'],
+    package_data={'': ['demo.md']},
     zip_safe=False,
     entry_points={
         'console_scripts': [
