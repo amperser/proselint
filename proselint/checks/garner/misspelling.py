@@ -77,6 +77,7 @@ def check(blob):
         ["lessor",            ["leasor"]],
         ["liquefy",           ["liquify"]],
         ["loathsome",         ["loathesome"]],
+        ["to make do",        ["to make due"]],
         ["mademoiselle",      ["madamoiselle"]],
         ["minuscule",         ["miniscule"]],
         ["mischievous",       ["mischievious"]],
