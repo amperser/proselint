@@ -100,14 +100,14 @@ def lintscore():
             fullpath = os.path.join(root, f)
 
             # Run the linter.
-            print("Linting {}".format(f))
+            print "Linting {}".format(f)
             out = subprocess.check_output(
                 "proselint {}".format(fullpath), shell=True)
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            print("Found {} errors.".format(num_errors))
+            print "Found {} errors.".format(num_errors)
 
             # Open the document.
             subprocess.call("{} {}".format("open", fullpath), shell=True)
@@ -126,7 +126,7 @@ def lintscore():
                 except:
                     pass
 
-            print("Currently {} hits and {} false alarms\n---".format(tp, fp))
+            print "Currently {} hits and {} false alarms\n---".format(tp, fp)
 
     return tp * (1.0 * tp / (tp + fp)) ** 2
 
@@ -142,7 +142,7 @@ def proselint(
     """Define the linter command line API."""
     # Return the version number.
     if version:
-        print("v0.0.1")
+        print "v0.0.1"
         return
 
     # Run the intialization.
@@ -156,7 +156,7 @@ def proselint(
 
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
-        print("Deleting the cache...")
+        print "Deleting the cache..."
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
         subprocess.call(
             "rm -rfv proselint/cache > /dev/null && mkdir proselint/cache",
