@@ -16,7 +16,6 @@ def memoize(f):
     path_of_this_file = os.path.dirname(os.path.realpath(__file__))
 
     # Determine the location of the cache.
-    print path_of_this_file
     cache_dirname = os.path.join(path_of_this_file, "cache")
 
     # Create the cache if it does not already exist.
@@ -25,7 +24,6 @@ def memoize(f):
 
     cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
-    print cachepath
 
     try:
         cache = shelve.open(cachepath, protocol=2)
@@ -51,12 +49,9 @@ def memoize(f):
 
         key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
-        print key
-
         try:
             return cache[key]
         except KeyError:
-            print "miss"
             value = f(*args, **kwargs)
             cache[key] = value
             cache.sync()
