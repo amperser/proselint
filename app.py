@@ -8,6 +8,7 @@ import os
 import re
 import urllib2
 import json
+import io
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -21,9 +22,9 @@ def lint():
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
 
-    text = urllib2.unquote(request.values['text']).decode('utf-8')
+    text = urllib2.unquote(request.values['text'])
 
-    with open(filename, "w+") as f:
+    with io.open(filename, "w+", encoding='utf8') as f:
         f.write(text)
 
     out = subprocess.check_output("proselint {}".format(filename), shell=True)
