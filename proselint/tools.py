@@ -9,23 +9,11 @@ import functools
 import re
 
 
-def on_heroku():
-    """Figure out if we're on Heroku."""
-    if 'DYNO' in os.environ:
-        return True
-    else:
-        return False
-
-
 def memoize(f):
     """Cache results of computations on disk."""
     path_of_this_file = os.path.dirname(os.path.realpath(__file__))
 
-    # Determine the location of the cache.
-    if on_heroku():
-        cache_dirname = os.path.join(os.path.dirname(path_of_this_file), "tmp")
-    else:
-        cache_dirname = os.path.join(path_of_this_file, "cache")
+    cache_dirname = os.path.join(path_of_this_file, "cache")
 
     # Create the cache if it does not already exist.
     if not os.path.isdir(cache_dirname):
