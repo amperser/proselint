@@ -105,6 +105,7 @@ def check(blob):
         ["leery",               ["leary"]],
         ["infectious",          ["infectuous"]],
         ["inferable",           ["inferrable", "inferrible"]],
+        ["suicide",             ["suicide victim"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
@@ -125,6 +126,7 @@ def check(blob):
         ["oil magnate",         ["oil magnet"]],
         ["railroad magnate",    ["railroard magnet"]],
         ["long distances",      ["lengthy distances"]],
+        ["unorganic food",      ["inorganic food"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
