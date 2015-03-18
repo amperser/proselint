@@ -33,7 +33,6 @@ def memoize(f):
 
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
-        argdict = {}
 
         # handle instance methods
         if hasattr(f, '__self__'):
@@ -44,7 +43,7 @@ def memoize(f):
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
         for item in tempargdict.items():
-            if isinstance(item, TextBlob):
+            if isinstance(item[1], TextBlob):
                 signature += tempargdict['blob'].raw
 
         key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
