@@ -140,7 +140,6 @@ def lintscore():
 def proselint(
         file=None, version=None, initialize=None, debug=None, score=None):
     """Define the linter command line API."""
-
     # Return the version number.
     if version:
         print "v0.0.1"
@@ -158,9 +157,11 @@ def proselint(
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
         print "Deleting the cache..."
+        path_of_this_file = os.path.dirname(os.path.realpath(__file__))
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
         subprocess.call(
-            "rm -rfv proselint/cache > /dev/null && mkdir proselint/cache",
+            "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
+                os.path.join(path_of_this_file, "cache")),
             shell=True)
 
     # Use the demo file by default.
