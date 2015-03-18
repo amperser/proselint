@@ -13,6 +13,8 @@ def memoize(f):
     """Cache results of computations on disk."""
     path_of_this_file = os.path.dirname(os.path.realpath(__file__))
 
+    # Determine the location of the cache.
+    print path_of_this_file
     cache_dirname = os.path.join(path_of_this_file, "cache")
 
     # Create the cache if it does not already exist.

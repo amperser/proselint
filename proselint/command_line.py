@@ -140,6 +140,9 @@ def lintscore():
 def proselint(
         file=None, version=None, initialize=None, debug=None, score=None):
     """Define the linter command line API."""
+
+    print 'TEST'
+
     # Return the version number.
     if version:
         print "v0.0.1"
