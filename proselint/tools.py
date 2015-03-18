@@ -46,7 +46,7 @@ def memoize(f):
             if isinstance(item[1], TextBlob):
                 signature += tempargdict['blob'].raw
             else:
-                signature += item[1]
+                signature += unicode(item[1])
 
         key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
