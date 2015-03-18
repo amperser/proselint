@@ -21,7 +21,7 @@ def lint():
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
 
-    text = urllib2.unquote(request.values['text'])
+    text = urllib2.unquote(request.values['text']).decode('utf-8')
 
     with open(filename, "w+") as f:
         f.write(text)
