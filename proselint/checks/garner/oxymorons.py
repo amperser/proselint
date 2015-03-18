@@ -26,7 +26,25 @@ def check(blob):
     oxymorons = [
         "amateur expert",
         "increasingly less",
-        "advancing backwards?"
+        "advancing backwards?",
+        "alludes explicitly to",
+        "explicitly alludes to",
+        "totally obsolescent",
+        "completely obsolescent",
+        "generally always",
+        "usually always",
+        "increasingly less",
+        "build down",
+        "conspicuous absence",
+        "exact estimate",
+        "executive secretary",
+        "found missing",
+        "intense apathy",
+        "mandatory choice",
+        "nonworking mother",
+        "organized mess",
+        # "pretty ugly",
+        # "sure bet",
     ]
 
     return existence_check(blob, oxymorons, err, msg, offset=1)

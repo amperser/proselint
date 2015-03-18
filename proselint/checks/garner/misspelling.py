@@ -75,6 +75,8 @@ def check(blob):
         ["lassos",            ["lassoes"]],
         ["lessee",            ["leasee"]],
         ["lessor",            ["leasor"]],
+        ["liaison",           ["liason"]],
+        ["liaison",           ["laison"]],
         ["liquefy",           ["liquify"]],
         ["loathsome",         ["loathesome"]],
         ["to make do",        ["to make due"]],
