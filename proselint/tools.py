@@ -7,6 +7,8 @@ import shelve
 import inspect
 import functools
 import re
+from textblob import TextBlob
+import hashlib
 
 
 def memoize(f):
@@ -39,12 +41,17 @@ def memoize(f):
         if hasattr(f, '__self__'):
             args = args[1:]
 
+        signature = f.__module__ + '.' + f.__name__
+
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
-        for k, v in tempargdict.iteritems():
-            argdict[k] = v
+        for item in tempargdict.items():
+            if isinstance(item, TextBlob):
+                signature += tempargdict['blob'].raw
 
-        key = str(hash(frozenset(argdict.items())))
+        key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
+
+        print key
 
         try:
             return cache[key]
