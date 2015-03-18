@@ -23,6 +23,7 @@ def memoize(f):
 
     cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
+    print cachepath
 
     try:
         cache = shelve.open(cachepath, protocol=2)
@@ -48,6 +49,7 @@ def memoize(f):
         try:
             return cache[key]
         except KeyError:
+            print "miss"
             value = f(*args, **kwargs)
             cache[key] = value
             cache.sync()

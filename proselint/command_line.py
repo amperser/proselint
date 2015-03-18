@@ -57,6 +57,7 @@ def lint(path):
         blob = textblob.TextBlob(f.read())
         errors = []
         for check in checks:
+            print check.__name__
             start = time.time()
             errors += check(blob)
 
