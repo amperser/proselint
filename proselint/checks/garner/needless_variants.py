@@ -169,6 +169,7 @@ def check(blob):
         ["prurience",         ["pruriency"]],
         ["psychical",         ["psychal"]],
         ["punitive",          ["punitory"]],
+        ["pygmy",             ["pygmean", "pygmaen"]],
         ["quantify",          ["quantitate"]],
         ["questionnaire",     ["questionary"]],
         ["quiescence",        ["quiescency"]],
