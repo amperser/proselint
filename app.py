@@ -9,6 +9,7 @@ import re
 import urllib2
 import json
 import io
+from proselint import command_line
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -27,14 +28,11 @@ def lint():
     with io.open(filename, "w+", encoding='utf8') as f:
         f.write(text)
 
-    out = subprocess.check_output("proselint {}".format(filename), shell=True)
+    out = command_line.lint(filename)
+    labels = ["line", "column", "err", "msg"]
 
-    r = re.compile(
-        "(?:.*).md:(?P<line>\d*):(?P<column>\d*): (?P<err>\w{6}) (?P<msg>.*)")
-
-    out2 = sorted([r.search(line).groupdict() for line in out.splitlines()])
-
-    return json.dumps(out2)
+    return json.dumps(
+        [dict(zip(labels, o)) for o in out])
 
 
 if __name__ == '__main__':
