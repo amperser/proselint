@@ -53,7 +53,7 @@ from proselint.tools import memoize
 def check(blob):
     """Check the text."""
     err = "DFW200"
-    msg = "Comparison of an uncomparable: {} is not comparable."
+    msg = "Comparison of an uncomparable: '{}' is not comparable."
 
     comparators = [
         "most",
