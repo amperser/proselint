@@ -43,7 +43,7 @@ abbreviatable to NASA
 academicly superior.
 transhipped
 an aider and abbeter
-it's adduceable
+it's adducable
 let's look for an acquiror
 i wonder what tort-feasor means
 Get that off of me before I catch on fire!
