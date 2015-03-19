@@ -13,6 +13,8 @@ import subprocess
 import ntpath
 import re
 import textblob
+import json
+import importlib
 
 
 base_url = "prose.lifelinter.com/"
@@ -43,23 +45,30 @@ def run_initialization():
 
 def lint(path):
     """Run the linter on the file with the given path."""
-    # Extract functions from the checks folder.
+    # Load the options.
+    options = json.load(open('.proselintrc'))
+
+    # Extract the checks.
     checks = []
-    for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
-        module = loader.find_module(module_name).load_module(module_name)
+    check_names = [key for key, val in options["checks"].items() if val]
+    for check_name in check_names:
+        module = importlib.import_module("proselint.checks." + check_name)
         for d in dir(module):
             if re.match("check", d):
                 checks.append(getattr(module, d))
 
     # Apply all the checks.
+    errors = []
     with codecs.open(path, "r", encoding='utf-8') as f:
         blob = textblob.TextBlob(f.read())
         errors = []
         for check in checks:
             errors += check(blob)
+            if len(errors) > options["max_errors"]:
+                break
 
         # Sort the errors by line and column number.
-        errors = sorted(errors)
+        errors = sorted(errors[:options["max_errors"]])
 
         # Display the errors.
         for error in errors:
