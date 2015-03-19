@@ -13,7 +13,6 @@ import subprocess
 import ntpath
 import re
 import textblob
-import time
 
 
 base_url = "prose.lifelinter.com/"
@@ -57,7 +56,6 @@ def lint(path):
         blob = textblob.TextBlob(f.read())
         errors = []
         for check in checks:
-            start = time.time()
             errors += check(blob)
 
         # Sort the errors by line and column number.
