@@ -26,7 +26,7 @@ def log_error(filename, line, column, error_code, msg):
                str(1 + line) + ":" +
                str(1 + column) + ": " +
                error_code + " " +
-               msg + " " + base_url + error_code)
+               msg)
 
 
 def run_initialization():
