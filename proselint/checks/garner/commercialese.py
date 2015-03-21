@@ -52,4 +52,4 @@ def check(blob):
         "yours of even date"
     ]
 
-    return existence_check(blob, commercialese, err, msg)
+    return existence_check(blob, commercialese, err, msg, join=True)

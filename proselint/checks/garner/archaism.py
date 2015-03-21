@@ -83,4 +83,4 @@ def check(blob):
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(blob, archaisms, err, msg)
+    return existence_check(blob, archaisms, err, msg, join=True)
