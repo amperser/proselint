@@ -17,6 +17,7 @@ The first line is always wrong.
 import re
 from proselint.tools import memoize
 import os
+import nltk
 
 
 @memoize
@@ -54,7 +55,6 @@ def starts_with_vowel_sound(word):
     """Check whether the word starts with a vowel sound."""
     # Get the pronunciations of the word.
     if 'd' not in globals():
-        import nltk
         nltk.data.path.append(
             os.path.join(
                 os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
