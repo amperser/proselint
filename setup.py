@@ -11,7 +11,7 @@ setup(
     author_email='suchow@post.harvard.edu',
     license='MIT',
     packages=['proselint', 'proselint.checks'],
-    package_data={'': ['demo.md']},
+    package_data={'': ['demo.md', '.proselintrc']},
     zip_safe=False,
     entry_points={
         'console_scripts': [

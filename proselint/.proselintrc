@@ -1,7 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
-        "garner.a_vs_an"                : true,
+        "garner.a_vs_an"                : false,
         "garner.airlinese"              : true,
         "garner.animal_labels"          : true,
         "garner.archaism"               : true,
@@ -27,7 +27,7 @@
         "misc.creditcard"               : true,
         "misc.currency"                 : true,
         "misc.hyperbolic"               : true,
-        "misc.linkchecker"              : true,
+        "misc.linkchecker"              : false,
         "misc.password"                 : true,
         "misc.yelling"                  : true,
         "pinker.apologizing"            : true,
@@ -42,7 +42,7 @@
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "wallstreetjournal.misspelling" : true,
-        "writegood.cliches"             : true,
+        "writegood.cliches"             : false,
         "writegood.lexical_illusions"   : true,
         "writegood.weasel_words"        : true
     }
