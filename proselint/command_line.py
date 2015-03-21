@@ -14,6 +14,7 @@ import ntpath
 import re
 import textblob
 import json
+import time
 import importlib
 
 
@@ -43,7 +44,7 @@ def run_initialization():
             pass
 
 
-def lint(path):
+def lint(path, debug=False):
     """Run the linter on the file with the given path."""
     # Load the options.
     proselint_path = os.path.dirname(os.path.realpath(__file__))
@@ -64,7 +65,15 @@ def lint(path):
         blob = textblob.TextBlob(f.read())
         errors = []
         for check in checks:
+            if debug:
+                print(check.__module__ + "." + check.__name__)
+                start = time.time()
+
             errors += check(blob)
+
+            if debug:
+                print time.time() - start
+
             if len(errors) > options["max_errors"]:
                 break
 
@@ -176,7 +185,7 @@ def proselint(
     if not file:
         file = os.path.join(proselint_path, "demo.md")
 
-    return lint(file)
+    return lint(file, debug=debug)
 
 
 if __name__ == '__main__':
