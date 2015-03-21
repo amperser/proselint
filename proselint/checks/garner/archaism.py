@@ -64,8 +64,6 @@ def check(blob):
         "whilom",
         "withal",
         "wot",
-        "ye",
-        "yea",
         "enclosed please find",
         "please find enclosed",
         "enclosed herewith",
