@@ -47,6 +47,7 @@ attention and expects you to have done the same.
 """
 import re
 from proselint.tools import memoize
+import itertools
 
 
 @memoize
@@ -108,18 +109,11 @@ def check(blob):
     ]
 
     exceptions = [
-        "more perfect"
+        ("more", "perfect")
     ]
 
-    errors = []
-    for comp in comparators:
-        for uncomp in uncomparables:
+    all = [i[0] + "\s" + i[1] + "[\W$]" for i in itertools.product(
+           comparators, uncomparables) if i not in exceptions]
 
-            if "{} {}".format(comp, uncomp) in exceptions:
-                continue
-
-            occ = re.finditer(comp + "\s" + uncomp + "[\W$]", blob.raw.lower())
-            for o in occ:
-                errors.append((o.start(), o.end(), err, msg.format(uncomp)))
-
-    return errors
+    occ = re.finditer("|".join(all), blob.raw.lower())
+    return [(o.start(), o.end(), err, msg.format(o.group(0))) for o in occ]
