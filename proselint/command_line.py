@@ -46,7 +46,8 @@ def run_initialization():
 def lint(path):
     """Run the linter on the file with the given path."""
     # Load the options.
-    options = json.load(open('.proselintrc'))
+    proselint_path = os.path.dirname(os.path.realpath(__file__))
+    options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
     # Extract the checks.
     checks = []
