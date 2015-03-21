@@ -724,4 +724,4 @@ def check(blob):
         "young and vibrant",
     ]
 
-    return existence_check(blob, cliches, err, msg)
+    return existence_check(blob, cliches, err, msg, join=True)

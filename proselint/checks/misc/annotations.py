@@ -32,4 +32,5 @@ def check(blob):
         "FIX THIS",
     ]
 
-    return existence_check(blob, annotations, err, msg, ignore_case=False)
+    return existence_check(
+        blob, annotations, err, msg, ignore_case=False, join=True)

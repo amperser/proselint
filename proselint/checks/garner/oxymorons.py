@@ -47,4 +47,4 @@ def check(blob):
         # "sure bet",
     ]
 
-    return existence_check(blob, oxymorons, err, msg, offset=1)
+    return existence_check(blob, oxymorons, err, msg, offset=1, join=True)

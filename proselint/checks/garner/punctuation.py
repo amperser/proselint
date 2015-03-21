@@ -28,4 +28,4 @@ def check_et_al(blob):
         "et. al",
         "et. al."
     ]
-    return existence_check(blob, list, err, msg)
+    return existence_check(blob, list, err, msg, join=True)

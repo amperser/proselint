@@ -132,7 +132,7 @@ def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
 
 def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
                     max_errors=float("inf"), offset=0, require_padding=True,
-                    dotall=False, excluded_topics=None):
+                    dotall=False, excluded_topics=None, join=False):
     """Build a checker that blacklists certain words."""
     flags = 0
 
