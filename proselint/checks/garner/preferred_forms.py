@@ -106,6 +106,8 @@ def check(blob):
         ["infectious",          ["infectuous"]],
         ["inferable",           ["inferrable", "inferrible"]],
         ["suicide",             ["suicide victim"]],
+        ["with regard to",      ["with regards to"]],
+        ["in regard to",        ["in regards to"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
