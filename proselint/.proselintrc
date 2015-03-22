@@ -13,6 +13,7 @@
         "garner.illogic"                : true,
         "garner.malaproprisms"          : true,
         "garner.misspelling"            : true,
+        "garner.mixed_metaphors"        : true,
         "garner.needless_variants"      : true,
         "garner.oxymorons"              : true,
         "garner.preferred_forms"        : true,

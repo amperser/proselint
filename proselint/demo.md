@@ -48,6 +48,10 @@ let's look for an acquiror
 i wonder what tort-feasor means
 Get that off of me before I catch on fire!
 
+# Mixed metaphors
+Get ready: button your seatbelts.
+The cream rises to the crop.
+
 # Illogic and redundancy
 approximately about 5 atm machines
 atm machine
