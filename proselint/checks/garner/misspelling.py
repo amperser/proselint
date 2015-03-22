@@ -24,6 +24,7 @@ def check(blob):
     msg = "Misspelling. '{}' is the preferred form."
 
     misspellings = [
+        ["a lot",             ["alot"]],
         ["academically",      ["academicly"]],
         ["accidentally",      ["accidently"]],
         ["accommodable",      ["accomodatable"]],
@@ -70,6 +71,7 @@ def check(blob):
         ["inundates",         ["innundates"]],
         ["inundating",        ["innundating"]],
         ["iridescent",        ["irridescent"]],
+        ["irrelevant",        ["irrevelant"]],
         ["jujitsu",           ["jiujutsu"]],
         ["kaleidoscope",      ["kaleidascope"]],
         ["knickknack",        ["knicknack"]],
