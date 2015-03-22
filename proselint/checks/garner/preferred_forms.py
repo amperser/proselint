@@ -127,13 +127,12 @@ def check(blob):
         ["railroad magnate",    ["railroard magnet"]],
         ["long distances",      ["lengthy distances"]],
         ["unorganic food",      ["inorganic food"]],
+        ["corroborating evidence", ["corroborative evidence"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
         ["try to",              ["make attempts to"]],
         ["try to",              ["make efforts to"]],
-
-
 
         # TODO, entries that are a bit complicated
         # announce

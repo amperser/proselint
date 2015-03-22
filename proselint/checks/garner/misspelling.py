@@ -30,6 +30,7 @@ def check(blob):
         ["anilingus",         ["analingus"]],
         ["aren't i",          ["amn't i"]],
         ["aren't i",          ["an't i"]],
+        ["barbed wire",       ["bob wire"]],
         ["chargeable",        ["chargable"]],
         ["chiffonier",        ["chiffonnier"]],
         ["chintzy",           ["chinchy"]],

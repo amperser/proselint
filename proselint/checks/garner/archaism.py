@@ -26,7 +26,7 @@ def check(blob):
     archaisms = [
         "alack",
         "anent",
-        "anon",
+        # "anon",
         "begat",
         "belike",
         "betimes",
