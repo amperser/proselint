@@ -32,7 +32,7 @@ def check(blob):
 
     word_pairs = [
         ["advisor", "adviser"],
-        ["analyse", "analyze"],
+        # ["analyse", "analyze"],
         ["centre", "center"],
         ["emphasise", "emphasize"],
         ["finalise", "finalize"],
