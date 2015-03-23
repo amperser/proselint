@@ -46,7 +46,7 @@ One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
 import re
-from proselint.tools import memoize
+from tools import memoize
 import itertools
 
 
@@ -109,7 +109,8 @@ def check(blob):
     ]
 
     exceptions = [
-        ("more", "perfect")
+        ("more", "perfect"),
+        ("more", "possible")  # FIXME
     ]
 
     all = [i[0] + "\s" + i[1] + "[\W$]" for i in itertools.product(

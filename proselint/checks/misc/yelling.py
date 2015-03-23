@@ -14,7 +14,7 @@ categories: writing
 Too much yelling.
 
 """
-from proselint.tools import existence_check, memoize
+from tools import existence_check, memoize
 
 
 @memoize

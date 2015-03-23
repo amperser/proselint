@@ -14,7 +14,7 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import memoize
+from tools import memoize
 import re
 
 

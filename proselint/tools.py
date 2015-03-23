@@ -28,7 +28,7 @@ def memoize(f):
     try:
         cache = shelve.open(cachepath, protocol=2)
     except:
-        print 'Could not open cache file %s, maybe name collision' % cachepath
+        print('Could not open cache file %s, maybe name collision' % cachepath)
         cache = None
 
     @functools.wraps(f)
@@ -46,7 +46,7 @@ def memoize(f):
             if isinstance(item[1], TextBlob):
                 signature += tempargdict['blob'].raw
             else:
-                signature += unicode(item[1])
+                signature += str(item[1])
 
         key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
@@ -59,8 +59,8 @@ def memoize(f):
             return value
         except TypeError:
             call_to = f.__module__ + '.' + f.__name__
-            print ['Warning: could not disk cache call to ',
-                   '%s; it probably has unhashable args'] % (call_to)
+            print(['Warning: could not disk cache call to ',
+                   '%s; it probably has unhashable args'] % (call_to))
             return f(*args, **kwargs)
 
     return wrapped

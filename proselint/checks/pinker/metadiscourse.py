@@ -14,7 +14,7 @@ categories: writing
 Points out metadiscourse.
 
 """
-from proselint.tools import memoize, existence_check
+from tools import memoize, existence_check
 
 
 @memoize

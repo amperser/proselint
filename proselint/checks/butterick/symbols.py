@@ -14,7 +14,7 @@ categories: writing
 Use the symbols.
 
 """
-from proselint.tools import memoize, existence_check
+from tools import memoize, existence_check
 
 
 @memoize

@@ -14,7 +14,7 @@ categories: writing
 Denizen labels.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from tools import memoize, preferred_forms_check
 
 
 @memoize

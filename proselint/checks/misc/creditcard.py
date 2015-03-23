@@ -14,7 +14,7 @@ categories: writing
 Credit card number printed.
 
 """
-from proselint.tools import existence_check, memoize
+from tools import existence_check, memoize
 
 
 @memoize

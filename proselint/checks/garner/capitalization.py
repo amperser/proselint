@@ -14,7 +14,7 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from tools import memoize, preferred_forms_check
 
 
 @memoize
@@ -33,20 +33,20 @@ def check(blob):
     return preferred_forms_check(blob, list, err, msg, ignore_case=False)
 
 
-@memoize
-def check_seasons(blob):
-    """Suggest the preferred forms."""
-    err = "MAU102"
-    msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
+# @memoize
+# def check_seasons(blob):
+#     """Suggest the preferred forms."""
+#     err = "MAU102"
+#     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
 
-    list = [
-        ["winter",        ["Winter"]],
-        # ["fall",          ["Fall"]],
-        ["summer",        ["Summer"]],
-        # ["spring",        ["Spring"]],
-    ]
+#     list = [
+#         # ["winter",        ["Winter"]],
+#         # ["fall",          ["Fall"]],
+#         # ["summer",        ["Summer"]],
+#         # ["spring",        ["Spring"]],
+#     ]
 
-    return preferred_forms_check(blob, list, err, msg, ignore_case=False)
+#     return preferred_forms_check(blob, list, err, msg, ignore_case=False)
 
 
 @memoize

@@ -32,7 +32,7 @@ will require nltk & syntactic parsing)
 grammatical subject.
 """
 
-# from proselint.tools import memoize
+# from tools import memoize
 # import re
 
 

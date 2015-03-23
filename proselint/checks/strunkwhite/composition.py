@@ -45,7 +45,7 @@ Strunk & White say:
 11. Place the emphatic word of a sentence at the end.
     * MDPNB: Principle of recency.
 """
-from proselint.tools import memoize, preferred_forms_check
+from tools import memoize, preferred_forms_check
 
 
 @memoize

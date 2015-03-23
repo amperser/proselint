@@ -14,7 +14,7 @@ categories: writing
 Points out use of needless variants.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from tools import memoize, preferred_forms_check
 
 
 @memoize
@@ -231,6 +231,7 @@ def check(blob):
         ["legitimation",      ["legitimization"]],
         ["legitimize",        ["legitimatize"]],
         ["lengthwise",        ["lengthways"]],
+        ["licorice",          ["liquorice"]],
         ["life-size",         ["life-sized"]],
         ["lithe",             ["lithesome"]],
         ["loath",             ["loth"]],
@@ -264,7 +265,7 @@ def check(blob):
         ["participatory",     ["participative"]],
         ["partner",           ["copartner"]],
         ["partnership",       ["copartnership"]],
-        ["password",          ["passcode"]],
+        # ["password",          ["passcode"]],  # FIXME
         ["patina",            ["patine"]],
         ["pederast",          ["paederast"]],
         ["pediatrician",      ["pediatrist"]],
