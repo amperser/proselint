@@ -25,6 +25,7 @@ def check(blob):
 
     airlinese = [
         "enplan(?:e|ed|ing|ement)",
+        "deplan(?:e|ed|ing|ement)",
         "taking off momentarily",
     ]
 
