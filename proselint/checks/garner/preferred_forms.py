@@ -136,6 +136,14 @@ def check(blob):
         ["try to",              ["make attempts to"]],
         ["try to",              ["make efforts to"]],
 
+        # Euphemisms
+        ["rat-catcher",         ["rodent operative"]],
+        # ["exterminator",        ["extermination engineer"]],
+        ["abortion",            ["pregnancy termination"]],
+        ["bisexual",            ["sexually ambidextrous"]],
+        ["a search-and-destroy mission", ["armed reconnaissance"]],
+        ["firing",              ["permanent layoff"]],
+
         # TODO, entries that are a bit complicated
         # announce
     ]

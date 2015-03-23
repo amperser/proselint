@@ -25,8 +25,11 @@ def check(blob):
 
     preferences = [
 
-        ["cream rises to the top",   ["cream rises to the crop"]],
-        ["fasten your seatbelts",    ["button your seatbelts"]],
+        ["cream rises to the top",    ["cream rises to the crop"]],
+        ["fasten your seatbelts",     ["button your seatbelts"]],
+        ["a minute to decompress",    ["a minute to decompose"]],
+        ["sharpest tool in the shed", ["sharpest marble in the (shed|box)"]],
+        ["not rocket science",        ["not rocket surgery"]],
     ]
 
     return preferred_forms_check(blob, preferences, err, msg)
