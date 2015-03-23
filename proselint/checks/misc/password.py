@@ -13,7 +13,7 @@ categories: writing
 
 Don't put pass
 """
-from proselint.tools import existence_check, memoize
+from tools import existence_check, memoize
 
 
 @memoize

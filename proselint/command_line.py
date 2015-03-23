@@ -5,8 +5,8 @@
 
 import click
 import os
-from proselint.tools import line_and_column, is_quoted
-import proselint.checks as pl
+from tools import line_and_column, is_quoted
+import checks as pl
 import pkgutil
 import codecs
 import subprocess
@@ -54,7 +54,7 @@ def lint(path, debug=False):
     checks = []
     check_names = [key for key, val in options["checks"].items() if val]
     for check_name in check_names:
-        module = importlib.import_module("proselint.checks." + check_name)
+        module = importlib.import_module("checks." + check_name)
         for d in dir(module):
             if re.match("check", d):
                 checks.append(getattr(module, d))
@@ -72,7 +72,7 @@ def lint(path, debug=False):
             errors += check(blob)
 
             if debug:
-                print time.time() - start
+                print(time.time() - start)
 
             if len(errors) > options["max_errors"]:
                 break
@@ -117,14 +117,14 @@ def lintscore():
             fullpath = os.path.join(root, f)
 
             # Run the linter.
-            print "Linting {}".format(f)
+            print("Linting {}".format(f))
             out = subprocess.check_output(
                 "proselint {}".format(fullpath), shell=True)
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            print "Found {} errors.".format(num_errors)
+            print("Found {} errors.".format(num_errors))
 
             # Open the document.
             subprocess.call("{} {}".format("open", fullpath), shell=True)
@@ -143,7 +143,7 @@ def lintscore():
                 except:
                     pass
 
-            print "Currently {} hits and {} false alarms\n---".format(tp, fp)
+            print("Currently {} hits and {} false alarms\n---".format(tp, fp))
 
     return tp * (1.0 * tp / (tp + fp)) ** 2
 
@@ -159,7 +159,7 @@ def proselint(
     """Define the linter command line API."""
     # Return the version number.
     if version:
-        print "v0.0.1"
+        print("v0.0.1")
         return
 
     # Run the intialization.
@@ -173,7 +173,7 @@ def proselint(
 
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
-        print "Deleting the cache..."
+        print("Deleting the cache...")
         path_of_this_file = os.path.dirname(os.path.realpath(__file__))
         subprocess.call("find . -name '*.pyc' -delete", shell=True)
         subprocess.call(

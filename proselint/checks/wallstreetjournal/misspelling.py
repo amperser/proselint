@@ -14,7 +14,7 @@ categories: writing
 Points out misspellings.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from tools import memoize, preferred_forms_check
 
 
 @memoize

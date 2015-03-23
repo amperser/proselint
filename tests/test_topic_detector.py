@@ -1,4 +1,4 @@
-from proselint.tools import topics
+from tools import topics
 from textblob import TextBlob
 
 

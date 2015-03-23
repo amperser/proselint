@@ -15,7 +15,7 @@ The first line is always wrong.
 
 """
 import re
-from proselint.tools import memoize
+from tools import memoize
 import os
 import nltk
 
@@ -80,7 +80,7 @@ def starts_with_vowel_sound(word):
 
 def initialize():
     """Initialize the cache of pronunciations."""
-    print "Running initialization for garner.a_vs_an (may take a few minutes)"
+    print("Running initialization for garner.a_vs_an (may take a few minutes)")
     from nltk.corpus import cmudict
 
     global d
@@ -89,6 +89,6 @@ def initialize():
     for i, word in enumerate(d):
         starts_with_vowel_sound(word)
         if not (i % 1000):
-            print i
+            print(i)
 
     assert(d)

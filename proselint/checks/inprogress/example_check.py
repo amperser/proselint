@@ -14,7 +14,7 @@ categories: writing
 The first line always is always wrong.
 
 """
-from proselint.tools import reverse
+from tools import reverse
 
 
 def check(blob):
