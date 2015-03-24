@@ -1,11 +1,10 @@
 """Web app that serves proselint's API."""
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import uuid
 import os
 import urllib2
-import json
 import io
 from proselint import command_line
 from rq import Queue
@@ -35,18 +34,34 @@ def lint():
         text = urllib2.unquote(request.values['text'])
         job = q.enqueue(worker_function, text)
 
-        return json.dumps({"job_id": job.id})
+        return jsonify(job_id=job.id), 202
 
     elif 'job_id' in request.values:
         job = q.fetch_job(request.values['job_id'])
 
         if not job:
-            return json.dumps("expired")
+            return jsonify(
+                status="error",
+                message="No job with requested job_id."), 404
+
         elif not job.result:
-            return json.dumps("not done yet")
+            return jsonify(
+                status="error",
+                message="Job is not yet ready."), 202
+
         else:
-            labels = ["line", "column", "err", "msg"]
-            return json.dumps([dict(zip(labels, o)) for o in job.result])
+            errors = []
+            for i, e in enumerate(job.result):
+                app.logger.debug(e)
+                errors.append({
+                    "line": e[0],
+                    "column": e[1],
+                    "err": e[2],
+                    "msg": e[3],
+                })
+            return jsonify(
+                status="success",
+                data={"errors": errors})
 
 
 if __name__ == '__main__':
