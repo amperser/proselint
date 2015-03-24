@@ -16,6 +16,7 @@ import textblob
 import json
 import time
 import importlib
+import sys
 
 
 base_url = "prose.lifelinter.com/"
@@ -51,6 +52,7 @@ def lint(path, debug=False):
     options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
     # Extract the checks.
+    sys.path.append(proselint_path)
     checks = []
     check_names = [key for key, val in options["checks"].items() if val]
     for check_name in check_names:
