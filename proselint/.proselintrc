@@ -30,7 +30,7 @@
         "misc.creditcard"               : true,
         "misc.currency"                 : true,
         "misc.hyperbolic"               : true,
-        "misc.linkchecker"              : false,
+        "misc.linkchecker"              : true,
         "misc.password"                 : true,
         "misc.yelling"                  : true,
         "pinker.apologizing"            : true,
