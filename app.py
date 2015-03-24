@@ -18,6 +18,7 @@ q = Queue(connection=conn)
 
 
 def worker_function(text):
+    """Lint the text using a worker dyno."""
     id = uuid.uuid4()
     filename = os.path.join("tmp", "{}.md".format(id))
     with io.open(filename, "w+", encoding='utf8') as f:
