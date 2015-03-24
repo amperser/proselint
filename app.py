@@ -14,9 +14,17 @@ from worker import conn
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = "Origin, X-Requested-With, Content-Type, Accept"
-app.config["DEBUG"] = True
 
 q = Queue(connection=conn)
+
+
+def worker_function(text):
+    id = uuid.uuid4()
+    filename = os.path.join("tmp", "{}.md".format(id))
+    with io.open(filename, "w+", encoding='utf8') as f:
+        f.write(text)
+
+    return command_line.lint(filename)
 
 
 @app.route('/v1/', methods=['GET', 'POST'])
@@ -24,21 +32,12 @@ q = Queue(connection=conn)
 def lint():
     """Run linter on the provided text and return the results."""
     if 'text' in request.values:
-
-        id = uuid.uuid4()
-        filename = os.path.join("tmp", "{}.md".format(id))
-
         text = urllib2.unquote(request.values['text'])
-
-        with io.open(filename, "w+", encoding='utf8') as f:
-            f.write(text)
-
-        job = q.enqueue(command_line.lint, filename)
+        job = q.enqueue(worker_function, text)
 
         return json.dumps({"job_id": job.id})
 
     elif 'job_id' in request.values:
-
         job = q.fetch_job(request.values['job_id'])
 
         if not job:
