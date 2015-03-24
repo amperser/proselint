@@ -16,7 +16,10 @@ Check that links are not not broken.
 """
 from tools import memoize
 import re
-import urllib2
+try:
+    import urllib.request as urllib_request #for python 3
+except ImportError:
+    import urllib2 as urllib_request # for python 2
 from socket import error as SocketError
 
 
@@ -50,10 +53,10 @@ def check(blob):
 def is_broken_link(url):
     """Check if the link return a 404 error."""
     try:
-        request = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        urllib2.urlopen(request).read()
+        request = urllib_request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        urllib_request.urlopen(request).read()
         return False
-    except urllib2.URLError:
+    except urllib_request.URLError:
         return True
     except SocketError:
         return True
