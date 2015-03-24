@@ -1,5 +1,6 @@
-import os
+"""Heroku web worker."""
 
+import os
 import redis
 from rq import Worker, Queue, Connection
 

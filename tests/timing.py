@@ -1,3 +1,5 @@
+"""Compute time needed to run proselint over entire corpus."""
+
 import subprocess
 import os
 import time
