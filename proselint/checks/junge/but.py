@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "garner.sexism"
+    err = "junge.but"
     msg = "Gender bias. Use '{}' instead of '{}'."
 
     sexism = [

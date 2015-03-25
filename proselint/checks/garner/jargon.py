@@ -20,7 +20,7 @@ from tools import memoize, existence_check
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU101"
+    err = "garner.jargon"
     msg = u"'{}' is jargon. Can you replace it with something more standard?"
 
     jargon = [

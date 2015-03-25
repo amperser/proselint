@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check_et_al(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "garner.punctuation"
     msg = u"Misplaced punctuation. It's 'et al.'"
 
     list = [

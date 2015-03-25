@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU118"
+    err = "garner.animal_labels"
     msg = "There's a word for this: '{}'."
 
     preferences = [

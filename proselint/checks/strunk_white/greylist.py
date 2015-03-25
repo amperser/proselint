@@ -21,7 +21,7 @@ import re
 @memoize
 def check(blob):
     """Check the text."""
-    err = "STW100"
+    err = "strunk_white.greylist"
     msg = "Use of '{}'. {}"
 
     bad_words = [

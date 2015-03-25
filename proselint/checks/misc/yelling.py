@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "misc.yelling"
     msg = u"Too much yelling."
 
     regex = r"[^A-Z]\b((\s[A-Z]+){3,})"

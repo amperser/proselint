@@ -15,13 +15,12 @@ Cliches are cliché.
 
 """
 from tools import existence_check, memoize
-import re
 
 
 @memoize
 def check(blob):
     """Check the text."""
-    err = "WGD101"
+    err = "write_good.cliches"
     msg = u"'{}' is a cliché."
 
     cliches = [

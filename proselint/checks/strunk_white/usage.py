@@ -38,7 +38,7 @@ grammatical subject.
 
 # @memoize
 # def check(text):
-#     err = "STW100"
+#     err = "strunk_white.usage"
 #     msg = "Use of '{}'. {}"
 
 #     bad_words = [

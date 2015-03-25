@@ -19,7 +19,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MSC103"
+    err = "misc.password"
     msg = u"Don't put passwords in plain text."
 
     pwd_regex = "[:]? [\S]{6,30}"
@@ -29,6 +29,7 @@ def check(blob):
         "my password is{}".format(pwd_regex),
         "the password's{}".format(pwd_regex),
         "my password's{}".format(pwd_regex),
+        "^[pP]assword{}".format(pwd_regex),
     ]
 
     return existence_check(blob, password, err, msg)

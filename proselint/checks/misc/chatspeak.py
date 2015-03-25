@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MSC104"
+    err = "misc.chatspeak"
     msg = u"'{}' is chatspeak. Write it out."
 
     words = [

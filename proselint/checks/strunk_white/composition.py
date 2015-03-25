@@ -51,7 +51,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "STW102"
+    err = "strunk_white.composition"
     msg = "Try '{}' instead of '{}'."
 
     bad_forms = [

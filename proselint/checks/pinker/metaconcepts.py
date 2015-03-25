@@ -20,7 +20,7 @@ Point out misuse of scare quotes.
 # @memoize
 # def check(blob):
 #     """Suggest the preferred forms."""
-#     err = "PKR102"
+#     err = "pinker.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."
 
 #     narcisissm = [

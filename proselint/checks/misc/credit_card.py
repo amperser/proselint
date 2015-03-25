@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MSC102"
+    err = "misc.credit_card"
     msg = u"Don't put credit card numbers in plain text."
 
     credit_card_numbers = [

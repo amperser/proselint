@@ -20,7 +20,7 @@ from tools import memoize, existence_check
 @memoize
 def check_ellipsis(blob):
     """Use an ellipsis instead of three dots."""
-    err = "BTR101"
+    err = "butterick.symbols.ellipsis"
     msg = u"'...' is an approximation, use the ellipsis symbol '…'."
     regex = "\.\.\."
 
@@ -31,7 +31,7 @@ def check_ellipsis(blob):
 @memoize
 def check_copyright_symbol(blob):
     """Use the copyright symbol instead of (c)."""
-    err = "BTR102"
+    err = "butterick.symbols.copyright"
     msg = u"(c) is a goofy alphabetic approximation, use the symbol ©."
     regex = "\([cC]\)"
 
@@ -42,7 +42,7 @@ def check_copyright_symbol(blob):
 @memoize
 def check_trademark_symbol(blob):
     """Use the trademark symbol instead of (c)."""
-    err = "BTR103"
+    err = "butterick.symbols.trademark"
     msg = u"(TM) is a goofy alphabetic approximation, use the symbol ™."
     regex = "\(TM\)"
 
@@ -53,7 +53,7 @@ def check_trademark_symbol(blob):
 @memoize
 def check_registered_trademark_symbol(blob):
     """Use the registered trademark symbol instead of (R)."""
-    err = "BTR103"
+    err = "butterick.symbols.trademark"
     msg = u"(R) is a goofy alphabetic approximation, use the symbol ®."
     regex = "\([rR]\)"
 
@@ -64,7 +64,7 @@ def check_registered_trademark_symbol(blob):
 @memoize
 def check_sentence_spacing(blob):
     """Use the registered trademark symbol instead of (R)."""
-    err = "BTR104"
+    err = "butterick.symbols.sentence_spacing"
     msg = u"More than two spaces after the period; use 1 or 2."
     regex = "\. {3}"
 

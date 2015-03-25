@@ -27,7 +27,7 @@ from tools import consistency_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "IEL100"
+    err = "consistency.spelling"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."
 
     word_pairs = [

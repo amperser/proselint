@@ -23,7 +23,7 @@ import nltk
 @memoize
 def check(blob):
     """Define the check."""
-    err = "MAU101"
+    err = "garner.a_vs_an"
     msg_a = "'a' should be 'an'."
     msg_an = "'an' should be 'a'."
 

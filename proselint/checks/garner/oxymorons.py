@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU120"
+    err = "garner.oxymorons"
     msg = u"'{}' is an oxymoron."
 
     oxymorons = [

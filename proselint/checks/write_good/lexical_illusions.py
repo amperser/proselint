@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "WGD105"
+    err = "write_good.lexical_illusions"
     msg = u"There's a lexical illusion here: a word is repeated."
 
     commercialese = [

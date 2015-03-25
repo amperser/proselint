@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "garner.archaism"
     msg = u"'{}' is archaic."
 
     archaisms = [

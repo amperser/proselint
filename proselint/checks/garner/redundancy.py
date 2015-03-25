@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU103"
+    err = "garner.redundancy"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -110,7 +110,7 @@ def check(blob):
 @memoize
 def check_redundant_acronym_syndrome(blob):
     """Suggest the preferred forms."""
-    err = "MAU104"
+    err = "garner.redundancy.ras"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
 
     redundancies = [

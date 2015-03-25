@@ -55,10 +55,15 @@ def lint():
             for i, e in enumerate(job.result):
                 app.logger.debug(e)
                 errors.append({
-                    "line": e[0],
-                    "column": e[1],
-                    "err": e[2],
-                    "msg": e[3],
+                    "check": e[0],
+                    "message": e[1],
+                    "line": e[2],
+                    "column": e[3],
+                    "start": e[4],
+                    "end": e[5],
+                    "extent": e[6],
+                    "severity": e[7],
+                    "replacements": e[8],
                 })
             return jsonify(
                 status="success",
