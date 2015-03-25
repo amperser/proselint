@@ -61,7 +61,7 @@ def lint():
                     "column": e[3],
                     "start": e[4],
                     "end": e[5],
-                    "extent": e[6],
+                    "extent": e[5] - e[4],
                     "severity": e[7],
                     "replacements": e[8],
                 })
