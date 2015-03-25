@@ -78,7 +78,7 @@ def lint(path, debug=False):
                 (line, column) = line_and_column(blob.raw, start)
                 if not is_quoted(start, blob):
                     errors += [(check, message, line, column, start, end,
-                               None, "warning", None)]
+                               end - start, "warning", None)]
 
             if debug:
                 print(time.time() - start_time)
