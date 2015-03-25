@@ -21,7 +21,7 @@ from tools import consistency_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "CST200"
+    err = "consistency.spacing"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
 
     regex = ["[\.\?!] [A-Z]", "[\.\?!]  [A-Z]"]

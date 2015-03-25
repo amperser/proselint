@@ -23,7 +23,7 @@ class Proselint(Linter):
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
     version_requirement = '>= 0.0.0'
     regex = (
-        r'^.+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)'
+        r'^.+?:(?P<line>\d+):(?P<col>\d+): \S* (?P<message>.+)'
     )
     multiline = True
     line_col_base = (1, 1)

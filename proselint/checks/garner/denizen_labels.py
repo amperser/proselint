@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU109"
+    err = "garner.denizen_labels"
     msg = "'{}' is the preferred denizen label."
 
     preferences = [

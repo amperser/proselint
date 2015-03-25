@@ -26,7 +26,7 @@ from socket import error as SocketError
 @memoize
 def check(blob):
     """Check the text."""
-    err = "ANN100"
+    err = "misc.link_checker"
     msg = u"Broken link: {}"
 
     regex = re.compile(

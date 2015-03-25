@@ -21,7 +21,7 @@ import re
 @memoize
 def check(blob):
     """Check the text."""
-    err = "DFW201"
+    err = "wallace.tense_present"
     msg = u"'{}'."
 
     illogics = [

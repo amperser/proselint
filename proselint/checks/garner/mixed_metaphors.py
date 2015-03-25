@@ -20,7 +20,7 @@ from tools import preferred_forms_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU104"
+    err = "garner.mixed_metaphors"
     msg = u"Mixed metaphor. Try '{}'."
 
     preferences = [

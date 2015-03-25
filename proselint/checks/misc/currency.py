@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MSC110"
+    err = "misc.currency"
     msg = u"Incorrent use of symbols in {}."
 
     symbols = [

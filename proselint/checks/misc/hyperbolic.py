@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MSC100"
+    err = "misc.hyperbolic"
     msg = u"'{}' is hyperbolic."
 
     words = [

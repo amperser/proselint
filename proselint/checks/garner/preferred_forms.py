@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "ganer.preferred_forms"
     msg = "'{}' is the preferred form."
 
     preferences = [
@@ -154,7 +154,7 @@ def check(blob):
 @memoize
 def check_able_ible(blob):
     """-able vs. -ible."""
-    err = "MAU102"
+    err = "garner.preferred_forms.ible"
     msg = "-able vs. -ible. '{}' is the preferred form."
 
     preferences = [
@@ -324,7 +324,7 @@ def check_able_ible(blob):
 @memoize
 def check_able_atable(blob):
     """-able vs. -ible."""
-    err = "MAU102"
+    err = "garner.preferred_forms.atable"
     msg = "-able vs. -atable. '{}' is the preferred form."
 
     preferences = [
@@ -405,7 +405,7 @@ def check_able_atable(blob):
 @memoize
 def check_em_vs_em_and_en_vs_in(blob):
     """em- vs. en-, im- vs. in-."""
-    err = "MAU102"
+    err = "garner.preferred_forms.em"
     msg = "em-, im-, en-, and in-. '{}' is the preferred form."
 
     preferences = [

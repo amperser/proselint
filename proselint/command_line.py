@@ -13,7 +13,7 @@ import subprocess
 import ntpath
 import re
 import textblob
-import json
+import json as js
 import time
 import importlib
 import sys
@@ -49,7 +49,7 @@ def lint(path, debug=False):
     """Run the linter on the file with the given path."""
     # Load the options.
     proselint_path = os.path.dirname(os.path.realpath(__file__))
-    options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
+    options = js.load(open(os.path.join(proselint_path, '.proselintrc')))
 
     # Extract the checks.
     sys.path.append(proselint_path)
@@ -69,25 +69,25 @@ def lint(path, debug=False):
         for check in checks:
             if debug:
                 print(check.__module__ + "." + check.__name__)
-                start = time.time()
+                start_time = time.time()
 
-            errors += check(blob)
+            result = check(blob)
+
+            for error in result:
+                (start, end, check, message) = error
+                (line, column) = line_and_column(blob.raw, start)
+                if not is_quoted(start, blob):
+                    errors += [(check, message, line, column, start, end,
+                               None, "warning", None)]
 
             if debug:
-                print(time.time() - start)
+                print(time.time() - start_time)
 
             if len(errors) > options["max_errors"]:
                 break
 
         # Sort the errors by line and column number.
         errors = sorted(errors[:options["max_errors"]])
-
-        # Display the errors.
-        for error in errors:
-            (start, end, error_code, msg) = error
-            (line, column) = line_and_column(blob.raw, start)
-            if not is_quoted(start, blob):
-                log_error(path, line, column, error_code, msg)
 
     return errors
 
@@ -155,9 +155,10 @@ def lintscore():
 @click.option('--initialize/--i', default=None)
 @click.option('--debug/--d', default=False)
 @click.option('--score/--s', default=False)
+@click.option('--json/-j', default=False)
 @click.argument('file', default=False)
-def proselint(
-        file=None, version=None, initialize=None, debug=None, score=None):
+def proselint(file=None, version=None, initialize=None,
+              debug=None, score=None, json=False):
     """Define the linter command line API."""
     # Return the version number.
     if version:
@@ -187,8 +188,38 @@ def proselint(
     if not file:
         file = os.path.join(proselint_path, "demo.md")
 
-    return lint(file, debug=debug)
+    errors = lint(file, debug=debug)
 
+    # Display the errors.
+
+    if json:
+        print(errors)
+        out = []
+        for e in errors:
+            out.append({
+                "check": e[0],
+                "message": e[1],
+                "line": e[2],
+                "column": e[3],
+                "start": e[4],
+                "end": e[5],
+                "extent": e[6],
+                "severity": e[7],
+                "replacements": e[8],
+            })
+        result = dict(
+            status="success",
+            data={"errors": out})
+
+        print(js.dumps(result))
+
+    else:
+        for error in errors:
+
+            (check, message, line, column, start, end,
+                extent, severity, replacements) = error
+
+            log_error(file, line, column, check, message)
 
 if __name__ == '__main__':
     proselint()

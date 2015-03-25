@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "ANN100"
+    err = "misc.annotations"
     msg = u"Annotation left in text."
 
     annotations = [

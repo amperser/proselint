@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU105"
+    err = "garner.illogic"
     msg = u"'{}' is illogical."
 
     illogics = [
@@ -41,7 +41,7 @@ def check(blob):
 @memoize
 def check_coin_a_phrase_from(blob):
     """Check the text."""
-    err = "MAU104"
+    err = "garner.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
 
     regex = "to coin a phrase from"
@@ -52,7 +52,7 @@ def check_coin_a_phrase_from(blob):
 @memoize
 def check_without_your_collusion(blob):
     """Check the textself."""
-    err = "MAU838"
+    err = "garner.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
 
     regex = "without your collusion"

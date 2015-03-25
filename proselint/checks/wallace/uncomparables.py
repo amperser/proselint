@@ -53,7 +53,7 @@ import itertools
 @memoize
 def check(blob):
     """Check the text."""
-    err = "DFW200"
+    err = "wallace.uncomparables"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
 
     comparators = [

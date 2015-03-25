@@ -20,7 +20,7 @@ from tools import memoize, existence_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "PKR100"
+    err = "pinker.metadiscourse"
     msg = "Excessive metadiscourse."
 
     metadiscourse = [

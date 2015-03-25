@@ -20,7 +20,7 @@ from tools import existence_check, memoize
 @memoize
 def check(blob):
     """Check the text."""
-    err = "MAU104"
+    err = "garner.commercialese"
     msg = u"'{}' is commercialese."
 
     commercialese = [

@@ -20,7 +20,7 @@ from tools import memoize, existence_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "PKR101"
+    err = "pinker.narcisissm"
     msg = "Professional narcisissm. Talk about the subject, not its study."
 
     narcisissm = [

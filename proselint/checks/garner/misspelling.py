@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "garner.misspellings"
     msg = "Misspelling. '{}' is the preferred form."
 
     misspellings = [

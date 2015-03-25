@@ -20,7 +20,7 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "garner.needless_variants"
     msg = "Needless variant. '{}' is the preferred form."
 
     preferences = [

@@ -20,8 +20,8 @@ from tools import memoize, preferred_forms_check
 @memoize
 def check(blob):
     """Suggest the preferred forms."""
-    err = "WSJ100"
-    msg = "Misspelling. '{}' is the preferred form."
+    err = "wsj.athletes"
+    msg = "Misspelling of athlete's name. '{}' is the preferred form."
 
     misspellings = [
         ["Dwyane Wade",         ["Dwayne Wade"]],

@@ -21,7 +21,7 @@ import calendar
 @memoize
 def check_decade_apostrophes_short(blob):
     """Check the text for dates of the form X0's."""
-    err = "MAU103"
+    err = "garner.dates"
     msg = u"Apostrophes aren't needed for decades."
 
     regex = "\d0\'s"
@@ -33,7 +33,7 @@ def check_decade_apostrophes_short(blob):
 @memoize
 def check_decade_apostrophes_long(blob):
     """Check the text for dates of the form XXX0's."""
-    err = "MAU103"
+    err = "garner.dates"
     msg = u"Apostrophes aren't needed for decades."
 
     regex = "\d\d\d0\'s"
@@ -43,7 +43,7 @@ def check_decade_apostrophes_long(blob):
 @memoize
 def check_dash_and_from(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "garner.dates"
     msg = u"When specifying a date range, write 'from X to Y'."
 
     regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+"
@@ -52,7 +52,7 @@ def check_dash_and_from(blob):
 
 def check_month_year_comma(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "garner.dates"
     msg = u"When specifying a month and year, no comma is needed."
 
     regex = "(?:" + "|".join(calendar.month_name[1:]) + "), \d{3,}"
@@ -62,7 +62,7 @@ def check_month_year_comma(blob):
 @memoize
 def check_month_of_year(blob):
     """Check the text."""
-    err = "MAU103"
+    err = "garner.dates"
     msg = u"When specifying a month and year, 'of' is unnecessary."
 
     regex = "(?:" + "|".join(calendar.month_name[1:]) + ") of \d{3,}"
