@@ -45,7 +45,7 @@ def lint():
                 status="error",
                 message="No job with requested job_id."), 404
 
-        elif not job.result:
+        elif job.result is None:
             return jsonify(
                 status="error",
                 message="Job is not yet ready."), 202
