@@ -1,7 +1,8 @@
 """Web app that serves proselint's API."""
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
+from flask_limiter import Limiter
 import uuid
 import os
 import urllib2
@@ -13,6 +14,7 @@ from worker import conn
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = "Origin, X-Requested-With, Content-Type, Accept"
+limiter = Limiter(app, global_limits=["600 per hour"])
 
 q = Queue(connection=conn)
 
@@ -27,7 +29,15 @@ def worker_function(text):
     return command_line.lint(filename)
 
 
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return make_response(
+        jsonify(status="error", message="Rate limit exceeded."), 429
+    )
+
+
 @app.route('/v1/', methods=['GET', 'POST'])
+@limiter.limit("60 per minute")
 @cross_origin()  # allow all origins all methods.
 def lint():
     """Run linter on the provided text and return the results."""
