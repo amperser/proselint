@@ -22,9 +22,10 @@ from tools import memoize, existence_check
 def check_very_damn(blob):
     """Use the registered trademark symbol instead of (R)."""
     err = "twain.damn"
-    msg = u"""Substitute 'damn' every time you're inclined to write 'very;'
-    your editor will delete it and the writing will be just as it should be."""
+    msg = ("Substitute 'damn' every time you're "
+           "inclined to write 'very;' your editor will delete it "
+           "and the writing will be just as it should be.")
     regex = "very"
 
     return existence_check(
-        blob, [regex], err, msg, max_errors=2)
+        blob, [regex], err, msg, max_errors=1)
