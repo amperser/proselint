@@ -53,6 +53,7 @@ Get ready: button your seatbelts.
 The cream rises to the crop.
 
 # Illogic and redundancy
+he is very smart
 approximately about 5 atm machines
 atm machine
 we associate together
