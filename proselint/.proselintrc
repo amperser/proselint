@@ -42,6 +42,7 @@
         "strunk_white.composition"      : true,
         "strunk_white.greylist"         : true,
         "strunk_white.usage"            : true,
+        "twain.damn"                    : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "wsj.athletes"                  : true,
