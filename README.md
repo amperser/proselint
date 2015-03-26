@@ -1,4 +1,4 @@
-![proselint](logo.png)
+<img src="logo.png" alt="proselint logo" style="width:200px;">
 
 `proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose.
 
