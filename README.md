@@ -1,4 +1,4 @@
-<img src="logo.png" alt="proselint logo" style="width:200px;">
+<img src="logo.png" alt="proselint logo" width="200">
 
 `proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose.
 
