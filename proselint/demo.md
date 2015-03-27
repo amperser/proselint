@@ -48,6 +48,7 @@ let's look for an acquiror
 i wonder what tort-feasor means
 Get that off of me before I catch on fire!
 There are many a person I have met and worked with who simply deride themselves into taking some action
+Suddenly, I see.
 
 # Mixed metaphors
 Get ready: button your seatbelts.
@@ -64,6 +65,9 @@ a more perfect union
 the surrounding circumstances
 he filled a much-needed gap
 To coin a phrase from the movie,
+
+# Blowing the punchline
+Suddenly, the car came to a stop.
 
 # Cliches
 under the weather
