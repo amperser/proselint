@@ -36,7 +36,7 @@ def ratelimit_handler(e):
     )
 
 
-@app.route('/v1/', methods=['GET', 'POST'])
+@app.route('/v0/', methods=['GET', 'POST'])
 @limiter.limit("60 per minute")
 @cross_origin()  # allow all origins all methods.
 def lint():
