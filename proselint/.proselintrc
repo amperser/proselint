@@ -14,6 +14,7 @@
         "garner.illogic"                : true,
         "garner.jargon"                 : true,
         "garner.malaproprisms"          : true,
+        "garner.many_a"                 : true,
         "garner.misspelling"            : true,
         "garner.mixed_metaphors"        : true,
         "garner.needless_variants"      : true,
