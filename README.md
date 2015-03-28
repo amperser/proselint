@@ -1,6 +1,6 @@
 <img src="logo.png" alt="proselint logo" width="200">
 
-`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. They include Bryan Garner, Mark Twain, David Foster Wallace, Steve Pinker, Chuck Palahniuk, Elmore Leonard, Matthew Butterick, The Wall Street Journal, William Struk, and E.B. White. Many more are on their way and will shortly arrive. Our goal is to aggregate human knowledge about best practices in writing and to make that knowledge immediately available to all authors in the form of a linter for prose — we call it proselint.
+`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, Mark Twain, David Foster Wallace, Steve Pinker, Chuck Palahniuk, Elmore Leonard, Matthew Butterick, The Wall Street Journal, William Strunk, and E.B. White. Many others are on their way and will arrive shortly. The goal here is to aggregate human knowledge about best practices in writing and then to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
 
 ### Installation
 
