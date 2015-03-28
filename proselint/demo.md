@@ -68,6 +68,7 @@ To coin a phrase from the movie,
 
 # Blowing the punchline
 Suddenly, the car came to a stop.
+All hell broke loose on the farm.
 
 # Cliches
 under the weather

@@ -27,6 +27,7 @@
         "consistency.spelling"          : true,
         "butterick.symbols"             : true,
         "leonard.exclamation"           : true,
+        "leonard.hell"                  : true,
         "misc.annotations"              : true,
         "misc.chatspeak"                : true,
         "misc.credit_card"              : true,
