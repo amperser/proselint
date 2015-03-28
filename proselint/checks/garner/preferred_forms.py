@@ -130,6 +130,7 @@ def check(blob):
         ["long distances",      ["lengthy distances"]],
         ["unorganic food",      ["inorganic food"]],
         ["corroborating evidence", ["corroborative evidence"]],
+        ["statute of limitationas", ["statute of limits"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],

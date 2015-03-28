@@ -80,6 +80,8 @@ def check(blob):
         ["lessor",            ["leasor"]],
         ["liaison",           ["liason"]],
         ["liaison",           ["laison"]],
+        ["lightning rod",     ["lightening rod"]],
+        ["struck by lightning", ["struck by lightening"]],
         ["liquefy",           ["liquify"]],
         ["loathsome",         ["loathesome"]],
         ["to make do",        ["to make due"]],
