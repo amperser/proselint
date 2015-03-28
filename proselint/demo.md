@@ -98,6 +98,9 @@ this obviously works
 brb
 rofl
 
+# Ogilvy's pretension
+We'll need to reconceptualize this sentence.
+
 # Airlinese
 enplanement
 I'll be with you momentarily
