@@ -98,6 +98,7 @@ def check(blob):
         ["throughout the",    ["throughout the entire"]],
         ["twins",             ["pair of twins"]],
         ["vacancy",           ["unfilled vacancy"]],
+        ["various",           ["various different"]],
         ["veteran",           ["former veteran"]],
         ["visible",           ["visible to the eye"]],
         ["vocation",          ["professional vocation"]],

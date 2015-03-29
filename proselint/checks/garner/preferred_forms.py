@@ -108,6 +108,8 @@ def check(blob):
         ["suicide",             ["suicide victim"]],
         ["with regard to",      ["with regards to"]],
         ["in regard to",        ["in regards to"]],
+        ["weather vane",        ["weather vein", "weather vain"]],
+        ["vaipidity",           ["vapidness"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
@@ -131,6 +133,8 @@ def check(blob):
         ["unorganic food",      ["inorganic food"]],
         ["corroborating evidence", ["corroborative evidence"]],
         ["statute of limitationas", ["statute of limits"]],
+        ["vale of tears",       ["veil of tears"]],
+        ["Venus flytrap",       ["Venus's flytrap", "Venus' flytrap"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],

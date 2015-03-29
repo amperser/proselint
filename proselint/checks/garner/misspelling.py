@@ -110,6 +110,7 @@ def check(blob):
         ["tinderbox",         ["tenderbox"]],
         ["timpani",           ["tympani"]],
         ["a timpani",         ["a timpano"]],
+        ["verbiage",          ["verbage"]],
     ]
 
     return preferred_forms_check(blob, misspellings, err, msg)
