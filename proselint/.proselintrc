@@ -35,6 +35,7 @@
         "misc.hyperbolic"               : true,
         "misc.link_checker"             : true,
         "misc.password"                 : true,
+        "nordquist.redundancy"          : true,
         "ogilvy.pretension"             : true,
         "orwell.debased"                : true,
         "palahniuk.suddenly"            : true,
