@@ -36,6 +36,7 @@
         "misc.link_checker"             : true,
         "misc.password"                 : true,
         "nordquist.redundancy"          : true,
+        "norris.denizen_labels"         : true,
         "ogilvy.pretension"             : true,
         "orwell.debased"                : true,
         "palahniuk.suddenly"            : true,

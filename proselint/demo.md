@@ -132,6 +132,7 @@ I did not pay any attention to detail.
 Use ellipsis not three dots...
 
 # Denizen labels
+The Manchesterian was a good Brit.
 One from Michigan is not a Michiganite but a Michigander.
 One from Colorado is not a Coloradoan but a Coloradan.
 
