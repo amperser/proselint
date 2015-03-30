@@ -158,14 +158,14 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
         if any([t in excluded_topics for t in tps]):
             return errors
 
-    for w in list:
-        for m in re.finditer(regex.format(w), blob.raw, flags=flags):
-            txt = m.group(0).strip()
-            errors.append((
-                m.start() + 1 + offset,
-                m.end() + offset,
-                err,
-                msg.format(txt)))
+    rx = "|".join(regex.format(w) for w in list)
+    for m in re.finditer(rx, blob.raw, flags=flags):
+        txt = m.group(0).strip()
+        errors.append((
+            m.start() + 1 + offset,
+            m.end() + offset,
+            err,
+            msg.format(txt)))
 
     # If max_errors was specified, truncate the list of errors and let the
     # user know the total number of times that the error was found elsewhere.
