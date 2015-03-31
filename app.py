@@ -74,6 +74,8 @@ def lint():
                     "extent": e[5] - e[4],
                     "severity": e[7],
                     "replacements": e[8],
+                    "source_name": "",
+                    "source_url": "",
                 })
             return jsonify(
                 status="success",

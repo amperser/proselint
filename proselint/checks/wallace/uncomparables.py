@@ -5,7 +5,7 @@ u"""DFW200: Comparing uncomparables.
 layout:     post
 error_code: DFW200
 source:     David Foster Wallace
-source_url: http://bit.ly/1qudVuC
+source_url: http://www.telegraph.co.uk/a/9715551
 title:      Comparing an uncomparable
 date:       2014-06-10 12:31:19
 categories: writing
