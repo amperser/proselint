@@ -18,7 +18,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.cliches"
     msg = u"'{}' is cliché."
@@ -104,5 +104,4 @@ def check(blob):
         "wool pulled over our eyes",
         "writ large",
     ]
-
-    return existence_check(blob, cliches, err, msg, join=True)
+    return existence_check(text, cliches, err, msg, join=True)

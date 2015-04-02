@@ -51,7 +51,7 @@ import itertools
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "wallace.uncomparables"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
@@ -116,5 +116,5 @@ def check(blob):
     all = [i[0] + "\s" + i[1] + "[\W$]" for i in itertools.product(
            comparators, uncomparables) if i not in exceptions]
 
-    occ = re.finditer("|".join(all), blob.raw.lower())
+    occ = re.finditer("|".join(all), text.lower())
     return [(o.start(), o.end(), err, msg.format(o.group(0))) for o in occ]

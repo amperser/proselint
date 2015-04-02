@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "ganer.many_a"
     msg = "'many a' requires a singular verb."
@@ -29,4 +29,4 @@ def check(blob):
         ["was many a",         ["were many a"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

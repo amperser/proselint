@@ -17,11 +17,11 @@ The first line always is always wrong.
 from tools import reverse
 
 
-def check(blob):
+def check(text):
     """Check the text."""
     error_code = "PL000"
     msg = "First line always has an error."
 
-    reverse(blob)
+    reverse(text)
 
     return [(1, 1, error_code, msg)]

@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "wsj.athletes"
     msg = "Misspelling of athlete's name. '{}' is the preferred form."
@@ -43,4 +43,4 @@ def check(blob):
         ["Mike Krzyzewski",     ["Mike Kryzewski"]],
     ]
 
-    return preferred_forms_check(blob, misspellings, err, msg)
+    return preferred_forms_check(text, misspellings, err, msg)

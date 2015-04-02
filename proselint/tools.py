@@ -7,7 +7,6 @@ import shelve
 import inspect
 import functools
 import re
-from textblob import TextBlob
 import hashlib
 
 
@@ -43,10 +42,7 @@ def memoize(f):
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
         for item in tempargdict.items():
-            if isinstance(item[1], TextBlob):
-                signature += tempargdict['blob'].raw
-            else:
-                signature += str(item[1])
+            signature += str(item[1])
 
         key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
@@ -81,12 +77,12 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def consistency_check(blob, word_pairs, err, msg, offset=0):
+def consistency_check(text, word_pairs, err, msg, offset=0):
     """Build a consistency checker for the given word_pairs."""
     errors = []
     for w in word_pairs:
-        match1 = [m for m in re.finditer(w[0], blob.raw)]
-        match2 = [m for m in re.finditer(w[1], blob.raw)]
+        match1 = [m for m in re.finditer(w[0], text)]
+        match2 = [m for m in re.finditer(w[1], text)]
 
         if len(match1) > 0 and len(match2) > 0:
 
@@ -108,7 +104,7 @@ def consistency_check(blob, word_pairs, err, msg, offset=0):
     return errors
 
 
-def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
+def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -119,7 +115,7 @@ def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
     regex = u"[\W^]{}[\W$]"
     for p in list:
         for r in p[1]:
-            for m in re.finditer(regex.format(r), blob.raw, flags=flags):
+            for m in re.finditer(regex.format(r), text, flags=flags):
                 txt = m.group(0).strip()
                 errors.append((
                     m.start() + 1 + offset,
@@ -130,7 +126,7 @@ def preferred_forms_check(blob, list, err, msg, ignore_case=True, offset=0):
     return errors
 
 
-def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
+def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
                     max_errors=float("inf"), offset=0, require_padding=True,
                     dotall=False, excluded_topics=None, join=False):
     """Build a checker that blacklists certain words."""
@@ -154,12 +150,12 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
 
     # If the topic of the text is in the excluded list, return immediately.
     if excluded_topics:
-        tps = topics(blob)
+        tps = topics(text)
         if any([t in excluded_topics for t in tps]):
             return errors
 
     rx = "|".join(regex.format(w) for w in list)
-    for m in re.finditer(rx, blob.raw, flags=flags):
+    for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         errors.append((
             m.start() + 1 + offset,
@@ -183,17 +179,8 @@ def existence_check(blob, list, err, msg, ignore_case=True, unicode=False,
     return errors
 
 
-# def overuse_check(blob, list, err, msg):
-#     """Build a checker that looks for overuse of words in the given list."""
-#     total_count = 0
-#     for word in list:
-#         total_count += blob.count(word)
-
-#     if total_count
-
-
-def is_quoted(position, blob):
-    """Determine if the position in the blob falls within a quote."""
+def is_quoted(position, text):
+    """Determine if the position in the text falls within a quote."""
     def matching(quotemark1, quotemark2):
         straight = u'\"\''
         curly = u'“”'
@@ -234,10 +221,10 @@ def is_quoted(position, blob):
                 return True
         return False
 
-    return position_in_ranges(find_ranges(blob.raw), position)
+    return position_in_ranges(find_ranges(text), position)
 
 
-def detector_50_Cent(blob):
+def detector_50_Cent(text):
     """Determine whether 50 Cent is a topic."""
     keywords = [
         "50 Cent",
@@ -253,23 +240,23 @@ def detector_50_Cent(blob):
         "In da Club",
         "Interscope",
     ]
-    num_keywords = sum(word in blob for word in keywords)
+    num_keywords = sum(word in text for word in keywords)
     return ("50 Cent", float(num_keywords > 2))
 
 
-def topics(blob):
+def topics(text):
     """Return a list of topics."""
     detectors = [
         detector_50_Cent
     ]
     ts = []
     for detector in detectors:
-        ts.append(detector(blob))
+        ts.append(detector(text))
 
     return [t[0] for t in ts if t[1] > 0.95]
 
 
-def context(blob, position, level="paragraph"):
+def context(text, position, level="paragraph"):
     """Get sentence or paragraph that surrounds the given position."""
     if level == "sentence":
         pass

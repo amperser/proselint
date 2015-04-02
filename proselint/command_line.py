@@ -12,7 +12,6 @@ import codecs
 import subprocess
 import ntpath
 import re
-import textblob
 import json as js
 import time
 import importlib
@@ -64,19 +63,19 @@ def lint(path, debug=False):
     # Apply all the checks.
     errors = []
     with codecs.open(path, "r", encoding='utf-8') as f:
-        blob = textblob.TextBlob(f.read())
+        text = f.read()
         errors = []
         for check in checks:
             if debug:
                 print(check.__module__ + "." + check.__name__)
                 start_time = time.time()
 
-            result = check(blob)
+            result = check(text)
 
             for error in result:
                 (start, end, check, message) = error
-                (line, column) = line_and_column(blob.raw, start)
-                if not is_quoted(start, blob):
+                (line, column) = line_and_column(text, start)
+                if not is_quoted(start, text):
                     errors += [(check, message, line, column, start, end,
                                end - start, "warning", None)]
 

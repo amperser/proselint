@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.needless_variants"
     msg = "Needless variant. '{}' is the preferred form."
@@ -384,4 +384,4 @@ def check(blob):
         ["Zoroastrianism",    ["Zoroastrism"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

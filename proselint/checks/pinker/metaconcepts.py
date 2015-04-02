@@ -18,7 +18,7 @@ Point out misuse of scare quotes.
 
 
 # @memoize
-# def check(blob):
+# def check(text):
 #     """Suggest the preferred forms."""
 #     err = "pinker.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."
@@ -27,4 +27,4 @@ Point out misuse of scare quotes.
 #         "the 'take-home message'",
 #     ]
 
-#     return existence_check(blob, narcisissm, err, msg)
+#     return existence_check(text, narcisissm, err, msg)

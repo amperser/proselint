@@ -18,7 +18,7 @@ from tools import preferred_forms_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.mixed_metaphors"
     msg = u"Mixed metaphor. Try '{}'."
@@ -32,4 +32,4 @@ def check(blob):
         ["not rocket science",        ["not rocket surgery"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

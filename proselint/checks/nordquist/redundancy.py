@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "nordquist.redundancy"
     msg = "Redundancy. Use '{}' instead of '{}'."
@@ -29,4 +29,4 @@ def check(blob):
         ["a.m.",               ["a.m. in the morning"]],
         ["p.m.",               ["p.m. at night"]],
     ]
-    return preferred_forms_check(blob, redundancies, err, msg)
+    return preferred_forms_check(text, redundancies, err, msg)

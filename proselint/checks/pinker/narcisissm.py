@@ -18,7 +18,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "pinker.narcisissm"
     msg = "Professional narcisissm. Talk about the subject, not its study."
@@ -27,4 +27,4 @@ def check(blob):
         "In recent years, an increasing number of [a-zA-Z]{3,}sts have",
     ]
 
-    return existence_check(blob, narcisissm, err, msg)
+    return existence_check(text, narcisissm, err, msg)

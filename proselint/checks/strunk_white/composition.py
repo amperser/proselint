@@ -49,7 +49,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "strunk_white.composition"
     msg = "Try '{}' instead of '{}'."
@@ -81,4 +81,4 @@ def check(blob):
         ["my arrival",              ["the fact that i had arrived"]]
     ]
 
-    return preferred_forms_check(blob, bad_forms, err, msg)
+    return preferred_forms_check(text, bad_forms, err, msg)

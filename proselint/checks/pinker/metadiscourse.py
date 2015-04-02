@@ -18,7 +18,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "pinker.metadiscourse"
     msg = "Excessive metadiscourse."
@@ -31,4 +31,4 @@ def check(blob):
         "The previous section analyzed",
     ]
 
-    return existence_check(blob, metadiscourse, err, msg)
+    return existence_check(text, metadiscourse, err, msg)

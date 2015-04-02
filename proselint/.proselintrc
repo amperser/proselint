@@ -1,7 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
-        "garner.a_vs_an"                : true,
+        "garner.a_vs_an"                : false,
         "garner.airlinese"              : true,
         "garner.animal_labels"          : true,
         "garner.archaism"               : true,
@@ -33,7 +33,7 @@
         "misc.credit_card"              : true,
         "misc.currency"                 : true,
         "misc.hyperbolic"               : true,
-        "misc.link_checker"             : true,
+        "misc.link_checker"             : false,
         "misc.password"                 : true,
         "nordquist.redundancy"          : true,
         "norris.denizen_labels"         : true,

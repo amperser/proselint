@@ -19,7 +19,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check_very_damn(blob):
+def check_very_damn(text):
     """Use the registered trademark symbol instead of (R)."""
     err = "twain.damn"
     msg = ("Substitute 'damn' every time you're "
@@ -27,5 +27,4 @@ def check_very_damn(blob):
            "and the writing will be just as it should be.")
     regex = "very"
 
-    return existence_check(
-        blob, [regex], err, msg, max_errors=1)
+    return existence_check(text, [regex], err, msg, max_errors=1)

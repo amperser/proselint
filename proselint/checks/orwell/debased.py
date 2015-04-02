@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check_debased_language(blob):
+def check_debased_language(text):
     """Check the text."""
     err = "orwell.debased"
     msg = u"Bad usage, debased language, a continuous temptation."
@@ -30,4 +30,4 @@ def check_debased_language(blob):
         "a consideration which we should do well to bear in mind",
     ]
 
-    return existence_check(blob, list, err, msg)
+    return existence_check(text, list, err, msg)

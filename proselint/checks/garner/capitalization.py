@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.captalization"
     msg = "Incorrect capitalization. '{}' is the preferred form."
@@ -30,11 +30,11 @@ def check(blob):
         ["Mother Nature",      ["mother nature"]],
     ]
 
-    return preferred_forms_check(blob, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
 # @memoize
-# def check_seasons(blob):
+# def check_seasons(text):
 #     """Suggest the preferred forms."""
 #     err = "MAU102"
 #     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
@@ -46,11 +46,11 @@ def check(blob):
 #         # ["spring",        ["Spring"]],
 #     ]
 
-#     return preferred_forms_check(blob, list, err, msg, ignore_case=False)
+#     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
 @memoize
-def check_months(blob):
+def check_months(text):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Months should be capitalized. '{}' is the preferred form."
@@ -71,11 +71,11 @@ def check_months(blob):
         ["December",        ["december"]],
     ]
 
-    return preferred_forms_check(blob, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
 @memoize
-def check_days(blob):
+def check_days(text):
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
@@ -91,4 +91,4 @@ def check_days(blob):
         ["Sunday",       ["sunday"]],
     ]
 
-    return preferred_forms_check(blob, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, list, err, msg, ignore_case=False)

@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "pinker.latin"
     msg = "Use English. '{}' is the preferred form."
@@ -30,4 +30,4 @@ def check(blob):
         ["having made the necessary changes", ["mutatis mutandis"]],
     ]
 
-    return preferred_forms_check(blob, list, err, msg)
+    return preferred_forms_check(text, list, err, msg)

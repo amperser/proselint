@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.hyperbolic"
     msg = u"'{}' is hyperbolic."
@@ -28,4 +28,4 @@ def check(blob):
         "[a-z]*\?{2,}"
     ]
 
-    return existence_check(blob, words, err, msg)
+    return existence_check(text, words, err, msg)

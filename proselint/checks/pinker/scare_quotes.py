@@ -18,7 +18,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "pinker.scare_quotes"
     msg = "Misuse of 'scare quotes'. Delete them."
@@ -27,4 +27,4 @@ def check(blob):
         "the 'take-home message'",
     ]
 
-    return existence_check(blob, narcisissm, err, msg)
+    return existence_check(text, narcisissm, err, msg)

@@ -19,7 +19,7 @@ import re
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "strunk_white.greylist"
     msg = "Use of '{}'. {}"
@@ -38,7 +38,7 @@ def check(blob):
 
     errors = []
     for word in bad_words:
-        occ = [m for m in re.finditer(word, blob.raw.lower())]
+        occ = [m for m in re.finditer(word, text.lower())]
         for o in occ:
             errors.append((o.start(), o.end(), err,
                           msg.format(word, explanations[word])))

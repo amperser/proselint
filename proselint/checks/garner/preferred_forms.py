@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "ganer.preferred_forms"
     msg = "'{}' is the preferred form."
@@ -153,11 +153,11 @@ def check(blob):
         # announce
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)
 
 
 @memoize
-def check_able_ible(blob):
+def check_able_ible(text):
     """-able vs. -ible."""
     err = "garner.preferred_forms.ible"
     msg = "-able vs. -ible. '{}' is the preferred form."
@@ -323,11 +323,11 @@ def check_able_ible(blob):
         ["visible",         ["visable"]]
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)
 
 
 @memoize
-def check_able_atable(blob):
+def check_able_atable(text):
     """-able vs. -ible."""
     err = "garner.preferred_forms.atable"
     msg = "-able vs. -atable. '{}' is the preferred form."
@@ -404,11 +404,11 @@ def check_able_atable(blob):
         ["vitiable",          ["vitiatable"]]
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)
 
 
 @memoize
-def check_em_vs_em_and_en_vs_in(blob):
+def check_em_vs_em_and_en_vs_in(text):
     """em- vs. en-, im- vs. in-."""
     err = "garner.preferred_forms.em"
     msg = "em-, im-, en-, and in-. '{}' is the preferred form."
@@ -466,4 +466,4 @@ def check_em_vs_em_and_en_vs_in(blob):
         ["inure",       ["enure"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

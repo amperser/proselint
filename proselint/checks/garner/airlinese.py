@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.airlinese"
     msg = u"'{}' is airlinese."
@@ -29,4 +29,4 @@ def check(blob):
         "taking off momentarily",
     ]
 
-    return existence_check(blob, airlinese, err, msg)
+    return existence_check(text, airlinese, err, msg)

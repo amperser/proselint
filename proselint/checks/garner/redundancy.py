@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.redundancy"
     msg = "Redundancy. Use '{}' instead of '{}'."
@@ -105,11 +105,11 @@ def check(blob):
         ["while",             ["while at the same time"]],
     ]
 
-    return preferred_forms_check(blob, redundancies, err, msg)
+    return preferred_forms_check(text, redundancies, err, msg)
 
 
 @memoize
-def check_redundant_acronym_syndrome(blob):
+def check_redundant_acronym_syndrome(text):
     """Suggest the preferred forms."""
     err = "garner.redundancy.ras"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
@@ -134,4 +134,4 @@ def check_redundant_acronym_syndrome(blob):
         ["UPC",               ["UPC codes"]],
     ]
 
-    return preferred_forms_check(blob, redundancies, err, msg)
+    return preferred_forms_check(text, redundancies, err, msg)
