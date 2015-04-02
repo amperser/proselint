@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.oxymorons"
     msg = u"'{}' is an oxymoron."
@@ -47,4 +47,4 @@ def check(blob):
         # "sure bet",
     ]
 
-    return existence_check(blob, oxymorons, err, msg, offset=1, join=True)
+    return existence_check(text, oxymorons, err, msg, offset=1, join=True)

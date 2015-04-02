@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.commercialese"
     msg = u"'{}' is commercialese."
@@ -52,4 +52,4 @@ def check(blob):
         "yours of even date"
     ]
 
-    return existence_check(blob, commercialese, err, msg, join=True)
+    return existence_check(text, commercialese, err, msg, join=True)

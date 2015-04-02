@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.chatspeak"
     msg = u"'{}' is chatspeak. Write it out."
@@ -49,4 +49,4 @@ def check(blob):
         "XOXO"
     ]
 
-    return existence_check(blob, words, err, msg)
+    return existence_check(text, words, err, msg)

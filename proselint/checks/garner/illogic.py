@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.illogic"
     msg = u"'{}' is illogical."
@@ -35,22 +35,22 @@ def check(blob):
         "without scarcely",
     ]
 
-    return existence_check(blob, illogics, err, msg, offset=1)
+    return existence_check(text, illogics, err, msg, offset=1)
 
 
 @memoize
-def check_coin_a_phrase_from(blob):
+def check_coin_a_phrase_from(text):
     """Check the text."""
     err = "garner.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
 
     regex = "to coin a phrase from"
 
-    return existence_check(blob, [regex], err, msg, offset=1)
+    return existence_check(text, [regex], err, msg, offset=1)
 
 
 @memoize
-def check_without_your_collusion(blob):
+def check_without_your_collusion(text):
     """Check the textself."""
     err = "garner.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
@@ -58,4 +58,4 @@ def check_without_your_collusion(blob):
     regex = "without your collusion"
 
     return existence_check(
-        blob, [regex], err, msg, require_padding=False, offset=-1)
+        text, [regex], err, msg, require_padding=False, offset=-1)

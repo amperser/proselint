@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.sexism"
     msg = "Gender bias. Use '{}' instead of '{}'."
@@ -52,4 +52,4 @@ def check(blob):
         # ["hero",             ["heroine"]]
     ]
 
-    return preferred_forms_check(blob, sexism, err, msg, ignore_case=False)
+    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)

@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check_repeated_exclamations(blob):
+def check_repeated_exclamations(text):
     """Check the text."""
     err = "leonard.hell"
     msg = u"Never use the words 'all hell broke loose'."
@@ -26,4 +26,4 @@ def check_repeated_exclamations(blob):
     regex = r"all hell broke loose"
 
     return existence_check(
-        blob, [regex], err, msg, max_errors=1)
+        text, [regex], err, msg, max_errors=1)

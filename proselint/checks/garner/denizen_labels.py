@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.denizen_labels"
     msg = "'{}' is the preferred denizen label."
@@ -63,4 +63,4 @@ def check(blob):
         ["Saudi",             ["Saudi Arabian"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

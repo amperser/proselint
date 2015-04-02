@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check_repeated_exclamations(blob):
+def check_repeated_exclamations(text):
     """Check the text."""
     err = "ogilvy.pretension"
     msg = u"Jargon words like this one are the hallmarks of a pretentious ass."
@@ -30,4 +30,4 @@ def check_repeated_exclamations(blob):
         "judgmentally",
     ]
 
-    return existence_check(blob, list, err, msg, max_errors=1)
+    return existence_check(text, list, err, msg, max_errors=1)

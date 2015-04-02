@@ -17,7 +17,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.password"
     msg = u"Don't put passwords in plain text."
@@ -32,4 +32,4 @@ def check(blob):
         "^[pP]assword{}".format(pwd_regex),
     ]
 
-    return existence_check(blob, password, err, msg)
+    return existence_check(text, password, err, msg)

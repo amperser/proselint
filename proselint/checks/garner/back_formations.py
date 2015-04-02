@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.back_formations"
     msg = "Back-formation. '{}' is the preferred form."
@@ -27,4 +27,4 @@ def check(blob):
         ["improper",       ["improprietous"]],
     ]
 
-    return preferred_forms_check(blob, list, err, msg)
+    return preferred_forms_check(text, list, err, msg)

@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.malaproprisms"
     msg = u"'{}' is a malaproprism."
@@ -29,4 +29,4 @@ def check(blob):
         "attack my voracity",
     ]
 
-    return existence_check(blob, illogics, err, msg, offset=1)
+    return existence_check(text, illogics, err, msg, offset=1)

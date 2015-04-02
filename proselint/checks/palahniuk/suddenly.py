@@ -30,11 +30,11 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check_ellipsis(blob):
+def check_ellipsis(text):
     """Use an ellipsis instead of three dots."""
     err = "palahniuk.suddenly"
     msg = u"Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"
 
-    return existence_check(blob, [regex], err, msg, max_errors=3,
+    return existence_check(text, [regex], err, msg, max_errors=3,
                            require_padding=False, offset=-1, ignore_case=False)

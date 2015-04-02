@@ -21,7 +21,7 @@ import nltk
 
 
 @memoize
-def check(blob):
+def check(text):
     """Define the check."""
     err = "garner.a_vs_an"
     msg_a = "'a' should be 'an'."
@@ -31,7 +31,7 @@ def check(blob):
     regex = re.compile("(?:^|\W)(an?)\s+(\w+)", re.IGNORECASE)
 
     # Find all occurences of the regex in the text.
-    for g in regex.finditer(blob.raw):
+    for g in regex.finditer(text):
         words = [w for w in g.groups()]
 
         vowel_sound = starts_with_vowel_sound(words[1])

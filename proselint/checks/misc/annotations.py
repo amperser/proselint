@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.annotations"
     msg = u"Annotation left in text."
@@ -33,4 +33,4 @@ def check(blob):
     ]
 
     return existence_check(
-        blob, annotations, err, msg, ignore_case=False, join=True)
+        text, annotations, err, msg, ignore_case=False, join=True)

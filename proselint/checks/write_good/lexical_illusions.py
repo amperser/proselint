@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "write_good.lexical_illusions"
     msg = u"There's a lexical illusion here: a word is repeated."
@@ -27,4 +27,4 @@ def check(blob):
         "the\sthe",
     ]
 
-    return existence_check(blob, commercialese, err, msg)
+    return existence_check(text, commercialese, err, msg)

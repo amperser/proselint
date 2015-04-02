@@ -18,7 +18,7 @@ from tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.animal_labels"
     msg = "There's a word for this: '{}'."
@@ -68,4 +68,4 @@ def check(blob):
         ["zibeline",      ["sable-like"]],
     ]
 
-    return preferred_forms_check(blob, preferences, err, msg)
+    return preferred_forms_check(text, preferences, err, msg)

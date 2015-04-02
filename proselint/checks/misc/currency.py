@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.currency"
     msg = u"Incorrent use of symbols in {}."
@@ -27,4 +27,4 @@ def check(blob):
         "\$[\d]* ?(?:dollars|usd|us dollars)"
     ]
 
-    return existence_check(blob, symbols, err, msg)
+    return existence_check(text, symbols, err, msg)

@@ -21,7 +21,7 @@ from tools import blacklist, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "MSC104"
     msg = u"Don't fail to capitalize roman numeral abbreviations."
@@ -32,4 +32,4 @@ def check(blob):
         "World War{}".format(pwd_regex),
     ]
 
-    return blacklist(blob, password, err, msg)
+    return blacklist(text, password, err, msg)

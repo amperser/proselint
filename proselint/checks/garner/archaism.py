@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.archaism"
     msg = u"'{}' is archaic."
@@ -81,4 +81,4 @@ def check(blob):
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(blob, archaisms, err, msg, join=True)
+    return existence_check(text, archaisms, err, msg, join=True)

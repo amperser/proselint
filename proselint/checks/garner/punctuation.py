@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check_et_al(blob):
+def check_et_al(text):
     """Check the text."""
     err = "garner.punctuation"
     msg = u"Misplaced punctuation. It's 'et al.'"
@@ -28,4 +28,4 @@ def check_et_al(blob):
         "et. al",
         "et. al."
     ]
-    return existence_check(blob, list, err, msg, join=True)
+    return existence_check(text, list, err, msg, join=True)

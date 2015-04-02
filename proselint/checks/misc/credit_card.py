@@ -18,7 +18,7 @@ from tools import existence_check, memoize
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "misc.credit_card"
     msg = u"Don't put credit card numbers in plain text."
@@ -31,4 +31,4 @@ def check(blob):
         "6011\d{12}",
     ]
 
-    return existence_check(blob, credit_card_numbers, err, msg)
+    return existence_check(text, credit_card_numbers, err, msg)

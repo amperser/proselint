@@ -18,7 +18,7 @@ from tools import memoize, existence_check
 
 
 @memoize
-def check(blob):
+def check(text):
     """Check the text."""
     err = "garner.jargon"
     msg = u"'{}' is jargon. Can you replace it with something more standard?"
@@ -32,4 +32,4 @@ def check(blob):
         "disincentivize",
     ]
 
-    return existence_check(blob, jargon, err, msg, join=True)
+    return existence_check(text, jargon, err, msg, join=True)
