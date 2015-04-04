@@ -70,7 +70,7 @@ To coin a phrase from the movie,
 Suddenly, the car came to a stop.
 All hell broke loose on the farm.
 
-# Cliches
+# Clichés
 under the weather
 a chip off the old block
 a quantum leap
