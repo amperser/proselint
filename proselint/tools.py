@@ -42,9 +42,10 @@ def memoize(f):
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
         for item in tempargdict.items():
-            signature += str(item[1])
+            print item[1]
+            signature += item[1].encode('utf-8')
 
-        key = hashlib.sha256(signature.encode('utf-8')).hexdigest()
+        key = hashlib.sha256(signature).hexdigest()
 
         try:
             return cache[key]
