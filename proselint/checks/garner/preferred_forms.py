@@ -110,6 +110,7 @@ def check(text):
         ["in regard to",        ["in regards to"]],
         ["weather vane",        ["weather vein", "weather vain"]],
         ["vaipidity",           ["vapidness"]],
+        ["linguist",            ["linguistician"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
