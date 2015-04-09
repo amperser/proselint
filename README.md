@@ -1,6 +1,6 @@
 <img src="logo.png" alt="proselint logo" width="200">
 
-`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of various literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
+`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
 
 `proselint` is a command-line utility and web API that can be integrated into existing tools.
  
