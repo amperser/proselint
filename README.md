@@ -67,14 +67,61 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 | ID    | Description     |
 | ----- | --------------- |
-| `passive` | Checks for passive voice |
-| `lexical-illusion` | Checks for lexical illusions – cases where a word is repeated. |
-| `so` | Checks for `so` at the beginning of the sentence. |
-| `adverbs` | Checks for adverbs that can weaken meaning: really, very, extremely, etc. |
-| `readibility` | Checks for readibility of sentences. |
-| `simplicity` | Checks for simpler expressions |
-| `weasel` | Checks for "weasel words." |
-
+| `butterick.symbols` | Using the right symbol |
+| `consistency.spacing` | Consistent sentence spacing |
+| `consistency.spelling` | Consistent use of British vs. American spelling |
+| `garner.a_vs_an` | Using 'a' vs. 'an' as a determiner  |
+| `garner.airlinese ` | Avoiding jargon of the airline industry |
+| `garner.animal_labels` | Likening things to animals using fun words |
+| `garner.archaism` | Avoiding archaic forms |
+| `garner.back_formations` | Avoiding needless backformations |
+| `garner.capitalization` | Captializing what ought to be capitalized |
+| `garner.cliches` | Avoiding cliché |
+| `garner.commercialese` | Avoiding jargon of the commercial world |
+| `garner.dates` | Stylish formatting of dates |
+| `garner.denizen_labels` | Calling people the right names |
+| `garner.illogic` | Avoiding illogical forms |
+| `garner.jargon` | Avoiding miscellaneous jargon |
+| `garner.malaproprisms` | Avoiding common malaproprisms |
+| `garner.many_a` | Many a singular |
+| `garner.misspelling` | Avoiding common misspellings missed by spellcheck |
+| `garner.mixed_metaphors` | Not mixing metaphors |
+| `garner.needless_variants` | Using the preferred form |
+| `garner.oxymorons` | Aoviding oxymorons |
+| `garner.preferred_forms` | Miscellaneous preferred forms |
+| `garner.punctuation` | Using the right punctuation |
+| `garner.redundancy` | Avoiding redunancy |
+| `garner.sexism` | Avoiding sexist language |
+| `leonard.exclamation` | Avoiding hyperbolic use of exclamation |
+| `leonard.hell` | Avoiding a common cliche |
+| `misc.annotations` | Catching annotations left in the text |
+| `misc.chatspeak` | ... |
+| `misc.credit_card` | |
+| `misc.currency` | |
+| `misc.hyperbolic` | |
+| `misc.link_checker` | |
+| `misc.password` | |
+| `nordquist.redundancy` | |
+| `norris.denizen_labels` | |
+| `ogilvy.pretension` | |
+| `orwell.debased` | |
+| `palahniuk.suddenly` | |
+| `pinker.apologizing` | |
+| `pinker.hedging` | |
+| `pinker.latin` | |
+| `pinker.metaconcepts` | |
+| `pinker.narcisissm` | |
+| `pinker.scare_quotes` | |
+| `strunk_white.composition` | |
+| `strunk_white.greylist` | |
+| `strunk_white.usage` | |
+| `twain.damn` | |
+| `wallace.tense_present` | |
+| `wallace.uncomparables` | |
+| `write_good.cliches` | |
+| `write_good.lexical_illusions` | |
+| `write_good.weasel_words` | |
+| `wsj.athletes` | |
 ### Contributing
 
 We'd love to accept your patches and contributions to improve `proselint`. Learn more about how to contribute in [CONTRIBUTING.md](./CONTRIBUTING.md).
