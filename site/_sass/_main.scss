@@ -21,9 +21,24 @@ html, body {
   height: 100%;
 }
 
+hr {
+  width: 40%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
 img {
   width: auto;
   max-width: 100%;
+}
+
+#logo {
+  width: 150px;
+}
+
+tt {
+  background: #eee;
+  padding: 5px;
 }
 
 .site-wrap {
@@ -251,7 +266,7 @@ textarea.input {
 
 p {
   font-weight: 300;
-  line-height: 1.5;
+  line-height: 1.85em;
   color: #333;
 }
 
@@ -395,7 +410,7 @@ h6,
   }
 }
 
-@media screen and (max-width: 48em) {
+@media screen and (max-width: 40em) {
   blockquote {
     margin-left: 1rem;
     margin-right: 0;
