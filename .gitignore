@@ -1,7 +1,6 @@
 *.egg-info
 *.pyc
 cached_func_calls/*
-site/_posts/*
 profile_output
 site/write/*
 tests/corpus/newyorker/*

@@ -7,7 +7,7 @@ http://ethanschoonover.com/solarized
 SOLARIZED HEX      ROLE
 --------- -------- ------------------------------------------
 base01    #586e75  body text / default code / primary content
-base1     #93a1a1  comments / secondary content
+base1     #bbbbbb  comments / secondary content
 base3     #fdf6e3  background
 orange    #cb4b16  constants
 red       #dc322f  regex, special keywords
@@ -19,7 +19,7 @@ green     #859900  operators, other keywords
 .highlight,
 .gist-syntax .highlight { background-color: #fdf6e3; color: #586e75 }
 .highlight .c,
-.gist-syntax .highlight .c { color: #93a1a1 } /* Comment */
+.gist-syntax .highlight .c { color: #bbbbbb } /* Comment */
 .highlight .err,
 .gist-syntax .highlight .err { color: #586e75 } /* Error */
 .highlight .g,
@@ -37,11 +37,11 @@ green     #859900  operators, other keywords
 .highlight .p,
 .gist-syntax .highlight .p { color: #586e75 } /* Punctuation */
 .highlight .cm,
-.gist-syntax .highlight .cm { color: #93a1a1 } /* Comment.Multiline */
+.gist-syntax .highlight .cm { color: #bbbbbb } /* Comment.Multiline */
 .highlight .cp,
 .gist-syntax .highlight .cp { color: #859900 } /* Comment.Preproc */
 .highlight .c1,
-.gist-syntax .highlight .c1 { color: #93a1a1 } /* Comment.Single */
+.gist-syntax .highlight .c1 { color: #bbbbbb } /* Comment.Single */
 .highlight .cs,
 .gist-syntax .highlight .cs { color: #859900 } /* Comment.Special */
 .highlight .gd,
@@ -123,7 +123,7 @@ green     #859900  operators, other keywords
 .highlight .mo,
 .gist-syntax .highlight .mo { color: #2aa198 } /* Literal.Number.Oct */
 .highlight .sb,
-.gist-syntax .highlight .sb { color: #93a1a1 } /* Literal.String.Backtick */
+.gist-syntax .highlight .sb { color: #bbbbbb } /* Literal.String.Backtick */
 .highlight .sc,
 .gist-syntax .highlight .sc { color: #2aa198 } /* Literal.String.Char */
 .highlight .sd,
