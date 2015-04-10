@@ -286,7 +286,7 @@ code {
 pre {
   padding: 1.125em;
   font-size: 1.125rem;
-  line-height: 1.11;
+  line-height: 1.6;
   overflow-x: scroll;
   margin-bottom: 0.88em;
 }
@@ -383,6 +383,10 @@ h6,
   li {
     font-size: 1.25rem;
     line-height: 1.8;
+  }
+
+  ol li {
+    padding-bottom: 0.75em;
   }
 
   .small {
