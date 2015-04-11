@@ -7,7 +7,7 @@ baseurl:     ""
 url:         "http://prose.lifelinter.com"
 
 # Google analytics
-google_analytics:
+google_analytics: UA-61797721-1
 
 # Optional features
 animated:           false
