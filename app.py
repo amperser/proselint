@@ -90,9 +90,9 @@ def rate():
     auth = request.authorization
 
     if not auth or not check_auth(auth.username, auth.password):
-        return "1 per minute"
+        return "6 per minute"
     else:
-        return "1 per second"
+        return "10 per second"
 
 
 @app.route('/v0/', methods=['GET', 'POST'])
