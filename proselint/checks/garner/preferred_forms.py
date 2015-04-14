@@ -111,6 +111,7 @@ def check(text):
         ["weather vane",        ["weather vein", "weather vain"]],
         ["vaipidity",           ["vapidness"]],
         ["linguist",            ["linguistician"]],
+        ["mayoralty",           ["mayorality"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
