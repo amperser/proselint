@@ -20,6 +20,14 @@ def check_biggest_bottleneck(text):
     """Use the registered trademark symbol instead of (R)."""
     err = "gowers.mixed_metaphors"
     msg = "Mixed metaphor: bottles with big necks are easy to pass through."
-    regex = "biggest bottleneck"
+    list = [
+        "biggest bottleneck",
+        "big bottleneck",
+        "large bottleneck",
+        "largest bottleneck",
+        "world-wide bottleneck",
+        "huge bottleneck",
+        "massive bottleneck",
+    ]
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(text, list, err, msg, max_errors=1)
