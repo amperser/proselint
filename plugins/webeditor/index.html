@@ -66,54 +66,57 @@
 
 var id = "1114032800da495687bd02bdc688a374";
 var secret = "fb9fec173efb45e4964aa506e3f099e3";
+url = "http://" + id + ":" + secret + "@" + "api.prose.lifelinter.com/v0/";
+
+function get_errors (job_id, result_cb) {
+     reqwest({
+        url: url,
+        method: 'get',
+        type: 'json',
+        success: function (resp) {
+            console.log(resp);
+            if (resp.status === "error") {
+                console.log("Job not yet complete.");
+                setTimeout(function() {
+                    return get_errors(job_id, result_cb);
+                }, 1000);
+            } else {
+                error_list = [];
+                for (var x in resp.data.errors) {
+                    e = resp.data.errors[x];
+                    new_entry = {
+                        line_no: e.line + 1,
+                        column_no_start: parseInt(e.column),
+                        column_no_stop: parseInt(e.column) + e.extent,
+                        fragment: "",
+                        message: e.message,
+                        severity: e.severity,
+                    };
+                    error_list.push(new_entry);
+                }
+                console.log(error_list);
+                result_cb(error_list);
+            }
+        },
+        error: function (err) {
+            console.log(err);
+            return false;
+        },
+        data: {
+            job_id: encodeURIComponent(job_id),
+        }
+    });
+}
 
 function check_syntax(code, result_cb) {
-    url = "http://" + id + ":" + secret + "@" + "api.prose.lifelinter.com/v0/";
     reqwest({
         url: url,
         method: 'post',
         type: 'json',
         success: function (resp) {
             job_id = resp.job_id;
-            // console.log(job_id);
-            setTimeout(function () {
-                console.log("hello");
-                reqwest({
-                    url: url,
-                    method: 'get',
-                    type: 'json',
-                    success: function (resp) {
-                        // console.log(resp);
-                        if (resp.status === "error") {
-                            console.log("Job not yet complete.");
-                        }
-                        console.log(resp.data.errors);
-                        error_list = [];
-                        for (var x in resp.data.errors) {
-                            e = resp.data.errors[x];
-                            new_entry = {
-                                line_no: e.line + 1,
-                                column_no_start: parseInt(e.column),
-                                column_no_stop: parseInt(e.column) + e.extent,
-                                fragment: "",
-                                message: e.message,
-                                severity: e.severity,
-                            };
-                            error_list.push(new_entry);
-                        }
-                        console.log(error_list);
-                        result_cb(error_list);
-                    },
-                    error: function (err) {
-                        console.log("error");
-                        return false;
-                    },
-                    data: {
-                        job_id: encodeURIComponent(job_id),
-                    }
-                });
-                // console.log(errors);
-            }, 1000);
+            errors = get_errors(job_id, result_cb);
+            console.log(errors);
         },
         error: function (err) {
             console.log(err);
