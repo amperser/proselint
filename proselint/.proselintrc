@@ -23,6 +23,7 @@
         "garner.punctuation"            : true,
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
+        "gowers.overworked_metaphors"   : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
         "butterick.symbols"             : true,
