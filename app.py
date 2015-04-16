@@ -90,7 +90,7 @@ def rate():
     auth = request.authorization
 
     if not auth or not check_auth(auth.username, auth.password):
-        return "6/minute"
+        return "60/minute"
     else:
         return "600/minute"
 
