@@ -17,7 +17,7 @@ from worker import conn
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = "Origin, X-Requested-With, Content-Type, Accept"
-limiter = Limiter(app, global_limits=["600 per hour"])
+limiter = Limiter(app)
 
 q = Queue(connection=conn)
 
