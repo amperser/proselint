@@ -137,6 +137,8 @@ def check(text):
         ["statute of limitationas", ["statute of limits"]],
         ["vale of tears",       ["veil of tears"]],
         ["Venus flytrap",       ["Venus's flytrap", "Venus' flytrap"]],
+        ["in the meantime",     ["in the meanwhile"]],
+        ["Meanwhile,",          ["Meantime,"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
