@@ -112,6 +112,14 @@ def check(text):
         ["vaipidity",           ["vapidness"]],
         ["linguist",            ["linguistician"]],
         ["mayoralty",           ["mayorality"]],
+        ["lend me his",         ["loan me his"]],
+        ["lent me his",         ["loaned me his"]],
+        ["lend me her",         ["loan me her"]],
+        ["lent me her",         ["loaned me her"]],
+        ["lend me their",       ["loan me their"]],
+        ["lent me their",       ["loaned me their"]],
+        ["lend me your",        ["loan me your"]],
+        ["lent me your",        ["loaned me your"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
