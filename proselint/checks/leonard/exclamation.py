@@ -42,7 +42,7 @@ def check_exclamations_ppm(text):
     ppm = (count*1.0 / num_words) * 1e6
 
     if ppm > 30:
-        (line, column) = line_and_column(text, text.find('!'))
-        return [(line, column, err, msg)]
+        loc = text.find('!')
+        return [(loc, loc+1, err, msg)]
     else:
         return []
