@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import logging
+import re
 
 logging.basicConfig()
 scheduler = BlockingScheduler()
@@ -24,6 +25,11 @@ password = os.environ['gmail_password']
 tagline = "Linted by proselint"
 url = "http://prose.lifelinter.com"
 api_url = "http://api.prose.lifelinter.com/v0/"
+
+
+def quoted(string, every=64):
+    """Insert a quote before linebreaks."""
+    return "> " + re.sub("\r\n(?=[^\r\n])", "\r\n> ", string)
 
 
 @scheduler.scheduled_job('interval', minutes=0.25)
@@ -69,7 +75,7 @@ def check_email():
 
                 if r.json()["status"] == "success":
 
-                    errors = json.dumps(r.json()['data'])
+                    reply = quoted(u.body) + "\r\n" + json.dumps(r.json()['data'])
 
                     msg = MIMEMultipart()
                     msg["From"] = "{} <{}>".format(name, user)
@@ -79,7 +85,7 @@ def check_email():
                     msg.add_header("In-Reply-To", u.headers['Message-ID'])
                     msg.add_header("References", u.headers['Message-ID'])
 
-                    body = errors + "\n\n--\n" + tagline + "\n" + url
+                    body = reply + "\r\n\r\n--\r\n" + tagline + "\r\n" + url
                     msg.attach(MIMEText(body, "plain"))
 
                     text = msg.as_string()
