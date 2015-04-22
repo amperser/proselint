@@ -8,5 +8,4 @@ cache/*
 proselint/cache/*
 build/*
 *.egg
-
 *.rdb
