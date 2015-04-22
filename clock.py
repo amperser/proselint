@@ -10,7 +10,9 @@ import requests
 import hashlib
 import json
 import os
+import logging
 
+logging.basicConfig()
 scheduler = BlockingScheduler()
 
 # Settings
