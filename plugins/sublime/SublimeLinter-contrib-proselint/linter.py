@@ -9,7 +9,7 @@
 
 """This module exports the Proselint plugin class."""
 
-from SublimeLinter.lint import Linter, util
+from SublimeLinter.lint import Linter
 
 
 class Proselint(Linter):

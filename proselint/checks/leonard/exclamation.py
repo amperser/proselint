@@ -14,7 +14,7 @@ categories: writing
 Too much yelling.
 
 """
-from tools import existence_check, memoize, line_and_column
+from tools import existence_check, memoize
 
 
 @memoize
