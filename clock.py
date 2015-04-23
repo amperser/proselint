@@ -75,7 +75,9 @@ def check_email():
 
                 if r.json()["status"] == "success":
 
-                    reply = quoted(u.body) + "\r\n" + json.dumps(r.json()['data'])
+                    reply = quoted(u.body)
+                    errors = r.json()['data']['errors']
+                    reply += "\r\n\r\n".join([json.dumps(e) for e in errors])
 
                     msg = MIMEMultipart()
                     msg["From"] = "{} <{}>".format(name, user)
