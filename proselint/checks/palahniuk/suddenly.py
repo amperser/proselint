@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""MAU103: Suddenly.
+u"""MAU103: Suddenly.
 
 ---
 layout:     post
