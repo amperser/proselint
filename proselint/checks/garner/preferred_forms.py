@@ -120,6 +120,7 @@ def check(text):
         ["lent me their",       ["loaned me their"]],
         ["lend me your",        ["loan me your"]],
         ["lent me your",        ["loaned me your"]],
+        ["the highway median",  ["the highway medium"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
