@@ -38,3 +38,6 @@ notifications:
       - suchow@post.harvard.edu
     on_success: always
     on_failure: always
+addons:
+    code_climate:
+        repo_token: 32f92d10b6a0f99a4b35f3e7022040f10dc68b640525237af401b7c4e44faf46
