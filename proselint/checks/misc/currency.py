@@ -21,7 +21,7 @@ from tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.currency"
-    msg = u"Incorrent use of symbols in {}."
+    msg = u"Incorrect use of symbols in {}."
 
     symbols = [
         "\$[\d]* ?(?:dollars|usd|us dollars)"
