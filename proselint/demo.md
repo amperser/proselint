@@ -1,6 +1,16 @@
 # Proselint
 Proselint places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it Proselint.
 
+# Dates & times
+The 1950's were a swell time.
+The 50's were a swell time.
+Things happened from 1980-1999 and from 240-398 A.D.
+March, 2013 was notable in that
+In February of 2010, the mayor considered
+It's 5 pm somewhere.
+It's 12 a.m., time to eat lunch.
+It's 11 p.m. at night. 
+
 # Consistency
 This is a sentence! One space after a period.
 This is a sentence.  Two spaces after a period. 
@@ -145,13 +155,6 @@ One from Colorado is not a Coloradoan but a Coloradan.
 The lady lawyer handled my case.  
 John and Mary married. Now they are man and wife.
 Chairman Mao was the chairman of the communist party. 
-
-# Dates
-The 1950's were a swell time.
-The 50's were a swell time.
-Things happened from 1980-1999 and from 240-398 A.D.
-March, 2013 was notable in that
-In February of 2010, the mayor considered
 
 # Punctuation
 Smith, et. al (2006) said
