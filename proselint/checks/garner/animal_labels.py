@@ -27,6 +27,7 @@ def check(text):
 
         ["accipitrine",   ["hawk-like"]],
         ["anserine",      ["goose-like"]],
+        ["aquiline",      ["eagle-like"]],
         ["avine",         ["bird-like"]],
         ["cancrine",      ["crab-like"]],
         ["hircine",       ["goat-like"]],
