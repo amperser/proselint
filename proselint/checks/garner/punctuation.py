@@ -24,7 +24,6 @@ def check_et_al(text):
     msg = u"Misplaced punctuation. It's 'et al.'"
 
     list = [
-        "et al",
         "et. al",
         "et. al."
     ]
