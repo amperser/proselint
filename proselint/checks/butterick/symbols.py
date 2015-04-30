@@ -41,7 +41,7 @@ def check_copyright_symbol(text):
 
 @memoize
 def check_trademark_symbol(text):
-    """Use the trademark symbol instead of (c)."""
+    """Use the trademark symbol instead of (TM)."""
     err = "butterick.symbols.trademark"
     msg = u"(TM) is a goofy alphabetic approximation, use the symbol ™."
     regex = "\(TM\)"
