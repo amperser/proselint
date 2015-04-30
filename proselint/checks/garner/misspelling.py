@@ -84,6 +84,7 @@ def check(text):
         ["struck by lightning", ["struck by lightening"]],
         ["liquefy",           ["liquify"]],
         ["loathsome",         ["loathesome"]],
+        ["lodestar",          ["loadstar"]],
         ["to make do",        ["to make due"]],
         ["mademoiselle",      ["madamoiselle"]],
         ["martial arts",      ["marshall arts"]],

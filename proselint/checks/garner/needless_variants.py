@@ -235,6 +235,7 @@ def check(text):
         ["life-size",         ["life-sized"]],
         ["lithe",             ["lithesome"]],
         ["loath",             ["loth"]],
+        ["lollypop",          ["lollipop"]],
         ["lubricious",        ["lubricous"]],
         ["mayhem",            ["maihem"]],
         ["medical marijuana", ["medicinal marijuana"]],
