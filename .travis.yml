@@ -10,7 +10,6 @@ install:
 - gem install kramdown
 - gem install link-checker
 before_script:
-# - python scripts/generate_posts.py
 - python scripts/insert_demo.py
 - cd site
 script:
@@ -28,16 +27,16 @@ env:
 deploy:
   provider: heroku
   api_key:
-    secure: KstfXEL5DlmEoXS7ooIEV9QT+/cAitgFd2Y/E5ZbJyWPicpfrjZGga91KVT+WB4V8wFMsPaP7Ash2cWRi2d50mBvvRIm//93rfVEeOEpv1WX6gpyo6P3pzImdBreuCW1v1wHIDXTW/vc643HLgbrIpIT5fa9SEzCm1HjDUomDvE=
+    secure: L3Z04s4YxouUA4pzDW38GusXQ82KNCI73RYUCpZhBXhtxqB3hK5dHX0/UMUnXWJLyu7fuZoYLfSAs2dIl2dNAvxN0OeRBSHR/hToprASfxBKiVfmzKJUE4UxzUkRbxxFcoA4pqSz6AcXQPW1NOVkvD7IMgKEqMJQyehonysw66k=
   app: proselint
   on:
     repo: suchow/proselint
 notifications:
   email:
     recipients:
-      - suchow@post.harvard.edu
+    - suchow@post.harvard.edu
     on_success: always
     on_failure: always
 addons:
-    code_climate:
-        repo_token: 32f92d10b6a0f99a4b35f3e7022040f10dc68b640525237af401b7c4e44faf46
+  code_climate:
+    repo_token: 32f92d10b6a0f99a4b35f3e7022040f10dc68b640525237af401b7c4e44faf46
