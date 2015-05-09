@@ -154,6 +154,11 @@ def check(text):
         ["try to",              ["make attempts to"]],
         ["try to",              ["make efforts to"]],
 
+        # Grammar
+        ["be misled",           ["be mislead"]],
+        ["were misled",         ["were mislead"]],
+        ["was misled",          ["was mislead"]],
+
         # Euphemisms
         ["rat-catcher",         ["rodent operative"]],
         # ["exterminator",        ["extermination engineer"]],
