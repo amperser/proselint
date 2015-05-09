@@ -162,6 +162,7 @@ Smith, et. al (2006) said
 # Quoted text
 John said that I am "very unique."
 John knows that I am very unique.
+John knows every unique snowflake is cold.
 
 # Metadiscourse
 The preceeding discussion
