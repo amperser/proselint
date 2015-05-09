@@ -63,7 +63,7 @@ def check_auth(username, password):
         "704c3ddde0b5fd3c6971a6ef16991ddff3e241c170ed539094ee668861e01764",
         "aaebc3ca0fe041a3a595170b8efda22308cd7d843510bf01263f05a1851cb173",
     ]
-    return hashlib.sha256(username+password).hexdigest() in legal_hashes
+    return hashlib.sha256(username + password).hexdigest() in legal_hashes
 
 
 def authenticate():
