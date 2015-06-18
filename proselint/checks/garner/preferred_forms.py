@@ -154,6 +154,10 @@ def check(text):
         ["try to",              ["make an attempt to"]],
         ["try to",              ["make attempts to"]],
         ["try to",              ["make efforts to"]],
+        ["tried to",            ["made an attempt to"]],
+        ["tried to",            ["made attempts to"]],
+        ["tried to",            ["made efforts to"]],
+        ["modern",              ["modern-day"]],
 
         # Grammar
         ["be misled",           ["be mislead"]],
