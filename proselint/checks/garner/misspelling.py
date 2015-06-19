@@ -93,6 +93,7 @@ def check(text):
         ["mafia",             ["maffia"]],
         ["mafiosi",           ["mafiosos"]],
         ["martial law",       ["marshall law"]],
+        ["massacring",        ["massacering", "massacreing"]],
         ["minuscule",         ["miniscule"]],
         ["millennium",        ["millenium"]],
         ["millennia",         ["millenia"]],
