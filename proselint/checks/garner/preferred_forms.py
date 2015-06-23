@@ -149,6 +149,8 @@ def check(text):
         ["Venus flytrap",       ["Venus's flytrap", "Venus' flytrap"]],
         ["in the meantime",     ["in the meanwhile"]],
         ["Meanwhile,",          ["Meantime,"]],
+        ["modus operandi",      ["mode of operandi"]],
+        ["modi operandi",       ["modes of operandi"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
