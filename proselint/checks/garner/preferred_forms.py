@@ -39,6 +39,7 @@ def check(text):
         ["hippopotamuses",      ["hippopotami"]],
         ["titmice",             ["titmouses"]],
         ["retinas",             ["retinae"]],
+        ["matrixes",            ["matrices"]],
 
         # Hyphenated words
         ["tortfeasor",          ["tort feasor", "tort-feasor"]],
@@ -122,6 +123,9 @@ def check(text):
         ["lent me your",        ["loaned me your"]],
         ["the highway median",  ["the highway medium"]],
         ["midwifed",            ["midwived"]],
+        ["mean-spirited",       ["meanspirited"]],
+        ["mealy-mouthed",       ["mealymouthed"]],
+        ["matzo-ball",          ["matzoh-ball, matza-ball, matzah-ball, matsah-ball"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
