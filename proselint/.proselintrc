@@ -28,6 +28,7 @@
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
         "butterick.symbols"             : true,
+        "inc.corporate_speak"           : true,
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
         "misc.annotations"              : true,
