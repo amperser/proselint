@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""CST200: Mixed one vs. two spaces after a period.
+"""Mixed one vs. two spaces after a period.
 
 ---
 layout:     post
-error_code: MAU102
 source:     Consistency.
 source_url: ???
 title:      Mixed use of 1 vs. 2 spaces after a period.

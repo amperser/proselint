@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MSC: Credit card number printed.
+"""Credit card number printed.
 
 ---
 layout:     post
-error_code: MSC
 source:     ???
 source_url: ???
 title:      credit card number printed

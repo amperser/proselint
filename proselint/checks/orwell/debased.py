@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""EES: Debased language.
+"""Debased language.
 
 ---
 layout:     post
-error_code: SCH
 source:     ???
 source_url: ???
 title:      yelling

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""EES: Too much yelling.
+"""Too much yelling.
 
 ---
 layout:     post
-error_code: SCH
 source:     ???
 source_url: ???
 title:      yelling

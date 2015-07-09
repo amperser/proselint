@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""PKR101: Professional narcisissm.
+"""Professional narcisissm.
 
 ---
 layout:     post
-error_code: PKR101
 source:     Pinker's book on writing
 source_url: ???
 title:      professional narcisissm

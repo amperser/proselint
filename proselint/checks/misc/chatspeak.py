@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MSC104: Chatspeak.
+"""Chatspeak.
 
 ---
 layout:     post
-error_code: MSC
 source:     ???
 source_url: ???
 title:      textese

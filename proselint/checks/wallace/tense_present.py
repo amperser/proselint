@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""DFW201: Tense present.
+"""Tense present.
 
 ---
 layout:     post
-error_code: MAU103
 source:     DFW's Tense Present
 source_url: http://bit.ly/1c85lgR
 title:      Tense present

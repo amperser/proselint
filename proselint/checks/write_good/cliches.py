@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-u"""WGD101: Clichés.
+u"""Clichés.
 
 ---
 layout:     post
-error_code: WGD101
 source:     write-good
 source_url: https://github.com/btford/write-good
 title:      Cliches

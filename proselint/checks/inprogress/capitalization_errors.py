@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MSC: Password in plain text.
+"""Password in plain text.
 
 ---
 layout:     post
-error_code: MSC
 source:     ???
 source_url: ???
 title:      Capitalization of abbreviations

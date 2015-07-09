@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU108: Airlinese.
+"""Airlinese.
 
 ---
 layout:     post
-error_code: MAU109
 source:     Garner's Modern American Usage
 source_url: http://amzn.to/15wF76r
 title:      Airlinese

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""PKR100: Metadiscourse.
+"""Metadiscourse.
 
 ---
 layout:     post
-error_code: PKR100
 source:     Pinker's book on writing
 source_url: ???
 title:      metadiscourse

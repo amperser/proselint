@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-u"""MAU103: Suddenly.
+u"""Suddenly.
 
 ---
 layout:     post
-error_code: MAU103
 source:     Reference for Writers
 source_url: http://bit.ly/1E94vyD
 title:      suddenly

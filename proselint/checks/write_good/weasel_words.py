@@ -1,8 +1,7 @@
-"""WGD100: Weasel words.
+"""Weasel words.
 
 ---
 layout:     post
-error_code: WGD200
 source:     write-good
 source_url: https://github.com/btford/write-good
 title:      Weasel words.

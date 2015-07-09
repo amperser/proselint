@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MSC404: Checks that links are viable.
+"""Checks that links are viable.
 
 ---
 layout:     post
-error_code: MSC404
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
 title:      broken links
