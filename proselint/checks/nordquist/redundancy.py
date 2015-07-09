@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU103: Redundancy.
+"""Redundancy.
 
 ---
 layout:     post
-error_code: MAU103
 source:     Richard Nordquist
 source_url: http://amzn.to/15wF76r
 title:      abbetor

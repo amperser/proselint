@@ -1,8 +1,7 @@
-"""WGD200: Lexical illusions.
+"""Lexical illusions.
 
 ---
 layout:     post
-error_code: WGD200
 source:     write-good
 source_url: https://github.com/btford/write-good
 title:      Lexical illusion present

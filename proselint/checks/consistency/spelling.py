@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""IEL100: Inconsistent spelling.
+"""Inconsistent spelling.
 
 ---
 layout:     post
-error_code: IEL100
 source:     Intelligent Editing Ltd.
 source_url: http://bit.ly/1x3hYj7
 title:      Inconsistent spelling

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-u"""DFW200: Comparing uncomparables.
+u"""Comparing uncomparables.
 
 ---
 layout:     post
-error_code: DFW200
 source:     David Foster Wallace
 source_url: http://www.telegraph.co.uk/a/9715551
 title:      Comparing an uncomparable

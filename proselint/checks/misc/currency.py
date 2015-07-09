@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MSC110: Currency.
+"""Currency.
 
 ---
 layout:     post
-error_code: MSC110
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
 title:      symbols

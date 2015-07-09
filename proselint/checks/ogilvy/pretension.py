@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""EES: Pretension.
+"""Pretension.
 
 ---
 layout:     post
-error_code: SCH
 source:     ???
 source_url: ???
 title:      yelling

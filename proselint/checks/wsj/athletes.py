@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""WSJ100: Misspellings.
+"""Misspellings.
 
 ---
 layout:     post
-error_code: WSJ100
 source:     The Wall Street Journal
 source_url: http://amzn.to/15wF76r
 title:      misspellings

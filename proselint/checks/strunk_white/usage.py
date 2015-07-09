@@ -1,8 +1,7 @@
-"""STW100: Elementary Rules of Usage.
+"""Elementary Rules of Usage.
 
 ---
 layout:     post
-error_code: STW101
 source:     Strunk & White
 source_url: ???
 title:      Elementary Rules of Usage

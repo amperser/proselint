@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU109: Denizen labels.
+"""Denizen labels.
 
 ---
 layout:     post
-error_code: MAU109
 source:     Mary Norris
 source_url: http://nyr.kr/1rGienj
 title:      denizen labels

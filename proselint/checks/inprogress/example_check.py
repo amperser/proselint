@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""ERR100: First line is always wrong.
+"""First line is always wrong.
 
 ---
 layout:     post
-error_code: ERR100
 source:     Nobody
 source_url: ???
 title:      Firse line is always wrong.
@@ -19,7 +18,7 @@ from tools import reverse
 
 def check(text):
     """Check the text."""
-    error_code = "PL000"
+    error_code = "example.first"
     msg = "First line always has an error."
 
     reverse(text)

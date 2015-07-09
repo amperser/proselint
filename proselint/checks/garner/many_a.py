@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-u"""MAU100: Many a singular.
+u"""Many a singular.
 
 ---
 layout:     post
-error_code: MAU101
 source:     Garner's Modern American Usage
 source_url: http://amzn.to/15wF76r
 title:      Many a singular.

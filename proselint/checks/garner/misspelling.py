@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU102: Misspellings.
+"""Misspellings.
 
 ---
 layout:     post
-error_code: MAU102
 source:     Garner's Modern American Usage
 source_url: http://amzn.to/15wF76r
 title:      misspellings

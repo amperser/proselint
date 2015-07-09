@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""BTR100: Use the symbols.
+"""Use the symbols.
 
 ---
 layout:     post
-error_code: BTR100
 source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
 title:      Tense present

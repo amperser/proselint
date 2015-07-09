@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU103: Very.
+"""Very.
 
 ---
 layout:     post
-error_code: MAU103
 source:     Mark Twain
 source_url: http://bit.ly/1CQPH61
 title:      very

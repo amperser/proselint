@@ -1,8 +1,7 @@
-"""STW100: Use of greylisted words.
+"""Use of greylisted words.
 
 ---
 layout:     post
-error_code: STW100
 source:     Strunk & White
 source_url: ???
 title:      Use of greylisted words

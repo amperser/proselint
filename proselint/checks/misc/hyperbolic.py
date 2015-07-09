@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""EES: Hyperbolic language.
+"""Hyperbolic language.
 
 ---
 layout:     post
-error_code: MSC
 source:     ???
 source_url: ???
 title:      hyperbolic language

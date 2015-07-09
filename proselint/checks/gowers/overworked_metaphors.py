@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""MAU103: Overworked metaphors.
+"""Overworked metaphors.
 
 ---
 layout:     post
-error_code: MAU103
 source:     Sir Ernest Gowers
 source_url: http://bit.ly/1CQPH61
 title:      overworked metaphors
