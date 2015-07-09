@@ -124,7 +124,8 @@ def check(text):
         ["midwifed",            ["midwived"]],
         ["mean-spirited",       ["meanspirited"]],
         ["mealy-mouthed",       ["mealymouthed"]],
-        ["matzo-ball",          ["matzoh-ball, matza-ball, matzah-ball, matsah-ball"]],
+        ["matzo-ball",          ["matzoh-ball", "matza-ball", "matzah-ball",
+                                 "matsah-ball"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
