@@ -37,6 +37,7 @@
         "misc.hyperbolic"               : true,
         "misc.link_checker"             : false,
         "misc.password"                 : true,
+        "misc.whence"                   : true,
         "nordquist.redundancy"          : true,
         "norris.denizen_labels"         : true,
         "ogilvy.pretension"             : true,
