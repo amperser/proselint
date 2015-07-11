@@ -38,6 +38,7 @@ def check(text):
         ["hippopotamuses",      ["hippopotami"]],
         ["titmice",             ["titmouses"]],
         ["retinas",             ["retinae"]],
+        ["manifestos",          ["manifesti"]],
         ["matrixes",            ["matrices"]],
 
         # Hyphenated words

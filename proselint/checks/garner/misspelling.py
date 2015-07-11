@@ -91,6 +91,7 @@ def check(text):
         ["maelstrom",         ["maelstorm"]],
         ["mafia",             ["maffia"]],
         ["mafiosi",           ["mafiosos"]],
+        ["mangoes",           ["mangos"]],
         ["marijuana",         ["marihuana"]],
         ["marshmallow",       ["marshmellow"]],
         ["martial law",       ["marshall law"]],
