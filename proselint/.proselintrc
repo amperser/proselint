@@ -20,6 +20,7 @@
         "garner.mixed_metaphors"        : true,
         "garner.needless_variants"      : true,
         "garner.oxymorons"              : true,
+        "garner.people_labels"          : true,
         "garner.preferred_forms"        : true,
         "garner.punctuation"            : true,
         "garner.redundancy"             : true,
