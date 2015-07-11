@@ -94,6 +94,7 @@ def check(text):
         ["martial law",       ["marshall law"]],
         ["massacring",        ["massacering", "massacreing"]],
         ["measles",           ["measels"]],
+        ["memento",           ["momento"]],
         ["minuscule",         ["miniscule"]],
         ["millennium",        ["millenium"]],
         ["millennia",         ["millenia"]],
