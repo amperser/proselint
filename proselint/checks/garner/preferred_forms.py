@@ -155,6 +155,8 @@ def check(text):
         ["Meanwhile,",          ["Meantime,"]],
         ["modus operandi",      ["mode of operandi"]],
         ["modi operandi",       ["modes of operandi"]],
+        ["motion seconded",     ["notion seconded"]],
+        ["seconded the motion", ["seconded the notion"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
