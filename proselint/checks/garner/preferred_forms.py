@@ -126,6 +126,7 @@ def check(text):
         ["mealy-mouthed",       ["mealymouthed"]],
         ["matzo-ball",          ["matzoh-ball", "matza-ball", "matzah-ball",
                                  "matsah-ball"]],
+        ["attitude",            ["mental attitude"]],
 
         # Idioms
         ["madding crowd",       ["maddening crowd"]],
