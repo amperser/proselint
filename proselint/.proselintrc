@@ -7,6 +7,7 @@
         "garner.animal_labels"          : true,
         "garner.archaism"               : true,
         "garner.back_formations"        : true,
+        "garner.bureaucratese"          : true,
         "garner.cliches"                : true,
         "garner.capitalization"         : true,
         "garner.commercialese"          : true,
