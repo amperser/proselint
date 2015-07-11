@@ -63,6 +63,7 @@ def check(text):
         ["gift",              ["free gift"]],
         ["interact",          ["interact with each other"]],
         ["large",             ["large-size"]],
+        ["meld",              ["meld together"]],
         ["merge",             ["merge together"]],
         ["mingle",            ["mingle together"]],
         ["mix",               ["mix together"]],
