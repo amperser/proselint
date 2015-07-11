@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-u"""AM / PM.
+u"""a.m. / p.m.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://amzn.to/15wF76r
-title:      AM & PM
+title:      a.m. & p.m.
 date:       2014-06-10 12:31:19
 categories: writing
 ---
