@@ -158,6 +158,7 @@ def check(text):
         ["modi operandi",       ["modes of operandi"]],
         ["motion seconded",     ["notion seconded"]],
         ["seconded the motion", ["seconded the notion"]],
+        ["marriage of convenience", ["mariage de convenance"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
