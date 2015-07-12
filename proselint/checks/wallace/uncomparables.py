@@ -45,7 +45,7 @@ One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
 import re
-from tools import memoize
+from proselint.tools import memoize
 import itertools
 
 

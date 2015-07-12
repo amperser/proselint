@@ -1,4 +1,4 @@
-from tools import topics
+from proselint.tools import topics
 
 
 class TestTopicDetector(object):

@@ -27,7 +27,7 @@ class Check(TestCase):
 
         return len(errors[0]) == 0
 
-    def test_wpe(self):
+    def wpe_too_high(self):
         """Check whether the check is too noisy."""
         min_wpe = 50
 
@@ -44,7 +44,7 @@ class Check(TestCase):
             with codecs.open(example_path, "r", encoding='utf-8') as f:
                 text = f.read()
                 num_errors = len(self.this_check.check(text))
-                num_words = len(text.words)
+                num_words = len(text)
 
             try:
                 wpe = 1.0 * num_words / num_errors
