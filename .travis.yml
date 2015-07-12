@@ -4,9 +4,20 @@ python:
 install:
   - pip install -r requirements.txt
   - gem install jekyll
+  - gem install jekyll-sitemap
+  - gem install s3_website
+  - gem install compass --version 0.12.5
+  - gem install kramdown
+  - gem install link-checker
 before_script:
-- python scripts/insert_demo.py
-script: nosetests
+  - python scripts/insert_demo.py
+script:
+  - nosetests
+  - cd site
+  - jekyll build
+  - s3_website push
+  - cd ..
+  - check-links 'http://prose.lifelinter.com'
 env:
   global:
   - secure: cB2hODqR9V3P8c2BupySJnz825snT2vqhpB4RnnyYD5L1E+nzZK9KdApgx0U/f1YHZujhPnbdXAfq1QQztIf6EocbF1CrSKPCavJoJ/CSQ53X775++PegBZXL66PSYfMX28MFcuYCvqcBxSKX26kpT72IjtgHHEROz/NkrifHog=
