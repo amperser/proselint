@@ -1,4 +1,4 @@
-# """Unit tests for strunk_white_eos."""
+"""Unit tests for strunk_white_eos."""
 
 # from check import Check
 # from proselint.checks.strunkwhite import elementary_composition as chk
