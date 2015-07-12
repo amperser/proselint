@@ -12,12 +12,14 @@ install:
 before_script:
   - python scripts/insert_demo.py
 script:
-  - nosetests
+  - nosetests --with-coverage --cover-package proselint
   - cd site
   - jekyll build
   - s3_website push
   - cd ..
   - linkchecker 'http://prose.lifelinter.com'
+after_success:
+  - coveralls
 env:
   global:
   - secure: cB2hODqR9V3P8c2BupySJnz825snT2vqhpB4RnnyYD5L1E+nzZK9KdApgx0U/f1YHZujhPnbdXAfq1QQztIf6EocbF1CrSKPCavJoJ/CSQ53X775++PegBZXL66PSYfMX28MFcuYCvqcBxSKX26kpT72IjtgHHEROz/NkrifHog=
