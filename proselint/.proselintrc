@@ -42,6 +42,7 @@
         "misc.link_checker"             : false,
         "misc.password"                 : true,
         "misc.whence"                   : true,
+        "nfl.naughty_words"             : false,
         "nordquist.redundancy"          : true,
         "norris.denizen_labels"         : true,
         "ogilvy.pretension"             : true,

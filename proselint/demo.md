@@ -175,4 +175,4 @@ in recent years, an increasing number of psychologists have
 mutatis mutandis
 
 # Filthy language
-Shit, piss, fuck, cunt, cocksucker, motherfucker, tits, fart, turd, twat
+Shit, piss, fuck, cunt, cocksucker, motherfucker, tits, fart, turd, twat, goddamnmuthafucker, pubic lice, sexkitten, slutty, xxx
