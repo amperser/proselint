@@ -1,0 +1,1 @@
+"""'Advice' from George Carlin."""

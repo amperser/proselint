@@ -1,6 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
+        "carlin.filth"                  : true,
         "garner.a_vs_an"                : false,
         "garner.am_pm"                  : true,
         "garner.airlinese"              : true,
