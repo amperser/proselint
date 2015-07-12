@@ -13,4 +13,6 @@ for file in os.listdir(proselint_tests_path):
     if ".md" == filepath[-3:]:
         subprocess.call("proselint --debug {}".format(filepath), shell=True)
 
-print(time.time() - start)
+total_time = time.time() - start
+
+assert(total_time < float("inf"))
