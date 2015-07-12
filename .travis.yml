@@ -19,7 +19,7 @@ script:
   - cd ..
   - linkchecker 'http://prose.lifelinter.com'
   - pep8 .
-  - pep257 .
+  - pep257 . --match='.*\.py'
 after_success:
   - coveralls
 env:
