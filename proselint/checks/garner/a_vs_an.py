@@ -14,7 +14,7 @@ The first line is always wrong.
 
 """
 import re
-from tools import memoize
+from proselint.tools import memoize
 import os
 import nltk
 
