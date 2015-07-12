@@ -9,3 +9,4 @@ proselint/cache/*
 build/*
 *.egg
 *.rdb
+.coverage
