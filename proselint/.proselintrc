@@ -1,16 +1,19 @@
 {
     "max_errors": 1000,
     "checks": {
+        "butterick.symbols"             : true,
         "carlin.filth"                  : true,
+        "consistency.spacing"           : true,
+        "consistency.spelling"          : true,
         "garner.a_vs_an"                : false,
-        "garner.am_pm"                  : true,
         "garner.airlinese"              : true,
+        "garner.am_pm"                  : true,
         "garner.animal_labels"          : true,
         "garner.archaism"               : true,
         "garner.back_formations"        : true,
         "garner.bureaucratese"          : true,
-        "garner.cliches"                : true,
         "garner.capitalization"         : true,
+        "garner.cliches"                : true,
         "garner.commercialese"          : true,
         "garner.dates"                  : true,
         "garner.denizen_labels"         : true,
@@ -27,9 +30,6 @@
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
         "gowers.overworked_metaphors"   : true,
-        "consistency.spacing"           : true,
-        "consistency.spelling"          : true,
-        "butterick.symbols"             : true,
         "inc.corporate_speak"           : true,
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
@@ -59,9 +59,9 @@
         "twain.damn"                    : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
-        "wsj.athletes"                  : true,
         "write_good.cliches"            : true,
         "write_good.lexical_illusions"  : true,
         "write_good.weasel_words"       : true
+        "wsj.athletes"                  : true,
     }
 }
