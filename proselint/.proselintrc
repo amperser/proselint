@@ -61,7 +61,7 @@
         "wallace.uncomparables"         : true,
         "write_good.cliches"            : true,
         "write_good.lexical_illusions"  : true,
-        "write_good.weasel_words"       : true
-        "wsj.athletes"                  : true,
+        "write_good.weasel_words"       : true,
+        "wsj.athletes"                  : true
     }
 }
