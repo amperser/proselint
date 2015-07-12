@@ -18,6 +18,8 @@ script:
   - s3_website push
   - cd ..
   - linkchecker 'http://prose.lifelinter.com'
+  - pep8 .
+  - pep257 .
 after_success:
   - coveralls
 env:
