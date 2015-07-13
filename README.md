@@ -4,7 +4,7 @@
 [![Build Status](https://magnum.travis-ci.com/suchow/proselint.svg?token=ygVLzsadbn3UbxEk8GzT&branch=master)](https://magnum.travis-ci.com/suchow/proselint)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
 [![Coverage Status](https://coveralls.io/repos/suchow/proselint/badge.svg?branch=master&service=github&t=V9yd9l)](https://coveralls.io/github/suchow/proselint?branch=master)
-![Lint score](http://img.shields.io/badge/lint_score-98.8,_v0.1.0-blue.svg)
+![Lint score](http://img.shields.io/badge/lintscore_v0.1.0-98.8-blue.svg)
 
 `proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
 
