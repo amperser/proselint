@@ -1,6 +1,6 @@
 <img src="logo.png" alt="proselint logo" width="200">
 
-![Version](https://img.shields.io/github/release/suchow/proselint.svg)
+![Version](https://img.shields.io/badge/version-v0.1.0-yellow.svg)
 [![Build Status](https://magnum.travis-ci.com/suchow/proselint.svg?token=ygVLzsadbn3UbxEk8GzT&branch=master)](https://magnum.travis-ci.com/suchow/proselint)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
 [![Coverage Status](https://coveralls.io/repos/suchow/proselint/badge.svg?branch=master&service=github&t=V9yd9l)](https://coveralls.io/github/suchow/proselint?branch=master)
