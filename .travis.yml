@@ -34,7 +34,7 @@ deploy:
     secure: L3Z04s4YxouUA4pzDW38GusXQ82KNCI73RYUCpZhBXhtxqB3hK5dHX0/UMUnXWJLyu7fuZoYLfSAs2dIl2dNAvxN0OeRBSHR/hToprASfxBKiVfmzKJUE4UxzUkRbxxFcoA4pqSz6AcXQPW1NOVkvD7IMgKEqMJQyehonysw66k=
   app: proselint
   on:
-    repo: suchow/proselint
+    repo: amperser/proselint
 notifications:
   email:
     recipients:
