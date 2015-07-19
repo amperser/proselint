@@ -6,7 +6,7 @@ setup(
     name='proselint',
     version='0.1',
     description='Making your writing better',
-    url='http://github.com/suchow/proselint',
+    url='http://github.com/amperser/proselint',
     author='Jordan Suchow',
     author_email='suchow@post.harvard.edu',
     license='MIT',
