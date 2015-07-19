@@ -160,6 +160,7 @@ def check(text):
         ["motion seconded",     ["notion seconded"]],
         ["seconded the motion", ["seconded the notion"]],
         ["marriage of convenience", ["mariage de convenance"]],
+        ["mucous membranes",    ["mucus membranes"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
