@@ -155,6 +155,8 @@ def check(text):
         ["Venus flytrap",       ["Venus's flytrap", "Venus' flytrap"]],
         ["in the meantime",     ["in the meanwhile"]],
         ["Meanwhile,",          ["Meantime,"]],
+        ["Midwest",             ["Middle West"]],
+        ["Midwestern",          ["Middle Western"]],
         ["modus operandi",      ["mode of operandi"]],
         ["modi operandi",       ["modes of operandi"]],
         ["motion seconded",     ["notion seconded"]],
