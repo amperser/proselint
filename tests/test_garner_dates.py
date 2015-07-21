@@ -22,3 +22,10 @@ class TestCheck(Check):
                   Eminem to the G-Unit record label."""
         errors = dates.check_decade_apostrophes_short(text)
         assert len(errors) == 0
+
+    def test_dash_and_from(self):
+        """Don't write 'from xxxx-yyyy'."""
+        text = """From 1999-2002, John served as chair of the committee."""
+        errors = dates.check_dash_and_from(text)
+        print errors
+        assert len(errors) == 1
