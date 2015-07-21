@@ -9,7 +9,9 @@ install:
   - gem install s3_website
   - gem install compass --version 0.12.5
   - gem install kramdown
+  - gem install travis
 before_script:
+  - travis lint
   - python scripts/insert_demo.py
 script:
   - nosetests --with-coverage --cover-package proselint
