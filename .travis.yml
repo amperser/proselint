@@ -11,7 +11,7 @@ install:
   - gem install kramdown
   - gem install travis
 before_script:
-  - travis lint
+  - travis lint --skip-completion-check
   - python scripts/insert_demo.py
 script:
   - nosetests --with-coverage --cover-package proselint
