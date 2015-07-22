@@ -1,9 +1,9 @@
 -e git+https://4753ad3ace64ac52c8e052ff8e782eb8a6960b04:x-oauth-basic@github.com/amperser/proselint.git#egg=proselint
 -e git+https://github.com/charlierguo/gmail.git#egg=gmail
 APScheduler==3.0.0
-click==3.3
+click==4.0
 coverage==3.7.1
-coveralls==0.4.2
+coveralls==0.5
 Flask-API==0.6.2
 Flask-Cors==1.10.3
 Flask-Limiter==0.7.8
@@ -12,12 +12,12 @@ gunicorn==19.2.1
 itsdangerous==0.24
 Jinja2==2.7.3
 MarkupSafe==0.23
-pep257==0.4.1
-pep8==1.6.1
+pep257==0.5.0
+pep8==1.6.2
 queuelib==1.2.2
 redis==2.10.3
 requests==2.7.0
-rq==0.5.1
+rq==0.5.3
 six==1.9.0
 Werkzeug==0.10.1
 wikipedia==1.4.0
