@@ -45,7 +45,7 @@ def check_dash_and_from(text):
     err = "garner.dates"
     msg = u"When specifying a date range, write 'from X to Y'."
 
-    regex = "from \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+"
+    regex = "[fF]rom \d+[^ \t\n\r\f\va-zA-Z0-9_]\d+"
     return existence_check(text, [regex], err, msg)
 
 
