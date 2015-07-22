@@ -146,7 +146,7 @@ def check(text):
         ["Magna Carta",         ["Magna Charta"]],
         ["draw an inference",   ["make an inference"]],
         ["oil magnate",         ["oil magnet"]],
-        ["railroad magnate",    ["railroard magnet"]],
+        ["railroad magnate",    ["railroad magnet"]],
         ["long distances",      ["lengthy distances"]],
         ["unorganic food",      ["inorganic food"]],
         ["corroborating evidence", ["corroborative evidence"]],
