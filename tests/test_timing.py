@@ -12,7 +12,7 @@ for file in os.listdir(proselint_tests_path):
     filepath = os.path.join(proselint_tests_path, file)
     if ".md" == filepath[-3:]:
         subprocess.call(
-            "proselint --debug {} >/dev/null".format(filepath), shell=True)
+            "proselint {} >/dev/null".format(filepath), shell=True)
 
 total_time = time.time() - start
 
