@@ -11,6 +11,14 @@ class Check(TestCase):
 
     __test__ = False
 
+    def setUp(self):
+        """Placeholder for setup procedure."""
+        pass
+
+    def tearDown(self):
+        """Placeholder for teardown procedure."""
+        pass
+
     @property
     def this_check(self):
         """The specific check."""
