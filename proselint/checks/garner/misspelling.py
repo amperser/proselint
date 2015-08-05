@@ -110,6 +110,7 @@ def check(text):
         ["mimicked",          ["mimiced"]],
         ["mimicking",         ["mimicing"]],
         ["mischievous",       ["mischievious"]],
+        ["naphtha",           ["naptha"]],
         ["newsstand",         ["newstand"]],
         ["occurred",          ["occured"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
