@@ -22,8 +22,9 @@ def check(text):
     err = "write_good.lexical_illusions"
     msg = u"There's a lexical illusion here: a word is repeated."
 
-    commercialese = [
+    list = [
         "the\sthe",
+        "am\sam",
     ]
 
-    return existence_check(text, commercialese, err, msg)
+    return existence_check(text, list, err, msg)
