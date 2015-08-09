@@ -13,7 +13,7 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from tools import preferred_forms_check, memoize
+from tools import preferred_forms_check, existence_check, memoize
 
 
 @memoize
@@ -29,3 +29,18 @@ def check_lie_detector_test(text):
     ]
 
     return preferred_forms_check(text, list, err, msg)
+
+
+@memoize
+def check_p_equals_zero(text):
+    """Check for p = 0.000."""
+    err = "lilienfeld.terms_to_avoid.p_equals_zero"
+    msg = "Unless p really equals zero, you should use more decimal places."
+
+    list = [
+        "p = 0.00",
+        "p = 0.000",
+        "p = 0.0000",
+    ]
+
+    return existence_check(text, list, err, msg, join=True)
