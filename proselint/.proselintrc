@@ -33,6 +33,7 @@
         "inc.corporate_speak"           : true,
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
+        "lilienfeld.terms_to_avoid"     : true,
         "misc.annotations"              : true,
         "misc.chatspeak"                : true,
         "misc.credit_card"              : true,
