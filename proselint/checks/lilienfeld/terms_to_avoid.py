@@ -44,3 +44,12 @@ def check_p_equals_zero(text):
     ]
 
     return existence_check(text, list, err, msg, join=True)
+
+
+@memoize
+def check_mental_telepathy(text):
+    """Check for 'mental telepathy'."""
+    err = "lilienfeld.terms_to_avoid.mental_telepathy"
+    msg = "This is redundant: all purported telepathy is mental."
+
+    return existence_check(text, ["mental telepathy"], err, msg)
