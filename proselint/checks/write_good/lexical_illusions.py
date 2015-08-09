@@ -25,6 +25,7 @@ def check(text):
     list = [
         "the\sthe",
         "am\sam",
+        "has\shas"
     ]
 
     return existence_check(text, list, err, msg)
