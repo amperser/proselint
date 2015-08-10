@@ -40,6 +40,7 @@ def check(text):
         ["retinas",             ["retinae"]],
         ["manifestos",          ["manifesti"]],
         ["matrixes",            ["matrices"]],
+        ["narcissi",            ["narcissuses"]],
 
         # Hyphenated words
         ["tortfeasor",          ["tort feasor", "tort-feasor"]],
@@ -48,7 +49,6 @@ def check(text):
         ["transshipping",       ["transhipping", "trans-shipping"]],
         ["long-standing",       ["longstanding"]],
         ["sans serif",          ["sans-serif", "sanserif"]],
-        # ["longtime",           ["long time"]],
 
         # er vs. or
         ["abductor",            ["abducter"]],
@@ -180,14 +180,11 @@ def check(text):
 
         # Euphemisms
         ["rat-catcher",         ["rodent operative"]],
-        # ["exterminator",        ["extermination engineer"]],
+        ["exterminator",        ["extermination engineer"]],
         ["abortion",            ["pregnancy termination"]],
         ["bisexual",            ["sexually ambidextrous"]],
         ["a search-and-destroy mission", ["armed reconnaissance"]],
         ["firing",              ["permanent layoff"]],
-
-        # TODO, entries that are a bit complicated
-        # announce
     ]
 
     return preferred_forms_check(text, preferences, err, msg)
