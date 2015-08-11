@@ -6,7 +6,7 @@ coverage==3.7.1
 coveralls==0.5
 Flask-API==0.6.2
 Flask-Cors==2.0.0
-Flask-Limiter==0.7.8
+Flask-Limiter==0.8
 Flask==0.10.1
 gunicorn==19.3.0
 itsdangerous==0.24
