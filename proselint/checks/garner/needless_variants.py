@@ -150,6 +150,7 @@ def check(text):
         ["doctrinaire",       ["doctrinary"]],
         ["documentary",       ["documental"]],
         ["domesticate",       ["domesticize"]],
+        ["doubt",             ["misdoubt"]],
         ["duplicative",       ["duplicatory"]],
         ["dutiful",           ["duteous"]],
         ["educationist",      ["educationalist"]],

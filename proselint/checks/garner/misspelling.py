@@ -109,6 +109,7 @@ def check(text):
         ["milquetoast",       ["milktoast"]],
         ["mimicked",          ["mimiced"]],
         ["mimicking",         ["mimicing"]],
+        ["misspelling",       ["mispelling"]],
         ["mischievous",       ["mischievious"]],
         ["naphtha",           ["naptha"]],
         ["newsstand",         ["newstand"]],
