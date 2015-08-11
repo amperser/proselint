@@ -163,6 +163,8 @@ def check(text):
         ["seconded the motion", ["seconded the notion"]],
         ["marriage of convenience", ["mariage de convenance"]],
         ["mucous membranes",    ["mucus membranes"]],
+        ["take precedence over", ["take prescience over"]],
+        ["must pass muster",    ["must past muster"]],
 
         # Verbosity
         ["try to",              ["make an attempt to"]],
