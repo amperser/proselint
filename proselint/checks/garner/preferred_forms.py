@@ -187,6 +187,9 @@ def check(text):
         ["bisexual",            ["sexually ambidextrous"]],
         ["a search-and-destroy mission", ["armed reconnaissance"]],
         ["firing",              ["permanent layoff"]],
+
+        # Tenses
+        ["mistook",             ["mistaked"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)
