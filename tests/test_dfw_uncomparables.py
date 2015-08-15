@@ -17,8 +17,9 @@ class TestCheck(Check):
 
     def test_sample_phrases(self):
         """Find 'very unique'."""
-        assert not self.check("""This sentence is very unique.""")
+        assert not self.passes("""This sentence is very unique.""")
 
     def test_linebreaks(self):
         """Handle linebreaks correctly."""
-        assert not self.check("""This sentence is very\nunique.""")
+        assert not self.passes("""This sentence is very\nunique.""")
+

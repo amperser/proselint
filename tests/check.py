@@ -24,7 +24,7 @@ class Check(TestCase):
         """The specific check."""
         raise NotImplementedError
 
-    def check(self, lst):
+    def passes(self, lst):
         """Check if the test runs cleanly on the given text."""
         if isinstance(lst, basestring):
             lst = [lst]
