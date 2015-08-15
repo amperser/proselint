@@ -23,3 +23,6 @@ class TestCheck(Check):
         """Handle linebreaks correctly."""
         assert not self.passes("""This sentence is very\nunique.""")
 
+    def test_constitutional(self):
+        """Don't flag 'more perfect'."""
+        assert self.passes("""A more perfect union.""")
