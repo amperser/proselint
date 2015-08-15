@@ -17,8 +17,8 @@ class TestCheck(Check):
 
     def test(self):
         """Ensure the test works correctly."""
-        assert self.check("""An apple a day keeps the doctor away.""")
-        assert self.check("""The Epicurean garden.""")
-        assert not self.check("""A apple a day keeps the doctor away.""")
-        assert not self.check("""An apple an day keeps the doctor away.""")
-        assert not self.check("""An apple an\nday keeps the doctor away.""")
+        assert self.passes("""An apple a day keeps the doctor away.""")
+        assert self.passes("""The Epicurean garden.""")
+        assert not self.passes("""A apple a day keeps the doctor away.""")
+        assert not self.passes("""An apple an day keeps the doctor away.""")
+        assert not self.passes("""An apple an\nday keeps the doctor away.""")
