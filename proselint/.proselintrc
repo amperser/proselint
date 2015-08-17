@@ -46,6 +46,7 @@
         "nfl.naughty_words"             : false,
         "nordquist.redundancy"          : true,
         "norris.denizen_labels"         : true,
+        "nytimes.banned_words"          : true,
         "ogilvy.pretension"             : true,
         "orwell.debased"                : true,
         "palahniuk.suddenly"            : true,
