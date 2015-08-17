@@ -3,7 +3,7 @@
 
 ---
 layout:     post
-source:     The Natinonal Football League
+source:     The National Football League
 source_url: http://bit.ly/1ISK0rb
 title:      words the NFL won't print on a jersey
 date:       2014-06-10 12:31:19
