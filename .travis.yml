@@ -4,6 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install LinkChecker
+  - gem install jekyll-gist -v '1.2.1'
   - gem install jekyll
   - gem install jekyll-sitemap
   - gem install s3_website
