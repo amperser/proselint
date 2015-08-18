@@ -1,4 +1,5 @@
 """Insert the demo into the codemirror site."""
+from __future__ import print_function
 
 import os
 import fileinput
@@ -26,6 +27,6 @@ for line in fileinput.input(
         os.path.join(live_write_path, "index.html"), inplace=True):
 
     if "##DEMO_PLACEHOLDER##" in line:
-        print demo,
+        print(demo, end=' ')
     else:
-        print line,
+        print(line, end=' ')

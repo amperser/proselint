@@ -1,9 +1,10 @@
 language: python
 python:
   - "2.7"
+  - "3.3"
+  - "3.4"
 install:
   - pip install -r requirements.txt
-  - pip install LinkChecker
   - gem install jekyll-gist -v '1.2.1'
   - gem install jekyll
   - gem install jekyll-sitemap
@@ -11,6 +12,7 @@ install:
   - gem install compass --version 0.12.5
   - gem install kramdown
   - gem install travis
+  - gem install link-checker
 before_script:
   - travis lint -x --skip-completion-check
   - python scripts/insert_demo.py
@@ -20,9 +22,9 @@ script:
   - jekyll build
   - s3_website push
   - cd ..
-  - linkchecker 'http://prose.lifelinter.com'
   - pep8 .
   - pep257 . --match='.*\.py'
+  - check-links "http://prose.lifelinter.com"
 after_success:
   - coveralls
 env:
