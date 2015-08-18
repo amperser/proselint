@@ -1,6 +1,7 @@
 """Unit tests for MAU101."""
+from __future__ import absolute_import
 
-from check import Check
+from .check import Check
 from proselint.checks.garner import a_vs_an as chk
 
 

@@ -2,11 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """Command line utility for proselint."""
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import input
+from builtins import str
+from builtins import int
+
 
 import click
 import os
-from tools import line_and_column, is_quoted
-import checks as pl
+from .tools import line_and_column, is_quoted
+from . import checks as pl
 import pkgutil
 import codecs
 import subprocess
@@ -53,7 +59,7 @@ def lint(path, debug=False):
     # Extract the checks.
     sys.path.append(proselint_path)
     checks = []
-    check_names = [key for key, val in options["checks"].items() if val]
+    check_names = [key for (key, val) in options["checks"].items() if val]
     for check_name in check_names:
         module = importlib.import_module("checks." + check_name)
         for d in dir(module):
@@ -131,16 +137,16 @@ def lintscore():
             subprocess.call("{} {}".format("open", fullpath), shell=True)
 
             # Ask the scorer how many of the errors were false alarms?
-            input = None
-            while not isinstance(input, (int, long)):
+            input_val = None
+            while not isinstance(input_val, int):
                 try:
-                    input = raw_input("# of false alarms? ")
-                    if input == "exit":
+                    input_val = input("# of false alarms? ")
+                    if input_val == "exit":
                         return
                     else:
-                        input = int(input)
-                        fp += input
-                        tp += (num_errors - input)
+                        input_val = int(input_val)
+                        fp += input_val
+                        tp += (num_errors - input_val)
                 except:
                     pass
 
