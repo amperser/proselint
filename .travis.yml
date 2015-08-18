@@ -38,6 +38,7 @@ deploy:
   app: proselint
   on:
     repo: amperser/proselint
+    python: "2.7"
 notifications:
   email:
     recipients:
