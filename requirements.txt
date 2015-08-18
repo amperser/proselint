@@ -8,6 +8,7 @@ Flask-API==0.6.2
 Flask-Cors==2.0.0
 Flask-Limiter==0.8
 Flask==0.10.1
+future
 gunicorn==19.3.0
 itsdangerous==0.24
 Jinja2==2.7.3
