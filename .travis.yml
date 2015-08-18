@@ -12,6 +12,7 @@ install:
   - gem install compass --version 0.12.5
   - gem install kramdown
   - gem install travis
+  - gem install link-checker
 before_script:
   - travis lint -x --skip-completion-check
   - python scripts/insert_demo.py
@@ -23,6 +24,7 @@ script:
   - cd ..
   - pep8 .
   - pep257 . --match='.*\.py'
+  - check-links "http://prose.lifelinter.com"
 after_success:
   - coveralls
 env:
