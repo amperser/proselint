@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """General-purpose tools shared across linting checks."""
+from __future__ import print_function
 import os
 import shelve
 import inspect

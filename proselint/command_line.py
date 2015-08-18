@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """Command line utility for proselint."""
+from __future__ import print_function
+from __future__ import absolute_import
 
 import click
 import os
-from tools import line_and_column, is_quoted
-import checks as pl
+from .tools import line_and_column, is_quoted
+from . import checks as pl
 import pkgutil
 import codecs
 import subprocess

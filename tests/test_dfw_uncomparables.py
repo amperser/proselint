@@ -1,6 +1,7 @@
 """Test dfw.uncomparables."""
+from __future__ import absolute_import
 
-from check import Check
+from .check import Check
 from proselint.checks.wallace import uncomparables as chk
 
 
