@@ -40,12 +40,12 @@ def memoize(f):
         if hasattr(f, '__self__'):
             args = args[1:]
 
-        signature = f.__module__ + '.' + f.__name__
+        signature = (f.__module__ + '.' + f.__name__).encode("utf-8")
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
         for item in tempargdict.items():
-            signature += item[1].encode('utf-8')
+            signature += item[1].encode("utf-8")
 
         key = hashlib.sha256(signature).hexdigest()
 
