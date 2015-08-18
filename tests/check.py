@@ -1,5 +1,6 @@
 """Check that a check is working."""
 
+from past.builtins import basestring
 from unittest import TestCase
 import os
 import codecs

@@ -1,5 +1,7 @@
 """Generate blog posts from check docstrings."""
 
+from builtins import str
+from builtins import range
 import os
 import ast
 import datetime
@@ -37,7 +39,7 @@ for root, subdirs, files in listing:
                 str(datetime.date.today()) + "-" + docstring[0:6] + ".md")
 
             # Chop off the first two lines
-            for i in xrange(2):
+            for i in range(2):
                 docstring = '\n'.join(docstring.split('\n')[1:])
 
             # Create a new post in the blog.

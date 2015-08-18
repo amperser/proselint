@@ -3,6 +3,8 @@
 
 """General-purpose tools shared across linting checks."""
 from __future__ import print_function
+from __future__ import unicode_literals
+from builtins import str
 import os
 import shelve
 import inspect
@@ -127,16 +129,14 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
-                    max_errors=float("inf"), offset=0, require_padding=True,
-                    dotall=False, excluded_topics=None, join=False):
+def existence_check(text, list, err, msg, ignore_case=True, str=False, max_errors=float("inf"), offset=0, require_padding=True,dotall=False, excluded_topics=None, join=False):
     """Build a checker that blacklists certain words."""
     flags = 0
 
     if ignore_case:
         flags = flags | re.IGNORECASE
 
-    if unicode:
+    if str:
         flags = flags | re.UNICODE
 
     if dotall:
@@ -183,8 +183,8 @@ def existence_check(text, list, err, msg, ignore_case=True, unicode=False,
 def is_quoted(position, text):
     """Determine if the position in the text falls within a quote."""
     def matching(quotemark1, quotemark2):
-        straight = u'\"\''
-        curly = u'“”'
+        straight = '\"\''
+        curly = '“”'
         if quotemark1 in straight and quotemark2 in straight:
             return True
         if quotemark1 in curly and quotemark2 in curly:
@@ -198,7 +198,7 @@ def is_quoted(position, text):
         start = None
         ranges = []
         seps = " .,:;-\r\n"
-        quotes = [u'\"', u'“', u'”', u"'"]
+        quotes = ['\"', '“', '”', "'"]
         for i, c in enumerate(text + "\n"):
             if s == 0 and c in quotes and pc in seps:
                 start = i
