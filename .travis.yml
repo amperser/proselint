@@ -5,7 +5,6 @@ python:
   - "3.4"
 install:
   - pip install -r requirements.txt
-  - pip install LinkChecker
   - gem install jekyll-gist -v '1.2.1'
   - gem install jekyll
   - gem install jekyll-sitemap
@@ -22,7 +21,6 @@ script:
   - jekyll build
   - s3_website push
   - cd ..
-  - linkchecker 'http://prose.lifelinter.com'
   - pep8 .
   - pep257 . --match='.*\.py'
 after_success:
