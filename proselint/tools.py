@@ -129,9 +129,11 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True, 
-    str=False, max_errors=float("inf"), offset=0, 
-    require_padding=True, dotall=False, excluded_topics=None, join=False):
+def existence_check(text, list, err, msg, ignore_case=True,
+                    str=False, max_errors=float("inf"), offset=0, 
+                    require_padding=True, dotall=False, 
+                    excluded_topics=None, join=False):
+
     """Build a checker that blacklists certain words."""
     flags = 0
 
