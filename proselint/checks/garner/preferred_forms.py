@@ -130,6 +130,7 @@ def check(text):
         ["attitude",            ["mental attitude"]],
 
         # Idioms
+        ["came to naught",      ["came to nought"]],
         ["madding crowd",       ["maddening crowd"]],
         ["come off it",         ["come off of it"]],
         ["was accused of",      ["was accused with"]],
