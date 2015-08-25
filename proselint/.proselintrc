@@ -55,6 +55,7 @@
         "pinker.metaconcepts"           : true,
         "pinker.narcisissm"             : true,
         "pinker.scare_quotes"           : true,
+        "szekely.nword"                 : true,
         "strunk_white.composition"      : true,
         "strunk_white.greylist"         : true,
         "strunk_white.usage"            : true,
