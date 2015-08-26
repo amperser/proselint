@@ -10,3 +10,5 @@ build/*
 *.egg
 *.rdb
 .coverage
+proselint/proselint_develop.sublime-project
+proselint/proselint_develop.sublime-workspace

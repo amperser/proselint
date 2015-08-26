@@ -3,8 +3,8 @@
 
 ---
 layout:     post
-source:     ???
-source_url: ???
+source:     Louis CK
+source_url: https://youtu.be/dF1NUposXVQ?t=30s
 title:      the 'n-word'
 date:       2014-06-10 12:31:19
 categories: writing
