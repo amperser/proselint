@@ -37,6 +37,7 @@ def check(text):
         ["hippopotamuses",      ["hippopotami"]],
         ["manifestos",          ["manifesti"]],
         ["matrixes",            ["matrices"]],
+        ["mongooses",           ["mongeese"]],
         ["narcissi",            ["narcissuses"]],
         ["retinas",             ["retinae"]],
         ["sopranos",            ["soprani"]],
