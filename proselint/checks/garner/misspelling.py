@@ -137,6 +137,7 @@ def check(text):
         ["tinderbox",         ["tenderbox"]],
         ["timpani",           ["tympani"]],
         ["a timpani",         ["a timpano"]],
+        ["umpteenth",         ["umteenth"]],
         ["verbiage",          ["verbage"]],
     ]
 
