@@ -193,6 +193,10 @@ def check(text):
 
         # Tenses
         ["mistook",             ["mistaked"]],
+
+        # Accents
+        ["né",                  ["ne"]],
+        ["née",                 ["nee"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)
