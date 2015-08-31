@@ -112,6 +112,7 @@ def check(text):
         ["misspelling",       ["mispelling"]],
         ["mischievous",       ["mischievious"]],
         ["naphtha",           ["naptha"]],
+        ["neckwear",          ["neckware"]],
         ["newsstand",         ["newstand"]],
         ["occurred",          ["occured"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
