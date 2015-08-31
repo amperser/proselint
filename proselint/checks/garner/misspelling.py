@@ -111,6 +111,7 @@ def check(text):
         ["mimicking",         ["mimicing"]],
         ["misspelling",       ["mispelling"]],
         ["mischievous",       ["mischievious"]],
+        ["moccasin",          ["mocasin", "moccassin", "mocassin"]],
         ["naphtha",           ["naptha"]],
         ["navel orange",      ["naval orange"]],
         ["neckwear",          ["neckware"]],
