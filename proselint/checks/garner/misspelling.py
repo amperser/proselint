@@ -112,6 +112,7 @@ def check(text):
         ["misspelling",       ["mispelling"]],
         ["mischievous",       ["mischievious"]],
         ["naphtha",           ["naptha"]],
+        ["navel orange",      ["naval orange"]],
         ["neckwear",          ["neckware"]],
         ["newsstand",         ["newstand"]],
         ["occurred",          ["occured"]],
