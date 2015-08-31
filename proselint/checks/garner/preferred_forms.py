@@ -119,6 +119,7 @@ def check(text):
         ["mealy-mouthed",       ["mealymouthed"]],
         ["mean-spirited",       ["meanspirited"]],
         ["midwifed",            ["midwived"]],
+        ["moniker",             ["monicker"]],
         ["musical revue",       ["musical review"]],
         ["mustache",            ["moustache"]],
         ["not nearly as",       ["nowhere near as"]],
