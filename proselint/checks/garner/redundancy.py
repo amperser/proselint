@@ -63,6 +63,7 @@ def check(text):
         ["full",              ["completely full"]],
         ["fundamentals",      ["basic fundamentals"]],
         ["gift",              ["free gift"]],
+        ["innovation",        ["new innovation"]],
         ["interact",          ["interact with each other"]],
         ["large",             ["large-size"]],
         ["meld",              ["meld together"]],
