@@ -54,6 +54,7 @@ def check(text):
         ["couple",            ["couple together"]],
         ["crisis",            ["serious crisis"]],
         ["eliminate",         ["entirely eliminate"]],
+        ["especially",        ["most especially"]],
         ["fact",              ["actual fact"]],
         ["facts",             ["true facts"]],
         ["forecast",          ["future forecast"]],
