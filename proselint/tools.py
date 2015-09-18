@@ -145,7 +145,7 @@ def existence_check(text, list, err, msg, ignore_case=True,
         flags = flags | re.DOTALL
 
     if require_padding:
-        regex = u"[\W^]{}[\W$]"
+        regex = u"(?:^|\W){}[\W$]"
     else:
         regex = u"{}"
 

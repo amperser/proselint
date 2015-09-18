@@ -12,12 +12,20 @@ class Check(TestCase):
 
     __test__ = False
 
+    def setUp(self):
+        """Placeholder for setup procedure."""
+        pass
+
+    def tearDown(self):
+        """Placeholder for teardown procedure."""
+        pass
+
     @property
     def this_check(self):
         """The specific check."""
         raise NotImplementedError
 
-    def check(self, lst):
+    def passes(self, lst):
         """Check if the test runs cleanly on the given text."""
         if isinstance(lst, basestring):
             lst = [lst]
