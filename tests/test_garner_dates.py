@@ -30,5 +30,5 @@ class TestCheck(Check):
         """Test garner.check_dash_and_from."""
         text = """From 1999-2002, Sally served as chair of the committee."""
         errors = dates.check_dash_and_from(text)
-        print errors
+        print(errors)
         assert len(errors) == 1
