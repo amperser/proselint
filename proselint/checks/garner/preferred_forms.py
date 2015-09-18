@@ -37,6 +37,7 @@ def check(text):
         ["hippopotamuses",      ["hippopotami"]],
         ["manifestos",          ["manifesti"]],
         ["matrixes",            ["matrices"]],
+        ["mongooses",           ["mongeese"]],
         ["narcissi",            ["narcissuses"]],
         ["retinas",             ["retinae"]],
         ["sopranos",            ["soprani"]],
@@ -118,6 +119,7 @@ def check(text):
         ["mealy-mouthed",       ["mealymouthed"]],
         ["mean-spirited",       ["meanspirited"]],
         ["midwifed",            ["midwived"]],
+        ["moniker",             ["monicker"]],
         ["musical revue",       ["musical review"]],
         ["mustache",            ["moustache"]],
         ["not nearly as",       ["nowhere near as"]],
@@ -193,6 +195,10 @@ def check(text):
 
         # Tenses
         ["mistook",             ["mistaked"]],
+
+        # Accents
+        ["né",                  ["ne"]],
+        ["née",                 ["nee"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)
