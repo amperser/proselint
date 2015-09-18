@@ -22,6 +22,7 @@ import json as js
 import time
 import importlib
 import sys
+from .version import __version__
 
 
 base_url = "prose.lifelinter.com/"
@@ -167,7 +168,7 @@ def proselint(file=None, version=None, initialize=None,
     """Define the linter command line API."""
     # Return the version number.
     if version:
-        print("v0.0.1")
+        print(__version__)
         return
 
     # Run the intialization.

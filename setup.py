@@ -1,10 +1,11 @@
 """Installation script for proselint."""
 
 from setuptools import setup
+from proselint.version import __version__
 
 setup(
     name='proselint',
-    version='0.1',
+    version=__version__,
     description='Making your writing better',
     url='http://github.com/amperser/proselint',
     author='Jordan Suchow',
