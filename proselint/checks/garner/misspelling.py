@@ -111,7 +111,12 @@ def check(text):
         ["mimicking",         ["mimicing"]],
         ["misspelling",       ["mispelling"]],
         ["mischievous",       ["mischievious"]],
+        ["moccasin",          ["mocasin", "moccassin", "mocassin"]],
+        ["monologue",         ["monolog"]],
+        ["monologuist",       ["monologist"]],
         ["naphtha",           ["naptha"]],
+        ["navel orange",      ["naval orange"]],
+        ["neckwear",          ["neckware"]],
         ["newsstand",         ["newstand"]],
         ["occurred",          ["occured"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
@@ -134,6 +139,7 @@ def check(text):
         ["tinderbox",         ["tenderbox"]],
         ["timpani",           ["tympani"]],
         ["a timpani",         ["a timpano"]],
+        ["umpteenth",         ["umteenth"]],
         ["verbiage",          ["verbage"]],
     ]
 
