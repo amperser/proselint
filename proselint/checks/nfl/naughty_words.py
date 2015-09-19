@@ -683,7 +683,6 @@ def check_debased_language(text):
         "limy",
         "live sex",
         "livesex",
-        "ll",
         "loaded gun",
         "loadedgun",
         "lolita",
