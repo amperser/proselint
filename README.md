@@ -87,7 +87,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `garner.denizen_labels` | Calling people the right names |
 | `garner.illogic` | Avoiding illogical forms |
 | `garner.jargon` | Avoiding miscellaneous jargon |
-| `garner.malaproprisms` | Avoiding common malaproprisms |
+| `garner.malapropisms` | Avoiding common malapropisms |
 | `garner.many_a` | Many a singular |
 | `garner.misspelling` | Avoiding common misspellings missed by spell-check |
 | `garner.mixed_metaphors` | Not mixing metaphors |
