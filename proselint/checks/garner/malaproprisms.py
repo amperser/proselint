@@ -19,8 +19,8 @@ from tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "garner.malaproprisms"
-    msg = u"'{}' is a malaproprism."
+    err = "garner.malapropisms"
+    msg = u"'{}' is a malapropism."
 
     illogics = [
         "the infinitesimal universe",
