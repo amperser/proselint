@@ -158,6 +158,7 @@ def check(text):
         ["motion seconded",     ["notion seconded"]],
         ["mucous membranes",    ["mucus membranes"]],
         ["must pass muster",    ["must past muster"]],
+        ["no-holds-barred",     ["no-holes-barred"]],
         ["oil magnate",         ["oil magnet"]],
         ["punch up the lede",   ["punch up the lead"]],
         ["railroad magnate",    ["railroad magnet"]],
