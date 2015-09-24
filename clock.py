@@ -1,4 +1,4 @@
-"""Check emails to prose@lifelinter.com, lint them, and reply."""
+"""Check emails to editor@proselint.com, lint them, and reply."""
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 import gmail
@@ -17,14 +17,14 @@ logging.basicConfig()
 scheduler = BlockingScheduler()
 
 # Settings
-user = "hello@lifelinter.com"
-user_to = "prose@lifelinter.com"
+user = "hello@proselint.com"
+user_to = "editor@proselint.com"
 name = "proselint"
 password = os.environ['gmail_password']
 
-tagline = "Linted by proselint"
-url = "http://prose.lifelinter.com"
-api_url = "http://api.prose.lifelinter.com/v0/"
+tagline = "Linted by Proselint"
+url = "http://proselint.com"
+api_url = "http://api.proselint.com/v0/"
 
 
 def quoted(string, every=64):
@@ -46,7 +46,7 @@ def check_email():
     # Check for unread messages.
     unread = g.inbox().mail(unread=True)
 
-    # Submit a job to lint each email sent to prose@lifelinter.com. Record the
+    # Submit a job to lint each email sent to editor@proselint.com. Record the
     # resulting job_ids somewhere (in Redis, I suppose), keyed by a hash of the
     # email.
     for u in unread:

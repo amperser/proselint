@@ -1,10 +1,10 @@
 # Site settings
 title:       proselint
-email:       hello@lifelinter.com
+email:       hello@proselint.com
 author:      Jordan Suchow
 description: "Linting your life."
 baseurl:     ""
-url:         "http://prose.lifelinter.com"
+url:         "http://proselint.com"
 
 # Google analytics
 google_analytics: UA-61797721-1

@@ -24,7 +24,7 @@ from .score import score
 from .version import __version__
 
 
-base_url = "prose.lifelinter.com/"
+base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 
 
