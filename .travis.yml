@@ -24,7 +24,7 @@ script:
   - cd ..
   - pep8 .
   - pep257 . --match='.*\.py'
-  - check-links "http://prose.lifelinter.com"
+  - check-links "http://proselint.com"
 after_success:
   - coveralls
 env:
