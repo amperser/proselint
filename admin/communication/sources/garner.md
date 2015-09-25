@@ -8,7 +8,7 @@ In the process of building Proselint, I implemented several hundred entries from
 
 We'd like your permission to use your advice in our tool. Can we? This would be less an endorsement than permission to attribute your ideas to you. Consider, for example, when we catch someone writing "Hong Kongian". We want to tell them that the preferred form is "Hong Konger", that you are the source of this advice, and that they can find more information by following a provided citation/link to the corresponding entry in your usage guide.
 
-You can read a bit more about Proselint in an (unreleased) site that introduces it, http://prose.lifelinter.com/.
+You can read a bit more about Proselint in an (unreleased) site that introduces it, http://proselint.com/.
 
 All the best,
 Jordan
