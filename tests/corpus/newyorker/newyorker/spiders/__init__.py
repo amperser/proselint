@@ -1,1 +1,0 @@
-"""Defines the spiders."""
