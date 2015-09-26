@@ -6,7 +6,7 @@ summary:    How to contribute to Proselint.
 categories: proselint contributors
 ---
 
-Interested in contributing to <tt>proselint</tt>? Great &mdash; there are plenty of ways you can help. In the following sections, we describe how you can help us build <tt>proselint</tt> into the greatest writing tool in the world.
+Interested in contributing to <tt>proselint</tt>? Great &mdash; there are plenty of ways you can help. In the following sections, we describe how you can help us build <tt>proselint</tt> into the greatest writing tool in the world.  Work on <tt>proselint</tt> happens over <a href="http://github.com/amperser/proselint/">on Github</a>
 
 ## Coding
 Have coding skills? You can:
