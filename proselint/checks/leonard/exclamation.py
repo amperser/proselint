@@ -36,7 +36,7 @@ def check_exclamations_ppm(text):
     msg = u"More than 30 ppm of exclamations. Keep them under control."
 
     count = text.count("!")
-    num_words = text.count(" ")
+    num_words = len(text.split(" "))
 
     ppm = (count*1.0 / num_words) * 1e6
 
