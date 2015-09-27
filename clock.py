@@ -17,7 +17,7 @@ logging.basicConfig()
 scheduler = BlockingScheduler()
 
 # Settings
-user = "hello@proselint.com"
+user = "hello@lifelinter.com"
 user_to = "editor@proselint.com"
 name = "proselint"
 password = os.environ['gmail_password']
