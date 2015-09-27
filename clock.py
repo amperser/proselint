@@ -59,7 +59,7 @@ def check_email():
 
         hash = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
-        if user_to in u.to or user_to in u.headers.get('Cc'):
+        if user_to in u.to or user_to in u.headers.get('Cc', []):
 
             job_id = conn.get(hash)
 
