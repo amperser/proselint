@@ -51,6 +51,10 @@ def check_email():
     # email.
     for u in unread:
 
+        # Print headers
+        for key, value in u.items():
+            print(key, value)
+
         u.fetch()
 
         signature = (u.fr.decode('utf-8') +
