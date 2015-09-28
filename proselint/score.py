@@ -35,7 +35,7 @@ def score(check=None):
     fp = 0
 
     parent_directory = os.path.dirname(proselint_path)
-    path_to_corpus = os.path.join(parent_directory, "tests", "corpus")
+    path_to_corpus = os.path.join(parent_directory, "corpora", "0.1.0")
     for root, _, files in os.walk(path_to_corpus):
         files = [f for f in files if f.endswith(".md")]
         for f in files:
@@ -70,4 +70,7 @@ def score(check=None):
 
             print("Currently {} hits and {} false alarms\n---".format(tp, fp))
 
-    return tp * (1.0 * tp / (tp + fp)) ** 2
+    if (tp + fp) > 0:
+        return tp * (1.0 * tp / (tp + fp)) ** 2
+    else:
+        return 0
