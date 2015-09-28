@@ -5,7 +5,6 @@
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
-        "garner.a_vs_an"                : false,
         "garner.airlinese"              : true,
         "garner.am_pm"                  : true,
         "garner.animal_labels"          : true,

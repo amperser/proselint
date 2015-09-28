@@ -32,14 +32,6 @@ http://broken.lifelinter.com
 http://news.ycombinator.com
 http://tutsplus.com
 
-# Grammar
-the the meter is is great
-a apple and an banana
-a historic
-an banana
-an European country
-a FBI investigation
-
 # Hyperbolic language
 and so I said PLEASE STOP YELLING
 so excited!
