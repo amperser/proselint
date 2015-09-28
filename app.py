@@ -1,14 +1,14 @@
 """Web app that serves proselint's API."""
 
-from future import standard_library
-
 from flask import Flask, request, jsonify, make_response, Response
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from functools import wraps
 import uuid
 import os
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import io
 import hashlib
 from proselint import command_line

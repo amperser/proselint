@@ -13,16 +13,15 @@ categories: writing
 Check that links are not not broken.
 
 """
-from future import standard_library
-standard_library.install_aliases()
-
 from tools import memoize
+from future import standard_library
 import re
 try:
     import urllib.request as urllib_request  # for Python 3
 except ImportError:
     import urllib2 as urllib_request         # for Python 2
 from socket import error as SocketError
+standard_library.install_aliases()
 
 
 @memoize
