@@ -48,6 +48,8 @@ def check(text):
         ["men and women",    ["men and girls"]],
         ["comedian",         ["comedienne"]],
         ["confidant",        ["confidante"]],
+        ["scientist",        ["woman scientist"]],
+        ["scientists",       ["women scientists"]]
         # ["hero",             ["heroine"]]
     ]
 
