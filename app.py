@@ -1,12 +1,14 @@
 """Web app that serves proselint's API."""
 
+from future import standard_library
+
 from flask import Flask, request, jsonify, make_response, Response
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from functools import wraps
 import uuid
 import os
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import io
 import hashlib
 from proselint import command_line
@@ -101,7 +103,7 @@ def rate():
 def lint():
     """Run linter on the provided text and return the results."""
     if 'text' in request.values:
-        text = urllib2.unquote(request.values['text'])
+        text = urllib.parse.unquote(request.values['text'])
         job = q.enqueue(worker_function, text)
 
         return jsonify(job_id=job.id), 202

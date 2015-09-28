@@ -3,6 +3,7 @@
 
 """Compute the lintscore on the corpus."""
 
+from __future__ import print_function
 from builtins import input
 from builtins import int
 

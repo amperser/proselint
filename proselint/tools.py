@@ -43,7 +43,7 @@ def memoize(f):
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
-        for item in tempargdict.items():
+        for item in list(tempargdict.items()):
             signature += item[1].encode("utf-8")
 
         key = hashlib.sha256(signature).hexdigest()
