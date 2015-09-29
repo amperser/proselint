@@ -122,6 +122,8 @@ def check(text):
         ["moniker",             ["monicker"]],
         ["musical revue",       ["musical review"]],
         ["mustache",            ["moustache"]],
+        ["nonplussed",          ["nonplused"]],
+        ["nonplussing",         ["nonplusing"]],
         ["not nearly as",       ["nowhere near as"]],
         ["off",                 ["off of"]],
         ["podiatrist",          ["chiropodist"]],
