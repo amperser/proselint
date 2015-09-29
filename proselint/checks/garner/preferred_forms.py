@@ -50,6 +50,7 @@ def check(text):
         ["transship",           ["tranship", "trans-ship"]],
         ["transshipped",        ["transhipped", "trans-shipped"]],
         ["transshipping",       ["transhipping", "trans-shipping"]],
+        ["non sequitur",        ["non-sequitur"]],
 
         # er vs. or
         ["abductor",            ["abducter"]],
@@ -124,6 +125,7 @@ def check(text):
         ["mustache",            ["moustache"]],
         ["nonplussed",          ["nonplused"]],
         ["nonplussing",         ["nonplusing"]],
+        ["non sequitur",        ["nonsequitur"]],
         ["not nearly as",       ["nowhere near as"]],
         ["off",                 ["off of"]],
         ["podiatrist",          ["chiropodist"]],
