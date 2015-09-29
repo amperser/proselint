@@ -17,7 +17,6 @@ import subprocess
 import ntpath
 import re
 import json as js
-import time
 import importlib
 import sys
 from .score import score
@@ -76,7 +75,6 @@ def lint(path, debug=False):
         for check in checks:
             if debug:
                 print(check.__module__ + "." + check.__name__)
-                start_time = time.time()
 
             result = check(text)
 
@@ -86,9 +84,6 @@ def lint(path, debug=False):
                 if not is_quoted(start, text):
                     errors += [(check, message, line, column, start, end,
                                end - start, "warning", None)]
-
-            if debug:
-                print(time.time() - start_time)
 
             if len(errors) > options["max_errors"]:
                 break
@@ -104,19 +99,51 @@ def lintscore():
     return score()
 
 
+def timing_test(corpus="0.1.0"):
+    """Measure timing performance on the named corpus."""
+    import time
+    dirname = os.path.dirname
+    corpus_path = os.path.join(
+        dirname(dirname(os.path.realpath(__file__))), "corpora", corpus)
+    start = time.time()
+    for file in os.listdir(corpus_path):
+        filepath = os.path.join(corpus_path, file)
+        if ".md" == filepath[-3:]:
+            subprocess.call(
+                "proselint {} >/dev/null".format(filepath), shell=True)
+
+    return time.time() - start
+
+
+def clear_cache():
+    """Delete the contents of the cache."""
+    print("Deleting the cache...")
+    path_of_this_file = os.path.dirname(os.path.realpath(__file__))
+    subprocess.call("find . -name '*.pyc' -delete", shell=True)
+    subprocess.call(
+        "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
+            os.path.join(path_of_this_file, "cache")),
+        shell=True)
+
+
 @click.command()
 @click.option('--version/--whatever', default=None)
 @click.option('--initialize/--i', default=None)
 @click.option('--debug/--d', default=False)
 @click.option('--score/--s', default=False)
-@click.option('--json/-j', default=False)
+@click.option('--json/--j', default=False)
+@click.option('--time/--t', default=False)
 @click.argument('file', default=False)
 def proselint(file=None, version=None, initialize=None,
-              debug=None, score=None, json=False):
+              debug=None, score=None, json=None, time=None):
     """Define the linter command line API."""
     # Return the version number.
     if version:
         print(__version__)
+        return
+
+    if time:
+        print(timing_test())
         return
 
     # Run the intialization.
@@ -130,13 +157,7 @@ def proselint(file=None, version=None, initialize=None,
 
     # In debug mode, delete the cache and *.pyc files before running.
     if debug:
-        print("Deleting the cache...")
-        path_of_this_file = os.path.dirname(os.path.realpath(__file__))
-        subprocess.call("find . -name '*.pyc' -delete", shell=True)
-        subprocess.call(
-            "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
-                os.path.join(path_of_this_file, "cache")),
-            shell=True)
+        clear_cache()
 
     # Use the demo file by default.
     if not file:
@@ -145,7 +166,6 @@ def proselint(file=None, version=None, initialize=None,
     errors = lint(file, debug=debug)
 
     # Display the errors.
-
     if json:
         print(errors)
         out = []
