@@ -3,8 +3,6 @@ python:
 - '2.7'
 - '3.3'
 - '3.4'
-before_install:
-- echo -e "machine github.com\n  login $CI_USER_TOKEN" >> ~/.netrc
 install:
 - pip install -r requirements.txt
 - gem install jekyll-gist -v '1.2.1'
