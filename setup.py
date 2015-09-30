@@ -3,14 +3,17 @@
 from setuptools import setup
 from proselint.version import __version__
 
+base_url = 'http://github.com/amperser/proselint'
+
 setup(
     name='proselint',
     version=__version__,
-    description='Making your writing better',
-    url='http://github.com/amperser/proselint',
-    author='Jordan Suchow',
-    author_email='suchow@post.harvard.edu',
-    license='MIT',
+    description='A linter for prose',
+    url=base_url,
+    download_url="{}/tarball/{}".format(base_url, __version__),
+    author='Amperser Labs',
+    author_email='hello@amperser.com',
+    license='BSD',
     packages=[
         'proselint',
         'proselint.checks',
