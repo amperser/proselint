@@ -23,7 +23,7 @@ setup(
         ],
     },
     install_requires=[
-        'click',
+        'click >= 5.0',
         'future',
         'six'
     ])
