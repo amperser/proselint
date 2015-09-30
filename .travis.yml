@@ -41,7 +41,7 @@ deploy:
     app: proselint
     on:
       repo: amperser/proselint
-      python: '2.7'
+      python: '3.4'
   - provider: pypi
     user: amperser
     password:
@@ -49,7 +49,7 @@ deploy:
     on:
       tags: true
       branch: master
-      python: '2.7'
+      python: '3.4'
 notifications:
   email:
     recipients:
