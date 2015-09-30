@@ -32,4 +32,9 @@ setup(
         'console_scripts': [
             'proselint = proselint.command_line:proselint',
         ],
-    })
+    },
+    install_requires=[
+        'click',
+        'future',
+        'six'
+    ])
