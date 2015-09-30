@@ -1,6 +1,6 @@
 """Installation script for proselint."""
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from proselint.version import __version__
 
 base_url = 'http://github.com/amperser/proselint'
@@ -14,18 +14,7 @@ setup(
     author='Amperser Labs',
     author_email='hello@amperser.com',
     license='BSD',
-    packages=[
-        'proselint',
-        'proselint.checks',
-        'proselint.checks.misc',
-        'proselint.checks.consistency',
-        'proselint.checks.pinker',
-        'proselint.checks.strunk_white',
-        'proselint.checks.garner',
-        'proselint.checks.write_good',
-        'proselint.checks.wallace',
-        'proselint.checks.wsj',
-        'proselint.checks.butterick'],
+    packages=find_packages(),
     package_data={'': ['demo.md', '.proselintrc']},
     zip_safe=False,
     entry_points={
