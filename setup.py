@@ -10,7 +10,7 @@ setup(
     version=__version__,
     description='A linter for prose',
     url=base_url,
-    download_url="{}/tarball/{}".format(base_url,__version__),
+    download_url="{}/tarball/{}".format(base_url, __version__),
     author='Amperser Labs',
     author_email='hello@amperser.com',
     license='BSD',
