@@ -3,30 +3,15 @@ python:
 - '2.7'
 - '3.3'
 - '3.4'
-before_install:
-- echo -e "machine github.com\n  login $CI_USER_TOKEN" >> ~/.netrc
 install:
 - pip install -r requirements.txt
-- gem install jekyll-gist -v '1.2.1'
-- gem install jekyll
-- gem install jekyll-sitemap
-- gem install s3_website
-- gem install compass --version 0.12.5
-- gem install kramdown
 - gem install travis
-- gem install link-checker
 before_script:
 - travis lint -x --skip-completion-check
-- python scripts/insert_demo.py
 script:
 - nosetests --with-coverage --cover-package proselint
-- cd site
-- jekyll build
-- s3_website push
-- cd ..
 - pep8 .
 - pep257 . --match='.*\.py'
-- check-links "http://proselint.com"
 after_success:
 - coveralls
 env:

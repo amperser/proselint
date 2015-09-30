@@ -1,11 +1,11 @@
 <img src="logo.png" alt="proselint logo" width="200">
 
 ![Version](https://img.shields.io/badge/version-v0.3.0-yellow.svg)
-[![Build Status](https://magnum.travis-ci.com/amperser/proselint.svg?token=ygVLzsadbn3UbxEk8GzT&branch=master)](https://magnum.travis-ci.com/amperser/proselint)
+[![Build Status](https://travis-ci.org/amperser/proselint.svg)](https://travis-ci.org/amperser/proselint)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
 [![Coverage Status](https://coveralls.io/repos/amperser/proselint/badge.svg?branch=master&service=github&t=2lhJpx)](https://coveralls.io/github/amperser/proselint?branch=master)
 ![Lint score](http://img.shields.io/badge/lintscore_v0.1.0-98.8-blue.svg)
-[![Dependency Status](https://gemnasium.com/7cf4ad9bbb5fd951b6ffb79e9552609c.svg)](https://gemnasium.com/amperser/proselint)
+[![Dependency Status](https://gemnasium.com/amperser/proselint.svg)](https://gemnasium.com/amperser/proselint)
 
 `proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
 
