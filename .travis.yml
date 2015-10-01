@@ -20,7 +20,6 @@ env:
   - secure: Ri3M0/J5J11LpMSSD3XoJdB/rkINP3Ir9leoUfrUlws89IiGQiscmvp8WamFnY3Z9HMzwSqV0Aj62SjPM811Iog+uRY2thH+wunVHDovj1NNI1bfGgmu1LEIivoRwnUKd3wyx7HurgQxt4hrN2AhOvCQsUms6NU/n/cGBbo1J2s=
   - secure: EdCRjICaZwf3NOKPulTMZmWzx1d0yjbrOOv4YwcaDRpaTwhgzm/BIqi8UCWMY1zOk39+dZj+2Tn8pGOaDhiLbJimyEk8+xOiMmBXc2RBlKmsfktM+I+hZmVFDEOMVxI1VefV97Xhd8+hsojyDcgQ1vRPuv9tSrCvS/yY0eM0nHg=
 deploy:
-  matrix:
   - provider: heroku
     api_key:
       secure: L3Z04s4YxouUA4pzDW38GusXQ82KNCI73RYUCpZhBXhtxqB3hK5dHX0/UMUnXWJLyu7fuZoYLfSAs2dIl2dNAvxN0OeRBSHR/hToprASfxBKiVfmzKJUE4UxzUkRbxxFcoA4pqSz6AcXQPW1NOVkvD7IMgKEqMJQyehonysw66k=
@@ -30,12 +29,12 @@ deploy:
       python: '3.4'
   - provider: pypi
     user: amperser
+    password:
+      secure: SJdqfinAyPpZmJCnt+E+Z8qVCHE3uiWb17I8rPW5yqV+5iggcJip7UM+c58SL2gvjFrBCAOl6NYaeEvQ/rfGrcGckKU8ZyZ3DZ9HxjN4S/gIEeUfQsV+qk/McSOrhdapLcevbIYo2KhLeCx9AUTDwz4NabBVhzwAFkRvANucF1U=
     on:
       tags: true
       branch: master
       python: '3.4'
-  password:
-    secure: SJdqfinAyPpZmJCnt+E+Z8qVCHE3uiWb17I8rPW5yqV+5iggcJip7UM+c58SL2gvjFrBCAOl6NYaeEvQ/rfGrcGckKU8ZyZ3DZ9HxjN4S/gIEeUfQsV+qk/McSOrhdapLcevbIYo2KhLeCx9AUTDwz4NabBVhzwAFkRvANucF1U=
 notifications:
   email:
     recipients:
