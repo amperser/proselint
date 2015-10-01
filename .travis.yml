@@ -27,14 +27,6 @@ deploy:
     on:
       repo: amperser/proselint
       python: '3.4'
-  - provider: pypi
-    user: amperser
-    password:
-      secure: HQsDviCtZW/UJB44gmGS4a1z1NgFaPK0pWcF9/BkB6NJWkGNIoJ6iZFY288unTVzARUoke2pGP29/1ZxeqsZGq5iLV1EvW0E9M4rl2l0BKkDxJjtNPVTHUov/7E8MnaWBQQC1Vc+LXB1oErakKPJ8TeURE+mnL4bb/fq4W7VCPU=
-    on:
-      tags: true
-      branch: master
-      python: '3.4'
 notifications:
   email:
     recipients:
