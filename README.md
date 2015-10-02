@@ -91,7 +91,6 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `carlin.filth` | Words to avoid |
 | `consistency.spacing` | Consistent sentence spacing |
 | `consistency.spelling` | Consistent use of British vs. American spelling |
-| `garner.a_vs_an` | Using 'a' vs. 'an' as a determiner  |
 | `garner.airlinese` | Avoiding jargon of the airline industry |
 | `garner.am_pm` | Using the right form for the time of day |
 | `garner.animal_labels` | Likening things to animals using fun words |
