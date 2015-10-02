@@ -6,23 +6,27 @@
 ![Lint score](http://img.shields.io/badge/lintscore_v0.1.0-98.8-blue.svg)
 [![Dependency Status](https://gemnasium.com/amperser/proselint.svg)](https://gemnasium.com/amperser/proselint)
 
+Writing is notoriously hard, even for the best writers. Yet there is a tremendous amount of knowledge about the discipline strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from *Garner’s Modern American Usage*, a 975-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
+
+We devised a simple solution: `proselint`, a linter for prose. (A linter is a computer program that, like a spell checker, scans through a document and analyzes it.)
+
 `proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it `proselint`.
 
-`proselint` is a command-line utility and web API that can be integrated into existing tools.
+`proselint` is a command-line utility that can be integrated into existing tools.
  
 ### Installation
 
-To get this up and running as a command-line utility, install it using pip: `pip install proselint`.
+To get this up and running, install it using pip: `pip install proselint`.
 
 ### Usage
 
-At its core, `proselint` is a command-line utility.
+You can run `proselint` on a document:
 
 ```bash
 ❯ proselint text.md
 ```
 
-Running this command prints a list of suggestions to stdout, one per line. Each suggestion will have the form:
+This prints a list of suggestions to stdout, one per line. Each suggestion will have the form:
 
 ```bash
 text.md:<line>:<column>: <check_name> <message>
@@ -34,7 +38,7 @@ For example,
 text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' can not be compared.
 ```
 
-The command line utility can also print the list of suggestions in JSON using the `&#45;&#45;json` flag. In this case, the output is considerably richer and matches the output of the web API.
+The command-line utility can also print the list of suggestions in JSON using the `&#45;&#45;json` flag. In this case, the output is considerably richer:
 
 ```javascript
 {
@@ -149,4 +153,4 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 ### Contributing
 
-Interested in contributing to `proselint`? Great --- there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build proselint into the greatest writing tool in the world.
+Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build `proselint` into the greatest writing tool in the world.
