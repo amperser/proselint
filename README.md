@@ -12,17 +12,31 @@
  
 ### Installation
 
-To get this up and running as a command line utility, run `python setup.py develop` from inside the root directory.
+To get this up and running as a command-line utility, install it using pip: `pip install proselint`.
 
-### API
+### Usage
 
-```js
-proselint --json
+At its core, `proselint` is a command-line utility.
+
+```bash
+❯ proselint text.md
 ```
 
-The output is a JSON structure with the following format:
+Running this command prints a list of suggestions to stdout, one per line. Each suggestion will have the form:
 
-```js
+```bash
+text.md:<line>:<column>: <check_name> <message>
+```
+
+For example,
+
+```bash
+text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' can not be compared.
+```
+
+The command line utility can also print the list of suggestions in JSON using the `&#45;&#45;json` flag. In this case, the output is considerably richer and matches the output of the web API.
+
+```javascript
 {
     // Type of check that output this suggestion.
     check: "wallace.uncomparables",
@@ -114,6 +128,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `norris.denizen_labels` | Using the right denizen label |
 | `ogilvy.pretension` | Avoiding being pretentious |
 | `orwell.debased` | Avoiding debased language |
+| `oxford.venery_terms` | Call groups of animals by the right name |
 | `palahniuk.suddenly` | Avoiding the word suddenly |
 | `pinker.apologizing` | Being confident |
 | `pinker.hedging` | Not hedging |
@@ -134,4 +149,4 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 ### Contributing
 
-We'd love to accept your patches and contributions to improve `proselint`. Learn more about how to contribute in [CONTRIBUTING.md](./CONTRIBUTING.md).
+Interested in contributing to `proselint`? Great --- there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build proselint into the greatest writing tool in the world.
