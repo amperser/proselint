@@ -1,4 +1,4 @@
--e git+https://7bdb85daf4a14c98ed481e69c248e4a679beb18f:x-oauth-basic@github.com/amperser/proselint.git#egg=proselint
+-e git+https://github.com/amperser/proselint.git#egg=proselint
 -e git+https://github.com/charlierguo/gmail.git#egg=gmail
 APScheduler==3.0.3
 click==5.1
@@ -6,7 +6,7 @@ coverage==3.7.1
 coveralls==0.5
 Flask-API==0.6.3
 Flask-Cors==2.1.0
-Flask-Limiter==0.8.1
+Flask-Limiter==0.8.2
 Flask==0.10.1
 future==0.15.2
 gunicorn==19.3.0
