@@ -28,7 +28,7 @@ def score(check=None):
     where TP is the number of true positives (hits), FP is the number of
     false positives (false alarms), and k > 0 is a temperature parameter that
     determines the penalty for imprecision. In general, we should choose a
-    large value of k, one that strongly discourages the creatiion of rules that
+    large value of k, one that strongly discourages the creation of rules that
     can't be trusted. Suppose that k = 2. Then if the linter detects 100
     errors, of which 10 are false positives, the score is 81.
     """
