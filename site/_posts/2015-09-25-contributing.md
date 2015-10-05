@@ -29,6 +29,6 @@ Looking to donate to an open-source software and research project? We accept.
 
 + Donate via [PayPal](https://www.paypal.com/webapps/mpp/donations).
 
-<hr/>
+---
 
 For questions and feature requests, write to us at <a href="mailto:hello@proselint.com">hello@proselint.com</a>.
