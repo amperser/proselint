@@ -1,4 +1,4 @@
--e git+https://7bdb85daf4a14c98ed481e69c248e4a679beb18f:x-oauth-basic@github.com/amperser/proselint.git#egg=proselint
+-e git+https://github.com/amperser/proselint.git#egg=proselint
 -e git+https://github.com/charlierguo/gmail.git#egg=gmail
 APScheduler==3.0.3
 click==5.1
