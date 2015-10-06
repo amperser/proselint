@@ -1,8 +1,8 @@
 # Site settings
 title:       proselint
-email:       hello@proselint.com
-author:      Jordan Suchow
-description: "Linting your life."
+email:       hello@amperser.com
+author:      Amperser Labs
+description: "A linter for prose."
 baseurl:     ""
 url:         "http://proselint.com"
 
