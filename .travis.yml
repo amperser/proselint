@@ -6,12 +6,27 @@ python:
 install:
 - pip install -r requirements.txt
 - gem install travis
+- gem install jekyll-gist -v '1.2.1'
+- gem install jekyll
+- gem install jekyll-sitemap
+- gem install s3_website
+- gem install compass --version 0.12.5
+- gem install kramdown
+- gem install link-checker
 before_script:
 - travis lint -x --skip-completion-check
 script:
-- nosetests --with-coverage --cover-package proselint
 - pep8 .
 - pep257 . --match='.*\.py'
+- nosetests --with-coverage --cover-package proselint
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+    python scripts/insert_demo.py
+    cd site
+    jekyll build
+    s3_website push
+    cd ..
+  fi
+- check-links "http://proselint.com"
 after_success:
 - coveralls
 env:
