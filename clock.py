@@ -84,8 +84,9 @@ def check_email():
                     msg["To"] = u.fr
                     msg["Subject"] = "Re: " + u.subject
 
-                    msg.add_header("In-Reply-To", u.headers['Message-ID'])
-                    msg.add_header("References", u.headers['Message-ID'])
+                    if u.headers.get('Message-ID'):
+                        msg.add_header("In-Reply-To", u.headers['Message-ID'])
+                        msg.add_header("References", u.headers['Message-ID'])
 
                     body = reply + "\r\n\r\n--\r\n" + tagline + "\r\n" + url
                     msg.attach(MIMEText(body, "plain"))
