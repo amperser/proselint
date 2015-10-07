@@ -21,13 +21,19 @@ Have coding skills? You can:
 Have writing or editing skills? You can:
 
 + Extract rules from expert sources of advice. Read through some entries of a book like *Garners Modern American Usage* find rules that are feasible to implement in code, and then [open an issue on Github](https://github.com/amperser/proselint/issues/new). Here's an [example](https://github.com/amperser/proselint/issues/163) of a successfully extracted rule. And here's a list of [sources](https://github.com/amperser/proselint/labels/extraction) from which rules can be extracted.
-+ Find false alarms. Run <tt>proselint</tt> over your favorite books or magazine articles — maybe even some of your own writing, and find places where <tt>proselint</tt> says that there is an error, but in reality, there is none. [open an issue on Github] describing the problem.
++ Find false alarms. Run <tt>proselint</tt> over your favorite books or magazine articles — maybe even some of your own writing, and find places where <tt>proselint</tt> says that there is an error, but in reality, there is none. [open an issue on Github](https://github.com/amperser/proselint/issues/new) describing the problem.
 + Improve the copy on this website. Or write documentation in the code.
 
 ## Donations
-Looking to donate to an open-source software and research project? We accept.
+Looking to donate to an open-source software and research project? We accept donations via PayPal.
 
-+ Donate via [PayPal](https://www.paypal.com/webapps/mpp/donations).
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="A6WK2SEWRL4WJ">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
 
 ---
 
