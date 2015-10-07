@@ -20,11 +20,11 @@ script:
 - pep257 . --match='.*\.py'
 - nosetests --with-coverage --cover-package proselint
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    python scripts/insert_demo.py
-    cd site
-    jekyll build
-    s3_website push
-    cd ..
+    python scripts/insert_demo.py;
+    cd site;
+    jekyll build;
+    s3_website push;
+    cd ..;
   fi
 - check-links "http://proselint.com"
 after_success:
