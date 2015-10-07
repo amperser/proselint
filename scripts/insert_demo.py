@@ -16,6 +16,8 @@ code_mirror_demo_path = os.path.join(code_mirror_path, "index.html")
 
 live_write_path = os.path.join(proselint_path, "site", "write")
 
+if os.path.exists(live_write_path):
+    shutil.rmtree(live_write_path)
 shutil.copytree(code_mirror_path, live_write_path)
 
 demo_path = os.path.join(proselint_path, "proselint", "demo.md")
