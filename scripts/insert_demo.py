@@ -29,6 +29,6 @@ for line in fileinput.input(
         os.path.join(live_write_path, "index.html"), inplace=True):
 
     if "##DEMO_PLACEHOLDER##" in line:
-        print(demo, end=' ')
+        print(demo)
     else:
-        print(line, end=' ')
+        print(line)
