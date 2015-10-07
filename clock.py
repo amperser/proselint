@@ -22,7 +22,7 @@ user_to = "editor@proselint.com"
 name = "proselint"
 password = os.environ['gmail_password']
 
-tagline = "Linted by Proselint"
+tagline = "Proselint, a linter for prose."
 url = "http://proselint.com"
 api_url = "http://api.proselint.com/v0/"
 
