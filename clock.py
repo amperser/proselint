@@ -67,6 +67,7 @@ def check_email():
                 # If the email hasn't been sent for processing, send it.
                 r = requests.post(api_url, data={"text": u.body})
                 conn.set(hash, r.json()["job_id"])
+                print("Email {} sent for processing.".format(hash))
 
             else:
                 # Otherwise, check whether the results are ready, and if so,
@@ -97,5 +98,7 @@ def check_email():
                     # Mark the email as read.
                     u.read()
                     u.archive()
+
+                    print("Email {} has been replied to.".format(hash))
 
 scheduler.start()
