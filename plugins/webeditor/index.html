@@ -89,7 +89,7 @@ function get_errors (job_id, result_cb) {
                 console.log("Job not yet complete.");
                 setTimeout(function() {
                     return get_errors(job_id, result_cb);
-                }, 1000);
+                }, 500);
             } else {
                 error_list = [];
                 for (var x in resp.data.errors) {
