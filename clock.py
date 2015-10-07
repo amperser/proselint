@@ -22,7 +22,7 @@ user_to = "editor@proselint.com"
 name = "proselint"
 password = os.environ['gmail_password']
 
-tagline = "Linted by Proselint"
+tagline = "Proselint, a linter for prose."
 url = "http://proselint.com"
 api_url = "http://api.proselint.com/v0/"
 
@@ -67,6 +67,7 @@ def check_email():
                 # If the email hasn't been sent for processing, send it.
                 r = requests.post(api_url, data={"text": u.body})
                 conn.set(hash, r.json()["job_id"])
+                print("Email {} sent for processing.".format(hash))
 
             else:
                 # Otherwise, check whether the results are ready, and if so,
@@ -84,8 +85,9 @@ def check_email():
                     msg["To"] = u.fr
                     msg["Subject"] = "Re: " + u.subject
 
-                    msg.add_header("In-Reply-To", u.headers['Message-ID'])
-                    msg.add_header("References", u.headers['Message-ID'])
+                    if u.headers.get('Message-ID'):
+                        msg.add_header("In-Reply-To", u.headers['Message-ID'])
+                        msg.add_header("References", u.headers['Message-ID'])
 
                     body = reply + "\r\n\r\n--\r\n" + tagline + "\r\n" + url
                     msg.attach(MIMEText(body, "plain"))
@@ -96,5 +98,7 @@ def check_email():
                     # Mark the email as read.
                     u.read()
                     u.archive()
+
+                    print("Email {} has been replied to.".format(hash))
 
 scheduler.start()
