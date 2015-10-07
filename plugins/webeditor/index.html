@@ -84,12 +84,10 @@ function get_errors (job_id, result_cb) {
         method: 'get',
         type: 'json',
         success: function (resp) {
-            console.log(resp);
             if (resp.status === "error") {
-                console.log("Job not yet complete.");
                 setTimeout(function() {
                     return get_errors(job_id, result_cb);
-                }, 1000);
+                }, 500);
             } else {
                 error_list = [];
                 for (var x in resp.data.errors) {
@@ -104,7 +102,6 @@ function get_errors (job_id, result_cb) {
                     };
                     error_list.push(new_entry);
                 }
-                console.log(error_list);
                 result_cb(error_list);
             }
         },
@@ -126,7 +123,6 @@ function check_syntax(code, result_cb) {
         success: function (resp) {
             job_id = resp.job_id;
             errors = get_errors(job_id, result_cb);
-            console.log(errors);
         },
         error: function (err) {
             console.log(err);
