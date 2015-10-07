@@ -60,6 +60,7 @@
         "strunk_white.greylist"         : true,
         "strunk_white.usage"            : true,
         "twain.damn"                    : true,
+        "wallace.redundancy"            : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "write_good.cliches"            : true,
