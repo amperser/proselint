@@ -1,5 +1,11 @@
 # Proselint
-Proselint places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by Bryan Garner, David Foster Wallace, Mark Twain, Chuck Palahniuk, Steve Pinker, Mary Norris, Elmore Leonard, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, and the editorial staff of the world's finest literary magazines and newspapers. Others are on their way and will arrive shortly. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose. We call it Proselint.
+Writing is notoriously hard, even for the best writers. Yet there is a tremendous amount of knowledge about the discipline strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from Garner’s Modern American Usage, a 975-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
+
+We devised a simple solution: proselint, a linter for prose. (A linter is a computer program that, like a spell checker, scans through a document and analyzes it.)
+
+Proselint places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You'll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world's finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.
+
+This is a live demo. Obviously, you can hover over the underlined text to see what the issue is, then fix it.
 
 # Dates & times
 The 1950's were a swell time.
@@ -33,9 +39,8 @@ She swam by a bunch of oysters.
 
 # Links
 www.google.com
-http://broken.lifelinter.com
+http://broken.proselint.com
 http://news.ycombinator.com
-http://tutsplus.com
 
 # Hyperbolic language
 and so I said PLEASE STOP YELLING
