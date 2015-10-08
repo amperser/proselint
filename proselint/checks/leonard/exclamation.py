@@ -31,7 +31,7 @@ def check_repeated_exclamations(text):
 
 @memoize
 def check_exclamations_ppm(text):
-    """Make sure that the exclamatiion ppm is under 30."""
+    """Make sure that the exclamation ppm is under 30."""
     err = "leonard.exclamation.30ppm"
     msg = u"More than 30 ppm of exclamations. Keep them under control."
 
