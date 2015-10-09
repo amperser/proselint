@@ -162,6 +162,7 @@ def check(text):
         ["motion seconded",     ["notion seconded"]],
         ["mucous membranes",    ["mucus membranes"]],
         ["must pass muster",    ["must past muster"]],
+        ["neck-and-neck",       ["neck-in-neck"]],
         ["no-holds-barred",     ["no-holes-barred"]],
         ["oil magnate",         ["oil magnet"]],
         ["punch up the lede",   ["punch up the lead"]],
