@@ -38,7 +38,7 @@ For example,
 text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' can not be compared.
 ```
 
-The command-line utility can also print the list of suggestions in JSON using the `&#45;&#45;json` flag. In this case, the output is considerably richer:
+The command-line utility can also print the list of suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
 
 ```javascript
 {
