@@ -107,6 +107,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `garner.many_a` | Many a singular |
 | `garner.misspelling` | Avoiding common misspellings missed by spell-check |
 | `garner.mixed_metaphors` | Not mixing metaphors |
+| `garner.mondegreens` | Avoiding mondegreens |
 | `garner.needless_variants` | Using the preferred form |
 | `garner.oxymorons` | Avoiding oxymorons |
 | `garner.preferred_forms` | Miscellaneous preferred forms |
