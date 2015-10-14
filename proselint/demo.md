@@ -37,6 +37,10 @@ A bunch of antelopes walked by the road.
 A group of emus attacked me.
 She swam by a bunch of oysters.
 
+# Mondegreens 
+They hae slain the Earl o' Moray and Lady Mondegreen.
+a girl with colitis goes by.
+
 # Links
 www.google.com
 http://broken.proselint.com
