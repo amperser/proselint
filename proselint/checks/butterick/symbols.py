@@ -62,7 +62,7 @@ def check_registered_trademark_symbol(text):
 
 @memoize
 def check_sentence_spacing(text):
-    """Use the registered trademark symbol instead of (R)."""
+    """Use no more than two spaces after a period."""
     err = "butterick.symbols.sentence_spacing"
     msg = u"More than two spaces after the period; use 1 or 2."
     regex = "\. {3}"
