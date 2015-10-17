@@ -22,7 +22,7 @@
         "garner.many_a"                 : true,
         "garner.misspelling"            : true,
         "garner.mixed_metaphors"        : true,
-        "garner.mondegreens"             : true,
+        "garner.mondegreens"            : true,
         "garner.needless_variants"      : true,
         "garner.oxymorons"              : true,
         "garner.preferred_forms"        : true,
