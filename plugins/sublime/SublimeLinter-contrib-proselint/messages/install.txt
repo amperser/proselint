@@ -7,4 +7,4 @@ This linter plugin for SublimeLinter provides an interface to proselint.
 Before this plugin will activate, you *must*
 follow the installation instructions here:
 
-https://github.com/Jordan Suchow/SublimeLinter-contrib-proselint
+https://github.com/amperser/SublimeLinter-contrib-proselint
