@@ -1,13 +1,12 @@
 SublimeLinter-contrib-proselint
 ================================
 
-[![Build Status](https://travis-ci.org/SublimeLinter/SublimeLinter-contrib-proselint.svg?branch=master)](https://travis-ci.org/SublimeLinter/SublimeLinter-contrib-proselint)
+[![Build Status](https://travis-ci.org/amperser/proselint.svg?branch=master)](https://travis-ci.org/amperser/proselint)
 
 This linter plugin for [SublimeLinter][docs] provides an interface to [proselint](http://proselint.com). It will be used with files that have the “markdown”, “text”, or “plain text” syntaxes.
 
 ## Installation
 SublimeLinter 3 must be installed in order to use this plugin. If SublimeLinter 3 is not installed, please follow the instructions [here][installation].
-abbeviatable
 
 ### Linter installation
 Before using this plugin, you must ensure that `proselint` is installed on your system. To install `proselint`, do the following:
@@ -43,18 +42,18 @@ In addition to the standard SublimeLinter settings, SublimeLinter-contrib-prosel
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
 
-1. Fork the main repository, http://github.com/amperser/proselint.
-1. Hack on a separate topic branch created from the latest `master`.
-1. Commit and push the topic branch.
-1. Make a pull request.
+1. Fork the main repository, http://github.com/amperser/proselint. This plugin can be found in `/plugins/sublime/`
+1. Hack on a separate topic branch off the latest `master`.
+1. Commit to the topic branch and push it.
+1. Create a pull request.
 1. Be patient.  ;-)
 
 Please note that modifications should follow these coding guidelines:
 
 - Indent is 4 spaces.
 - Code should pass flake8 and pep257 linters.
-- Vertical whitespace helps readability, don’t be afraid to use it.
-- Please use descriptive variable names, no abbreviations unless they are well known.
+- Vertical whitespace helps readability; don’t be afraid to use it.
+- Please use descriptive variable names. No abbreviations unless they are well known.
 
 Thank you for helping out!
 
