@@ -118,11 +118,10 @@ def timing_test(corpus="0.1.0"):
 def clear_cache():
     """Delete the contents of the cache."""
     print("Deleting the cache...")
-    path_of_this_file = os.path.dirname(os.path.realpath(__file__))
     subprocess.call("find . -name '*.pyc' -delete", shell=True)
     subprocess.call(
         "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
-            os.path.join(path_of_this_file, "cache")),
+            os.path.join(os.path.expanduser("~"), ".proselint")),
         shell=True)
 
 

@@ -14,10 +14,8 @@ import hashlib
 
 def memoize(f):
     """Cache results of computations on disk."""
-    path_of_this_file = os.path.dirname(os.path.realpath(__file__))
-
     # Determine the location of the cache.
-    cache_dirname = os.path.join(path_of_this_file, "cache")
+    cache_dirname = os.path.join(os.path.expanduser("~"), ".proselint")
 
     # Create the cache if it does not already exist.
     if not os.path.isdir(cache_dirname):
