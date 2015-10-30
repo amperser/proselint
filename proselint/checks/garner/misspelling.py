@@ -121,6 +121,7 @@ def check(text):
         ["non sequitur",      ["non sequiter",
                                "non sequitar",
                                "non sequitor"]],
+        ["nouveau riche",     ["nouveau rich"]],
         ["occurred",          ["occured"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
         ["pledgeable",        ["pledgable", "pledgeble"]],
