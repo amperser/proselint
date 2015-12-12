@@ -13,7 +13,6 @@ from SublimeLinter.lint import Linter
 
 
 class Proselint(Linter):
-
     """Provides an interface to proselint."""
 
     syntax = ('html', 'markdown', 'plain text')

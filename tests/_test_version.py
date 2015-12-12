@@ -8,7 +8,6 @@ import subprocess
 
 
 class TestCheck(Check):
-
     """Test class for version number."""
 
     __test__ = True

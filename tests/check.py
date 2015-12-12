@@ -7,7 +7,6 @@ import codecs
 
 
 class Check(TestCase):
-
     """All tests inherit from Check."""
 
     __test__ = False
