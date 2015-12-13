@@ -6,7 +6,6 @@ from proselint.checks.wallace import uncomparables as chk
 
 
 class TestCheck(Check):
-
     """The test class for dfw.uncomparables."""
 
     __test__ = True

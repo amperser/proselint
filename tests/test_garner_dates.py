@@ -7,7 +7,6 @@ from proselint.checks.garner import dates
 
 
 class TestCheck(Check):
-
     """Test class for garner.dates."""
 
     __test__ = True
