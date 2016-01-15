@@ -66,7 +66,7 @@ def score(check=None):
                         input_val = int(input_val)
                         fp += input_val
                         tp += (num_errors - input_val)
-                except:
+                except ValueError:
                     pass
 
             print("Currently {} hits and {} false alarms\n---".format(tp, fp))

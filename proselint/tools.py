@@ -26,7 +26,7 @@ def memoize(f):
 
     try:
         cache = shelve.open(cachepath, protocol=2)
-    except:
+    except Exception:
         print('Could not open cache file %s, maybe name collision' % cachepath)
         cache = None
 
