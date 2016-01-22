@@ -45,6 +45,7 @@
         "misc.hyperbolic"               : true,
         "misc.link_checker"             : false,
         "misc.password"                 : true,
+        "misc.professions"              : true,
         "misc.whence"                   : true,
         "nfl.naughty_words"             : false,
         "nordquist.redundancy"          : true,
