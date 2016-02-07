@@ -15,12 +15,12 @@ March, 2013 was notable in that
 In February of 2010, the mayor considered
 It's 5 pm somewhere.
 It's 12 a.m., time to eat lunch.
-It's 11 p.m. at night. 
+It's 11 p.m. at night.
 
 # Consistency
 This is a sentence! One space after a period.
-This is a sentence.  Two spaces after a period. 
-This is a sentence?  Two spaces after a period. 
+This is a sentence.  Two spaces after a period.
+This is a sentence?  Two spaces after a period.
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
 This is a sentence. One space after a period.
@@ -31,13 +31,14 @@ recognize, recognise, recognise, recognise
 
 # Symbols
 $1000 USD
+I hit him over the head with a 2 x 4.
 
 # Venery terms
 A bunch of antelopes walked by the road.
 A group of emus attacked me.
 She swam by a bunch of oysters.
 
-# Mondegreens 
+# Mondegreens
 They hae slain the Earl o' Moray and Lady Mondegreen.
 a girl with colitis goes by.
 
@@ -158,9 +159,9 @@ One from Michigan is not a Michiganite but a Michigander.
 One from Colorado is not a Coloradoan but a Coloradan.
 
 # Sexism
-The lady lawyer handled my case.  
+The lady lawyer handled my case.
 John and Mary married. Now they are man and wife.
-Chairman Mao was the chairman of the communist party. 
+Chairman Mao was the chairman of the communist party.
 
 # Punctuation
 Smith, et. al (2006) said
@@ -175,9 +176,9 @@ The preceeding discussion
 
 # Narcisism, metadiscourse, latin, and hedging
 The 'take-home message' is that
-more research is needed 
+more research is needed
 The rest of this article argues that, to a certain degree
-in recent years, an increasing number of psychologists have 
+in recent years, an increasing number of psychologists have
 mutatis mutandis
 
 # Filthy language

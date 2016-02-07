@@ -13,7 +13,7 @@ categories: writing
 Use the symbols.
 
 """
-from tools import memoize, existence_check
+from tools import memoize, existence_check, preferred_forms_check
 
 
 @memoize
@@ -70,6 +70,29 @@ def check_sentence_spacing(text):
     return existence_check(
         text, [regex], err, msg, max_errors=3, require_padding=False)
 
+
+@memoize
+def check_multiplication_symbol(text):
+    u"""Use the multiplcation symbol ×, not the lowercase letter x."""
+    err = "butterick.symbols.multiplication_symbol"
+    msg = u"Use the multiplcation symbol ×, not the letter x."
+    regex = "[0-9]* x [0-9]*"
+
+    return existence_check(
+        text, [regex], err, msg, max_errors=3, require_padding=False)
+
+
+@memoize
+def check_curly_quotes(text):
+    u"""Use curly quotes, not straight quotes."""
+    err = "butterick.symbols.curly_quotes"
+    msg = u'Use curly quotes “”, not straight quotes "".'
+
+    list = [
+        [u"“ or ”", ['"']],
+    ]
+
+    return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 # @memoize
 # def check_en_dash_separated_names(text):
