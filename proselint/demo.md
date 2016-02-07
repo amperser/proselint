@@ -133,6 +133,9 @@ between you and i
 I did it on accident
 I feel nauseous
 
+# Phrasal adjectives
+It was a highly-anticipated event.
+
 # Various misspellings
 highfaluting
 the statement was inadmissable in court

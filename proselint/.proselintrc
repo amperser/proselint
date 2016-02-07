@@ -25,6 +25,7 @@
         "garner.mondegreens"            : true,
         "garner.needless_variants"      : true,
         "garner.oxymorons"              : true,
+        "garner.phrasal_adjectives"     : true,
         "garner.preferred_forms"        : true,
         "garner.punctuation"            : true,
         "garner.redundancy"             : true,
