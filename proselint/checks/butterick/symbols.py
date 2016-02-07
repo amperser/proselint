@@ -71,6 +71,17 @@ def check_sentence_spacing(text):
         text, [regex], err, msg, max_errors=3, require_padding=False)
 
 
+@memoize
+def check_multiplication_symbol(text):
+    u"""Use the multiplcation symbol ×, not the lowercase letter x."""
+    err = "butterick.symbols.multiplication_symbol"
+    msg = u"Use the multiplcation symbol ×, not the letter x."
+    regex = "[0-9]* x [0-9]*"
+
+    return existence_check(
+        text, [regex], err, msg, max_errors=3, require_padding=False)
+
+
 # @memoize
 # def check_en_dash_separated_names(text):
 #     """Use an en-dash to separate names."""

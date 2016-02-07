@@ -31,6 +31,7 @@ recognize, recognise, recognise, recognise
 
 # Symbols
 $1000 USD
+I hit him over the head with a 2 x 4.
 
 # Venery terms
 A bunch of antelopes walked by the road.
