@@ -133,6 +133,12 @@ between you and i
 I did it on accident
 I feel nauseous
 
+# Phrasal adjectives
+It was a highly-anticipated event.
+The English speaking people speak English.
+A big ticket item.
+A right wing militia.
+
 # Various misspellings
 highfaluting
 the statement was inadmissable in court
