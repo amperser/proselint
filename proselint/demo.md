@@ -135,6 +135,9 @@ I feel nauseous
 
 # Phrasal adjectives
 It was a highly-anticipated event.
+The English speaking people speak English.
+A big ticket item.
+A right wing militia.
 
 # Various misspellings
 highfaluting
