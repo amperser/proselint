@@ -81,7 +81,7 @@ def check_examples(text):
         ["open-and-shut case", ["open and shut case"]],
         ["open-and-shut issue", ["open and shut issue"]],
         ["optical-scan ballot", ["optical scan ballot"]],
-        ["pension-fund investments", "pension fund investments"],
+        ["pension-fund investments", ["pension fund investments"]],
         ["private-sector employment", ["private sector employment"]],
         ["profit-seeking efforts", ["profit seeking efforts"]],
         ["punch-card ballot", ["punch card ballot"]],
