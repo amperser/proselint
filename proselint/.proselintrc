@@ -16,6 +16,7 @@
         "garner.commercialese"          : true,
         "garner.dates"                  : true,
         "garner.denizen_labels"         : true,
+        "garner.false_plurals"          : true,
         "garner.illogic"                : true,
         "garner.jargon"                 : true,
         "garner.malapropisms"           : true,
