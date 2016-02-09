@@ -40,7 +40,7 @@ She swam by a bunch of oysters.
 
 # Mondegreens
 They hae slain the Earl o' Moray and Lady Mondegreen.
-a girl with colitis goes by.
+A girl with colitis goes by.
 
 # Skunked terms
 The building is deceptively large.
@@ -99,7 +99,7 @@ All hell broke loose on the farm.
 
 # Clichés
 under the weather
-a chip off the old block
+He's a chip off the old block
 a quantum leap
 Our cutting edge decision-making process will make your life crystal clear.
 He's a thought leader.
@@ -130,7 +130,7 @@ We'll need to reconceptualize this sentence.
 
 # Airlinese
 enplanement
-I'll be with you momentarily
+We'll be taking off momentarily.
 
 # Tense present
 Save up to 50% or More!
@@ -151,7 +151,7 @@ Nikita Khruschev
 I feel innundated with email
 Nicknack
 He's a shoe-in
-Did you know that Brett Farve and Dwayne Wade are good friends?
+Brett Farve and Dwayne Wade are good friends.
 The Chronicals of Narnia
 
 # Strunk & White composition & regex checks
