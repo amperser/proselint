@@ -79,7 +79,7 @@ def check_multiplication_symbol(text):
     regex = "[0-9]+ ?x ?[0-9]+"
 
     return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+        text, [regex], err, msg, max_errors=3, require_padding=True)
 
 
 @memoize
