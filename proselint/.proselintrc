@@ -31,6 +31,7 @@
         "garner.punctuation"            : true,
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
+        "garner.skunked_terms"          : true,
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
         "leonard.exclamation"           : true,

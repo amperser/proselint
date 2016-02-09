@@ -42,6 +42,11 @@ She swam by a bunch of oysters.
 They hae slain the Earl o' Moray and Lady Mondegreen.
 a girl with colitis goes by.
 
+# Skunked terms
+The building is deceptively large.
+The project would decimate the fragile wetland wilderness.
+Hopefully, one day we will all grow older.
+
 # Links
 www.google.com
 http://broken.proselint.com
