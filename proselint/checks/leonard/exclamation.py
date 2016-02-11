@@ -38,10 +38,10 @@ def check_exclamations_ppm(text):
     count = text.count("!")
     num_words = len(text.split(" "))
 
-    ppm = (count*1.0 / num_words) * 1e6
+    ppm = (count * 1.0 / num_words) * 1e6
 
-    if ppm > 30:
+    if (ppm > 30) and (count > 1):
         loc = text.find('!')
-        return [(loc, loc+1, err, msg)]
+        return [(loc, loc + 1, err, msg)]
     else:
         return []
