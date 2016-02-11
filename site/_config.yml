@@ -31,7 +31,7 @@ flattr_button:
 
 # Build settings
 markdown:     kramdown
-permalink:    /:title
+permalink:    /:title/
 paginate:     3
 sass:
   compressed: true
