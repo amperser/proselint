@@ -101,6 +101,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `garner.commercialese` | Avoiding jargon of the commercial world |
 | `garner.dates` | Stylish formatting of dates |
 | `garner.denizen_labels` | Calling people the right names |
+| `garner.diacritical_marks` | Using dïacríticâl marks |
 | `garner.illogic` | Avoiding illogical forms |
 | `garner.jargon` | Avoiding miscellaneous jargon |
 | `garner.malapropisms` | Avoiding common malapropisms |
