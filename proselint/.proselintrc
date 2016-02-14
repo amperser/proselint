@@ -33,6 +33,7 @@
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
         "garner.skunked_terms"          : true,
+        "gnu_diction.cliches"           : true,
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
         "leonard.exclamation"           : true,
