@@ -1,0 +1,1 @@
+"""Advice from GNU diction."""
