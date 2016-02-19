@@ -80,6 +80,9 @@ def line_and_column(text, position):
 def consistency_check(text, word_pairs, err, msg, offset=0):
     """Build a consistency checker for the given word_pairs."""
     errors = []
+
+    msg = " ".join(msg.split())
+
     for w in word_pairs:
         match1 = [m for m in re.finditer(w[0], text)]
         match2 = [m for m in re.finditer(w[1], text)]
@@ -111,6 +114,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     else:
         flags = 0
 
+    msg = " ".join(msg.split())
+
     errors = []
     regex = u"[\W^]{}[\W$]"
     for p in list:
@@ -132,6 +137,8 @@ def existence_check(text, list, err, msg, ignore_case=True,
                     excluded_topics=None, join=False):
     """Build a checker that blacklists certain words."""
     flags = 0
+
+    msg = " ".join(msg.split())
 
     if ignore_case:
         flags = flags | re.IGNORECASE
