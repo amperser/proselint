@@ -166,7 +166,6 @@ def proselint(file=None, version=None, initialize=None,
 
     # Display the errors.
     if json:
-        print(errors)
         out = []
         for e in errors:
             out.append({
