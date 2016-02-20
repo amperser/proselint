@@ -74,7 +74,7 @@ def lint(path, debug=False):
         errors = []
         for check in checks:
             if debug:
-                print(check.__module__ + "." + check.__name__)
+                click.echo(check.__module__ + "." + check.__name__)
 
             result = check(text)
 
@@ -117,7 +117,7 @@ def timing_test(corpus="0.1.0"):
 
 def clear_cache():
     """Delete the contents of the cache."""
-    print("Deleting the cache...")
+    click.echo("Deleting the cache...")
     subprocess.call("find . -name '*.pyc' -delete", shell=True)
     subprocess.call(
         "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
@@ -138,11 +138,11 @@ def proselint(file=None, version=None, initialize=None,
     """Define the linter command line API."""
     # Return the version number.
     if version:
-        print(__version__)
+        click.echo(__version__)
         return
 
     if time:
-        print(timing_test())
+        click.echo(timing_test())
         return
 
     # Run the intialization.
@@ -166,7 +166,6 @@ def proselint(file=None, version=None, initialize=None,
 
     # Display the errors.
     if json:
-        print(errors)
         out = []
         for e in errors:
             out.append({
@@ -184,7 +183,7 @@ def proselint(file=None, version=None, initialize=None,
             status="success",
             data={"errors": out})
 
-        print(js.dumps(result))
+        click.echo(js.dumps(result))
 
     else:
         for error in errors:
