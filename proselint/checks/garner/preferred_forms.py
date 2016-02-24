@@ -36,7 +36,7 @@ def check(text):
         # Plurals
         ["hippopotamuses",      ["hippopotami"]],
         ["manifestos",          ["manifesti"]],
-        ["matrixes",            ["matrices"]],
+        # ["matrixes",            ["matrices"]],
         ["mongooses",           ["mongeese"]],
         ["narcissi",            ["narcissuses"]],
         ["retinas",             ["retinae"]],
