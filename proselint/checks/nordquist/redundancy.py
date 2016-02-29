@@ -4,7 +4,7 @@
 ---
 layout:     post
 source:     Richard Nordquist
-source_url: http://amzn.to/15wF76r
+source_url: http://grammar.about.com/bio/Richard-Nordquist-22176.htm
 title:      abbetor
 date:       2014-06-10 12:31:19
 categories: writing
