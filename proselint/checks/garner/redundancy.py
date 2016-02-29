@@ -41,6 +41,7 @@ def check(text):
         ["collaborate",       ["collaborate together"]],
         ["collaborator",      ["fellow collaborator"]],
         ["collaborators",     ["fellow collaborators"]],
+        ["collocated",        ["collocated together"]],
         ["colleagues",        ["fellow colleagues"]],
         ["combine",           ["combine together"]],
         ["complacent",        ["self-complacent"]],
