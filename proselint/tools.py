@@ -107,7 +107,8 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     return errors
 
 
-def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
+def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
+                          max_errors=float("inf")):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -127,6 +128,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
                     m.end() + offset,
                     err,
                     msg.format(p[0], txt)))
+
+    errors = truncate_to_max(errors, max_errors)
 
     return errors
 
@@ -171,8 +174,16 @@ def existence_check(text, list, err, msg, ignore_case=True,
             err,
             msg.format(txt)))
 
-    # If max_errors was specified, truncate the list of errors and let the
-    # user know the total number of times that the error was found elsewhere.
+    errors = truncate_to_max(errors, max_errors)
+
+    return errors
+
+
+def truncate_to_max(errors, max_errors):
+    """If max_errors was specified, truncate the list of errors.
+
+    Give the total number of times that the error was found elsewhere.
+    """
     if len(errors) > max_errors:
         start1, end1, err1, msg1 = errors[0]
 

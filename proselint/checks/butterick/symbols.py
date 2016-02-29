@@ -92,7 +92,8 @@ def check_curly_quotes(text):
         [u"“ or ”", ['"']],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(
+        text, list, err, msg, ignore_case=False, max_errors=2)
 
 # @memoize
 # def check_en_dash_separated_names(text):
