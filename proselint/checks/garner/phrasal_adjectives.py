@@ -4,7 +4,7 @@
 ---
 layout:     post
 source:     Garner's Modern American Usage
-source_url: http://amzn.to/15wF76r
+source_url: http://bit.ly/1T4alrY
 title:      Phrasal adjectives
 date:       2014-06-10 12:31:19
 categories: writing
