@@ -73,9 +73,9 @@ def check_sentence_spacing(text):
 
 @memoize
 def check_multiplication_symbol(text):
-    u"""Use the multiplcation symbol ×, not the lowercase letter x."""
+    u"""Use the multiplication symbol ×, not the lowercase letter x."""
     err = "butterick.symbols.multiplication_symbol"
-    msg = u"Use the multiplcation symbol ×, not the letter x."
+    msg = u"Use the multiplication symbol ×, not the letter x."
     regex = "[0-9]+ ?x ?[0-9]+"
 
     return existence_check(
