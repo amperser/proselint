@@ -10,7 +10,7 @@ Proselint's "lintscore" metric, which we use to evaluate its performance, reflec
 
 *T* (*T* / (*F* + *T*)) <sup>*k*</sup>,
 
-where *T* is the number of true positives (hits), *F* is the number of false positives (false alarms), and *k* > 0 is a temperature parameter that determines the penalty for imprecision. In general, we choose as large a value of *k* as we can stomach, one that strongly discourages the creation of rules that can't be trusted. Suppose that *k* = 2. Then if the linter detects 100 errors, of which 10 are false positives, the score is 81.
+where *T* is the number of true positives (hits), *F* is the number of false positives (false alarms), and *k* > 0 is a temperature parameter that determines the penalty for imprecision. In general, we choose as large a value of *k* as we can stomach, one that strongly discourages the creation of rules that can't be trusted. Suppose that *k* = 2. Then if the linter detects 100 errors, of which 10 are false positives, the score is 72.9.
 
 ---
 
