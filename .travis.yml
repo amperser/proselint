@@ -20,14 +20,14 @@ script:
 - pep8 .
 - pep257 . --match='.*\.py'
 - nosetests --with-coverage --cover-package proselint
-- if [ "$TRAVIS_BRANCH" == "master" ]; then
+- if [ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]; then
     python scripts/insert_demo.py;
     cd site;
     jekyll build;
     s3_website push;
     cd ..;
+    check-links "http://proselint.com";
   fi
-- check-links "http://proselint.com"
 after_success:
 - coveralls
 env:
