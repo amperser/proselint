@@ -158,12 +158,13 @@ def show_errors(filename, errors, json=False):
 @click.version_option(__version__, '--version', '-v')
 @click.option('--initialize', '-i', is_flag=True)
 @click.option('--debug', '-d', is_flag=True)
+@click.option('--clean', '-c', is_flag=True)
 @click.option('--score', '-s', is_flag=True)
 @click.option('--json', '-j', is_flag=True)
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
 @click.argument('files', nargs=-1, type=click.File(encoding='utf8'))
-def proselint(files=None, version=None, initialize=None,
+def proselint(files=None, version=None, initialize=None, clean=None,
               debug=None, score=None, json=None, time=None, demo=None):
     """Define the linter command line API."""
     if time:
@@ -179,8 +180,8 @@ def proselint(files=None, version=None, initialize=None,
         click.echo(lintscore())
         return
 
-    # In debug mode, delete the cache and *.pyc files before running.
-    if debug:
+    # In debug or clean mode, delete cache & *.pyc files before running.
+    if debug or clean:
         clear_cache()
 
     # Use the demo file by default.
