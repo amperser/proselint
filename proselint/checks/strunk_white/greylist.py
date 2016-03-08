@@ -13,7 +13,7 @@ Strunk & White say:
 
 
 """
-from tools import memoize
+from proselint.tools import memoize
 import re
 
 

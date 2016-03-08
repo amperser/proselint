@@ -16,7 +16,7 @@ and After.
 
 World War Ii should have correct capitalizaiton.
 """
-from tools import blacklist, memoize
+from proselint.tools import blacklist, memoize
 
 
 @memoize

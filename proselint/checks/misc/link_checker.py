@@ -13,7 +13,7 @@ categories: writing
 Check that links are not not broken.
 
 """
-from tools import memoize
+from proselint.tools import memoize
 from future import standard_library
 import re
 try:
