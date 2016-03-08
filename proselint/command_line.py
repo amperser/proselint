@@ -22,6 +22,7 @@ from .score import score
 from .version import __version__
 
 
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
@@ -153,16 +154,17 @@ def show_errors(filename, errors, json=False):
             log_error(filename, line, column, check, message)
 
 
-@click.command()
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v')
 @click.option('--initialize', '-i', is_flag=True)
 @click.option('--debug', '-d', is_flag=True)
+@click.option('--clean', '-c', is_flag=True)
 @click.option('--score', '-s', is_flag=True)
 @click.option('--json', '-j', is_flag=True)
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
 @click.argument('files', nargs=-1, type=click.File(encoding='utf8'))
-def proselint(files=None, version=None, initialize=None,
+def proselint(files=None, version=None, initialize=None, clean=None,
               debug=None, score=None, json=None, time=None, demo=None):
     """Define the linter command line API."""
     if time:
@@ -178,8 +180,8 @@ def proselint(files=None, version=None, initialize=None,
         click.echo(lintscore())
         return
 
-    # In debug mode, delete the cache and *.pyc files before running.
-    if debug:
+    # In debug or clean mode, delete cache & *.pyc files before running.
+    if debug or clean:
         clear_cache()
 
     # Use the demo file by default.
