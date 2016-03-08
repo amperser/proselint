@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "ganer.many_a"
+    err = "garner.many_a"
     msg = "'many a' requires a singular verb."
 
     preferences = [
