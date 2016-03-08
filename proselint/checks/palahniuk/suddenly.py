@@ -25,7 +25,7 @@ apparent in the action itself. For example, in “Suddenly, I don’t hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
 """
-from tools import memoize, existence_check
+from proselint.tools import memoize, existence_check
 
 
 @memoize

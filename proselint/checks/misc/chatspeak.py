@@ -13,7 +13,7 @@ categories: writing
 Chatspeak.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

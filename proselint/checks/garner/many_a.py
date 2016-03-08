@@ -13,7 +13,7 @@ categories: writing
 The idiom 'many a' requires a singular verb.
 
 """
-from tools import memoize, preferred_forms_check
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize

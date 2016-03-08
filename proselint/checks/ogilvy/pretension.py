@@ -13,7 +13,7 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

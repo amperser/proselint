@@ -13,7 +13,7 @@ categories: writing
 Use the symbols.
 
 """
-from tools import memoize, existence_check, preferred_forms_check
+from proselint.tools import memoize, existence_check, preferred_forms_check
 
 
 @memoize
