@@ -154,22 +154,17 @@ def show_errors(filename, errors, json=False):
 
 
 @click.command()
-@click.option('--version/--whatever', default=None)
-@click.option('--initialize/--i', default=None)
-@click.option('--debug/--d', default=False)
-@click.option('--score/--s', default=False)
-@click.option('--json/--j', default=False)
-@click.option('--time/--t', default=False)
-@click.option('--demo', default=False, is_flag=True)
+@click.version_option(__version__, '--version', '-v')
+@click.option('--initialize', '-i', is_flag=True)
+@click.option('--debug', '-d', is_flag=True)
+@click.option('--score', '-s', is_flag=True)
+@click.option('--json', '-j', is_flag=True)
+@click.option('--time', '-t', is_flag=True)
+@click.option('--demo', is_flag=True)
 @click.argument('files', nargs=-1, type=click.File(encoding='utf8'))
 def proselint(files=None, version=None, initialize=None,
               debug=None, score=None, json=None, time=None, demo=None):
     """Define the linter command line API."""
-    # Return the version number.
-    if version:
-        click.echo(__version__)
-        return
-
     if time:
         click.echo(timing_test())
         return
