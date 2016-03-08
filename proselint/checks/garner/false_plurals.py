@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check, existence_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "ganer.false_plurals.examples"
+    err = "garner.false_plurals.examples"
     msg = "The plural is {}"
 
     preferences = [
