@@ -22,6 +22,7 @@ from .score import score
 from .version import __version__
 
 
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
@@ -153,7 +154,7 @@ def show_errors(filename, errors, json=False):
             log_error(filename, line, column, check, message)
 
 
-@click.command()
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v')
 @click.option('--initialize', '-i', is_flag=True)
 @click.option('--debug', '-d', is_flag=True)
