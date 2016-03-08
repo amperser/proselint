@@ -13,6 +13,8 @@ categories: writing
 Too much yelling.
 
 """
+import re
+
 from proselint.tools import existence_check, memoize
 
 
@@ -35,13 +37,15 @@ def check_exclamations_ppm(text):
     err = "leonard.exclamation.30ppm"
     msg = u"More than 30 ppm of exclamations. Keep them under control."
 
-    count = text.count("!")
+    regex = r"\w!"
+
+    count = len(re.findall(regex, text))
     num_words = len(text.split(" "))
 
     ppm = (count*1.0 / num_words) * 1e6
 
     if ppm > 30:
-        loc = text.find('!')
+        loc = re.search(regex, text).start() + 1
         return [(loc, loc+1, err, msg)]
     else:
         return []
