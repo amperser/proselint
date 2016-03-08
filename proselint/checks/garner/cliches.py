@@ -13,7 +13,7 @@ categories: writing
 Cliches are cliché.
 
 """
-from tools import memoize, existence_check
+from proselint.tools import memoize, existence_check
 
 
 @memoize

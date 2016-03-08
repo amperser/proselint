@@ -13,7 +13,7 @@ categories: writing
 Animal words.
 
 """
-from tools import memoize, preferred_forms_check
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize

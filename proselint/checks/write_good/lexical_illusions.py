@@ -13,7 +13,7 @@ A lexical illusion happens when a word word is unintentiall repeated twice, and
 and this happens most often between line breaks.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

@@ -13,7 +13,7 @@ categories: writing
 Avoid these cases of business jargon.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

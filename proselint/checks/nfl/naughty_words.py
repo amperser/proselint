@@ -13,7 +13,7 @@ categories: writing
 Words the NFL won't print on a jersey.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

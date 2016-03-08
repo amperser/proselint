@@ -13,7 +13,7 @@ categories: writing
 Points out metadiscourse.
 
 """
-from tools import memoize, existence_check
+from proselint.tools import memoize, existence_check
 
 
 @memoize

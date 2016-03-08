@@ -13,7 +13,7 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from tools import preferred_forms_check, existence_check, memoize
+from proselint.tools import preferred_forms_check, existence_check, memoize
 
 
 @memoize

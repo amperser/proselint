@@ -20,7 +20,7 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
-from tools import consistency_check, memoize
+from proselint.tools import consistency_check, memoize
 
 
 @memoize

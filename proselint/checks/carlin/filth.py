@@ -13,7 +13,7 @@ categories: writing
 Filthy words.
 
 """
-from tools import existence_check, memoize
+from proselint.tools import existence_check, memoize
 
 
 @memoize

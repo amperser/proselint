@@ -13,7 +13,7 @@ categories: writing
 The first line always is always wrong.
 
 """
-from tools import reverse
+from proselint.tools import reverse
 
 
 def check(text):
