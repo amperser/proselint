@@ -19,7 +19,7 @@ from proselint.tools import memoize, existence_check
 
 @memoize
 def check_very_damn(text):
-    """Use the registered trademark symbol instead of (R)."""
+    """Avoid 'very'."""
     err = "twain.damn"
     msg = ("Substitute 'damn' every time you're "
            "inclined to write 'very;' your editor will delete it "
