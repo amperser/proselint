@@ -193,4 +193,7 @@ def proselint(files=None, version=None, initialize=None, clean=None,
         show_errors(click.format_filename(f.name), errors, json)
 
 if __name__ == '__main__':
-    proselint()
+    try:
+        proselint()
+    except SystemExit:
+        os._exit(0)
