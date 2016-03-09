@@ -21,6 +21,6 @@ It's pretty minimal, but leverages large type and drastic contrast to make a sta
 
 ## Where is it?
 
-Checkout the [Github repository](https://github.com/johnotander/pixyll) to download it, request a feature, or report a bug.
+Checkout the [GitHub repository](https://github.com/johnotander/pixyll) to download it, request a feature, or report a bug.
 
 It's free, and open source ([MIT](http://opensource.org/licenses/MIT)).
