@@ -28,15 +28,6 @@ proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
 
 
-def log_error(filename, line, column, error_code, msg):
-    """Print the error to the command line."""
-    click.echo(ntpath.basename(filename) + ":" +
-               str(1 + line) + ":" +
-               str(1 + column) + ": " +
-               error_code + " " +
-               msg)
-
-
 def run_initialization():
     """Run the initialization method for each check."""
     for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
@@ -123,7 +114,7 @@ def clear_cache():
         shell=True)
 
 
-def show_errors(filename, errors, json=False):
+def show_errors(filename, errors, json=False, compact=False):
     """Print the errors, resulting from lint, for filename."""
     if json:
         out = []
@@ -151,7 +142,15 @@ def show_errors(filename, errors, json=False):
             (check, message, line, column, start, end,
              extent, severity, replacements) = error
 
-            log_error(filename, line, column, check, message)
+            if compact:
+                filename = "-"
+
+            click.echo(
+                filename + ":" +
+                str(1 + line) + ":" +
+                str(1 + column) + ": " +
+                check + " " +
+                message)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -163,9 +162,11 @@ def show_errors(filename, errors, json=False):
 @click.option('--json', '-j', is_flag=True)
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
+@click.option('--compact', is_flag=True)
 @click.argument('files', nargs=-1, type=click.File(encoding='utf8'))
 def proselint(files=None, version=None, initialize=None, clean=None,
-              debug=None, score=None, json=None, time=None, demo=None):
+              debug=None, score=None, json=None, time=None, demo=None,
+              compact=None):
     """Define the linter command line API."""
     if time:
         click.echo(timing_test())
@@ -190,7 +191,7 @@ def proselint(files=None, version=None, initialize=None, clean=None,
 
     for f in files:
         errors = lint(f, debug=debug)
-        show_errors(click.format_filename(f.name), errors, json)
+        show_errors(f.name, errors, json, compact=compact)
 
 if __name__ == '__main__':
     proselint()
