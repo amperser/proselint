@@ -4,14 +4,15 @@ from flask import Flask, request, jsonify, make_response, Response
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from functools import wraps
-import uuid
-import os
 from future.moves.urllib.parse import unquote
-import io
 import hashlib
 from proselint import command_line
 from rq import Queue
 from worker import conn
+try:
+    from io import StringIO
+except ImportError:
+    from cStringIO import StringIO
 
 
 app = Flask(__name__)
@@ -24,10 +25,8 @@ q = Queue(connection=conn)
 
 def worker_function(text):
     """Lint the text using a worker dyno."""
-    id = uuid.uuid4()
-    filename = os.path.join("tmp", "{}.md".format(id))
-    with io.open(filename, "w+", encoding='utf8') as f:
-        return command_line.lint(f)
+    print(text)
+    return command_line.lint(StringIO(text))
 
 
 @app.errorhandler(429)
