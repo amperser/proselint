@@ -10,7 +10,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Archaism.
+Commercialese.
 
 """
 from proselint.tools import existence_check, memoize
