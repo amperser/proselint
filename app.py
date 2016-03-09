@@ -28,8 +28,7 @@ def worker_function(text):
     filename = os.path.join("tmp", "{}.md".format(id))
     with io.open(filename, "w+", encoding='utf8') as f:
         f.write(text)
-
-    return command_line.lint(filename)
+        return command_line.lint(f)
 
 
 @app.errorhandler(429)
