@@ -51,7 +51,7 @@ def run_initialization():
 
 
 def lint(input_file, debug=False):
-    """Run the linter on the file with the given path."""
+    """Run the linter on the input file."""
     # Load the options.
     options = js.load(open(os.path.join(proselint_path, '.proselintrc')))
 
