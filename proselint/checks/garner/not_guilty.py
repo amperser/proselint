@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Not guilty beyond a reasonable doubt
+"""Not guilty beyond a reasonable doubt.
+
 ---
 layout:     post
 source:     Garner's Modern American Usage
@@ -19,8 +20,9 @@ If somebody is found not guilty, say "not guilty." Omit the standard
 ("beyond a reasonable doubt") to prevent a miscue.
 
 Not guilty beyond a reasonable doubt
-
 """
+
+
 from proselint.tools import existence_check, memoize
 
 
