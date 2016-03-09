@@ -29,7 +29,7 @@ def check(text):
         ["beck and call",                 ["beckon call"]],
         ["for all intents and purposes",  ["for all intensive purposes"]],
         ["laid him on the green",         ["Lady Mondegreen"]],
-        ["Olive, the other reindeer",     ["all of the other reindeer"]],
+        ["all of the other reindeer",     ["Olive, the other reindeer"]],
         ["to the manner born",            ["to the manor born"]],
     ]
 
