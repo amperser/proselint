@@ -3,8 +3,8 @@
 
 ---
 layout:     post
-source:     Mark Twain
-source_url: http://bit.ly/1CQPH61
+source:     William Allen White
+source_url: http://bit.ly/1XaMllw
 title:      very
 date:       2014-06-10 12:31:19
 categories: writing
@@ -20,7 +20,7 @@ from proselint.tools import memoize, existence_check
 @memoize
 def check_very_damn(text):
     """Avoid 'very'."""
-    err = "twain.damn"
+    err = "white.damn"
     msg = ("Substitute 'damn' every time you're "
            "inclined to write 'very;' your editor will delete it "
            "and the writing will be just as it should be.")
