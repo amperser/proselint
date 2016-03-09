@@ -23,7 +23,7 @@ def check(text):
     msg = "'{}' is the preferred form."
 
     list = [
-        ["a girl with kaleidascope eyes", ["a girl with colitis goes by"]],
+        ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
         ["a partridge in a pear tree",    ["a part-red gingerbread tree"]],
         ["attorney and not a republic",   ["attorney and notary public"]],
         ["beck and call",                 ["beckon call"]],
