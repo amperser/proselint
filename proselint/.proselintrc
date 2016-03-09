@@ -1,7 +1,6 @@
 {
     "max_errors": 1000,
     "checks": {
-        "allen_white.damn"              : true,
         "butterick.symbols"             : true,
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
@@ -70,6 +69,7 @@
         "wallace.redundancy"            : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
+        "white.damn"                    : true,
         "write_good.cliches"            : true,
         "write_good.lexical_illusions"  : true,
         "write_good.weasel_words"       : true,
