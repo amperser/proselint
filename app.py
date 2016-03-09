@@ -25,7 +25,6 @@ q = Queue(connection=conn)
 
 def worker_function(text):
     """Lint the text using a worker dyno."""
-    print(text)
     return command_line.lint(StringIO(text))
 
 
