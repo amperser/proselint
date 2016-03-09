@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "ganer.preferred_forms"
+    err = "garner.preferred_forms"
     msg = "'{}' is the preferred form."
 
     preferences = [

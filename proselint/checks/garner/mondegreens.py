@@ -23,13 +23,13 @@ def check(text):
     msg = "'{}' is the preferred form."
 
     list = [
-        ["a girl with kaleidascope eyes", ["a girl with colitis goes by"]],
+        ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
         ["a partridge in a pear tree",    ["a part-red gingerbread tree"]],
         ["attorney and not a republic",   ["attorney and notary public"]],
         ["beck and call",                 ["beckon call"]],
         ["for all intents and purposes",  ["for all intensive purposes"]],
         ["laid him on the green",         ["Lady Mondegreen"]],
-        ["Olive, the other reindeer",     ["all of the other reindeer"]],
+        ["all of the other reindeer",     ["Olive, the other reindeer"]],
         ["to the manner born",            ["to the manor born"]],
     ]
 
