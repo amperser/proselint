@@ -39,6 +39,7 @@
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
         "lilienfeld.terms_to_avoid"     : true,
+        "misc.actually"                 : true,
         "misc.annotations"              : true,
         "misc.chatspeak"                : true,
         "misc.credit_card"              : true,

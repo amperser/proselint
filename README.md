@@ -130,6 +130,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `leonard.exclamation` | Avoiding hyperbolic use of exclamation |
 | `leonard.hell` | Avoiding a common cliché |
 | `lilienfeld.terms_to_avoid` | Avoiding misused psychological terms |
+| `misc.actually` | Avoiding the word actually |
 | `misc.annotations` | Catching annotations left in the text |
 | `misc.chatspeak` | Avoiding lolling and other chatspeak |
 | `misc.credit_card` | Keeping credit card numbers secret |
