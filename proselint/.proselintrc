@@ -1,6 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
+        "after_the_deadline.redundancy" : true,
         "butterick.symbols"             : true,
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
