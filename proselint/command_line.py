@@ -154,7 +154,7 @@ def show_errors(filename, errors, json=False, compact=False):
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.version_option(__version__, '--version', '-v')
+@click.version_option(__version__, '--version', '-v', message='%(version)s')
 @click.option('--initialize', '-i', is_flag=True)
 @click.option('--debug', '-d', is_flag=True)
 @click.option('--clean', '-c', is_flag=True)
