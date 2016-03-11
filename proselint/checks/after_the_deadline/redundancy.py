@@ -23,41 +23,17 @@ def check(text):
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
-        ["ABS",               ["ABS brakes", "ABS braking system"]],
-        ["ACT",               ["ACT test"]],
-        ["Bo",                ["Bo Staff"]],
-        ["CD",                ["CD disc"]],
-        ["Fujiyama",          ["Mount Fujiyama"]],
-        ["GOP",               ["GOP party"]],
-        ["GRE",               ["GRE exam"]],
-        ["HIV",               ["HIV virus"]],
+        [u"Bō",               ["Bo Staff"]],
+        ["Challah",           ["Challah bread"]],
         ["Hallah",            ["Hallah bread"]],
         ["I",                 ["I myself", "I personally"]],
-        ["ISBN",              ["ISBN number"]],
-        ["LCD",               ["LCD display"]],
+        ["Mount Fuji",        ["Mount Fujiyama"]],
         ["Milky Way",         ["Milky Way galaxy"]],
-        ["New Mexico",        ["State of New Mexico"]],
-        ["New York",          ["State of New York"]],
-        ["North Carolina",    ["State of North Carolina"]],
-        ["North Dakota",      ["State of North Dakota"]],
-        ["PC",                ["PC computer"]],
-        ["PIN",               ["PIN number"]],
-        ["RAM",               ["RAM memory"]],
-        ["RSVP",              ["please RSVP"]],
-        ["Rio Grande",        ["Rio Grande River", "Rio Grande river"]],
-        ["SAT",               ["SAT test"]],
-        ["South Carolona",    ["State of South Carolona"]],
-        ["South Dakota",      ["State of South Dakota"]],
-        ["UPC",               ["UPC code"]],
+        ["Rio Grande",        ["Rio Grande river"]],
         ["a.m.",              ["a.m. in the morning"]],
-        ["abet",              ["aid and abet"]],
-        ["accounting",        ["financial accounting"]],
         ["adage",             ["old adage"]],
-        ["add",               ["add a further", "add an additional",
-                               "add up"]],
+        ["add",               ["add a further", "add an additional"]],
         ["advance",           ["advance forward"]],
-        ["all",               ["all of"]],
-        ["along",             ["alongside", "alongside of"]],
         ["alternative",       ["alternative choice"]],
         ["always",            ["always and forever"]],
         ["amaretto",          ["amaretto almond"]],
@@ -505,4 +481,31 @@ def check(text):
         ["yerba mate",        ["yerba mate tea"]],
         ["yes",               ["affirmative yes"]],
     ]
+
+    return preferred_forms_check(text, redundancies, err, msg)
+
+
+@memoize
+def check_redundant_acronym_syndrome(text):
+    """Suggest the preferred forms."""
+    err = "after_the_deadline.redundancy.ras"
+    msg = "RAS syndrome. Use '{}' instead of '{}'."
+
+    redundancies = [
+        ["ABS",               ["ABS brakes", "ABS braking system"]],
+        ["ACT",               ["ACT test"]],
+        ["CD",                ["CD disc"]],
+        ["GOP",               ["GOP party"]],
+        ["GRE",               ["GRE exam"]],
+        ["HIV",               ["HIV virus"]],
+        ["ISBN",              ["ISBN number"]],
+        ["LCD",               ["LCD display"]],
+        ["PC",                ["PC computer"]],
+        ["PIN",               ["PIN number"]],
+        ["RAM",               ["RAM memory"]],
+        ["RSVP",              ["please RSVP"]],
+        ["SAT",               ["SAT test"]],
+        ["UPC",               ["UPC code"]],
+    ]
+
     return preferred_forms_check(text, redundancies, err, msg)
