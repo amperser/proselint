@@ -1,29 +1,41 @@
-# Proselint plug-in for Vim
+# Proselint plugin for Vim
 
-Proselint plug-in for Vim is meant to work with
-[Syntastic](http://vimawesome.com/plugin/syntastic), as well as `proselint`
-executable already installed and on `$PATH`. Syntastic is a generic file-linter
-framework which expose various configuration option, like on which kind of file
-to run which linter, as well as on which even (save, load, ...) process the
-current file. Refer to [Syntastic](http://vimawesome.com/plugin/syntastic) docs
-for help with this.  
+Proselint plugin for Vim is meant to work with [syntastic][syntastic], as well
+as the `proselint` executable already installed and in your `$PATH`. Syntastic
+is a generic file-linter framework which exposes various configuration
+options, such as on which kind of file to run which linter, as well as
+on which event (save, load, ...) to process the current file. Refer to
+syntastic's docs for help with this.
 
-If you are a Vim user that you likely have a preferred way of managing your
-plug-ins. Find the installation directory of **Syntastic** and copy/or link
-this file in its `syntax_checkers/text` folder. 
+If you are a Vim user then you likely have a preferred way of managing
+your plugins. Copy or link `syntastic_proselint` next to your other Vim
+plugins, and enable it in your plugin manager. This should add `proselint`
+as a syntastic checker for filetypes `asciidoc`, `docbk`, `help`, `html`,
+`markdown`, `nroff`, `pod`, `rst`, `tex`, `texinfo`, `text`, and `xhtml`. If
+you open a file of the relevant type and run `:SyntasticInfo`, you should see
+`proselint` listed among the available checkers.
 
-Typically on unix-like system this will be
-`~/.vim/bundle/syntastic/syntax_checkers/text/`. 
+Next, edit your `vimrc` and add `proselint` to
+`g:syntastic_<filetype>_checkers` for the filetypes you plan to use, and
+restart Vim. You should now be able to get Proselint hints about your text
+files.
 
-Restart your Vim session/reload your vim settings/plug-ins, and you should now
-get Proselint hints in your text files. 
+If you want syntastic to filter out the messages produced by
+certain Proselint rules, add the IDs of the relevant rules to
+`g:syntastic_text_proselint_quiet_messages` like this:
+```vim
+let g:syntastic_text_proselint_quiet_messages = {
+    \ 'regex': [
+    \   '\m^butterick\.',
+    \   '\m^twain\.damn\>',
+    \ ] }
+```
+See `:h 'syntastic_quiet_messages'` in Vim for more information. See also
+`:h pattern` if you need help with Vim's regular expressions.
 
-Feel free to submit enhancement to this plug-in. 
+By default `g:syntastic_text_proselint_quiet_messages` is used for all
+filetypes known to the `proselint` checker, not just `text`.
 
-# Caveats
+Feel free to submit enhancement to this plugin.
 
-Depending on the Plug-ins Manager you use with Vim, Copying/linking this file
-into the bundle directory might prevent the Syntactic plug-in to update. Most
-Package manager should show an error on update if this is the case. 
-
-Just remove the file, update and put it back in place if this ever happen. 
+[syntastic]: https://github.com/scrooloose/syntastic
