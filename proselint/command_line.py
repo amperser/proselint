@@ -168,6 +168,7 @@ def proselint(files=None, version=None, initialize=None, clean=None,
               debug=None, score=None, json=None, time=None, demo=None,
               compact=None):
     """Define the linter command line API."""
+    print("DEBUG: Wheeler")
     if time:
         click.echo(timing_test())
         return

@@ -1,6 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
+        "bailey.preferred_forms"        : true,
         "butterick.symbols"             : true,
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
