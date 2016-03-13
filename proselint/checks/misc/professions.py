@@ -25,6 +25,7 @@ def check(text):
     preferences = [
 
         ["cobbler",    ["shoe repair guy"]],
+        ["geometer",   ["geometrist"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)
