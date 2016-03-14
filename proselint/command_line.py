@@ -162,8 +162,8 @@ def show_errors(filename, errors, json=False, compact=False):
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
 @click.option('--compact', is_flag=True)
-@click.argument('files', nargs=-1, type=click.Path())
-def proselint(files=None, version=None, initialize=None, clean=None,
+@click.argument('paths', nargs=-1, type=click.Path())
+def proselint(paths=None, version=None, initialize=None, clean=None,
               debug=None, score=None, json=None, time=None, demo=None,
               compact=None):
     """Define the linter command line API."""
@@ -186,22 +186,22 @@ def proselint(files=None, version=None, initialize=None, clean=None,
 
     # Use the demo file by default.
     if demo:
-        files = [demo_file]
+        paths = [demo_file]
 
     # Expand the list of directories and files.
-    expanded_files = expand_paths(list(files))
+    filepaths = extract_files(list(paths))
 
     # Lint the files
-    for f in expanded_files:
+    for fp in filepaths:
         try:
-            ff = click.open_file(f, 'r+', encoding="utf-8")
-            errors = lint(ff, debug=debug)
-            show_errors(f, errors, json, compact=compact)
+            f = click.open_file(fp, 'r+', encoding="utf-8")
+            errors = lint(f, debug=debug)
+            show_errors(fp, errors, json, compact=compact)
         except:
             pass
 
 
-def expand_paths(files):
+def extract_files(files):
     """Expand list of paths to include all text files matching the pattern."""
     expanded_files = []
     legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
