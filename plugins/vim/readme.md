@@ -10,10 +10,10 @@ syntastic's docs for help with this.
 If you are a Vim user then you likely have a preferred way of managing
 your plugins. Copy or link `syntastic_proselint` next to your other Vim
 plugins, and enable it in your plugin manager. This should add `proselint`
-as a syntastic checker for filetypes `asciidoc`, `docbk`, `help`, `html`,
-`markdown`, `nroff`, `pod`, `rst`, `tex`, `texinfo`, `text`, and `xhtml`. If
-you open a file of the relevant type and run `:SyntasticInfo`, you should see
-`proselint` listed among the available checkers.
+as a syntastic checker for filetypes `asciidoc`, `help`, `html`, `markdown`,
+`nroff`, `pod`, `rst`, `tex`, `texinfo`, `text`, and `xhtml`. If you open a
+file of the relevant type and run `:SyntasticInfo`, you should see `proselint`
+listed among the available checkers.
 
 Next, edit your `vimrc` and add `proselint` to
 `g:syntastic_<filetype>_checkers` for the filetypes you plan to use, and
