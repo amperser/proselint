@@ -13,9 +13,8 @@ from .tools import line_and_column, is_quoted
 from . import checks as pl
 import pkgutil
 import subprocess
-import ntpath
 import re
-import json as js
+import json
 import importlib
 import sys
 from .score import score
@@ -44,7 +43,7 @@ def run_initialization():
 def lint(input_file, debug=False):
     """Run the linter on the input file."""
     # Load the options.
-    options = js.load(open(os.path.join(proselint_path, '.proselintrc')))
+    options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
     # Extract the checks.
     sys.path.append(proselint_path)
@@ -134,7 +133,7 @@ def show_errors(filename, errors, json=False, compact=False):
             status="success",
             data={"errors": out})
 
-        click.echo(js.dumps(result))
+        click.echo(json.dumps(result))
 
     else:
         for error in errors:
@@ -163,8 +162,8 @@ def show_errors(filename, errors, json=False, compact=False):
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
 @click.option('--compact', is_flag=True)
-@click.argument('files', nargs=-1, type=click.File(encoding='utf8'))
-def proselint(files=None, version=None, initialize=None, clean=None,
+@click.argument('paths', nargs=-1, type=click.Path())
+def proselint(paths=None, version=None, initialize=None, clean=None,
               debug=None, score=None, json=None, time=None, demo=None,
               compact=None):
     """Define the linter command line API."""
@@ -187,11 +186,44 @@ def proselint(files=None, version=None, initialize=None, clean=None,
 
     # Use the demo file by default.
     if demo:
-        files = [click.open_file(demo_file, encoding='utf8')]
+        paths = [demo_file]
+
+    # Expand the list of directories and files.
+    filepaths = extract_files(list(paths))
+
+    # Lint the files
+    for fp in filepaths:
+        try:
+            f = click.open_file(fp, 'r+', encoding="utf-8")
+            errors = lint(f, debug=debug)
+            show_errors(fp, errors, json, compact=compact)
+        except:
+            pass
+
+
+def extract_files(files):
+    """Expand list of paths to include all text files matching the pattern."""
+    expanded_files = []
+    legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
 
     for f in files:
-        errors = lint(f, debug=debug)
-        show_errors(f.name, errors, json, compact=compact)
+
+        # If it's a directory, recursively walk through it and find the files.
+        if os.path.isdir(f):
+            for dir_, _, filenames in os.walk(f):
+                for filename in filenames:
+                    fn, file_extension = os.path.splitext(filename)
+                    if file_extension in legal_extensions:
+                        rel_dir = os.path.relpath(dir_, f)
+                        rel_file = os.path.join(rel_dir, filename)
+                        expanded_files.append(rel_file)
+
+        # Otherwise add the file directly.
+        else:
+            expanded_files.append(f)
+
+    return expanded_files
+
 
 if __name__ == '__main__':
     proselint()
