@@ -5,6 +5,7 @@
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
+        "fowlers.inferior_superior"     : true,
         "garner.airlinese"              : true,
         "garner.am_pm"                  : true,
         "garner.animal_labels"          : true,
