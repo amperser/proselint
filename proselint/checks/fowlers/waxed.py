@@ -10,7 +10,7 @@ categories: writing
 ---
 
 Fowler's says:
-It's primary meaning 'grow larger, increase' (as opposed to 'wane') leads
+Its primary meaning 'grow larger, increase' (as opposed to 'wane') leads
 naturally to the sense 'pass into a specified state or mood, begin to use a
 specified tone. In this meaning a following modifier must be an adj. not an
 adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
