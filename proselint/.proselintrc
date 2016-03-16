@@ -36,6 +36,7 @@
         "gnu_diction.cliches"           : true,
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
+        "junge.but"                     : true,
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
         "lilienfeld.terms_to_avoid"     : true,
