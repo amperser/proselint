@@ -56,3 +56,4 @@ deploy:
     tags: true
     repo: amperser/proselint
     branch: master
+    python: 3.5
