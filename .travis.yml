@@ -55,3 +55,4 @@ deploy:
     tags: true
     distributions: sdist bdist_wheel
     repo: amperser/proselint
+    branch: master
