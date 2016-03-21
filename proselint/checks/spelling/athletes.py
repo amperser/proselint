@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "wsj.athletes"
+    err = "spelling.athletes"
     msg = "Misspelling of athlete's name. '{}' is the preferred form."
 
     misspellings = [

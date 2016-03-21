@@ -19,8 +19,8 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.misspellings"
-    msg = "Misspelling. '{}' is the preferred form."
+    err = "spelling.misc"
+    msg = "Misspelling. '{}' is the preferred spelling."
 
     misspellings = [
         ["a lot",             ["alot"]],
