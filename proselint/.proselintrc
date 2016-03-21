@@ -30,7 +30,7 @@
         "garner.punctuation"            : true,
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
-        "garner.skunked_terms"          : true,
+        "skunked_terms.misc"            : true,
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
         "junge.but"                     : true,

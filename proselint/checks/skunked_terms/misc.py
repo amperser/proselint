@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check_skunked(text):
     """Check the text."""
-    err = "garner.skunked_terms"
+    err = "skunked_terms.misc"
     msg = u"""'{}' is a bit of a skunked term — impossible to use without issue.
              Find some other way to say it."""
 
