@@ -100,13 +100,13 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `carlin.filth` | Words to avoid |
 | `consistency.spacing` | Consistent sentence spacing |
 | `consistency.spelling` | Consistent use of British vs. American spelling |
+| `cliches` | Avoiding cliché |
 | `garner.airlinese` | Avoiding jargon of the airline industry |
 | `garner.am_pm` | Using the right form for the time of day |
 | `garner.animal_labels` | Likening things to animals using fun words |
 | `garner.archaism` | Avoiding archaic forms |
 | `garner.back_formations` | Avoiding needless backformations |
 | `garner.capitalization` | Captializing what ought to be capitalized |
-| `garner.cliches` | Avoiding cliché |
 | `garner.commercialese` | Avoiding jargon of the commercial world |
 | `garner.dates` | Stylish formatting of dates |
 | `garner.denizen_labels` | Calling people the right names |
@@ -157,7 +157,6 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `twain.damn` | Avoiding the word "very" |
 | `wallace.tense_present` | Misc. advice |
 | `wallace.uncomparables` | Not comparing uncomparables |
-| `write_good.cliches` | Avoiding cliches |
 | `write_good.lexical_illusions` | Avoiding lexical illusions |
 | `write_good.weasel_words` | Avoiding weasel words |
 | `wsj.athletes` | Spelling the names of athletes correctly |

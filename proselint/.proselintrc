@@ -2,6 +2,7 @@
     "max_errors": 1000,
     "checks": {
         "carlin.filth"                  : true,
+        "cliches"                       : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
         "garner.airlinese"              : true,
@@ -11,7 +12,6 @@
         "garner.back_formations"        : true,
         "garner.bureaucratese"          : true,
         "garner.capitalization"         : true,
-        "garner.cliches"                : true,
         "garner.commercialese"          : true,
         "garner.dates"                  : true,
         "garner.denizen_labels"         : true,
@@ -32,7 +32,6 @@
         "garner.redundancy"             : true,
         "garner.sexism"                 : true,
         "garner.skunked_terms"          : true,
-        "gnu_diction.cliches"           : true,
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
         "junge.but"                     : true,
@@ -71,7 +70,6 @@
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "white.damn"                    : true,
-        "write_good.cliches"            : true,
         "write_good.lexical_illusions"  : true,
         "write_good.weasel_words"       : true,
         "wsj.athletes"                  : true
