@@ -76,8 +76,8 @@
         "wallace.redundancy"            : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
+        "weasel_words.misc"             : true,
         "white.damn"                    : true,
-        "write_good.lexical_illusions"  : true,
-        "write_good.weasel_words"       : true
+        "write_good.lexical_illusions"  : true
     }
 }

@@ -16,7 +16,7 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 
 # def check(text):
 
-#     error_code = "write_good.weasel_words"
+#     error_code = "weasel_words.misc"
 #     msg = "Weasel words present."
 
 #     return [(1, 1, error_code, msg)]
