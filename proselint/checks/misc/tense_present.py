@@ -20,7 +20,7 @@ import re
 @memoize
 def check(text):
     """Check the text."""
-    err = "wallace.tense_present"
+    err = "misc.tense_present"
     msg = u"'{}'."
 
     illogics = [
