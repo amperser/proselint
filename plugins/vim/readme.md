@@ -26,7 +26,7 @@ certain Proselint rules, add the IDs of the relevant rules to
 ```vim
 let g:syntastic_text_proselint_quiet_messages = {
     \ 'regex': [
-    \   '\m^butterick\.',
+    \   '\m^typography\.',
     \   '\m^twain\.damn\>',
     \ ] }
 ```

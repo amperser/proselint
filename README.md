@@ -97,7 +97,6 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 | ID    | Description     |
 | ----- | --------------- |
-| `butterick.symbols` | Using the right symbol |
 | `carlin.filth` | Words to avoid |
 | `consistency.spacing` | Consistent sentence spacing |
 | `consistency.spelling` | Consistent use of British vs. American spelling |
@@ -154,6 +153,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `strunk_white.composition` | Avoiding wordy phrases |
 | `strunk_white.greylist` | Words to avoid |
 | `strunk_white.usage` | Misc. usage recommendations |
+| `typography.symbols` | Using the right symbol |
 | `twain.damn` | Avoiding the word "very" |
 | `wallace.tense_present` | Misc. advice |
 | `wallace.uncomparables` | Not comparing uncomparables |

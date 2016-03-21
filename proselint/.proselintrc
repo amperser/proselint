@@ -1,7 +1,6 @@
 {
     "max_errors": 1000,
     "checks": {
-        "butterick.symbols"             : true,
         "carlin.filth"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
@@ -67,6 +66,7 @@
         "strunk_white.composition"      : true,
         "strunk_white.greylist"         : true,
         "strunk_white.usage"            : true,
+        "typography.symbols"            : true,
         "wallace.redundancy"            : true,
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
