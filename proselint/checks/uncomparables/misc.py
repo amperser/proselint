@@ -52,7 +52,7 @@ import itertools
 @memoize
 def check(text):
     """Check the text."""
-    err = "wallace.uncomparables"
+    err = "uncomparables.misc"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
 
     comparators = [

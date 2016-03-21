@@ -74,8 +74,8 @@
         "strunk_white.usage"            : true,
         "szekely.nword"                 : true,
         "typography.symbols"            : true,
+        "uncomparables.misc"            : true,
         "wallace.tense_present"         : true,
-        "wallace.uncomparables"         : true,
         "weasel_words.misc"             : true,
         "weasel_words.very"             : true
     }
