@@ -20,7 +20,7 @@ from proselint.tools import memoize, existence_check
 @memoize
 def check_very_damn(text):
     """Avoid 'very'."""
-    err = "white.damn"
+    err = "weasel_words.very"
     msg = ("Substitute 'damn' every time you're "
            "inclined to write 'very;' your editor will delete it "
            "and the writing will be just as it should be.")

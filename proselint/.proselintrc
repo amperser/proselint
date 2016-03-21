@@ -78,6 +78,6 @@
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "weasel_words.misc"             : true,
-        "white.damn"                    : true
+        "weasel_words.very"             : true
     }
 }
