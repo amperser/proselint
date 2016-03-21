@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "write_good.lexical_illusions"
+    err = "lexical_illusions.misc"
     msg = u"There's a lexical illusion here: a word is repeated."
 
     list = [

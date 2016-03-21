@@ -36,6 +36,7 @@
         "junge.but"                     : true,
         "leonard.exclamation"           : true,
         "leonard.hell"                  : true,
+        "lexical_illusions.misc"        : true,
         "lilienfeld.terms_to_avoid"     : true,
         "misc.annotations"              : true,
         "misc.chatspeak"                : true,
@@ -77,7 +78,6 @@
         "wallace.tense_present"         : true,
         "wallace.uncomparables"         : true,
         "weasel_words.misc"             : true,
-        "white.damn"                    : true,
-        "write_good.lexical_illusions"  : true
+        "white.damn"                    : true
     }
 }
