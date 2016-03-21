@@ -1,25 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Denizen labels.
 
----
-layout:     post
-source:     Garner's Modern American Usage
-source_url: http://bit.ly/1T4alrY
-title:      denizen labels
-date:       2014-06-10 12:31:19
-categories: writing
----
+"""Denizen labels."""
 
-Denizen labels.
-
-"""
 from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "garner.denizen_labels"
+def check_denizen_labels_ganer(text):
+    """Suggest the preferred forms.
+
+    source:     Garner's Modern American Usage
+    source_url: http://bit.ly/1T4alrY
+    """
+    err = "terms.denizen_labels.garner"
     msg = "'{}' is the preferred denizen label."
 
     preferences = [
@@ -60,6 +53,36 @@ def check(text):
         ["Tusconan",          ["Tusconian", "Tusconite"]],
         ["Utahn",             ["Utahan"]],
         ["Saudi",             ["Saudi Arabian"]],
+    ]
+
+    return preferred_forms_check(text, preferences, err, msg)
+
+
+@memoize
+def check_denizen_labels_norris(text):
+    """Suggest the preferred forms.
+
+    source:     Mary Norris
+    source_url: http://nyr.kr/1rGienj
+    """
+    err = "terms.denizen_labels.norris"
+    msg = "Would you like '{}'?"
+
+    preferences = [
+        ["Mancunian",         ["Manchesterian"]],
+        ["Mancunians",        ["Manchesterians"]],
+        ["Vallisoletano",     ["Valladolidian"]],
+        ["Wulfrunian",        ["Wolverhamptonian", "Wolverhamptonite"]],
+        ["Novocastrian",      ["Newcastleite", "Newcastlite"]],
+        ["Trifluvian",        [u"Trois-Rivièrester"]],
+        ["Leodenisian",       ["Leedsian"]],
+        ["Minneapolitan",     ["Minneapolisian"]],
+        ["Hartlepudlian",     ["Hartlepoolian"]],
+        ["Liverpudlian",      ["Liverpoolian"]],
+        ["Haligonian",        ["Halifaxer"]],
+        ["Varsovian",         ["Warsawer", "Warsawian"]],
+        ["Providentian",      ["Providencian", "Providencer"]],
+        ["Tridentine",        ["Trentian", "Trentonian"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Animal word.
+"""Animal adjectives.
 
 ---
 layout:     post
