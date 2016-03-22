@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check_debased_language(text):
     """Check the text."""
-    err = "nfl.naughty_words"
+    err = "cursing.nfl"
     msg = u"The NFL won't print this word on a jersey."
 
     list = [

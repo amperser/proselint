@@ -1,10 +1,11 @@
 {
     "max_errors": 1000,
     "checks": {
-        "carlin.filth"                  : true,
         "cliches.misc"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
+        "cursing.filth"                 : true,
+        "cursing.nfl"                   : false,
         "garner.airlinese"              : true,
         "garner.am_pm"                  : true,
         "garner.archaism"               : true,
@@ -55,7 +56,6 @@
         "misc.suddenly"                 : true,
         "misc.tense_present"            : true,
         "misc.whence"                   : true,
-        "nfl.naughty_words"             : false,
         "redundancy.misc"               : true,
         "redundancy.ras_syndrome"       : true,
         "skunked_terms.misc"            : true,
