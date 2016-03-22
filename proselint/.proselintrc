@@ -2,7 +2,7 @@
     "max_errors": 1000,
     "checks": {
         "carlin.filth"                  : true,
-        "cliches"                       : true,
+        "cliches.misc"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
         "garner.airlinese"              : true,
