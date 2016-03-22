@@ -32,11 +32,11 @@ class TestCheck(Check):
 
     def test_sentence_spacing(self):
         assert chk.check_sentence_spacing(
-        """This is a sentence.   This is another.""")
+            """This is a sentence.   This is another.""")
 
     def test_multiplication(self):
         assert chk.check_multiplication_symbol(
-        """It is obvious that 2 x 2 = 4.""")
+            """It is obvious that 2 x 2 = 4.""")
 
-    def test_curly_quotes(self):  #FIXME
+    def test_curly_quotes(self):  # FIXME
         pass
