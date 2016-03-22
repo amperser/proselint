@@ -2,11 +2,12 @@
 from __future__ import absolute_import
 
 from .check import Check
-from proselint.checks.butterick import symbols as chk
+
+from proselint.checks.typography import symbols as chk
 
 
 class TestCheck(Check):
-    """The test class for butterick symbols."""
+    """The test class for typography.symbols."""
 
     __test__ = True
 
