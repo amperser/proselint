@@ -113,9 +113,9 @@ def clear_cache():
         shell=True)
 
 
-def show_errors(filename, errors, json=False, compact=False):
+def show_errors(filename, errors, output_json=False, compact=False):
     """Print the errors, resulting from lint, for filename."""
-    if json:
+    if output_json:
         out = []
         for e in errors:
             out.append({
@@ -158,13 +158,13 @@ def show_errors(filename, errors, json=False, compact=False):
 @click.option('--debug', '-d', is_flag=True)
 @click.option('--clean', '-c', is_flag=True)
 @click.option('--score', '-s', is_flag=True)
-@click.option('--json', '-j', is_flag=True)
+@click.option('--json', '-j', 'output_json', is_flag=True)
 @click.option('--time', '-t', is_flag=True)
 @click.option('--demo', is_flag=True)
 @click.option('--compact', is_flag=True)
 @click.argument('paths', nargs=-1, type=click.Path())
 def proselint(paths=None, version=None, initialize=None, clean=None,
-              debug=None, score=None, json=None, time=None, demo=None,
+              debug=None, score=None, output_json=None, time=None, demo=None,
               compact=None):
     """Define the linter command line API."""
     if time:
@@ -196,7 +196,7 @@ def proselint(paths=None, version=None, initialize=None, clean=None,
         try:
             f = click.open_file(fp, 'r+', encoding="utf-8")
             errors = lint(f, debug=debug)
-            show_errors(fp, errors, json, compact=compact)
+            show_errors(fp, errors, output_json, compact=compact)
         except:
             pass
 
