@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from .check import Check
-from proselint.checks.junge import but
+from proselint.checks.misc import but
 
 from nose.tools import assert_equals
 
