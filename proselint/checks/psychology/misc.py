@@ -19,11 +19,10 @@ from proselint.tools import preferred_forms_check, existence_check, memoize
 @memoize
 def check_lie_detector_test(text):
     """Suggest the preferred forms."""
-    err = "lilienfeld.terms_to_avoid.lie_detector"
+    err = "psychology.lie_detector"
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
 
     list = [
-
         ["polygraph test",      ["lie detector test"]],
         ["polygraph machine",   ["lie detector machine"]],
     ]
@@ -34,7 +33,7 @@ def check_lie_detector_test(text):
 @memoize
 def check_p_equals_zero(text):
     """Check for p = 0.000."""
-    err = "lilienfeld.terms_to_avoid.p_equals_zero"
+    err = "psychology.p_equals_zero"
     msg = "Unless p really equals zero, you should use more decimal places."
 
     list = [
@@ -49,7 +48,7 @@ def check_p_equals_zero(text):
 @memoize
 def check_mental_telepathy(text):
     """Check for 'mental telepathy'."""
-    err = "lilienfeld.terms_to_avoid.mental_telepathy"
-    msg = "This is redundant: all purported telepathy is mental."
+    err = "psychology.mental_telepathy"
+    msg = "This is redundant because all purported telepathy is mental."
 
     return existence_check(text, ["mental telepathy"], err, msg)
