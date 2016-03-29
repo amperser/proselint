@@ -1,6 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
+        "cliches.hell"                  : true,
         "cliches.misc"                  : true,
         "consistency.spacing"           : true,
         "consistency.spelling"          : true,
@@ -32,8 +33,6 @@
         "gowers.overworked_metaphors"   : true,
         "inc.corporate_speak"           : true,
         "junge.but"                     : true,
-        "leonard.exclamation"           : true,
-        "leonard.hell"                  : true,
         "lexical_illusions.misc"        : true,
         "misc.annotations"              : true,
         "misc.apologizing"              : true,
@@ -70,6 +69,7 @@
         "terms.denizen_labels"          : true,
         "terms.eponymous_adjectives"    : true,
         "terms.venery"                  : true,
+        "typography.exclamation"        : true,
         "typography.symbols"            : true,
         "uncomparables.misc"            : true,
         "weasel_words.misc"             : true,
