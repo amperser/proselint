@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check_repeated_exclamations(text):
     """Check the text."""
-    err = "inc.corporate_speak"
+    err = "corporate_speak.misc"
     msg = u"Minimize your use of corporate catchphrases like this one."
 
     list = [
