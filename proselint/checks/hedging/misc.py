@@ -13,13 +13,13 @@ categories: writing
 Points out hedging.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.hedging"
+    err = "hedging.misc"
     msg = "Hedging. Just say it."
 
     narcisissm = [

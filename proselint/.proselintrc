@@ -29,7 +29,6 @@
         "misc.currency"                 : true,
         "misc.debased"                  : true,
         "misc.false_plurals"            : true,
-        "misc.hedging"                  : true,
         "misc.illogic"                  : true,
         "misc.inferior_superior"        : true,
         "misc.jargon"                   : true,
