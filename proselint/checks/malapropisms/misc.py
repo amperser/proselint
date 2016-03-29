@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.malapropisms"
+    err = "malapropisms.misc"
     msg = u"'{}' is a malapropism."
 
     illogics = [
