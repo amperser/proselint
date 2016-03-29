@@ -21,7 +21,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "fowlers.waxed"
+    err = "misc.waxed"
     msg = u"The modifier following 'waxed' must be an adj.: '{}' is correct"
 
     waxes = ["wax", "waxes", "waxed", "waxing"]

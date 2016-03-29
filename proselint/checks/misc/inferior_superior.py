@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "fowlers.inferior_superior"
+    err = "misc.inferior_superior"
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."
 
     preferences = [
