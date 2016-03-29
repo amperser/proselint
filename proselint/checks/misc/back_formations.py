@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.back_formations"
+    err = "misc.back_formations"
     msg = "Back-formation. '{}' is the preferred form."
 
     list = [

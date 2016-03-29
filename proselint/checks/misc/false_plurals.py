@@ -19,7 +19,7 @@ from proselint.tools import memoize, preferred_forms_check, existence_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.false_plurals.examples"
+    err = "misc.false_plurals.examples"
     msg = "The plural is {}"
 
     preferences = [
@@ -33,7 +33,7 @@ def check(text):
 @memoize
 def check_kudos(text):
     """Check the text."""
-    err = "garner.false_plurals.kudos"
+    err = "misc.false_plurals.kudos"
     msg = u"Kudos is singular."
 
     return existence_check(text, ["many kudos"], err, msg)

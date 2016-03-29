@@ -19,7 +19,7 @@ from proselint.tools import memoize, existence_check
 @memoize
 def check(text):
     """Check the text."""
-    err = "garner.jargon"
+    err = "misc.jargon"
     msg = u"'{}' is jargon. Can you replace it with something more standard?"
 
     jargon = [

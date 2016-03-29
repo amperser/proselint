@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "garner.archaism"
+    err = "misc.archaism"
     msg = u"'{}' is archaic."
 
     archaisms = [

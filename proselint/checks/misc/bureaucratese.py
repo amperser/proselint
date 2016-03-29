@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "garner.bureaucratese"
+    err = "misc.bureaucratese"
     msg = u"'{}' is bureaucratese."
 
     bureaucratese = [

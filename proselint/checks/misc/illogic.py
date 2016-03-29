@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "garner.illogic"
+    err = "misc.illogic"
     msg = u"'{}' is illogical."
 
     illogics = [
@@ -40,7 +40,7 @@ def check(text):
 @memoize
 def check_coin_a_phrase_from(text):
     """Check the text."""
-    err = "garner.illogic.coin"
+    err = "misc.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
 
     regex = "to coin a phrase from"
@@ -51,7 +51,7 @@ def check_coin_a_phrase_from(text):
 @memoize
 def check_without_your_collusion(text):
     """Check the textself."""
-    err = "garner.illogic.collusion"
+    err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
 
     regex = "without your collusion"

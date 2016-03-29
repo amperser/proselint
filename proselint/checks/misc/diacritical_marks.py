@@ -9,7 +9,7 @@ from proselint.tools import memoize, preferred_forms_check
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.diacritical_marks"
+    err = "misc.diacritical_marks"
     msg = u"Use diacritical marks in '{}'."
 
     list = [
