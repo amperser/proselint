@@ -18,7 +18,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.password"
+    err = "security.password"
     msg = u"Don't put passwords in plain text."
 
     pwd_regex = "[:]? [\S]{6,30}"

@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.credit_card"
+    err = "security.credit_card"
     msg = u"Don't put credit card numbers in plain text."
 
     credit_card_numbers = [
