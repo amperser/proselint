@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check_repeated_exclamations(text):
     """Check the text."""
-    err = "skekely.nword"
+    err = "cursing.nword"
     msg = u"Take responsibility for the shitty words you want to say."
 
     list = [
