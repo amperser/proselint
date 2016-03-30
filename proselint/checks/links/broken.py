@@ -27,7 +27,7 @@ standard_library.install_aliases()
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.link_checker"
+    err = "links.valid"
     msg = u"Broken link: {}"
 
     regex = re.compile(

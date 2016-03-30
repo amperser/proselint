@@ -33,7 +33,6 @@
         "misc.illogic"                  : true,
         "misc.inferior_superior"        : true,
         "misc.latin"                    : true,
-        "misc.link_checker"             : false,
         "misc.many_a"                   : true,
         "misc.metaconcepts"             : true,
         "misc.narcisissm"               : true,
