@@ -44,7 +44,7 @@ def check_exclamations_ppm(text):
 
     ppm = (count*1.0 / num_words) * 1e6
 
-    if ppm > 30:
+    if ppm > 30 and count > 1:
         loc = re.search(regex, text).start() + 1
         return [(loc, loc+1, err, msg)]
     else:
