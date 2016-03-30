@@ -97,6 +97,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 | ID    | Description     |
 | ----- | --------------- |
+| `airlinese.misc` | Avoiding jargon of the airline industry |
 | `annotations.misc` | Catching annotations left in the text |
 | `cliches.hell` | Avoiding a common cliché |
 | `cliches.misc` | Avoiding clichés |
@@ -113,7 +114,6 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `lexical_illusions.misc` | Avoiding lexical illusions |
 | `links.broken` | Linking only to existing sites |
 | `malapropisms.misc` | Avoiding common malapropisms |
-| `misc.airlinese` | Avoiding jargon of the airline industry |
 | `misc.apologizing` | Being confident |
 | `misc.archaism` | Avoiding archaic forms |
 | `misc.back_formations` | Avoiding needless backformations |

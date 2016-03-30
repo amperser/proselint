@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.airlinese"
+    err = "airlinese.misc"
     msg = u"'{}' is airlinese."
 
     airlinese = [

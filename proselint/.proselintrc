@@ -1,6 +1,7 @@
 {
     "max_errors": 1000,
     "checks": {
+        "airlinese.misc"                : true,
         "annotations.misc"              : true,
         "cliches.hell"                  : true,
         "cliches.misc"                  : true,
@@ -18,7 +19,6 @@
         "lexical_illusions.misc"        : true,
         "links.broken"                  : false,
         "malapropisms.misc"             : true,
-        "misc.airlinese"                : true,
         "misc.apologizing"              : true,
         "misc.archaism"                 : true,
         "misc.back_formations"          : true,
