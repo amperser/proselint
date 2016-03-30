@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from .check import Check
-from proselint.checks.wallace import uncomparables as chk
+from proselint.checks.uncomparables import misc as chk
 
 
 class TestCheck(Check):

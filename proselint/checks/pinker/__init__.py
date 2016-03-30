@@ -1,1 +1,0 @@
-"""Advice from Steve Pinker."""

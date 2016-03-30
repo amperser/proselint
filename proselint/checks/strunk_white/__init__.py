@@ -1,1 +1,0 @@
-"""Advice from Strunk & White."""
