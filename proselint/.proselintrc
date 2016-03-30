@@ -3,6 +3,7 @@
     "checks": {
         "airlinese.misc"                : true,
         "annotations.misc"              : true,
+        "archaism.misc"                 : true,
         "cliches.hell"                  : true,
         "cliches.misc"                  : true,
         "consistency.spacing"           : true,
@@ -20,7 +21,6 @@
         "links.broken"                  : false,
         "malapropisms.misc"             : true,
         "misc.apologizing"              : true,
-        "misc.archaism"                 : true,
         "misc.back_formations"          : true,
         "misc.bureaucratese"            : true,
         "misc.but"                      : true,

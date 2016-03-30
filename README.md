@@ -99,6 +99,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | ----- | --------------- |
 | `airlinese.misc` | Avoiding jargon of the airline industry |
 | `annotations.misc` | Catching annotations left in the text |
+| `archaism.misc` | Avoiding archaic forms |
 | `cliches.hell` | Avoiding a common cliché |
 | `cliches.misc` | Avoiding clichés |
 | `consistency.spacing` | Consistent sentence spacing |
@@ -115,7 +116,6 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `links.broken` | Linking only to existing sites |
 | `malapropisms.misc` | Avoiding common malapropisms |
 | `misc.apologizing` | Being confident |
-| `misc.archaism` | Avoiding archaic forms |
 | `misc.back_formations` | Avoiding needless backformations |
 | `misc.bureaucratese` | Avoiding bureaucratese |
 | `misc.but` | Avoid starting a paragraph with "But..." |
