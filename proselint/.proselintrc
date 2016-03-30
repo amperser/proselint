@@ -49,6 +49,7 @@
         "mixed_metaphors.misc"          : true,
         "mondegreens.misc"              : true,
         "needless_variants.misc"        : true,
+        "nonwords.misc"                 : true,
         "oxymorons.misc"                : true,
         "psychology.misc"               : true,
         "redundancy.misc"               : true,
