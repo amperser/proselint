@@ -192,13 +192,21 @@ def proselint(paths=None, version=None, initialize=None, clean=None,
     filepaths = extract_files(list(paths))
 
     # Lint the files
+    num_errors = 0
     for fp in filepaths:
         try:
             f = click.open_file(fp, 'r+', encoding="utf-8")
             errors = lint(f, debug=debug)
+            num_errors += len(errors)
             show_errors(fp, errors, output_json, compact=compact)
         except:
             pass
+
+    # Return an exit code
+    if num_errors > 0:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 
 def extract_files(files):
