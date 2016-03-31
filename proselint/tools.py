@@ -4,8 +4,11 @@
 """General-purpose tools shared across linting checks."""
 from __future__ import print_function
 from __future__ import unicode_literals
+import sys
+import traceback
 import os
 import shelve
+import dbm
 import inspect
 import functools
 import re
@@ -26,9 +29,26 @@ def memoize(f):
 
     try:
         cache = shelve.open(cachepath, protocol=2)
+    except dbm.error:
+        # dbm error on open - delete and retry
+        print('Error (%s) opening %s - will attempt to delete and re-open.' %
+              (sys.exc_info()[1], cachepath))
+        try:
+            os.remove(cachepath)
+            cache = shelve.open(cachepath, protocol=2)
+        except Exception:
+            print('Error on re-open: %s' % sys.exc_info()[1])
+            cache = None
     except Exception:
-        print('Could not open cache file %s, maybe name collision' % cachepath)
+        # unknown error
+        print('Could not open cache file %s, maybe name collision. '
+              'Error: %s' % (cachepath, traceback.format_exc()))
         cache = None
+
+    # Don't fail on bad caches
+    if cache is None:
+        print('Using in-memory shelf for cache file %s' % cachepath)
+        cache = shelve.Shelf(dict())
 
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
@@ -56,7 +76,8 @@ def memoize(f):
         except TypeError:
             call_to = f.__module__ + '.' + f.__name__
             print('Warning: could not disk cache call to %s;'
-                  'it probably has unhashable args' % call_to)
+                  'it probably has unhashable args. Error: %s' %
+                  (call_to, traceback.format_exc()))
             return f(*args, **kwargs)
 
     return wrapped
