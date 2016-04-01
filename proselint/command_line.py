@@ -9,7 +9,12 @@ from builtins import str
 
 import click
 import os
-from .tools import line_and_column, is_quoted
+from .tools import (
+    line_and_column,
+    is_quoted,
+    close_cache_shelves_after,
+    close_cache_shelves
+)
 from . import checks as pl
 import pkgutil
 import subprocess
@@ -165,6 +170,7 @@ def show_errors(filename, errors, output_json=False, compact=False):
 @click.option('--demo', is_flag=True)
 @click.option('--compact', is_flag=True)
 @click.argument('paths', nargs=-1, type=click.Path())
+@close_cache_shelves_after
 def proselint(paths=None, version=None, initialize=None, clean=None,
               debug=None, score=None, output_json=None, time=None, demo=None,
               compact=None):
@@ -205,6 +211,7 @@ def proselint(paths=None, version=None, initialize=None, clean=None,
             pass
 
     # Return an exit code
+    close_cache_shelves()
     if num_errors > 0:
         sys.exit(1)
     else:
