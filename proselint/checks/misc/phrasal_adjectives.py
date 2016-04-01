@@ -80,6 +80,7 @@ def check_examples(text):
         ["one-way window", ["one way window"]],
         ["open-and-shut case", ["open and shut case"]],
         ["open-and-shut issue", ["open and shut issue"]],
+        ["open-source community", ["open source community"]],
         ["optical-scan ballot", ["optical scan ballot"]],
         ["pension-fund investments", ["pension fund investments"]],
         ["private-sector employment", ["private sector employment"]],
