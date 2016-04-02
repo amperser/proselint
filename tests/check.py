@@ -17,7 +17,8 @@ class Check(TestCase):
 
     def tearDown(self):
         """Placeholder for teardown procedure."""
-        pass
+        from proselint.tools import close_cache_shelves
+        close_cache_shelves()
 
     @property
     def this_check(self):

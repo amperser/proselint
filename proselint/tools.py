@@ -4,12 +4,64 @@
 """General-purpose tools shared across linting checks."""
 from __future__ import print_function
 from __future__ import unicode_literals
+import sys
+import traceback
 import os
 import shelve
+import dbm
 import inspect
 import functools
 import re
 import hashlib
+
+_cache_shelves = dict()
+
+
+def close_cache_shelves():
+    """Close previously opened cache shelves."""
+    for pth, cache in _cache_shelves.items():
+        cache.close()
+    _cache_shelves.clear()
+
+
+def close_cache_shelves_after(f):
+    """Decorator that insures cache shelves are closed after the call."""
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        f(*args, **kwargs)
+        close_cache_shelves()
+    return wrapped
+
+
+def _get_cache(cachepath):
+    if cachepath in _cache_shelves:
+        return _cache_shelves[cachepath]
+
+    try:
+        cache = shelve.open(cachepath, protocol=2)
+    except dbm.error:
+        # dbm error on open - delete and retry
+        print('Error (%s) opening %s - will attempt to delete and re-open.' %
+              (sys.exc_info()[1], cachepath))
+        try:
+            os.remove(cachepath)
+            cache = shelve.open(cachepath, protocol=2)
+        except Exception:
+            print('Error on re-open: %s' % sys.exc_info()[1])
+            cache = None
+    except Exception:
+        # unknown error
+        print('Could not open cache file %s, maybe name collision. '
+              'Error: %s' % (cachepath, traceback.format_exc()))
+        cache = None
+
+    # Don't fail on bad caches
+    if cache is None:
+        print('Using in-memory shelf for cache file %s' % cachepath)
+        cache = shelve.Shelf(dict())
+
+    _cache_shelves[cachepath] = cache
+    return cache
 
 
 def memoize(f):
@@ -23,12 +75,6 @@ def memoize(f):
 
     cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
-
-    try:
-        cache = shelve.open(cachepath, protocol=2)
-    except Exception:
-        print('Could not open cache file %s, maybe name collision' % cachepath)
-        cache = None
 
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
@@ -47,6 +93,7 @@ def memoize(f):
         key = hashlib.sha256(signature).hexdigest()
 
         try:
+            cache = _get_cache(cachepath)
             return cache[key]
         except KeyError:
             value = f(*args, **kwargs)
@@ -56,7 +103,8 @@ def memoize(f):
         except TypeError:
             call_to = f.__module__ + '.' + f.__name__
             print('Warning: could not disk cache call to %s;'
-                  'it probably has unhashable args' % call_to)
+                  'it probably has unhashable args. Error: %s' %
+                  (call_to, traceback.format_exc()))
             return f(*args, **kwargs)
 
     return wrapped
