@@ -1,7 +1,7 @@
 <img src="logo.png" alt="proselint logo" width="200">
 
 [![Build Status](https://travis-ci.org/amperser/proselint.svg)](https://travis-ci.org/amperser/proselint)
-[![Build status](https://ci.appveyor.com/api/projects/status/hfgv05nkjxkg2gcc?svg=true)](https://ci.appveyor.com/project/suchow/proselint-knwyf)
+[![Build status](https://ci.appveyor.com/api/projects/status/hfgv05nkjxkg2gcc/branch/master?svg=true)](https://ci.appveyor.com/project/suchow/proselint-knwyf/branch/master)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
 [![Coverage Status](https://coveralls.io/repos/amperser/proselint/badge.svg?branch=master&service=github&t=2lhJpx)](https://coveralls.io/github/amperser/proselint?branch=master)
 ![Lint score](http://img.shields.io/badge/lintscore_v0.1.0-98.8-blue.svg)
