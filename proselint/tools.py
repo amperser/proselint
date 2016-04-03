@@ -8,11 +8,15 @@ import sys
 import traceback
 import os
 import shelve
-import dbm
 import inspect
 import functools
 import re
 import hashlib
+
+try:
+    import dbm
+except ImportError:
+    import anydbm as dbm
 
 _cache_shelves = dict()
 
