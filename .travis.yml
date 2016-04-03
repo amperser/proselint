@@ -5,6 +5,7 @@ python:
 - '3.4'
 - '3.5'
 install:
+- pip install -U numpy
 - pip install -r requirements.txt
 - gem install travis
 - gem install jekyll-gist -v '1.2.1'
