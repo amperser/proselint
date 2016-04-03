@@ -7,6 +7,7 @@ python:
 install:
 - pip install -U numpy
 - pip install -r requirements.txt
+- python -m spacy.en.download
 - gem install travis
 - gem install jekyll-gist -v '1.2.1'
 - gem install jekyll -v 2.5.3
