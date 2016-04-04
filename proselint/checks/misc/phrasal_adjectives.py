@@ -31,7 +31,7 @@ def check_ly(text):
 def check_examples(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
-    msg = u"""Hyphenate '{}', a phrasal adjective, as '{}'."""
+    msg = u"""Hyphenate '{1}', a phrasal adjective, as '{0}'."""
 
     list = [
         ["across-the-board discounts", ["across the board discounts"]],
