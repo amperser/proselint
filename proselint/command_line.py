@@ -10,15 +10,12 @@ from builtins import str
 import click
 import os
 from .tools import (
-    line_and_column,
-    is_quoted,
     close_cache_shelves_after,
     close_cache_shelves,
-    get_checks,
     errors_to_json,
+    lint,
 )
 import subprocess
-import json
 import sys
 from .score import score as lintscore
 from .version import __version__
@@ -28,38 +25,6 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
-
-
-def lint(input_file, debug=False):
-    """Run the linter on the input file."""
-    # Load the options.
-    options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
-
-    checks = get_checks()
-
-    # Apply all the checks.
-    text = input_file.read()
-    errors = []
-    for check in checks:
-        if debug:
-            click.echo(check.__module__ + "." + check.__name__)
-
-        result = check(text)
-
-        for error in result:
-            (start, end, check, message) = error
-            (line, column) = line_and_column(text, start)
-            if not is_quoted(start, text):
-                errors += [(check, message, line, column, start, end,
-                           end - start, "warning", None)]
-
-        if len(errors) > options["max_errors"]:
-            break
-
-    # Sort the errors by line and column number.
-    errors = sorted(errors[:options["max_errors"]])
-
-    return errors
 
 
 def timing_test(corpus="0.1.0"):
@@ -151,8 +116,8 @@ def proselint(paths=None, version=None, clean=None, debug=None, score=None,
             errors = lint(f, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     # Return an exit code
     close_cache_shelves()

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """General-purpose tools shared across linting checks."""
+
 from __future__ import print_function
 from __future__ import unicode_literals
 import sys
@@ -19,6 +20,12 @@ try:
     import dbm
 except ImportError:
     import anydbm as dbm
+
+PY3 = sys.version_info[0] == 3
+if PY3:
+    string_types = str
+else:
+    string_types = basestring,
 
 _cache_shelves = dict()
 
@@ -167,6 +174,38 @@ def line_and_column(text, position):
             return (idx_line, position - position_counter)
         else:
             position_counter += len(line)
+
+
+def lint(input_file, debug=False):
+    """Run the linter on the input file."""
+    if isinstance(input_file, string_types):
+        text = input_file
+    else:
+        text = input_file.read()
+
+    # Get the checks.
+    checks = get_checks()
+
+    # Apply all the checks.
+    errors = []
+    for check in checks:
+
+        result = check(text)
+
+        for error in result:
+            (start, end, check, message) = error
+            (line, column) = line_and_column(text, start)
+            if not is_quoted(start, text):
+                errors += [(check, message, line, column, start, end,
+                           end - start, "warning", None)]
+
+        if len(errors) > options["max_errors"]:
+            break
+
+    # Sort the errors by line and column number.
+    errors = sorted(errors[:options["max_errors"]])
+
+    return errors
 
 
 def consistency_check(text, word_pairs, err, msg, offset=0):

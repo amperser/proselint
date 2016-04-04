@@ -6,13 +6,9 @@ from flask_limiter import Limiter
 from functools import wraps
 from future.moves.urllib.parse import unquote
 import hashlib
-from proselint import command_line
+import proselint
 from rq import Queue
 from worker import conn
-try:
-    from io import StringIO
-except ImportError:
-    from cStringIO import StringIO
 
 
 app = Flask(__name__)
@@ -25,7 +21,7 @@ q = Queue(connection=conn)
 
 def worker_function(text):
     """Lint the text using a worker dyno."""
-    return command_line.lint(StringIO(text))
+    return proselint.tools.lint(text)
 
 
 @app.errorhandler(429)
