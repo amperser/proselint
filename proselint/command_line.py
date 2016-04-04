@@ -13,12 +13,11 @@ from .tools import (
     line_and_column,
     is_quoted,
     close_cache_shelves_after,
-    close_cache_shelves
+    close_cache_shelves,
+    get_checks,
 )
 import subprocess
-import re
 import json
-import importlib
 import sys
 from .score import score
 from .version import __version__
@@ -35,17 +34,7 @@ def lint(input_file, debug=False):
     # Load the options.
     options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
-    # Extract the checks.
-    sys.path.append(proselint_path)
-    checks = []
-    check_names = [key for (key, val)
-                   in list(options["checks"].items()) if val]
-
-    for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
+    checks = get_checks()
 
     # Apply all the checks.
     text = input_file.read()
