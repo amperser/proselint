@@ -15,8 +15,6 @@ from .tools import (
     close_cache_shelves_after,
     close_cache_shelves
 )
-from . import checks as pl
-import pkgutil
 import subprocess
 import re
 import json
@@ -30,19 +28,6 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
-
-
-def run_initialization():
-    """Run the initialization method for each check."""
-    for loader, module_name, is_pkg in pkgutil.walk_packages(pl.__path__):
-        module = loader.find_module(module_name).load_module(module_name)
-
-        # Run the initialization.
-        try:
-            assert(hasattr(module.initialize, '__call__'))
-            module.initialize()
-        except Exception:
-            pass
 
 
 def lint(input_file, debug=False):
@@ -161,7 +146,6 @@ def show_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--initialize', '-i', is_flag=True)
 @click.option('--debug', '-d', is_flag=True)
 @click.option('--clean', '-c', is_flag=True)
 @click.option('--score', '-s', is_flag=True)
@@ -171,17 +155,11 @@ def show_errors(filename, errors, output_json=False, compact=False):
 @click.option('--compact', is_flag=True)
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, version=None, initialize=None, clean=None,
-              debug=None, score=None, output_json=None, time=None, demo=None,
-              compact=None):
+def proselint(paths=None, version=None, clean=None, debug=None, score=None,
+              output_json=None, time=None, demo=None, compact=None):
     """Define the linter command line API."""
     if time:
         click.echo(timing_test())
-        return
-
-    # Run the intialization.
-    if initialize:
-        run_initialization()
         return
 
     if score:
