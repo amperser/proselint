@@ -19,7 +19,7 @@ from .tools import (
 import subprocess
 import json
 import sys
-from .score import score
+from .score import score as lintscore
 from .version import __version__
 
 
@@ -59,11 +59,6 @@ def lint(input_file, debug=False):
     errors = sorted(errors[:options["max_errors"]])
 
     return errors
-
-
-def lintscore():
-    """Compute the linter's score on a corpus."""
-    return score()
 
 
 def timing_test(corpus="0.1.0"):
