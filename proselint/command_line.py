@@ -88,7 +88,7 @@ def clear_cache():
         shell=True)
 
 
-def show_errors(filename, errors, output_json=False, compact=False):
+def print_errors(filename, errors, output_json=False, compact=False):
     """Print the errors, resulting from lint, for filename."""
     if output_json:
         click.echo(errors_to_json(errors))
@@ -150,7 +150,7 @@ def proselint(paths=None, version=None, clean=None, debug=None, score=None,
             f = click.open_file(fp, 'r+', encoding="utf-8")
             errors = lint(f, debug=debug)
             num_errors += len(errors)
-            show_errors(fp, errors, output_json, compact=compact)
+            print_errors(fp, errors, output_json, compact=compact)
         except:
             pass
 
