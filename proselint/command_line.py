@@ -15,6 +15,7 @@ from .tools import (
     close_cache_shelves_after,
     close_cache_shelves,
     get_checks,
+    errors_to_json,
 )
 import subprocess
 import json
@@ -85,25 +86,6 @@ def clear_cache():
         "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
             os.path.join(os.path.expanduser("~"), ".proselint")),
         shell=True)
-
-
-def errors_to_json(errors):
-    """Convert the errors to JSON."""
-    out = []
-    for e in errors:
-        out.append({
-            "check": e[0],
-            "message": e[1],
-            "line": 1 + e[2],
-            "column": 1 + e[3],
-            "start": 1 + e[4],
-            "end": 1 + e[5],
-            "extent": e[6],
-            "severity": e[7],
-            "replacements": e[8],
-        })
-
-    return json.dumps(dict(status="success", data={"errors": out}))
 
 
 def show_errors(filename, errors, output_json=False, compact=False):
