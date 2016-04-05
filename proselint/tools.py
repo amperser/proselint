@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """General-purpose tools shared across linting checks."""
+
 from __future__ import print_function
 from __future__ import unicode_literals
 import sys
@@ -12,13 +13,24 @@ import inspect
 import functools
 import re
 import hashlib
+import json
+import importlib
 
 try:
     import dbm
 except ImportError:
     import anydbm as dbm
 
+PY3 = sys.version_info[0] == 3
+if PY3:
+    string_types = str
+else:
+    string_types = basestring,
+
 _cache_shelves = dict()
+
+proselint_path = os.path.dirname(os.path.realpath(__file__))
+options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
 
 def close_cache_shelves():
@@ -114,6 +126,41 @@ def memoize(f):
     return wrapped
 
 
+def get_checks():
+    """Extract the checks."""
+    sys.path.append(proselint_path)
+    checks = []
+    check_names = [key for (key, val)
+                   in list(options["checks"].items()) if val]
+
+    for check_name in check_names:
+        module = importlib.import_module("checks." + check_name)
+        for d in dir(module):
+            if re.match("check", d):
+                checks.append(getattr(module, d))
+
+    return checks
+
+
+def errors_to_json(errors):
+    """Convert the errors to JSON."""
+    out = []
+    for e in errors:
+        out.append({
+            "check": e[0],
+            "message": e[1],
+            "line": 1 + e[2],
+            "column": 1 + e[3],
+            "start": 1 + e[4],
+            "end": 1 + e[5],
+            "extent": e[6],
+            "severity": e[7],
+            "replacements": e[8],
+        })
+
+    return json.dumps(dict(status="success", data={"errors": out}))
+
+
 def reverse(text):
     """Reverse a string. This is here as a demo of memoization."""
     return text[::-1]
@@ -127,6 +174,38 @@ def line_and_column(text, position):
             return (idx_line, position - position_counter)
         else:
             position_counter += len(line)
+
+
+def lint(input_file, debug=False):
+    """Run the linter on the input file."""
+    if isinstance(input_file, string_types):
+        text = input_file
+    else:
+        text = input_file.read()
+
+    # Get the checks.
+    checks = get_checks()
+
+    # Apply all the checks.
+    errors = []
+    for check in checks:
+
+        result = check(text)
+
+        for error in result:
+            (start, end, check, message) = error
+            (line, column) = line_and_column(text, start)
+            if not is_quoted(start, text):
+                errors += [(check, message, line, column, start, end,
+                           end - start, "warning", None)]
+
+        if len(errors) > options["max_errors"]:
+            break
+
+    # Sort the errors by line and column number.
+    errors = sorted(errors[:options["max_errors"]])
+
+    return errors
 
 
 def consistency_check(text, word_pairs, err, msg, offset=0):
