@@ -10,6 +10,7 @@ build: false
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install -r requirements.txt
+  - python -m spacy.en.download
 
 build_script:
   - python setup.py install
