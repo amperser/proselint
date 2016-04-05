@@ -44,6 +44,7 @@ def run_initialization():
         except Exception:
             pass
 
+
 def load_options():
     """Read various proselintrc files, allowing user overrides."""
     possible_defaults = (
