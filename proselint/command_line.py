@@ -45,10 +45,45 @@ def run_initialization():
             pass
 
 
+def load_options():
+    """Read various proselintrc files, allowing user overrides."""
+    possible_defaults = (
+        '/etc/proselintrc',
+        os.path.join(proselint_path, '.proselintrc'),
+    )
+    options = {}
+    has_overrides = False
+
+    for filename in possible_defaults:
+        try:
+            options = json.load(open(filename))
+            break
+        except IOError:
+            pass
+
+    try:
+        user_options = json.load(open(os.path.expanduser('~/.proselintrc')))
+        has_overrides = True
+    except IOError:
+        pass
+
+    if has_overrides:
+        if 'max_errors' in user_options:
+            options['max_errors'] = user_options['max_errors']
+        if 'checks' in user_options:
+            for (key, value) in user_options['checks'].items():
+                try:
+                    options['checks'][key] = value
+                except KeyError:
+                    pass
+
+    return options
+
+
 def lint(input_file, debug=False):
     """Run the linter on the input file."""
     # Load the options.
-    options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
+    options = load_options()
 
     # Extract the checks.
     sys.path.append(proselint_path)
