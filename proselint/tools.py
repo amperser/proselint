@@ -30,7 +30,6 @@ else:
 _cache_shelves = dict()
 
 proselint_path = os.path.dirname(os.path.realpath(__file__))
-options = json.load(open(os.path.join(proselint_path, '.proselintrc')))
 
 
 def close_cache_shelves():
@@ -128,6 +127,7 @@ def memoize(f):
 
 def get_checks():
     """Extract the checks."""
+    options = load_options()
     sys.path.append(proselint_path)
     checks = []
     check_names = [key for (key, val)
@@ -140,6 +140,41 @@ def get_checks():
                 checks.append(getattr(module, d))
 
     return checks
+
+
+def load_options():
+    """Read various proselintrc files, allowing user overrides."""
+    possible_defaults = (
+        '/etc/proselintrc',
+        os.path.join(proselint_path, '.proselintrc'),
+    )
+    options = {}
+    has_overrides = False
+
+    for filename in possible_defaults:
+        try:
+            options = json.load(open(filename))
+            break
+        except IOError:
+            pass
+
+    try:
+        user_options = json.load(open(os.path.expanduser('~/.proselintrc')))
+        has_overrides = True
+    except IOError:
+        pass
+
+    if has_overrides:
+        if 'max_errors' in user_options:
+            options['max_errors'] = user_options['max_errors']
+        if 'checks' in user_options:
+            for (key, value) in user_options['checks'].items():
+                try:
+                    options['checks'][key] = value
+                except KeyError:
+                    pass
+
+    return options
 
 
 def errors_to_json(errors):
@@ -178,6 +213,8 @@ def line_and_column(text, position):
 
 def lint(input_file, debug=False):
     """Run the linter on the input file."""
+    options = load_options()
+
     if isinstance(input_file, string_types):
         text = input_file
     else:
