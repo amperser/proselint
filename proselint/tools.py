@@ -245,6 +245,12 @@ def lint(input_file, debug=False):
     return errors
 
 
+def assert_error(text, check, n=1):
+    """Assert that text has n errors of type check."""
+    assert_error.description = "No {} error for '{}'".format(check, text)
+    assert(check in [error[0] for error in lint(text)])
+
+
 def consistency_check(text, word_pairs, err, msg, offset=0):
     """Build a consistency checker for the given word_pairs."""
     errors = []
