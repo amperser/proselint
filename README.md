@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/amperser/proselint.svg)](https://travis-ci.org/amperser/proselint)
 [![Build status](https://ci.appveyor.com/api/projects/status/hfgv05nkjxkg2gcc/branch/master?svg=true)](https://ci.appveyor.com/project/suchow/proselint-knwyf/branch/master)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
-[![Coverage Status](https://coveralls.io/repos/amperser/proselint/badge.svg?branch=master&service=github&t=2lhJpx)](https://coveralls.io/github/amperser/proselint?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/amperser/proselint/badge.svg?branch=master)](https://coveralls.io/github/amperser/proselint?branch=master)
 [![Dependency Status](https://gemnasium.com/amperser/proselint.svg)](https://gemnasium.com/amperser/proselint)
 
 Writing is notoriously hard, even for the best writers. Yet there is a tremendous amount of knowledge about the discipline strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from *Garner’s Modern American Usage*, a 975-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
