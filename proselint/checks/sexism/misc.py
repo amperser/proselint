@@ -54,3 +54,123 @@ def check(text):
     ]
 
     return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+
+
+@memoize
+def function2(text):
+    """Suggest the preferred forms."""
+    err = "sexism.misc"
+    msg = "Gender bias. Use '{}' instead of '{}'."
+
+    sexism = [
+        ["anchor",           ["anchorman", "anchorwoman", "anchorperson"]],
+        ["chair",            ["chairman", "chairwoman", "chairperson"]],
+        ["drafter",          ["draftman", "draftwoman", "draftperson"]],
+        ["ombuds",           ["ombudsman", "ombudswoman", "ombudsperson"]],
+        ["tribe member",     ["tribesman", "tribeswoman", "tribesperson"]],
+        ["police officer",   ["policeman", "policewoman", "policeperson"]],
+        ["firefighter",      ["fireman", "firewoman", "fireperson"]],
+        ["mail carrier",     ["mailman", "mailwoman", "mailperson"]],
+        ["history",          ["herstory"]],
+        ["women",            ["womyn"]],
+        ["poet",             ["poetess"]],
+        ["author",           ["authoress"]],
+        ["waiter",           ["waitress"]],
+        ["lawyer",           ["lady lawyer"]],
+        ["doctor",           ["woman doctor"]],
+        ["bookseller",       ["female booksalesman"]],
+        ["air pilot",        ["femaile airman"]],
+        ["executor",         ["executrix"]],
+        ["prosecutor",       ["prosecutrix"]],
+        ["testator",         ["testatrix"]],
+        ["husband and wife", ["man and wife"]],
+        ["chairs",           ["chairmen and chairs"]],
+        ["men and women",    ["men and girls"]],
+        ["comedian",         ["comedienne"]],
+        ["confidant",        ["confidante"]],
+        ["scientist",        ["woman scientist"]],
+        ["scientists",       ["women scientists"]]
+        # ["hero",             ["heroine"]]
+    ]
+
+    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+
+
+@memoize
+def function3(text):
+    """Suggest the preferred forms."""
+    err = "sexism.misc"
+    msg = "Gender bias. Use '{}' instead of '{}'."
+
+    sexism = [
+        ["anchor",           ["anchorman", "anchorwoman", "anchorperson"]],
+        ["chair",            ["chairman", "chairwoman", "chairperson"]],
+        ["drafter",          ["draftman", "draftwoman", "draftperson"]],
+        ["ombuds",           ["ombudsman", "ombudswoman", "ombudsperson"]],
+        ["tribe member",     ["tribesman", "tribeswoman", "tribesperson"]],
+        ["police officer",   ["policeman", "policewoman", "policeperson"]],
+        ["firefighter",      ["fireman", "firewoman", "fireperson"]],
+        ["mail carrier",     ["mailman", "mailwoman", "mailperson"]],
+        ["history",          ["herstory"]],
+        ["women",            ["womyn"]],
+        ["poet",             ["poetess"]],
+        ["author",           ["authoress"]],
+        ["waiter",           ["waitress"]],
+        ["lawyer",           ["lady lawyer"]],
+        ["doctor",           ["woman doctor"]],
+        ["bookseller",       ["female booksalesman"]],
+        ["air pilot",        ["femaile airman"]],
+        ["executor",         ["executrix"]],
+        ["prosecutor",       ["prosecutrix"]],
+        ["testator",         ["testatrix"]],
+        ["husband and wife", ["man and wife"]],
+        ["chairs",           ["chairmen and chairs"]],
+        ["men and women",    ["men and girls"]],
+        ["comedian",         ["comedienne"]],
+        ["confidant",        ["confidante"]],
+        ["scientist",        ["woman scientist"]],
+        ["scientists",       ["women scientists"]]
+        # ["hero",             ["heroine"]]
+    ]
+
+    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+
+
+@memoize
+def function4(text):
+    """Suggest the preferred forms."""
+    err = "sexism.misc"
+    msg = "Gender bias. Use '{}' instead of '{}'."
+
+    sexism = [
+        ["anchor",           ["anchorman", "anchorwoman", "anchorperson"]],
+        ["chair",            ["chairman", "chairwoman", "chairperson"]],
+        ["drafter",          ["draftman", "draftwoman", "draftperson"]],
+        ["ombuds",           ["ombudsman", "ombudswoman", "ombudsperson"]],
+        ["tribe member",     ["tribesman", "tribeswoman", "tribesperson"]],
+        ["police officer",   ["policeman", "policewoman", "policeperson"]],
+        ["firefighter",      ["fireman", "firewoman", "fireperson"]],
+        ["mail carrier",     ["mailman", "mailwoman", "mailperson"]],
+        ["history",          ["herstory"]],
+        ["women",            ["womyn"]],
+        ["poet",             ["poetess"]],
+        ["author",           ["authoress"]],
+        ["waiter",           ["waitress"]],
+        ["lawyer",           ["lady lawyer"]],
+        ["doctor",           ["woman doctor"]],
+        ["bookseller",       ["female booksalesman"]],
+        ["air pilot",        ["femaile airman"]],
+        ["executor",         ["executrix"]],
+        ["prosecutor",       ["prosecutrix"]],
+        ["testator",         ["testatrix"]],
+        ["husband and wife", ["man and wife"]],
+        ["chairs",           ["chairmen and chairs"]],
+        ["men and women",    ["men and girls"]],
+        ["comedian",         ["comedienne"]],
+        ["confidant",        ["confidante"]],
+        ["scientist",        ["woman scientist"]],
+        ["scientists",       ["women scientists"]]
+        # ["hero",             ["heroine"]]
+    ]
+
+    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
