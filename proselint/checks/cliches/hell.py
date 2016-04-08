@@ -22,6 +22,75 @@ def check_repeated_exclamations(text):
     err = "leonard.hell"
     msg = u"Never use the words 'all hell broke loose'."
 
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
+    err = "leonard.hell"
+    msg = u"Never use the words 'all hell broke loose'."
+
     regex = r"all hell broke loose"
 
     return existence_check(
