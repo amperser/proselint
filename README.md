@@ -32,7 +32,13 @@ To get this up and running, install it using pip: `pip install proselint`.
 
 ### Usage
 
-You can run `proselint` on a document using the command line:
+Suppose you had a document `text.md` with the following text:
+
+```
+John is very unique.
+```
+
+You can run `proselint` over the document using the command line:
 
 ```bash
 ❯ proselint text.md
