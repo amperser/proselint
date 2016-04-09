@@ -19,6 +19,17 @@ We devised a simple solution: `proselint`, a linter for prose. (A linter is a co
 
 To get this up and running, install it using pip: `pip install proselint`.
 
+### Available plugins for text editors
+
+`proselint` is available on:
+
+- [x] A [demo editor](http://proselint.com/write)
+- [x] [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
+- [x] [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
+- [x] [Emacs via Flycheck](https://github.com/amperser/proselint/tree/master/plugins/flycheck) (thanks to [Aaron Jacobs](https://github.com/atheriel))
+- [x] [Vim](https://github.com/amperser/proselint/tree/master/plugins/vim) (thanks to [Matthias Bussonnier](https://github.com/Carreau))
+- [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
+
 ### Usage
 
 You can run `proselint` on a document:
@@ -81,17 +92,6 @@ The command-line utility can also print the list of suggestions in JSON using th
     ]
 }
 ```
-
-### Available plugins for text editors
-
-`proselint` is available on:
-
-- [x] A live [demo page](http://proselint.com/write)
-- [x] [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
-- [x] [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
-- [x] [Emacs via Flycheck](https://github.com/amperser/proselint/tree/master/plugins/flycheck) (thanks to [Aaron Jacobs](https://github.com/atheriel))
-- [x] [Vim](https://github.com/amperser/proselint/tree/master/plugins/vim) (thanks to [Matthias Bussonnier](https://github.com/Carreau))
-- [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
 
 ### Checks
 
