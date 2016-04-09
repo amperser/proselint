@@ -19,7 +19,7 @@ We devised a simple solution: `proselint`, a linter for prose. (A linter is a co
 
 To get this up and running, install it using pip: `pip install proselint`.
 
-### Available plugins for text editors
+### Plugins for other software
 
 `proselint` is available on:
 
@@ -32,13 +32,13 @@ To get this up and running, install it using pip: `pip install proselint`.
 
 ### Usage
 
-You can run `proselint` on a document:
+You can run `proselint` on a document using the command line:
 
 ```bash
 ❯ proselint text.md
 ```
 
-This prints a list of suggestions to stdout, one per line. Each suggestion will have the form:
+This prints a list of suggestions to stdout, one per line. Each suggestion has the form:
 
 ```bash
 text.md:<line>:<column>: <check_name> <message>
@@ -50,7 +50,7 @@ For example,
 text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' can not be compared.
 ```
 
-The command-line utility can also print the list of suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
+The command-line utility can also print suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
 
 ```javascript
 {
