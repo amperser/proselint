@@ -183,6 +183,9 @@ You can disable any of the checks by modifying `.proselintrc`.
 
 Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build `proselint` into the greatest writing tool in the world.
 
+- Issue Tracker: github.com/amperser/proselint/issues
+- Source Code: github.com/amperser/proselint
+
 ### License
 
 The project is licensed under the BSD license.
