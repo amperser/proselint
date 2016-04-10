@@ -17,7 +17,6 @@ from .tools import (
 )
 import subprocess
 import sys
-from .score import score as lintscore
 from .version import __version__
 
 
@@ -77,24 +76,20 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--debug', '-d', is_flag=True)
-@click.option('--clean', '-c', is_flag=True)
-@click.option('--score', '-s', is_flag=True)
-@click.option('--json', '-j', 'output_json', is_flag=True)
-@click.option('--time', '-t', is_flag=True)
-@click.option('--demo', is_flag=True)
-@click.option('--compact', is_flag=True)
+@click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
+@click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
+@click.option('--json', '-j', 'output_json', is_flag=True,
+              help="Output as JSON.")
+@click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
+@click.option('--demo', is_flag=True, help="Run over demo file.")
+@click.option('--compact', is_flag=True, help="Shorten output.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, version=None, clean=None, debug=None, score=None,
+def proselint(paths=None, version=None, clean=None, debug=None,
               output_json=None, time=None, demo=None, compact=None):
-    """Define the linter command line API."""
+    """A CLI for proselint, a linter for prose."""
     if time:
         click.echo(timing_test())
-        return
-
-    if score:
-        click.echo(lintscore())
         return
 
     # In debug or clean mode, delete cache & *.pyc files before running.
