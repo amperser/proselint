@@ -40,7 +40,7 @@ def close_cache_shelves():
 
 
 def close_cache_shelves_after(f):
-    """Decorator that insures cache shelves are closed after the call."""
+    """Decorator that ensures cache shelves are closed after the call."""
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
         f(*args, **kwargs)
