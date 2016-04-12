@@ -37,8 +37,7 @@ def timing_test(corpus="0.1.0"):
     for file in os.listdir(corpus_path):
         filepath = os.path.join(corpus_path, file)
         if ".md" == filepath[-3:]:
-            subprocess.call(
-                "proselint {} >/dev/null".format(filepath), shell=True)
+            subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
 
@@ -46,11 +45,16 @@ def timing_test(corpus="0.1.0"):
 def clear_cache():
     """Delete the contents of the cache."""
     click.echo("Deleting the cache...")
-    subprocess.call("find . -name '*.pyc' -delete", shell=True)
-    subprocess.call(
-        "rm -rfv proselint/cache > /dev/null && mkdir -p {}".format(
-            os.path.join(os.path.expanduser("~"), ".proselint")),
-        shell=True)
+    subprocess.call(["find", ".", "-name", "'*.pyc'", "-delete"])
+    subprocess.call([
+        "rm",
+        "-rfv",
+        "proselint/cache",
+        "&&",
+        "mkdir",
+        "-p",
+        os.path.join(os.path.expanduser("~"), ".proselint"),
+    ])
 
 
 def print_errors(filename, errors, output_json=False, compact=False):

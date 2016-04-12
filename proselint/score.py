@@ -44,8 +44,7 @@ def score(check=None):
 
             # Run the linter.
             print("Linting {}".format(f))
-            out = subprocess.check_output(
-                "proselint {}".format(fullpath), shell=True)
+            out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
@@ -53,7 +52,7 @@ def score(check=None):
             print("Found {} errors.".format(num_errors))
 
             # Open the document.
-            subprocess.call("{} {}".format("open", fullpath), shell=True)
+            subprocess.call(["open", fullpath])
 
             # Ask the scorer how many of the errors were false alarms?
             input_val = None

@@ -14,5 +14,5 @@ class TestCheck(Check):
 
     def test_version(self):
         """Make sure the version number is correct."""
-        out = subprocess.check_output("proselint --version", shell=True)
+        out = subprocess.check_output(["proselint", "--version"])
         assert out.decode('utf-8') == __version__ + "\n"

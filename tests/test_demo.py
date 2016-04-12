@@ -2,4 +2,4 @@
 
 import subprocess
 
-subprocess.call("proselint --debug >/dev/null", shell=True)
+subprocess.call(["proselint", "--debug", ">/dev/null"])
