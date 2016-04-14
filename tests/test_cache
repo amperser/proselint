@@ -1,5 +1,0 @@
-"""Check cache saving."""
-
-import subprocess
-
-subprocess.call("proselint /usr/local/lib/python2.7/dist-packages/proselint/demo.md", shell=True)
