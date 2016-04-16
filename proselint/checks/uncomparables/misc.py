@@ -116,4 +116,5 @@ def check(text):
            comparators, uncomparables) if i not in exceptions]
 
     occ = re.finditer("|".join(all), text.lower())
-    return [(o.start(), o.end(), err, msg.format(o.group(0))) for o in occ]
+    return [(o.start(), o.end(), err, msg.format(o.group(0)), None)
+            for o in occ]

@@ -45,7 +45,7 @@ def check(text):
             url = "http://" + url
 
         if is_broken_link(url):
-            errors.append((m.start(), m.end(), err, msg.format(url)))
+            errors.append((m.start(), m.end(), err, msg.format(url), None))
 
     return errors
 

@@ -193,7 +193,8 @@ def errors_to_json(errors):
             "replacements": e[8],
         })
 
-    return json.dumps(dict(status="success", data={"errors": out}))
+    return json.dumps(
+        dict(status="success", data={"errors": out}), sort_keys=True)
 
 
 def reverse(text):
@@ -230,11 +231,11 @@ def lint(input_file, debug=False):
         result = check(text)
 
         for error in result:
-            (start, end, check, message) = error
+            (start, end, check, message, replacements) = error
             (line, column) = line_and_column(text, start)
             if not is_quoted(start, text):
                 errors += [(check, message, line, column, start, end,
-                           end - start, "warning", None)]
+                           end - start, "warning", replacements)]
 
         if len(errors) > options["max_errors"]:
             break
@@ -269,14 +270,16 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
                         m.start() + offset,
                         m.end() + offset,
                         err,
-                        msg.format(m.group(0), w[0])))
+                        msg.format(m.group(0), w[0]),
+                        None))
             else:
                 for m in match1:
                     errors.append((
                         m.start() + offset,
                         m.end() + offset,
                         err,
-                        msg.format(m.group(0), w[1])))
+                        msg.format(m.group(0), w[1]),
+                        None))
 
     return errors
 
@@ -301,7 +304,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
                     m.start() + 1 + offset,
                     m.end() + offset,
                     err,
-                    msg.format(p[0], txt)))
+                    msg.format(p[0], txt),
+                    None))
 
     errors = truncate_to_max(errors, max_errors)
 
@@ -346,7 +350,8 @@ def existence_check(text, list, err, msg, ignore_case=True,
             m.start() + 1 + offset,
             m.end() + offset,
             err,
-            msg.format(txt)))
+            msg.format(txt),
+            None))
 
     errors = truncate_to_max(errors, max_errors)
 
@@ -359,7 +364,7 @@ def truncate_to_max(errors, max_errors):
     Give the total number of times that the error was found elsewhere.
     """
     if len(errors) > max_errors:
-        start1, end1, err1, msg1 = errors[0]
+        start1, end1, err1, msg1, replacements = errors[0]
 
         if len(errors) == (max_errors + 1):
             msg1 += " Found once elsewhere."
@@ -367,7 +372,7 @@ def truncate_to_max(errors, max_errors):
             msg1 += " Found {} times elsewhere.".format(len(errors))
 
         errors = errors[1:max_errors]
-        errors = [(start1, end1, err1, msg1)] + errors
+        errors = [(start1, end1, err1, msg1, replacements)] + errors
 
     return errors
 
