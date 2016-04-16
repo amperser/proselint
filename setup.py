@@ -3,6 +3,8 @@
 from setuptools import setup, find_packages
 from proselint.version import __version__
 
+import os
+
 base_url = 'http://github.com/amperser/proselint'
 
 setup(
@@ -15,7 +17,7 @@ setup(
     author_email='hello@amperser.com',
     license='BSD',
     packages=find_packages(),
-    package_data={'': ['demo.md', '.proselintrc']},
+    package_data={'': ['demo.md', os.path.join('modes', '.proselintrc')]},
     zip_safe=False,
     entry_points={
         'console_scripts': [
