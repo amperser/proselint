@@ -300,7 +300,7 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
                     m.end() + offset,
                     err,
                     msg.format(p[0], txt),
-                    None))
+                    p[0]))
 
     errors = truncate_to_max(errors, max_errors)
 
