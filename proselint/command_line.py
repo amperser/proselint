@@ -88,10 +88,10 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--time', '-t', default=False, is_flag=True)
 @click.option('--demo', default=False, is_flag=True)
 @click.option('--compact', default=False, is_flag=True)
-@click.option('--mode', '-m', default="default", help="Specify a mode.")
+@click.option('--style', '-m', default="default", help="Specify a style.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(mode, paths, clean, debug, score,
+def proselint(style, paths, clean, debug, score,
               output_json, time, demo, compact):
     """Define the linter command line API."""
     if time:
@@ -118,7 +118,7 @@ def proselint(mode, paths, clean, debug, score,
     for fp in filepaths:
         try:
             f = click.open_file(fp, 'r', encoding="utf-8")
-            errors = lint(f, mode=mode, debug=debug)
+            errors = lint(f, style=style, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
         except Exception as e:

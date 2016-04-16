@@ -17,7 +17,7 @@ setup(
     author_email='hello@amperser.com',
     license='BSD',
     packages=find_packages(),
-    package_data={'': ['demo.md', os.path.join('modes', '.proselintrc')]},
+    package_data={'': ['demo.md', os.path.join('styles', '.proselintrc')]},
     zip_safe=False,
     entry_points={
         'console_scripts': [

@@ -147,18 +147,19 @@ def get_checks():
         return []
 
 
-def load_options(mode="default"):
+def load_options(style="default"):
     """Read various proselintrc files, allowing user overrides."""
-    # Check if the given mode exists.
-    mode_file_path = os.path.join(proselint_path, 'modes', mode + '.proselint')
+    # Check if the given style exists.
+    style_file_path = os.path.join(
+        proselint_path, 'styles', style + '.proselint')
 
-    if not os.path.isfile(mode_file_path):
+    if not os.path.isfile(style_file_path):
         raise NameError("Mode not found.")
 
-    # Load the options for the given mode.
+    # Load the options for the given style.
     possible_defaults = (
         '/etc/proselintrc',
-        mode_file_path,
+        style_file_path,
     )
     options = {}
     for filename in possible_defaults:
@@ -224,9 +225,9 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def lint(input_file, mode="default", debug=False):
+def lint(input_file, style="default", debug=False):
     """Run the linter on the input file."""
-    options = load_options(mode=mode)
+    options = load_options(style=style)
 
     if isinstance(input_file, string_types):
         text = input_file
