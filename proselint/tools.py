@@ -264,22 +264,13 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
 
         if len(match1) > 0 and len(match2) > 0:
 
-            if len(match1) > len(match2):
-                for m in match2:
-                    errors.append((
-                        m.start() + offset,
-                        m.end() + offset,
-                        err,
-                        msg.format(m.group(0), w[0]),
-                        None))
-            else:
-                for m in match1:
-                    errors.append((
-                        m.start() + offset,
-                        m.end() + offset,
-                        err,
-                        msg.format(m.group(0), w[1]),
-                        None))
+            for m in match2:
+                errors.append((
+                    m.start() + offset,
+                    m.end() + offset,
+                    err,
+                    msg.format(m.group(0), w[len(match1) <= len(match2)]),
+                    None))
 
     return errors
 
