@@ -1,0 +1,10 @@
+{
+    "base_style": "default",
+    "checks": {
+        "consistency.spacing"           : false,
+        "misc.punctuation"              : false,
+        "typography.diacritical_marks"  : false,
+        "typography.exclamation"        : false,
+        "typography.symbols"            : false,
+    }
+}
