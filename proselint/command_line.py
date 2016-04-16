@@ -19,6 +19,7 @@ import subprocess
 import sys
 from .score import score as lintscore
 from .version import __version__
+import traceback
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -120,8 +121,8 @@ def proselint(paths=None, version=None, clean=None, debug=None, score=None,
             errors = lint(f, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
-        except Exception as e:
-            print(e)
+        except Exception:
+            traceback.print_exc()
 
     # Return an exit code
     close_cache_shelves()
