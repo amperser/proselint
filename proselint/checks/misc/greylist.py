@@ -39,7 +39,11 @@ def check(text):
     for word in bad_words:
         occ = [m for m in re.finditer(word, text.lower())]
         for o in occ:
-            errors.append((o.start(), o.end(), err,
-                          msg.format(word, explanations[word])))
+            errors.append((
+                o.start(),
+                o.end(),
+                err,
+                msg.format(word, explanations[word]),
+                None))
 
     return errors
