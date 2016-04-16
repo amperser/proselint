@@ -259,18 +259,22 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     msg = " ".join(msg.split())
 
     for w in word_pairs:
-        match1 = [m for m in re.finditer(w[0], text)]
-        match2 = [m for m in re.finditer(w[1], text)]
+        matches = [
+            [m for m in re.finditer(w[0], text)],
+            [m for m in re.finditer(w[1], text)]
+        ]
 
-        if len(match1) > 0 and len(match2) > 0:
+        if len(matches[0]) > 0 and len(matches[1]) > 0:
 
-            for m in match2:
+            idx_minority = len(matches[0]) > len(matches[1])
+
+            for m in matches[idx_minority]:
                 errors.append((
                     m.start() + offset,
                     m.end() + offset,
                     err,
-                    msg.format(m.group(0), w[len(match1) <= len(match2)]),
-                    None))
+                    msg.format(w[~idx_minority], m.group(0)),
+                    w[~idx_minority]))
 
     return errors
 
