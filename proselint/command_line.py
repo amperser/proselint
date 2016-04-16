@@ -37,7 +37,7 @@ def timing_test(corpus="0.1.0"):
     for file in os.listdir(corpus_path):
         filepath = os.path.join(corpus_path, file)
         if ".md" == filepath[-3:]:
-            subprocess.call(["proselint", filepath, ">/dev/null"])
+            subprocess.call(["proselint", filepath])
 
     return time.time() - start
 
@@ -81,17 +81,18 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--debug', '-d', is_flag=True)
-@click.option('--clean', '-c', is_flag=True)
-@click.option('--score', '-s', is_flag=True)
-@click.option('--json', '-j', 'output_json', is_flag=True)
-@click.option('--time', '-t', is_flag=True)
-@click.option('--demo', is_flag=True)
-@click.option('--compact', is_flag=True)
+@click.option('--debug', '-d', default=False, is_flag=True)
+@click.option('--clean', '-c', default=False, is_flag=True)
+@click.option('--score', '-s', default=False, is_flag=True)
+@click.option('--json', '-j', 'output_json', default=False, is_flag=True)
+@click.option('--time', '-t', default=False, is_flag=True)
+@click.option('--demo', default=False, is_flag=True)
+@click.option('--compact', default=False, is_flag=True)
+@click.option('--mode', '-m', default="default", help="Specify a mode.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, version=None, clean=None, debug=None, score=None,
-              output_json=None, time=None, demo=None, compact=None):
+def proselint(mode, paths, clean, debug, score,
+              output_json, time, demo, compact):
     """Define the linter command line API."""
     if time:
         click.echo(timing_test())
@@ -117,7 +118,7 @@ def proselint(paths=None, version=None, clean=None, debug=None, score=None,
     for fp in filepaths:
         try:
             f = click.open_file(fp, 'r', encoding="utf-8")
-            errors = lint(f, debug=debug)
+            errors = lint(f, mode=mode, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
         except Exception as e:

@@ -126,31 +126,41 @@ def memoize(f):
 
 
 def get_checks():
-    """Extract the checks."""
+    """Extract checks from the rc file."""
     options = load_options()
     sys.path.append(proselint_path)
-    checks = []
-    check_names = [key for (key, val)
-                   in list(options["checks"].items()) if val]
 
-    for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
+    if "checks" in options:  # if there is a list of "checks", use it.
 
-    return checks
+        check_names = [k for (k, v) in list(options["checks"].items()) if v]
+
+        checks = []
+        for check_name in check_names:
+            module = importlib.import_module("checks." + check_name)
+            for d in dir(module):
+                if re.match("check", d):
+                    checks.append(getattr(module, d))
+
+        return checks
+
+    else:
+        return []
 
 
-def load_options():
+def load_options(mode="default"):
     """Read various proselintrc files, allowing user overrides."""
+    # Check if the given mode exists.
+    mode_file_path = os.path.join(proselint_path, 'modes', mode + '.proselint')
+
+    if not os.path.isfile(mode_file_path):
+        raise NameError("Mode not found.")
+
+    # Load the options for the given mode.
     possible_defaults = (
         '/etc/proselintrc',
-        os.path.join(proselint_path, '.proselintrc'),
+        mode_file_path,
     )
     options = {}
-    has_overrides = False
-
     for filename in possible_defaults:
         try:
             options = json.load(open(filename))
@@ -158,6 +168,8 @@ def load_options():
         except IOError:
             pass
 
+    # Apply any user-provided overrides.
+    has_overrides = False
     try:
         user_options = json.load(open(os.path.expanduser('~/.proselintrc')))
         has_overrides = True
@@ -212,9 +224,9 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def lint(input_file, debug=False):
+def lint(input_file, mode="default", debug=False):
     """Run the linter on the input file."""
-    options = load_options()
+    options = load_options(mode=mode)
 
     if isinstance(input_file, string_types):
         text = input_file
