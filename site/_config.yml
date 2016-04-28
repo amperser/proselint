@@ -30,10 +30,12 @@ paypal_url:
 flattr_button:
 
 # Build settings
-markdown:     kramdown
+markdown:     redcarpet
 permalink:    /:title/
 paginate:     3
 sass:
   compressed: true
 gems:
   - jekyll-sitemap
+redcarpet:
+  extensions: ['tables']
