@@ -39,7 +39,7 @@ def check(text):
         ["lawyer",           ["lady lawyer"]],
         ["doctor",           ["woman doctor"]],
         ["bookseller",       ["female booksalesman"]],
-        ["air pilot",        ["femaile airman"]],
+        ["air pilot",        ["female airman"]],
         ["executor",         ["executrix"]],
         ["prosecutor",       ["prosecutrix"]],
         ["testator",         ["testatrix"]],
