@@ -125,9 +125,8 @@ def memoize(f):
     return wrapped
 
 
-def get_checks():
+def get_checks(options):
     """Extract the checks."""
-    options = load_options()
     sys.path.append(proselint_path)
     checks = []
     check_names = [key for (key, val)
@@ -222,7 +221,7 @@ def lint(input_file, debug=False):
         text = input_file.read()
 
     # Get the checks.
-    checks = get_checks()
+    checks = get_checks(options)
 
     # Apply all the checks.
     errors = []
