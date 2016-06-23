@@ -75,7 +75,7 @@ def check(text):
         # "designer", when used to mean a plotter against Christ
         # "demean", when used to mean "to behave" in legal contexts
         # "by the bye", # variant, modern is "by the by"
-        # "comptroller" # in british english
+        # "comptroller" # in British English
         # "abortive" Abortive is archaic in reference to abortions of fetuses,
         # except in the sense “causing an abortion.”
     ]

@@ -14,7 +14,7 @@ In Hybrid Zones, p 255 in a citation Hughes & Huges Systems Experts and
 Computers: The Systems Approach in Management and Engineering: World War Ii
 and After.
 
-World War Ii should have correct capitalizaiton.
+World War Ii should have correct capitalization.
 """
 from proselint.tools import blacklist, memoize
 

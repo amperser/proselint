@@ -39,7 +39,7 @@ def test_a_vs_an():
         "The Clinton Presidency was an historic era of prosperity.",
         "There comes to be an habitual pattern between neurons in the brain.",
         "They had the authority to start an humanitarian intervention.",
-        "She laughted aloud, an hysterical sort of giggled, quickly stifled",
+        "She laughed aloud, an hysterical sort of giggled, quickly stifled",
     ]
 
     error_check_name = "misc.a_vs_an"

@@ -23,10 +23,11 @@ Strunk & White say:
     a double negative.
     * Ex: He was not very often on time. -> He usually came late.
     * Ex:
-4.1. Placing negative and positive in oposition makes for a stronger structure.
+4.1. Placing negative and positive in opposition makes for a stronger
+structure.
     * Ex. Not charity, but simple justice.
     * Not that I loved Caesar less, but that I loved Rome more.
-4.2. Do not use unnecessary auxillaries or conditionals.
+4.2. Do not use unnecessary auxiliaries or conditionals.
 5. Use definite, specific, concrete language.
     * A period of unfavorable weather set in. ->It rained every day for a week.
 6. Omit needless words.
@@ -35,7 +36,7 @@ Strunk & White say:
 7. Avoid a succession of loose sentences.
     * MDPNB Principle of brevity. Take 2.
 8. Express coordinate ideas in similar form.
-    * MDPNB: Prinicple of parrallel structure.
+    * MDPNB: Principle of parallel structure.
     * MDPNB: This one will be hard...
 9. Keep related words together.
     * MDPNB: Principle of localism in semantics.

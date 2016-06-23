@@ -38,7 +38,7 @@ class TestCheck(Check):
         assert_equals(len(errors), 0)
 
     def test_but_in_middle_of_paragraph(self):
-        """But in the middle of a sentance is ok."""
+        """But in the middle of a sentence is ok."""
         text = 'I\'ve got nothing but nice things to say.'
         errors = but.check_dont_start_with_buts(text)
         assert_equals(len(errors), 0)
