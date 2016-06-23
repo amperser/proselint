@@ -12,7 +12,7 @@ class TestCheck(Check):
     __test__ = True
 
     def test_50s_hyphenation(self):
-        """Find uneeded hyphen in 50's."""
+        """Find unneeded hyphen in 50's."""
         text = """The 50's were swell."""
         errors = dates.check_decade_apostrophes_short(text)
         assert len(errors) == 1

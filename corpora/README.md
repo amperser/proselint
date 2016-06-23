@@ -23,7 +23,7 @@ We curated a corpus of writing to use in testing. Here, we give the references f
 + "Swingers" by Ian Parker (*The New Yorker*)
 + "What do you think of Ted Williams now?" by Richard Ben Cramer (*Esquire*)
 + "The Accidental Universe" by Alan Lightman (*Harper's Magazine*)
-+ "The case for reaparations" by Ta-Nehisi Coates (*The Atlantic*)
++ "The case for reparations" by Ta-Nehisi Coates (*The Atlantic*)
 + "The cost conundrum" by Atul Gawande (*The New Yorker*)
 + "The Devil's Bait" by Leslie Jamison (*Harper's Magazine*)
 + "The running novelist" by Haruki Murakami, translated by Philip Gabriel (*The New Yorker*)

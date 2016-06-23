@@ -35,7 +35,7 @@ text.md:<line>:<column>: <check_name> <message>
 For example,
 
 ```bash
-text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' can not be compared.
+text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' cannot be compared.
 ```
 
 The command-line utility can also print the list of suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
@@ -46,7 +46,7 @@ The command-line utility can also print the list of suggestions in JSON using th
     check: "wallace.uncomparables",
 
     // Message to describe the suggestion.
-    message: "Comparison of an uncomparable: 'unique' can not be compared.",
+    message: "Comparison of an uncomparable: 'unique' cannot be compared.",
 
     // The person or organization giving the suggestion.
     source: "David Foster Wallace"

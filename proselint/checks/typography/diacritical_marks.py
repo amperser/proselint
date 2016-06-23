@@ -86,7 +86,7 @@ def check(text):
         [u"vis-à-vis",          ["vis-a-vis"]],
         [u"Übermensch",         ["Ubermensch"]],
 
-        # Swedish loandwords
+        # Swedish loanwords
         [u"filmjölk",           ["filmjolk"]],
         [u"smörgåsbord",        ["smorgasbord"]],
 

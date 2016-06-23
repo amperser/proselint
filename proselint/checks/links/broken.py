@@ -10,7 +10,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Check that links are not not broken.
+Check that links are not broken.
 
 """
 from proselint.tools import memoize
