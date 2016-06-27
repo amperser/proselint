@@ -19,8 +19,9 @@ def check_lowercase_periods(text):
     """Check the text."""
     err = "dates_times.am_pm.lowercase_periods"
     msg = u"With lowercase letters, the periods are standard."
+    regex = "\d{1,2} ?[ap]m"
 
-    return existence_check(text, ["\d{1,2} ?[ap]m"], err, msg)
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
@@ -28,8 +29,9 @@ def check_spacing(text):
     """Check the text."""
     err = "dates_times.am_pm.spacing"
     msg = u"It's standard to put a space before 'a.m.' or 'p.m.'."
+    regex = "\d{1,2}[ap]\.?m\.?"
 
-    return existence_check(text, ["\d{1,2}[ap]\.?m\.?"], err, msg)
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
@@ -38,8 +40,9 @@ def check_midnight_noon(text):
     err = "dates_times.am_pm.midnight_noon"
     msg = (u"12 a.m. and 12 p.m. are wrong and confusing."
            " Use 'midnight' or 'noon'.")
+    regex = "12 ?[ap]\.?m\.?"
 
-    return existence_check(text, ["12 ?[ap]\.?m\.?"], err, msg)
+    return existence_check(text, [regex], err, msg)
 
 
 @memoize
