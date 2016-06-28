@@ -17,6 +17,7 @@ class TestCheck(Check):
         return chk
 
     def setUp(self):
+        """Create test sentences."""
         self.l_garner = """Worse than a fate worse than death."""
         self.l_write_good = """He's a chip off the old block."""
         self.l_gnu_diction = """It's a matter of concern."""
