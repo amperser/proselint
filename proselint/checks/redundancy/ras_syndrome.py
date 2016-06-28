@@ -13,13 +13,16 @@ def check_redundant_acronym_syndrome(text):
 
     redundancies = [
         ["ABM",               ["ABM missile"]],
+        ["ACT",               ["ACT test"]],
         ["ABMs",              ["ABM missiles"]],
         ["ABS",               ["ABS braking system"]],
         ["ATM",               ["ATM machine"]],
+        ["CD",                ["CD disc"]],
         ["CPI",               ["CPI Index"]],
         ["GPS",               ["GPS system"]],
         ["GUI",               ["GUI interface"]],
         ["HIV",               ["HIV virus"]],
+        ["ISBN",              ["ISBN number"]],
         ["LCD",               ["LCD display"]],
         ["PDF",               ["PDF format"]],
         ["PIN",               ["PIN number"]],
