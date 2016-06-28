@@ -456,3 +456,10 @@ def context(text, position, level="paragraph"):
         pass
 
     return ""
+
+
+def create_nlp():
+    """Create the spaCy NLP object."""
+    from spacy.en import English
+
+    return English()
