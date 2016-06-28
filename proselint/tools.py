@@ -196,11 +196,6 @@ def errors_to_json(errors):
         dict(status="success", data={"errors": out}), sort_keys=True)
 
 
-def reverse(text):
-    """Reverse a string. This is here as a demo of memoization."""
-    return text[::-1]
-
-
 def line_and_column(text, position):
     """Return the line number and column of a position in a string."""
     position_counter = 0
