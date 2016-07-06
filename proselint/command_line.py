@@ -112,7 +112,7 @@ def proselint(paths=None, version=None, clean=None, debug=None,
     num_errors = 0
     for fp in filepaths:
         try:
-            f = click.open_file(fp, 'r', encoding="utf-8")
+            f = click.open_file(fp, 'r', encoding="utf-8", errors="replace")
             errors = lint(f, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
