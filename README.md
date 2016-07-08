@@ -112,7 +112,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `cliches.misc` | Avoiding clichés |
 | `consistency.spacing` | Consistent sentence spacing |
 | `consistency.spelling` | Consistent spelling |
-| `corporate_speak.misc` | Avoiding corporate buzzwords` |
+| `corporate_speak.misc` | Avoiding corporate buzzwords |
 | `cursing.filth` | Words to avoid |
 | `cursing.nfl` | Avoiding words banned by the NFL |
 | `dates_times.am_pm` | Using the right form for the time of day |
