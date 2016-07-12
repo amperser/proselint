@@ -200,7 +200,7 @@ def line_and_column(text, position):
     """Return the line number and column of a position in a string."""
     position_counter = 0
     for idx_line, line in enumerate(text.splitlines(True)):
-        if (position_counter + len(line.rstrip())) > position:
+        if (position_counter + len(line.rstrip())) >= position:
             return (idx_line, position - position_counter)
         else:
             position_counter += len(line)
@@ -235,7 +235,7 @@ def lint(input_file, debug=False):
             break
 
     # Sort the errors by line and column number.
-    errors = sorted(errors[:options["max_errors"]])
+    errors = sorted(errors[:options["max_errors"]], key=lambda e: (e[2], e[3]))
 
     return errors
 
