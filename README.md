@@ -186,6 +186,44 @@ Interested in contributing to `proselint`? Great — there are plenty of ways yo
 - [Issue Tracker](http://github.com/amperser/proselint/issues)
 - [Source Code](http://github.com/amperser/proselint)
 
+### Development
+
+Proselint is written in Python3. Once you've cloned the repository and made local changes, you can run
+
+```bash
+$ python setup.py develop
+```
+
+to install your local copy.
+
+To run the tests, first install `py.test`:
+
+```bash
+$ pip install pytest
+```
+
+Run the tests:
+
+```bash
+$ py.test
+==================================================== test session starts ====================================================
+platform darwin -- Python 3.5.0, pytest-2.9.2, py-1.4.31, pluggy-0.3.1
+rootdir: /Users/vikas/workspace/proselint, inifile:
+collected 31 items / 2 skipped
+
+tests/test_butterick_symbols.py .......
+tests/test_cliches.py ...
+tests/test_dfw_uncomparables.py ...
+tests/test_existence_check.py ...
+tests/test_exit_codes.py ..
+tests/test_garner_dates.py ...
+tests/test_junge_but.py .......
+tests/test_preferred_forms_check.py ss
+tests/test_topic_detector.py .
+
+=========================================== 29 passed, 4 skipped in 2.99 seconds ============================================
+```
+
 ### Support 
 
 If you run into a problem, please [open an issue](http://github.com/amperser/proselint/issues) in or send an email to hello@amperser.com.
