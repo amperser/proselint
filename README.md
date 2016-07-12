@@ -188,7 +188,10 @@ Interested in contributing to `proselint`? Great — there are plenty of ways yo
 
 ### Development
 
-Proselint is written in Python3. Once you've cloned the repository and made local changes, you can run
+Proselint is compatible with both Python 2 and 3. New code should
+preferably be written in Python 3 with an eye towards Python 2 compatibility.
+
+Once you've cloned the repository and made local changes, you can run
 
 ```bash
 $ python setup.py develop
