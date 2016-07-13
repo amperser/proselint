@@ -25,7 +25,6 @@ class TestCheck(Check):
 
     def test_smoke(self):
         """Basic smoke test for preferred_forms_check."""
-
         assert chk(
             "We utilize this tech", self.l, self.err, self.msg) != []
         assert chk(
@@ -33,7 +32,6 @@ class TestCheck(Check):
 
     def test_capitalization(self):
         """Test for preferred forms involving capitalization."""
-
         assert not chk(
             "In the stone age", self.l_caps, self.err, self.msg,
             ignore_case=False)
