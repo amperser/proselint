@@ -5,8 +5,6 @@ from .check import Check
 
 from proselint.tools import preferred_forms_check as chk
 
-from nose import SkipTest
-
 
 class TestCheck(Check):
     """The test class for tools.preferred_forms_check."""
@@ -21,22 +19,24 @@ class TestCheck(Check):
     def setUp(self):
         """Create some test fixtures."""
         self.l = [['use', ['utilize']]]
-        self.l_caps = [['Canada', ['canada']]]
+        self.l_caps = [["Stone Age",  ["stone age"]]]
         self.err = 'error message'
         self.msg = 'use the preferred form'
 
     def test_smoke(self):
         """Basic smoke test for preferred_forms_check."""
-        raise SkipTest
+
         assert chk(
-            """We utilize this tech""", self.l, self.err, self.msg) != []
+            "We utilize this tech", self.l, self.err, self.msg) != []
         assert chk(
-            """We use this tech""", self.l, self.err, self.msg) == []
+            "We use this tech", self.l, self.err, self.msg) == []
 
     def test_capitalization(self):
         """Test for preferred forms involving capitalization."""
-        raise SkipTest
+
+        assert not chk(
+            "In the stone age", self.l_caps, self.err, self.msg,
+            ignore_case=False)
         assert chk(
-            """"I live in canada""", self.l_caps, self.err, self.msg) != []
-        assert chk(
-            """"I live in Canada""", self.l_caps, self.err, self.msg) == []
+            "In the Stone Age", self.l_caps, self.err, self.msg,
+            ignore_case=False) == []
