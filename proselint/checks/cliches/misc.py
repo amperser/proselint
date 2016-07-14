@@ -853,3 +853,19 @@ def check_cliches_gnu_diction(text):
     ]
 
     return existence_check(text, list, err, msg, join=True, ignore_case=True)
+
+
+@memoize
+def check_cliches_misc(text):
+    """Check the text.
+
+    source:     various
+    """
+    err = "cliches.misc"
+    msg = u"'{}' is a cliché."
+
+    list = [
+        "let's face it",
+    ]
+
+    return existence_check(text, list, err, msg, join=True, ignore_case=True)
