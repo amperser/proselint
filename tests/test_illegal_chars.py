@@ -1,18 +1,24 @@
 """Check that the CLI can handle invalid characters."""
 
+import os.path as pth
 import subprocess
 
 
 def test_invalid_characters():
     """Ensure that a file with illegal characters does not break us."""
     try:
+        curr_dir = pth.dirname(pth.abspath(__file__))
+        test_file = pth.join(curr_dir, "illegal-chars.txt")
         # We only print out exception text and continue after printing a trace,
         # so the only way (currently) to test for failure is to look for the
         # exception text. Refactoring the command line function would let us
         # write better tests (one day).
-        output = subprocess.check_output(
-            ["proselint", "illegal-chars.txt"]
-        )
-        assert("UnicodeDecodeError" not in str(output))
+        output = str(subprocess.check_output(
+            ["proselint", test_file],
+            stderr=subprocess.STDOUT
+        ))
     except:
-        assert(False)
+        assert(not "Unknown Exception Occurred")
+
+    assert("UnicodeDecodeError" not in output)  # Failed to process the file
+    assert("FileNotFoundError" not in output)   # Failed to find our test file
