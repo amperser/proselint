@@ -7,6 +7,7 @@ import subprocess
 def test_invalid_characters():
     """Ensure that a file with illegal characters does not break us."""
     try:
+        output = ""
         curr_dir = pth.dirname(pth.abspath(__file__))
         test_file = pth.join(curr_dir, "illegal-chars.txt")
         # We only print out exception text and continue after printing a trace,
@@ -17,7 +18,11 @@ def test_invalid_characters():
             ["proselint", test_file],
             stderr=subprocess.STDOUT
         ))
-    except:
+    except subprocess.CalledProcessError as e:
+        # Non-zero return codes are OK, but what did we catch?
+        print("Non-zero return value: will proceed. %s" % e)
+        output += e.output
+    except Exception:
         assert(not "Unknown Exception Occurred")
 
     assert("UnicodeDecodeError" not in output)  # Failed to process the file
