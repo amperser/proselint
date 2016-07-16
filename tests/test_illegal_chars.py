@@ -21,7 +21,7 @@ def test_invalid_characters():
     except subprocess.CalledProcessError as e:
         # Non-zero return codes are OK, but what did we catch?
         print("Non-zero return value: will proceed. %s" % e)
-        output += e.output
+        output += str(e.output)
     except Exception:
         assert(not "Unknown Exception Occurred")
 
