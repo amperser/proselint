@@ -112,6 +112,7 @@ def proselint(paths=None, version=None, clean=None, debug=None,
     num_errors = 0
     for fp in filepaths:
         try:
+
             f = click.open_file(fp, 'r', encoding="utf-8", errors="replace")
             errors = lint(f, debug=debug)
             num_errors += len(errors)
@@ -136,13 +137,12 @@ def extract_files(files):
 
         # If it's a directory, recursively walk through it and find the files.
         if os.path.isdir(f):
-            for dir_, _, filenames in os.walk(f):
+            for dir_, dirnames_, filenames in os.walk(f):
                 for filename in filenames:
                     fn, file_extension = os.path.splitext(filename)
                     if file_extension in legal_extensions:
-                        rel_dir = os.path.relpath(dir_, f)
-                        rel_file = os.path.join(rel_dir, filename)
-                        expanded_files.append(rel_file)
+                        joined_file = os.path.join(dir_, filename)
+                        expanded_files.append(joined_file)
 
         # Otherwise add the file directly.
         else:
