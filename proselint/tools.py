@@ -398,22 +398,24 @@ class MarkdownCodeLimits(object):
 
     def feed(self, text):
         """
-        Read through text, grabbing all pairs of '```' (three backticks).
+        Read through text, grabbing all pairs of '```' and '---'.
 
         :param text: a string containing markdown to be analyzed
         :type text: str
         :return:
         """
-        last_pos = -1
-        while text.find('```', last_pos+1) != last_pos:
-            last_pos = text.find('```', last_pos+1)
-            if last_pos < 0:
-                return
-            if self.last_start is None:
-                self.last_start = last_pos
-            else:
-                self.limits.append((self.last_start, last_pos))
-                self.last_start = None
+        delimiters = ['```', '---']
+        for delimiter in delimiters:
+            last_pos = -1
+            while text.find(delimiter, last_pos+1) != last_pos:
+                last_pos = text.find(delimiter, last_pos+1)
+                if last_pos < 0:
+                    return
+                if self.last_start is None:
+                    self.last_start = last_pos
+                else:
+                    self.limits.append((self.last_start, last_pos))
+                    self.last_start = None
 
 
 def is_code(position, text):
