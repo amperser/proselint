@@ -413,7 +413,7 @@ def is_code(position, text):
     code_limits = HTMLCodeLimits()
     code_limits.feed(text)
     # grab the line and column position of the error, and check that it does not fall
-    # into the line and column positions of the start of <code> and </code> tags
+    # in the range of line and column positions of the start of <code> and </code> tags
     column_line = line_and_column(text, position)
     for limit in code_limits.limits:
         # the line_and_column methods appear to be offset by one from the returned
