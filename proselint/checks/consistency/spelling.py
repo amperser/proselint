@@ -33,6 +33,7 @@ def check(text):
         ["advisor", "adviser"],
         # ["analyse", "analyze"],
         ["centre", "center"],
+        ["colour", "color"],
         ["emphasise", "emphasize"],
         ["finalise", "finalize"],
         ["focussed", "focused"],
