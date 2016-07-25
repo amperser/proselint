@@ -6,6 +6,9 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
+cache:
+- bundler
+- pip
 install:
 - pip install -r requirements.txt
 - gem install travis
