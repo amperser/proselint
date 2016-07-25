@@ -43,6 +43,7 @@ def check(text):
         ["organised", "organized"],
         ["organising", "organizing"],
         ["recognise", "recognize"],
+        ["grey", "gray"],
     ]
 
     return consistency_check(text, word_pairs, err, msg)
