@@ -1,64 +1,64 @@
-Tool,Link
-1Checker,http://www.1checker.com/
-AbiWord's grammar checker,http://www.abisource.com/
-After the Deadline,https://openatd.wordpress.com/
-Alex,http://alexjs.com/
-Autocrit,https://www.autocrit.com/editor/
-ClearEdits,http://www.clearwriter.com/clearedits.html
-CorrectEnglish,http://www.correctenglish.com/
-CorrecText,http://www.nytimes.com/1988/03/06/business/the-executive-computer-righting-english-becomes-easier.html
-CKEditor,http://www.webspellchecker.net/
-Editor,http://www.serenity-software.com/
-The Editorium,http://www.editorium.com/ETKPlus2014.htm
-EditorSoftware,http://www.editorsoftware.com/
-Edminton,http://editminion.com/
-Electric Webster,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA199
-Epistle,http://dl.acm.org/citation.cfm?id=1662283.1662287
-Expresso,http://expresso-app.org/
-Ghotit,http://www.ghotit.com/
-Ginger,http://www.gingersoftware.com/
-GNU Diction,https://www.gnu.org/software/diction/
-GNU Style,http://archive09.linux.com/feature/56833
-Grac,http://grac.sourceforge.net/
-GrammarBase,http://www.grammarbase.com/
-GrammarCheck,http://www.grammarcheck.net/
-Grammar Check Anywhere,https://www.spellcheckanywhere.com/grammar_check/
-Grammar Checker for Norweigan,http://www.aclweb.org/anthology/C02-2010
-Grammar Expert Plus,http://www.wintertree-software.com/app/gramxp/
-GrammarianPro,http://linguisoft.com/gramerrorfeatures.html
-Grammark,https://github.com/markfullmer/grammark
-Grammarly,https://www.grammarly.com/
-Grammar Slammer,http://englishplus.com/grammar/
-Grammatica,http://grammatica-english.soft32.com/
-Grammatifix,https://sites.ualberta.ca/~arppe/Publications/Nodalida-99.pdf
-Grammatik,https://en.wikipedia.org/wiki/Grammatik
-Grammatik II,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA194
-Graviax,http://graviax-grammar-checker.soft112.com/
-Hemmingway,http://www.hemingwayapp.com/desktop.html
-ivanistheone's scripts,https://github.com/ivanistheone/writing_scripts
-Language Tool,https://www.languagetool.org/
-Matt Might's shell scripts,http://matt.might.net/articles/shell-scripts-for-passive-voice-weasel-words-duplicates/
-Microsoft Word's grammar check,https://support.office.com/en-us/article/Check-spelling-and-grammar-cab319e8-17df-4b08-8c6b-b868dd2228d1
-OnlineCorrection.com,http://www.onlinecorrection.com/
-PaperRater,https://www.paperrater.com/
-PC-Style,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA198
-PerfectIt,http://www.intelligentediting.com/
-ProWritingAid,https://prowritingaid.com/
-Punctuation and Style,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA198
-Reverso,http://www.reverso.net/
-RightWriter,http://www.right-writer.com/
-Rousseau,https://github.com/GitbookIO/rousseau
-Ruskin,https://books.google.com/books?id=qpLwBwAAQBAJ
-SpellCheckPlus,http://spellcheckplus.com/
-Stilus,http://www.mystilus.com/Main
-Textanz,http://www.textanz.com/
-TextLint,http://scg.unibe.ch/research/textlint
-Virtual Writing Tutor,http://virtualwritingtutor.com/
-Wave,https://en.wikipedia.org/wiki/Apache_Wave
-WhiteSmoke,http://www.whitesmoke.com/
-WordPerfect,http://www.wordperfect.com/us/
-WinProof,http://www.franklinhu.com/winproof.htm
-WordRake,http://www.wordrake.com/
-write-good,https://github.com/btford/write-good
-Writer's Workbench,http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6772006
-Writer's Workbench (1),http://www.emo.com/
+Tool,Link,Languages,Web Editor,Desktop App,CLI,Word Plugin,Web Service,Outlook Plugin,AbiWord Plugin,Firefox Plugin,Chrome Plugin,Wordpress Plugin
+1Checker,http://www.1checker.com/,en,1,1,0,1,0,0,0,0,0,0
+AbiWord's grammar checker,http://www.abisource.com/,en,0,0,0,0,0,0,1,0,0,0
+After the Deadline,https://openatd.wordpress.com/,"en,nl,fr,de,id,it,pl,pt,sp,ru",1,0,1,0,0,0,0,1,1,1
+Alex,http://alexjs.com/,en,1,0,1,0,0,0,0,0,0,0
+Autocrit,https://www.autocrit.com/editor/,en,0,0,0,0,0,0,0,0,0,0
+ClearEdits,http://www.clearwriter.com/clearedits.html,en,0,0,0,0,0,0,0,0,0,0
+CorrectEnglish,http://www.correctenglish.com/,en,0,0,0,0,0,0,0,0,0,0
+CorrecText,http://www.nytimes.com/1988/03/06/business/the-executive-computer-righting-english-becomes-easier.html,en,0,0,0,0,0,0,0,0,0,0
+CKEditor,http://www.webspellchecker.net/,en,0,0,0,0,0,0,0,0,0,0
+Editor,http://www.serenity-software.com/,en,0,0,0,0,0,0,0,0,0,0
+The Editorium,http://www.editorium.com/ETKPlus2014.htm,en,0,0,0,0,0,0,0,0,0,0
+EditorSoftware,http://www.editorsoftware.com/,en,0,0,0,0,0,0,0,0,0,0
+Edminton,http://editminion.com/,en,0,0,0,0,0,0,0,0,0,0
+Electric Webster,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA199,en,0,0,0,0,0,0,0,0,0,0
+Epistle,http://dl.acm.org/citation.cfm?id=1662283.1662287,en,0,0,0,0,0,0,0,0,0,0
+Expresso,http://expresso-app.org/,en,0,0,0,0,0,0,0,0,0,0
+Ghotit,http://www.ghotit.com/,en,0,0,0,0,0,0,0,0,0,0
+Ginger,http://www.gingersoftware.com/,en,1,0,0,0,0,0,0,0,0,0
+GNU Diction,https://www.gnu.org/software/diction/,en,0,0,1,0,0,0,0,0,0,0
+GNU Style,http://archive09.linux.com/feature/56833,en,0,0,1,0,0,0,0,0,0,0
+Grac,http://grac.sourceforge.net/,en,0,0,0,0,0,0,0,0,0,0
+GrammarBase,http://www.grammarbase.com/,en,0,0,0,0,0,0,0,0,0,0
+GrammarCheck,http://www.grammarcheck.net/,en,0,0,0,0,0,0,0,0,0,0
+Grammar Check Anywhere,https://www.spellcheckanywhere.com/grammar_check/,en,0,0,0,0,0,0,0,0,0,0
+Grammar Checker for Norweigan,http://www.aclweb.org/anthology/C02-2010,en,0,0,0,0,0,0,0,0,0,0
+Grammar Expert Plus,http://www.wintertree-software.com/app/gramxp/,en,0,0,0,0,0,0,0,0,0,0
+GrammarianPro,http://linguisoft.com/gramerrorfeatures.html,en,0,0,0,0,0,0,0,0,0,0
+Grammark,https://github.com/markfullmer/grammark,en,0,0,0,0,0,0,0,0,0,0
+Grammarly,https://www.grammarly.com/,en,1,1,0,1,0,0,0,0,1,0
+Grammar Slammer,http://englishplus.com/grammar/,en,0,0,0,0,0,0,0,0,0,0
+Grammatica,http://grammatica-english.soft32.com/,en,0,0,0,0,0,0,0,0,0,0
+Grammatifix,https://sites.ualberta.ca/~arppe/Publications/Nodalida-99.pdf,en,0,0,0,0,0,0,0,0,0,0
+Grammatik,https://en.wikipedia.org/wiki/Grammatik,en,0,0,0,0,0,0,0,0,0,0
+Grammatik II,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA194,en,0,0,0,0,0,0,0,0,0,0
+Graviax,http://graviax-grammar-checker.soft112.com/,en,0,0,0,0,0,0,0,0,0,0
+Hemmingway,http://www.hemingwayapp.com/desktop.html,en,1,0,0,0,0,0,0,0,0,0
+ivanistheone's scripts,https://github.com/ivanistheone/writing_scripts,en,0,0,0,0,0,0,0,0,0,0
+Language Tool,https://www.languagetool.org/,"ast,be,br,ca,zh,da,nl,eo,fr,gl,de,el,is,it,ja,km,lt,ml,fa,pl,pt,ro,ru,sk,sl,es,sv,tl,ta,uk,en",1,0,0,0,0,0,0,0,0,0
+Matt Might's shell scripts,http://matt.might.net/articles/shell-scripts-for-passive-voice-weasel-words-duplicates/,en,1,0,0,0,0,0,0,0,0,0
+Microsoft Word's grammar check,https://support.office.com/en-us/article/Check-spelling-and-grammar-cab319e8-17df-4b08-8c6b-b868dd2228d1,?,0,0,0,1,0,0,0,0,0,0
+OnlineCorrection.com,http://www.onlinecorrection.com/,en,0,0,0,0,0,0,0,0,0,0
+PaperRater,https://www.paperrater.com/,en,0,0,0,0,0,0,0,0,0,0
+PC-Style,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA198,en,0,0,0,0,0,0,0,0,0,0
+PerfectIt,http://www.intelligentediting.com/,en,0,0,0,0,0,0,0,0,0,0
+ProWritingAid,https://prowritingaid.com/,en,0,0,0,0,0,0,0,0,0,0
+Punctuation and Style,https://books.google.com/books?id=H-1AqdOdnxcC&lpg=PA198,en,0,0,0,0,0,0,0,0,0,0
+Reverso,http://www.reverso.net/,en,0,0,0,0,0,0,0,0,0,0
+RightWriter,http://www.right-writer.com/,en,0,0,0,0,0,0,0,0,0,0
+Rousseau,https://github.com/GitbookIO/rousseau,en,0,0,0,0,0,0,0,0,0,0
+Ruskin,https://books.google.com/books?id=qpLwBwAAQBAJ,en,0,0,0,0,0,0,0,0,0,0
+SpellCheckPlus,http://spellcheckplus.com/,en,0,0,0,0,0,0,0,0,0,0
+Stilus,http://www.mystilus.com/Main,en,0,0,0,0,0,0,0,0,0,0
+Textanz,http://www.textanz.com/,en,0,0,0,0,0,0,0,0,0,0
+TextLint,http://scg.unibe.ch/research/textlint,en,1,0,0,0,0,0,0,0,0,0
+Virtual Writing Tutor,http://virtualwritingtutor.com/,en,0,0,0,0,0,0,0,0,0,0
+Wave,https://en.wikipedia.org/wiki/Apache_Wave,en,0,0,0,0,0,0,0,0,0,0
+WhiteSmoke,http://www.whitesmoke.com/,en,0,0,0,0,0,0,0,0,0,0
+WordPerfect,http://www.wordperfect.com/us/,en,0,0,0,0,0,0,0,0,0,0
+WinProof,http://www.franklinhu.com/winproof.htm,en,0,0,0,0,0,0,0,0,0,0
+WordRake,http://www.wordrake.com/,en,0,0,0,0,0,0,0,0,0,0
+write-good,https://github.com/btford/write-good,en,1,0,0,0,0,0,0,0,0,0
+Writer's Workbench,http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6772006,en,1,0,0,0,0,0,0,0,0,0
+Writer's Workbench (1),http://www.emo.com/,en,0,0,0,0,0,0,0,0,0,0
