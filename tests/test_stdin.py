@@ -1,14 +1,12 @@
 """Run the demo."""
 
-from subprocess import Popen, PIPE
+from click.testing import CliRunner
+from proselint.command_line import proselint, demo_file
 
-p0 = Popen(["cat", "proselint/demo.md"], stdout=PIPE)
-p1 = Popen(["proselint", "--stdin"], stdin=p0.stdout, stdout=PIPE)
-p0.stdout.close()
-p2 = Popen(["proselint", "--demo"], stdout=PIPE)
+runner = CliRunner()
+demo = runner.invoke(proselint, ['--demo'])
 
-output1 = [line.split(':')[1:] for line in p1.communicate()[0].decode().split('\n')]
-output2 = [line.split(':')[1:] for line in p2.communicate()[0].decode().split('\n')]
+with open(demo_file) as f:
+    stdin = runner.invoke(proselint, ['--stdin'], input=f.read())
 
-assert(output1 == output2)
-
+assert stdin.output == demo.output.replace(demo_file, 'stdin')
