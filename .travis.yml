@@ -15,7 +15,6 @@ install:
 - gem install s3_website
 - gem install compass --version 0.12.5
 - gem install kramdown
-- gem install link-checker
 - gem install danger
 - gem install danger-prose
 before_script:
@@ -31,7 +30,7 @@ script:
     jekyll build;
     s3_website push;
     cd ..;
-    check-links "http://proselint.com";
+    wget --spider -e robots=off -w 1 -r -p http://www.proselint.com;
   fi
 after_success:
 - coveralls
