@@ -64,7 +64,9 @@ def check(text):
         "quite",
         "largely",
         "extremely",
-        "increasingly"
+        "increasingly",
+        "kind of",
+        "mildly"
     ]
 
     uncomparables = [
