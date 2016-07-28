@@ -32,6 +32,7 @@ def check(text):
         ["buffalo",      "herd"],
         ["bullfinches",  "bellowing"],
         ["caribou",      "herd"],
+        ["cats",         "glaring"],
         ["caterpillars", "army"],
         ["cockroaches",  "intrusion"],
         ["coyotes",      "pack"],
