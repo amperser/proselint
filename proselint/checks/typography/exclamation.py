@@ -24,7 +24,7 @@ def check_repeated_exclamations(text):
     err = "leonard.exclamation.multiple"
     msg = u"Stop yelling. Keep your exclamation points under control."
 
-    regex = r"[^A-Z]\b((\s[A-Z]+){3,})"
+    regex = r"[\!]\s*?[\!]{1,}"
 
     return existence_check(
         text, [regex], err, msg, require_padding=False, ignore_case=False,
