@@ -191,6 +191,17 @@ Interested in contributing to `proselint`? Great — there are plenty of ways yo
 
 If you run into a problem, please [open an issue](http://github.com/amperser/proselint/issues) in or send an email to hello@amperser.com.
 
+### Running Automated Tests
+
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [nose](http://nose.readthedocs.io/en/latest/) and run the following commands:
+```bash
+cd tests/
+nosetests 
+```
+and watch the output. Nose is compatible with Python versions 2.7, 3.3, 3.4 and 3.5. 
+
+All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests. 
+
 ### License
 
 The project is licensed under the BSD license.
