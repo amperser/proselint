@@ -9,7 +9,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-A lexical illusion is when a word word is unintentially repeated twice, and
+A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
 """
