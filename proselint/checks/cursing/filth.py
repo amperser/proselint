@@ -17,7 +17,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check_debased_language(text):
+def check(text):
     """Check the text."""
     err = "cursing.filth"
     msg = u"""Nobody ever tells you this as a kid, but you're supposed to avoid
