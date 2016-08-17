@@ -19,10 +19,10 @@ install:
 - gem install danger-prose
 before_script:
 - travis lint -x --skip-completion-check
-- bundle exec danger
 script:
 - pep8 .
 - pep257 . --match='.*\.py'
+- bundle exec danger
 - nosetests --with-coverage --cover-package proselint
 - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     python scripts/insert_demo.py;
