@@ -22,8 +22,8 @@ def check(text):
     err = "pinker.apologizing"
     msg = "Excessive apologizing."
 
-    narcisissm = [
+    narcissism = [
         "More research is needed",
     ]
 
-    return existence_check(text, narcisissm, err, msg)
+    return existence_check(text, narcissism, err, msg)

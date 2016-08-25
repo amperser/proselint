@@ -22,10 +22,10 @@ def check(text):
     err = "hedging.misc"
     msg = "Hedging. Just say it."
 
-    narcisissm = [
+    narcissism = [
         "I would argue that",
         ", so to speak",
         "to a certain degree",
     ]
 
-    return existence_check(text, narcisissm, err, msg)
+    return existence_check(text, narcissism, err, msg)

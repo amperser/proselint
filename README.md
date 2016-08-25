@@ -139,7 +139,7 @@ You can disable any of the checks by modifying `.proselintrc`.
 | `misc.latin` | Avoiding overuse of Latin phrases |
 | `misc.many_a` | Many a singular |
 | `misc.metaconcepts` | Avoiding overuse of metaconcepts |
-| `misc.narcisissm` | Talking about the subject, not its study |
+| `misc.narcissism` | Talking about the subject, not its study |
 | `misc.phrasal_adjectives` | Hyphenating phrasal adjectives |
 | `misc.preferred_forms` | Miscellaneous preferred forms |
 | `misc.pretension` | Avoiding being pretentious |
