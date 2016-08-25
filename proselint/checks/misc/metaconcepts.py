@@ -22,8 +22,8 @@ Point out misuse of scare quotes.
 #     err = "pinker.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."
 
-#     narcisissm = [
+#     narcissism = [
 #         "the 'take-home message'",
 #     ]
 
-#     return existence_check(text, narcisissm, err, msg)
+#     return existence_check(text, narcissism, err, msg)
