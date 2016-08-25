@@ -21,7 +21,7 @@ Have coding skills? You can:
 Have writing or editing skills? You can:
 
 + Extract rules from expert sources of advice. Read through some entries of a book like *Garners Modern American Usage* find rules that are feasible to implement in code, and then [open an issue on GitHub](https://github.com/amperser/proselint/issues/new). Here's an [example](https://github.com/amperser/proselint/issues/163) of a successfully extracted rule. And here's a list of [sources](https://github.com/amperser/proselint/labels/extraction) from which rules can be extracted.
-+ Find false alarms. Run <tt>proselint</tt> over your favorite books or magazine articles — maybe even some of your own writing, and find places where <tt>proselint</tt> says that there is an error, but in reality, there is none. [open an issue on GitHub](https://github.com/amperser/proselint/issues/new) describing the problem.
++ Find false alarms. Run <tt>proselint</tt> over your favorite books or magazine articles — maybe even some of your own writing, and find places where <tt>proselint</tt> says that there is an error, but in reality, there is none. [Open an issue on GitHub](https://github.com/amperser/proselint/issues/new) describing the problem.
 + Improve the copy on this website. Or write documentation in the code.
 
 ## Donations
