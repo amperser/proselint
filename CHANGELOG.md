@@ -1,13 +1,13 @@
 # Change Log
 
-## [Unreleased](https://github.com/amperser/proselint/tree/HEAD)
-
-[Full Changelog](https://github.com/amperser/proselint/compare/0.6.1...HEAD)
+## [0.7.0](https://github.com/amperser/proselint/tree/0.7.0) (2016-08-25)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.6.1...0.7.0)
 
 **Implemented enhancements:**
 
 - how about `typography.symbols` instead of `me.symbols` [\#373](https://github.com/amperser/proselint/issues/373)
 - Improve test coverage [\#145](https://github.com/amperser/proselint/issues/145)
+- Add a changelog [\#596](https://github.com/amperser/proselint/pull/596) ([suchow](https://github.com/suchow))
 
 **Fixed bugs:**
 
