@@ -6,7 +6,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_em_vs_em_and_en_vs_in(text):
+def check(text):
     """em- vs. en-, im- vs. in-."""
     err = "spelling.em_im_en_in"
     msg = "em-, im-, en-, and in-. '{}' is the preferred spelling."

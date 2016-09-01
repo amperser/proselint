@@ -6,7 +6,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_redundant_acronym_syndrome(text):
+def check(text):
     """Suggest the preferred forms."""
     err = "garner.redundancy.ras"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
