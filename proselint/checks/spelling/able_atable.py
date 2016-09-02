@@ -6,8 +6,8 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_able_atable(text):
-    """-able vs. -ible."""
+def check(text):
+    """-able vs. -atable."""
     err = "spelling.able_atable"
     msg = "-able vs. -atable. '{}' is the preferred spelling."
 

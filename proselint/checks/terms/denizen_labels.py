@@ -6,7 +6,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_denizen_labels_ganer(text):
+def check(text):
     """Suggest the preferred forms.
 
     source:     Garner's Modern American Usage

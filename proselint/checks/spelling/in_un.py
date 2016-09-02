@@ -6,7 +6,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_in_un(text):
+def check(text):
     """in- vs un-."""
     err = "spelling.in_un"
     msg = "in- vs. un-. '{}' is the preferred spelling."
