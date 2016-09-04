@@ -1,5 +1,5 @@
 """
-__main__.py
+__main__.py.
 
 This lets you run python -m proselint.
 """
