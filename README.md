@@ -17,7 +17,11 @@ We devised a simple solution: `proselint`, a linter for prose. (A linter is a co
  
 ### Installation
 
-To get this up and running, install it using pip: `pip install proselint`.
+To get this up and running, install it using pip: 
+
+```
+pip install proselint
+```
 
 ### Plugins for other software
 
