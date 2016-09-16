@@ -2,7 +2,7 @@
 u"""Check for missing period at end of last sentence in a paragraph
 
 ---
-layout: 
+layout:
 source: ???
 source_url:
 title:
@@ -16,7 +16,7 @@ Paragraphs should not end with a sentence that does not end with a period.
 from proselint.tools import memoize, existence_check
 
 
-#@memoize #TODO
+#@memoize #TODO re.MULTILINE - so $ means something http://regexr.com/3e8cf
 def check_last_paragraph_period(text):
     """Do not end a paragraph without a period."""
     err = "misc.but"
