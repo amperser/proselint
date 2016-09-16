@@ -52,11 +52,11 @@ def check(text):
         ["scientists",       ["women scientists"]]
         # ["hero",             ["heroine"]]
     ]
-    
+
     errors = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
 
     msg = "Not a preferred form. Use '{}' instead of '{}'."
-    preferred_form = [
+    pref = [
             ["anchor",           ["anchorperson"]],
             ["chair",            ["chairperson"]],
             ["drafter",          ["draftperson"]],
@@ -66,7 +66,7 @@ def check(text):
             ["firefighter",      ["fireperson"]],
             ["mail carrier",     ["mailperson"]],
     ]
-    for x in preferred_forms_check(text, preferred_form, err, msg, ignore_case=False): 
-        errors.append(x) 
+    for x in preferred_forms_check(text, pref, err, msg, ignore_case=False):
+        errors.append(x)
 
     return errors
