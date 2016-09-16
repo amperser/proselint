@@ -23,7 +23,8 @@ def check(text):
     msg = "Incorrect form. Use '{}' instead of '{}'."
 
     techlang = [
-        ["ECMAScript #",       ["ECMAScript([0-9]+)"]],  # TODO
+
+        ["ECMAScript #",       ["ECMAScript([0-9]+)"]],
         ["ES.next",             ["ES next"]],
         # ["Web Components",      \
         # ["WebComponents", "web components", "Web components"]],
