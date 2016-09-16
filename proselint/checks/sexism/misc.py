@@ -23,14 +23,14 @@ def check(text):
     msg = "Gender bias. Use '{}' instead of '{}'."
 
     sexism = [
-        ["anchor",           ["anchorman", "anchorwoman", "anchorperson"]],
-        ["chair",            ["chairman", "chairwoman", "chairperson"]],
-        ["drafter",          ["draftman", "draftwoman", "draftperson"]],
-        ["ombuds",           ["ombudsman", "ombudswoman", "ombudsperson"]],
-        ["tribe member",     ["tribesman", "tribeswoman", "tribesperson"]],
-        ["police officer",   ["policeman", "policewoman", "policeperson"]],
-        ["firefighter",      ["fireman", "firewoman", "fireperson"]],
-        ["mail carrier",     ["mailman", "mailwoman", "mailperson"]],
+        ["anchor",           ["anchorman", "anchorwoman"]],
+        ["chair",            ["chairman", "chairwoman"]],
+        ["drafter",          ["draftman", "draftwoman"]],
+        ["ombuds",           ["ombudsman", "ombudswoman"]],
+        ["tribe member",     ["tribesman", "tribeswoman"]],
+        ["police officer",   ["policeman", "policewoman"]],
+        ["firefighter",      ["fireman", "firewoman"]],
+        ["mail carrier",     ["mailman", "mailwoman"]],
         ["history",          ["herstory"]],
         ["women",            ["womyn"]],
         ["poet",             ["poetess"]],
@@ -53,4 +53,20 @@ def check(text):
         # ["hero",             ["heroine"]]
     ]
 
-    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+    errors = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+
+    msg = "Not a preferred form. Use '{}' instead of '{}'."
+    pref = [
+            ["anchor",           ["anchorperson"]],
+            ["chair",            ["chairperson"]],
+            ["drafter",          ["draftperson"]],
+            ["ombuds",           ["ombudsperson"]],
+            ["tribe member",     ["tribesperson"]],
+            ["police officer",   ["policeperson"]],
+            ["firefighter",      ["fireperson"]],
+            ["mail carrier",     ["mailperson"]],
+    ]
+    for x in preferred_forms_check(text, pref, err, msg, ignore_case=False):
+        errors.append(x)
+
+    return errors
