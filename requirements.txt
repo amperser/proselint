@@ -19,7 +19,7 @@ pep257==0.7.0
 pep8==1.7.0
 queuelib==1.4.2
 redis==2.10.5
-requests==2.9.1
+requests==2.11.1
 rq==0.6.0
 six==1.10.0
 Werkzeug==0.11.11
