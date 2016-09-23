@@ -41,6 +41,9 @@ class TestCheck(Check):
         assert len(
             chk("""ABC and abc are as easy as 123""",
                 self.L, self.err, self.msg, ignore_case=True)) == 2
+        assert len(
+            chk("""ABC and abc are as easy as 123""",
+                self.L, self.err, self.msg, ignore_case=False)) == 1
         assert chk(
             """abcabc are easy as 123""", self.L, self.err, self.msg) == []
 
