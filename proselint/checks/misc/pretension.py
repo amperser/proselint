@@ -17,7 +17,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check_repeated_exclamations(text):
+def check(text):
     """Check the text."""
     err = "ogilvy.pretension"
     msg = u"Jargon words like this one are the hallmarks of a pretentious ass."

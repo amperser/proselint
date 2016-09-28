@@ -29,8 +29,8 @@ from proselint.tools import memoize, existence_check
 
 
 @memoize
-def check_ellipsis(text):
-    """Use an ellipsis instead of three dots."""
+def check(text):
+    """Advice on sudden vs suddenly."""
     err = "misc.suddenly"
     msg = u"Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"

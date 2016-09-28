@@ -17,7 +17,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check_et_al(text):
+def check(text):
     """Check the text."""
     err = "garner.punctuation"
     msg = u"Misplaced punctuation. It's 'et al.'"

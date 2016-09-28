@@ -28,7 +28,7 @@ def check_ly(text):
 
 
 @memoize
-def check_examples(text):
+def check(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
     msg = u"""Hyphenate '{1}', a phrasal adjective, as '{0}'."""

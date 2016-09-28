@@ -19,4 +19,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.metadiscourse."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""The QB is named ball licker.""")
+        assert not self.passes("""It's based on the rest of this article.""")

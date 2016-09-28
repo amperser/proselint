@@ -19,4 +19,9 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.false_plurals."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""The QB is named ball licker.""")
+        assert not self.passes("""There were several phenomenons.""")
+
+    def test_smoke_kudos(self):
+        """Basic smoke test for misc.false_plurals.kudos"""
+        assert chk.check_kudos("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_kudos("""I give you many kudos.""") != []

@@ -19,4 +19,9 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.phrasal_adjectives."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""The QB is named ball licker.""")
+        assert not self.passes("""There were across the board discounts.""")
+
+    def test_smoke_ly(self):
+        """Basic smoke test for misc.phrasal_adjectives.check_ly."""
+        assert chk.check_ly("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_ly("""He ran swiftly-fast.""")
