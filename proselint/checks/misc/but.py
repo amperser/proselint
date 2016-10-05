@@ -17,7 +17,7 @@ from proselint.tools import memoize, existence_check
 
 
 @memoize
-def check_dont_start_with_buts(text):
+def check(text):
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"
     msg = u"No paragraph should start with a 'But'."
