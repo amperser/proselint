@@ -36,7 +36,6 @@ def check(text):
         "build down",
         "conspicuous absence",
         "exact estimate",
-        "executive secretary",
         "found missing",
         "intense apathy",
         "mandatory choice",
