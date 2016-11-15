@@ -36,7 +36,6 @@ def check(text):
         "build down",
         "conspicuous absence",
         "exact estimate",
-        "executive secretary",
         "found missing",
         "intense apathy",
         "mandatory choice",
@@ -44,6 +43,7 @@ def check(text):
         "organized mess",
         # "pretty ugly",
         # "sure bet",
+        # "executive secretary",
     ]
 
     return existence_check(text, oxymorons, err, msg, offset=1, join=True)
