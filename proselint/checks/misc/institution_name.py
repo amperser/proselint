@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
+"""Common errors with institution names.
 
-"""Common errors with institution names"""
+---
+layout:     post
+source:     Institution's webpage
+source_url: http://bit.ly/2en1zbv, 
+title:      Institution Name
+date:       2016-11-16 11:46:19
+categories: writing
+---
 
+Institution names.
+
+"""
 from proselint.tools import memoize, preferred_forms_check
 
 
