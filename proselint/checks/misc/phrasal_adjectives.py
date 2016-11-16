@@ -21,11 +21,11 @@ def check_ly(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.ly"
     msg = u"""No hyphen is necessary in phrasal adjectives with an adverb
-              ending in -ly, unless the -ly adverb is part of a longer 
+              ending in -ly, unless the -ly adverb is part of a longer
               phrase"""
-    
+
     regex = "\s[^\s-]+ly-"
-    
+
     return existence_check(text, [regex], err, msg,
                            require_padding=False, offset=-1)
 
