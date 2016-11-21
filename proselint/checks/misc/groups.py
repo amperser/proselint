@@ -16,8 +16,8 @@ Terms for specific types of groups.
 from proselint.tools import memoize, preferred_forms_check
 
 
-# Allow multiple generic group terms
 def make_list(terms, group):
+    """Allow multiple generic group terms."""
     return [group.format(term) for term in terms]
 
 
