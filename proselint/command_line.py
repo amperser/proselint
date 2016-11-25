@@ -57,13 +57,18 @@ def clear_cache():
     ])
 
 
+def sort_errors(errors):
+    """Sort the errors by line (then column) number"""
+    return sorted(errors, key=lambda e: (e[2], e[3])) # line, column
+
+
 def print_errors(filename, errors, output_json=False, compact=False):
     """Print the errors, resulting from lint, for filename."""
     if output_json:
         click.echo(errors_to_json(errors))
 
     else:
-        for error in errors:
+        for error in sort_errors(errors):
 
             (check, message, line, column, start, end,
              extent, severity, replacements) = error
