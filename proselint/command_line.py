@@ -15,6 +15,7 @@ from .tools import (
     errors_to_json,
     lint,
 )
+import shutil
 import subprocess
 import sys
 from .version import __version__
@@ -45,16 +46,25 @@ def timing_test(corpus="0.1.0"):
 def clear_cache():
     """Delete the contents of the cache."""
     click.echo("Deleting the cache...")
-    subprocess.call(["find", ".", "-name", "'*.pyc'", "-delete"])
-    subprocess.call([
-        "rm",
-        "-rfv",
-        "proselint/cache",
-        "&&",
-        "mkdir",
-        "-p",
-        os.path.join(os.path.expanduser("~"), ".proselint"),
-    ])
+
+    # see issue #624
+    for path, _, files in os.walk(os.getcwd()):
+        for fname in [f for f in files if f.endswith(".pyc")]:
+            try:
+                os.remove(os.path.join(path, fname))
+            except OSError:
+                pass
+
+    try:
+        proselint_cache = os.path.join("proselint", "cache")
+        shutil.rmtree(proselint_cache)
+    except OSError:
+        pass
+
+    try:
+        os.makedirs(os.path.join(os.path.expanduser("~"), ".proselint"))
+    except OSError:
+        pass
 
 
 def print_errors(filename, errors, output_json=False, compact=False):
