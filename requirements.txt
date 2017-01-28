@@ -12,7 +12,7 @@ Flask-Limiter==0.9.3
 future==0.15.2
 gunicorn==19.4.5
 itsdangerous==0.24
-Jinja2==2.8.0
+Jinja2==2.9.5
 MarkupSafe==0.23
 nose==1.3.7
 pep257==0.7.0
