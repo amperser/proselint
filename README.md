@@ -108,7 +108,7 @@ The command-line utility can also print suggestions in JSON using the `--json` f
 
 ### Checks
 
-You can disable any of the checks by modifying `~/.proselintrc`.
+You can disable any of the checks by modifying `~/.proselintrc`:
 
 ```json
 {
