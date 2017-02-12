@@ -1,16 +1,16 @@
 -e git+https://github.com/amperser/proselint.git#egg=proselint
 -e git+https://github.com/charlierguo/gmail.git#egg=gmail
-APScheduler==3.1.0
+APScheduler==3.2.0
 bumpversion==0.5.3
 click==6.6
-coverage==4.0.3
+coverage==4.2
 coveralls==1.1
-Flask-API==0.6.5
-Flask-Cors==2.1.2
-Flask==0.10.1
+Flask-API==0.6.7
+Flask-Cors==3.0.1
+Flask==0.11.1
 Flask-Limiter==0.9.3
 future==0.15.2
-gunicorn==19.4.5
+gunicorn==19.6.0
 itsdangerous==0.24
 Jinja2==2.8.0
 MarkupSafe==0.23
@@ -19,8 +19,8 @@ pep257==0.7.0
 pep8==1.7.0
 queuelib==1.4.2
 redis==2.10.5
-requests==2.9.1
-rq==0.5.6
+requests==2.11.1
+rq==0.6.0
 six==1.10.0
-Werkzeug==0.11.8
+Werkzeug==0.11.11
 wikipedia==1.4.0
