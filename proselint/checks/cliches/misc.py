@@ -22,7 +22,7 @@ def check_cliches_garner(text):
         "bald-faced lie",
         "between a rock and a hard place",
         "between Scylla and Charybdis",
-        "between the devil and the deep blue see",
+        "between the devil and the deep blue sea",
         "betwixt and between",
         "blissful ignorance",
         "blow a fuse",
