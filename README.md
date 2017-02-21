@@ -14,10 +14,10 @@ We devised a simple solution: `proselint`, a linter for English prose. (A linter
 `proselint` places the world’s greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.
 
 `proselint` is a command-line utility that can be integrated into existing tools.
- 
+
 ### Installation
 
-To get this up and running, install it using pip: 
+To get this up and running, install it using pip:
 
 ```
 pip install proselint
@@ -33,7 +33,7 @@ pip install proselint
 - [x] [Emacs via Flycheck](https://github.com/amperser/proselint/tree/master/plugins/flycheck) (thanks to [Aaron Jacobs](https://github.com/atheriel))
 - [x] [Vim](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047 & @Carreau)
 - [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [x] [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta)) 
+- [x] [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
 - [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
 - [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))  
 
@@ -104,6 +104,20 @@ The command-line utility can also print suggestions in JSON using the `--json` f
         }
     ]
 }
+```
+
+To run the linter as part of another program, you can use the `lint` function in `proselint.tools`:
+
+```python
+import proselint
+
+suggestions = proselint.tools.lint("This sentence is very unique")
+```
+
+This will return a list of suggestions:
+
+```python
+[('weasel_words.very', "Substitute 'damn' every time you're inclined to write 'very;' your editor will delete it and the writing will be just as it should be.", 0, 17, 17, 22, 5, 'warning', None), ('uncomparables.misc', "Comparison of an uncomparable: 'very unique.' is not comparable.", 0, 17, 17, 29, 12, 'warning', None)]
 ```
 
 ### Checks
@@ -203,7 +217,7 @@ Interested in contributing to `proselint`? Great — there are plenty of ways yo
 - [Issue Tracker](http://github.com/amperser/proselint/issues)
 - [Source Code](http://github.com/amperser/proselint)
 
-### Support 
+### Support
 
 If you run into a problem, please [open an issue](http://github.com/amperser/proselint/issues) in or send an email to hello@amperser.com.
 
@@ -212,11 +226,11 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [nose](http://nose.readthedocs.io/en/latest/) and run the following commands:
 ```bash
 cd tests/
-nosetests 
+nosetests
 ```
-and watch the output. Nose is compatible with Python versions 2.7, 3.3, 3.4 and 3.5. 
+and watch the output. Nose is compatible with Python versions 2.7, 3.3, 3.4 and 3.5.
 
-All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests. 
+All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests.
 
 ### License
 
