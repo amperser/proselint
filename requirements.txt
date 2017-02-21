@@ -1,6 +1,6 @@
 -e git+https://github.com/amperser/proselint.git#egg=proselint
 -e git+https://github.com/charlierguo/gmail.git#egg=gmail
-APScheduler==3.1.0
+APScheduler==3.3.1
 bumpversion==0.5.3
 click==6.7
 coverage==4.3.4
