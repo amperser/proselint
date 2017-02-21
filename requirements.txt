@@ -6,7 +6,7 @@ click==6.7
 coverage==4.3.4
 coveralls==1.1
 Flask-API==0.6.5
-Flask-Cors==2.1.2
+Flask-Cors==3.0.2
 Flask==0.10.1
 Flask-Limiter==0.9.3
 future==0.15.2
