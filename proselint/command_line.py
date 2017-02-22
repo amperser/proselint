@@ -48,19 +48,32 @@ def clear_cache():
     click.echo("Deleting the cache...")
 
     # see issue #624
+    _delete_compiled_python_files()
+    _delete_cache()
+    _create_home_cache()
+
+
+def _delete_compiled_python_files():
+    """ Remove files with a 'pyc' extension """
     for path, _, files in os.walk(os.getcwd()):
-        for fname in [f for f in files if f.endswith(".pyc")]:
+        for fname in [f for f in files if os.path.splitext(f)[1] == ".pyc"]:
             try:
                 os.remove(os.path.join(path, fname))
             except OSError:
                 pass
 
+
+def _delete_cache():
+
+    proselint_cache = os.path.join("proselint", "cache")
     try:
-        proselint_cache = os.path.join("proselint", "cache")
         shutil.rmtree(proselint_cache)
     except OSError:
         pass
 
+
+def _create_home_cache():
+    """ create a cache in the users 'HOME' directory """
     try:
         os.makedirs(os.path.join(os.path.expanduser("~"), ".proselint"))
     except OSError:
