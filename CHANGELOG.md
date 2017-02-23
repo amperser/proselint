@@ -1,5 +1,14 @@
 # Change Log
 
+## [0.8.0](https://github.com/amperser/proselint/tree/0.8.0) (2017-02-22)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.7.0...0.8.0)
+
+- Fix a cache-clearing issue ([m-charlton](https://github.com/m-charlton))
+- Tons of improvements to tests ([joshmgrant](https://github.com/joshmgrant))
+- New LGBTQ-terms module
+- Misc. bug fixes and improvements
+- Update various dependencies
+
 ## [0.7.0](https://github.com/amperser/proselint/tree/0.7.0) (2016-08-25)
 [Full Changelog](https://github.com/amperser/proselint/compare/0.6.1...0.7.0)
 
