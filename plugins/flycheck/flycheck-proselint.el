@@ -12,10 +12,14 @@
 ;; authors in the form of a linter for prose.
 ;;
 ;; This package provides a proselint checker for flycheck.
-;;
-;; To activate automatically, add to your .emacs, e.g.:
-;;   (add-hook 'markdown-mode-hook #'flycheck-mode)
-;;   (add-hook 'text-mode-hook #'flycheck-mode)
+
+;;; Usage:
+
+;; (eval-after-load 'flycheck
+;;   '(add-hook 'flycheck-mode-hook #'flycheck-proselint-setup))
+;; (add-hook 'text-mode-hook #'flycheck-mode)
+;; (add-hook 'markdown-mode-hook #'flycheck-mode)
+;; ...
 
 ;;; Code:
 
@@ -32,7 +36,10 @@
             line-end))
   :modes (text-mode markdown-mode gfm-mode))
 
-(add-to-list 'flycheck-checkers 'proselint)
+;;###autoload
+(defun flycheck-proselint-setup ()
+  "Add proselist to list of flycheck checkers."
+  (add-to-list 'flycheck-checkers 'proselint))
 
 (provide 'flycheck-proselint)
 
