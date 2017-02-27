@@ -19,6 +19,8 @@
 
 ;;; Code:
 
+(require 'flycheck)
+
 (flycheck-define-checker proselint
   "A linter for prose."
   :command ("proselint" source-inplace)
