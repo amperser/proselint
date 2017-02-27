@@ -1,4 +1,4 @@
-;;; flycheck-proselint.el --- a flycheck linter for prose
+;;; flycheck-proselint.el --- A flycheck linter for prose
 
 ;; Version: 0.8.0
 ;; Package-Requires: ((flycheck "1"))
@@ -7,8 +7,8 @@
 
 ;;; Commentary:
 
-;; proselint's goal is to aggregate knowledge about best practices in
-;; writing and to make that knowledge immediately accessible to all
+;; The goal of proselint is to aggregate knowledge about best practices
+;; in writing and to make that knowledge immediately accessible to all
 ;; authors in the form of a linter for prose.
 ;;
 ;; This package provides a proselint checker for flycheck.
