@@ -19,6 +19,7 @@
 ;;   '(add-hook 'flycheck-mode-hook #'flycheck-proselint-setup))
 ;; (add-hook 'text-mode-hook #'flycheck-mode)
 ;; (add-hook 'markdown-mode-hook #'flycheck-mode)
+;; (add-hook 'message-mode-hook #'flycheck-mode)
 ;; ...
 
 ;;; Code:
@@ -34,7 +35,7 @@
             (message (one-or-more not-newline)
                      (zero-or-more "\n" (any " ") (one-or-more not-newline)))
             line-end))
-  :modes (text-mode markdown-mode gfm-mode))
+  :modes (text-mode markdown-mode gfm-mode message-mode))
 
 ;;###autoload
 (defun flycheck-proselint-setup ()
