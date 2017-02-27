@@ -37,7 +37,7 @@
             line-end))
   :modes (text-mode markdown-mode gfm-mode message-mode))
 
-;;###autoload
+;;;###autoload
 (defun flycheck-proselint-setup ()
   "Add proselist to list of flycheck checkers."
   (add-to-list 'flycheck-checkers 'proselint))
