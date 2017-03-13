@@ -340,7 +340,7 @@ def existence_check(text, list, err, msg, ignore_case=True,
         if require_padding:
             startpad_len = len(m.group(1)) if m.group(1) else 0
             start += startpad_len
-            endpad_len = len(m.group(2)) if m.group(2) else 0
+            endpad_len = len(m.group(1)) if m.group(1) else 0
             end -= (startpad_len + endpad_len)
 
         errors.append((
