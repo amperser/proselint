@@ -1,4 +1,5 @@
 """Test Butterick's symbols."""
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
 from .check import Check
