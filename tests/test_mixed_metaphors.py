@@ -27,5 +27,8 @@ class TestCheck(Check):
         """Basic smoke test for check_misc."""
         assert chk.check_misc(
             """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_misc(
-            """Writing tests is not rocket surgery.""") != []
+        assert (chk.check_misc(
+            """Writing tests is not rocket surgery.""") == [(
+                17, 36, 'mixed_metaphors.misc.misc',
+                "Mixed metaphor. Try 'not rocket science'.",
+                'not rocket science')])

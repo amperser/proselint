@@ -320,7 +320,7 @@ def existence_check(text, list, err, msg, ignore_case=True,
         flags = flags | re.DOTALL
 
     if require_padding:
-        regex = u"(?:^|\W){}[\W$]"
+        regex = u"(^|\W){}([\W$])"
     else:
         regex = u"{}"
 
@@ -335,9 +335,17 @@ def existence_check(text, list, err, msg, ignore_case=True,
     rx = "|".join(regex.format(w) for w in list)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
+        start = m.start() + offset
+        end = m.end() + offset
+        if require_padding:
+            startpad_len = len(m.group(1)) if m.group(1) else 0
+            start += startpad_len
+            endpad_len = len(m.group(2)) if m.group(2) else 0
+            end -= (startpad_len + endpad_len)
+
         errors.append((
-            m.start() + 1 + offset,
-            m.end() + offset,
+            start,
+            end,
             err,
             msg.format(txt),
             None))

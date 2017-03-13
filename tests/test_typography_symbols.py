@@ -18,7 +18,10 @@ class TestCheck(Check):
 
     def test_ellipsis(self):
         """Find ... in a string."""
-        assert chk.check_ellipsis("""The long and winding road...""")
+        errors = chk.check_ellipsis("""The long and winding road...""")
+        assert errors == [(
+            25, 28, 'typography.symbols.ellipsis',
+            "'...' is an approximation, use the ellipsis symbol '…'.", None)]
 
     def test_copyright(self):
         """Find a (c) or (C) in a string."""
