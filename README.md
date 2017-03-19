@@ -17,7 +17,7 @@ We devised a simple solution: `proselint`, a linter for English prose. (A linter
 
 ### Installation
 
-To get this up and running, install it using pip:
+To get this up and running, install it using [pip](https://packaging.python.org/installing/#use-pip-for-installing):
 
 ```
 pip install proselint
