@@ -16,7 +16,7 @@ class TestCheck(Check):
 
     @property
     def this_check(self):
-        """Bolierplate."""
+        """Boilerplate."""
         return chk
 
     def test_smoke(self):
