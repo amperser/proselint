@@ -13,7 +13,7 @@ class TestCheck(Check):
 
     @property
     def this_check(self):
-        """Bolierplate."""
+        """Boilerplate."""
         return chk
 
     def setUp(self):
