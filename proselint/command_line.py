@@ -109,11 +109,12 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--json', '-j', 'output_json', is_flag=True,
               help="Output as JSON.")
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
+@click.option('--stdin', is_flag=True, help="Read the from standard input.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, version=None, clean=None, debug=None,
+def proselint(paths=None, version=None, clean=None, debug=None, stdin=None,
               output_json=None, time=None, demo=None, compact=None):
     """A CLI for proselint, a linter for prose."""
     if time:
@@ -139,6 +140,16 @@ def proselint(paths=None, version=None, clean=None, debug=None,
             errors = lint(f, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
+        except Exception:
+            traceback.print_exc()
+
+    # Read from standard input
+    if stdin:
+        try:
+            text = ''.join(sys.stdin.readlines())
+            errors = lint(text, debug=debug)
+            num_errors += len(errors)
+            print_errors('stdin', errors, output_json, compact=compact)
         except Exception:
             traceback.print_exc()
 
