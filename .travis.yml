@@ -1,6 +1,9 @@
 sudo: required
 dist: trusty
 language: python
+os:
+- linux
+- osx
 python:
 - '2.7'
 - '3.3'
