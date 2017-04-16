@@ -21,6 +21,7 @@ class TestCheck(Check):
         self.l_garner = """Worse than a fate worse than death."""
         self.l_write_good = """He's a chip off the old block."""
         self.l_gnu_diction = """It's a matter of concern."""
+        self.l_misc = """Let's face it, puppies are cute.'"""
 
     def test_cliches_garner_basic(self):
         """Basic checks on check_cliches_garner."""
@@ -44,3 +45,12 @@ class TestCheck(Check):
         assert chk.check_cliches_gnu_diction(self.l_gnu_diction) != []
         assert "cliches.gnu_diction" in chk.check_cliches_gnu_diction(
             self.l_gnu_diction)[0]
+
+
+    def test_cliches_misc(self):
+        """Basic check on check_cliches_misc."""
+        assert chk.check_cliches_misc("""No cliches here.""") == []
+        # use one of the example cliches to verify basic functionality
+        assert chk.check_cliches_misc(self.l_misc) != []
+        assert "cliches.misc" in chk.check_cliches_misc(
+            self.l_misc)[0]
