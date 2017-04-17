@@ -173,4 +173,7 @@ def extract_files(files):
 
 
 if __name__ == '__main__':
-    proselint()
+    try:
+        proselint()
+    except SystemExit:
+        os._exit(0)
