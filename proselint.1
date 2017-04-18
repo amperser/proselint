@@ -1,0 +1,42 @@
+.TH proselint "1" "28 February 2016" "proselint" ""
+
+.SH NAME
+proselint \- A prose lint command-line utility
+
+.SH SYNOPSIS
+.B proselint
+.RI [ options ]
+
+.SH DESCRIPTION
+Proselint is a command-line utility that aggregates knowledge about best
+practices in writing from world's greatest writers and editors, and makes it
+accessible by giving suggestions in the form of a linter for prose.
+.SH OPTIONS
+Proselint accepts the following options:
+.TP
+If no file is provided, proselint will run the included demo.md.
+.TP
+.B "--help"
+Show help options
+.TP
+.B "--version, --whatever"
+Print version string and exit
+.TP
+.B "--i, --initialize"
+Run the initialization
+.TP
+.B "--d, --debug"
+Output debug information
+.TP
+.B "--s, --score"
+Output lint score
+.TP
+.B "--j, --json"
+Display the errors in json format
+.TP
+.B "--t, --time"
+Run a timing test, useful for developing (needs a populated corpora/ directory)
+.TP
+
+.SH "ADDITIONAL INFORMATION"
+For further information, visit the website http://proselint.com.
