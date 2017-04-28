@@ -14,7 +14,8 @@ setup(
     author='Amperser Labs',
     author_email='hello@amperser.com',
     license='BSD',
-    packages=find_packages(),
+    packages=find_packages(
+        exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     package_data={'': ['demo.md', '.proselintrc']},
     zip_safe=False,
     entry_points={
