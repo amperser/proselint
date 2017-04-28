@@ -23,6 +23,15 @@ except ImportError:
 from socket import error as SocketError
 standard_library.install_aliases()
 
+if str is bytes:
+    # Python 3 doesn't have ur'...' strings.
+    # With the help of this function, you can write u(r'...') instead.
+    def u(s):
+        return s.decode('utf-8')
+else:
+    def u(s):
+        return s
+
 
 @memoize
 def check(text):
@@ -31,10 +40,10 @@ def check(text):
     msg = u"Broken link: {}"
 
     regex = re.compile(
-        r"""(?i)\b((?:https?://|www\d{0,3}[.]
+        u(r"""(?i)\b((?:https?://|www\d{0,3}[.]
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
-        |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
+        |[^\s`!()\[\]{};:\'".,<>?\xab\xbb“”‘’↩]))"""),
         re.U | re.X)
 
     errors = []
