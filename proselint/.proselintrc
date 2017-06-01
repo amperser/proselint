@@ -35,7 +35,7 @@
         "misc.false_plurals"            : true,
         "misc.illogic"                  : true,
         "misc.inferior_superior"        : true,
-		"misc.institution_name"			: true,
+        "misc.institution_name"         : true,
         "misc.latin"                    : true,
         "misc.many_a"                   : true,
         "misc.metaconcepts"             : true,
