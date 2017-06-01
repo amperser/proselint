@@ -13,6 +13,7 @@ categories: writing
 Check that links are not broken.
 
 """
+from __future__ import unicode_literals
 from proselint.tools import memoize
 from future import standard_library
 import re
