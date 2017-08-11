@@ -5,7 +5,7 @@ bumpversion==0.5.3
 click==6.7
 coverage==4.4.1
 coveralls==1.1
-Flask-API==0.6.9
+Flask-API==0.7.1
 Flask-Cors==2.1.2
 Flask==0.12.2
 Flask-Limiter==0.9.3
