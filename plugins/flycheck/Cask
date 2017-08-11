@@ -1,0 +1,10 @@
+;; -*- emacs-lisp -*-
+
+(source gnu)
+(source melpa)  ;; FIXME: use melpa-stable when it's back up
+
+(development
+ (depends-on "buttercup")
+
+ (depends-on "flycheck")
+ (depends-on "markdown-mode"))

@@ -6,6 +6,10 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
+before_install:
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > emacs-version-manager-travis.sh && source ./emacs-version-manager-travis.sh
+  - evm install $EVM_EMACS --use --skip
+  - ( cd plugins/flycheck && cask )
 install:
 - pip install -r requirements.txt
 - gem install travis
@@ -17,6 +21,7 @@ install:
 - gem install kramdown
 - gem install danger
 - gem install danger-prose
+- ( cd plugins/flycheck && cask install )
 before_script:
 - travis lint -x --skip-completion-check
 script:
@@ -32,6 +37,8 @@ script:
     cd ..;
     wget --spider -e robots=off -w 1 -r -p http://www.proselint.com;
   fi
+- emacs --version
+- ( cd plugins/flycheck && cask exec buttercup -L . )
 after_success:
 - coveralls
 env:
@@ -41,6 +48,8 @@ env:
   - secure: EdCRjICaZwf3NOKPulTMZmWzx1d0yjbrOOv4YwcaDRpaTwhgzm/BIqi8UCWMY1zOk39+dZj+2Tn8pGOaDhiLbJimyEk8+xOiMmBXc2RBlKmsfktM+I+hZmVFDEOMVxI1VefV97Xhd8+hsojyDcgQ1vRPuv9tSrCvS/yY0eM0nHg=
   - secure: wvSA6fpl4oEsQHhp99csnyt2aXaGcFx6tsvhVteielmV7cLSblCK3Ne8wkzeGY0E8XXdu3P2sFbwRYiA26tOI87VaNRRutb4VptarSglB1w6UvLK11cepEfk89LIeFvLSC5aEdGeFhcp+gUCn3ZjicRSuMsEQgD2ifEOSzWc7FXbR3I5f3m58Xlw70y90Beoa3UginKZrB9cskUA60LgZDwwrTjvM4GzHpP3gSbL3+2dUaVxJBsiZFmGk9D2pfRc449oz5f9FxK0fgY2x0lDnxN9tQ0X7tF4icl/bzzIjkoSXrYCTtSdLFsG4P0Q7baN2jB3D81iCaqqoqyW0lspAAbQCLXcC9Qqjtlz+tZI6PARtbLn7O4P1IHyjMY6i1orX3OfYgP+51OyS8QTHabXVuluYspA2yrw7+UcNPuv3KUt8M4hFNEEYpAl3g8Ti17U48GZiLzpZyoYyqalE4psb4CfZH9GmEr5IQT9uMKcq+NHgOS01kwDT1ry3TuM0ttNgGy9jCtm5hWs9DQZwVLWXO/ao+w+6rf8kTBdfpzb4/JhH3Nsgfj7gwQlnGZZpE6RfEx3mZGRNFpbalSCnlTgBn7uKilcPOQPpCgU0zLkH3aidAruG6s+5dW+Q9WJfuZZiUhmcr1JYEIR+e9KkjJF6DDuqM+TZiwKTsbZntu29ao=
   - secure: DKS6Z+Jp7Mkgc/YKfXkUc1adkgoVt1LvvfMrXB241aw0G4d9sICLQDXBQgp79+ONpUKaeuoNkZt8K+0uMKpXkHixJB1zMBLRb3W+FXoaavHrtgamjEs4JA2UuHBKQ/5G+iMgmQqy1vSzYNLQT/QTOhl1y0Zg4x22wFFaNXSXqxKvcX+YzzwWddwAyirSX8spfeWQ9rG0hRuWJhhcO/nVL8lCf97aLgXCrPE8vy6JuGsRM1ZAZ/4yYEar3EXPWCtuRnuGeUX8GS+R2am0H9dTts+ERUIzwcyZbCdYSH6TjNpv24MWX0XD0VfhtQBkw9QmTGZ8wCypKTZ+w2HqPL9XEYOh70yEmr2I8gEgbXoOqa8I+WvrdYdKwl+iGPXDQLh60f5IZvWpWQAPOzDbeeAGFBx7rzxnuFem52fyzytp4lEYfuE11spOAk96fQJTPpVKDCS2tLvtMOAN/bIDghd+oriK4o1Qy5o3oZA0uResztAJTgm2Qx2NuqtFPr+Zv/NvPq6gSTlsLUkh1TVEolBB5SbDIzg8PEU7Ml6mdmGSWlYpzug2L01ly1GvJSnx0ObivSwQJibti8jAFiyD6DMBnlwrYmv8CXfc+NROZy35NADUE9VRaQRvObQJZfWFVvVCCmhqUNCYAceZ88Y2lgKMtL3t74rUAcWgbhrDYWZHo98=
+  matrix:
+    - EVM_EMACS=emacs-25.1-travis
 notifications:
   email:
     recipients:
