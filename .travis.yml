@@ -5,6 +5,7 @@ python:
 - '2.7'
 - '3.4'
 - '3.5'
+- '3.6'
 before_install:
   - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > emacs-version-manager-travis.sh && source ./emacs-version-manager-travis.sh
   - evm install $EVM_EMACS --use --skip
@@ -68,4 +69,4 @@ deploy:
     tags: true
     repo: amperser/proselint
     branch: master
-    python: 3.5
+    python: 3.6

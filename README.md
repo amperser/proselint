@@ -228,7 +228,7 @@ Automated tests are included in the `proselint/tests` directory. To run these te
 cd tests/
 nosetests
 ```
-and watch the output. Nose is compatible with Python versions 2.7, 3.4 and 3.5.
+and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
 
 All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests.
 
