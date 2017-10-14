@@ -24,7 +24,7 @@ def check(text):
              some other way to say it."""
 
     list = [
-        "add",
+        # "add", FIXME use topic detetor to decide whether "add" is offensive
         "autism",
         "autistic",
         "blind",
