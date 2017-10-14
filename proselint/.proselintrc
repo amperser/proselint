@@ -1,6 +1,8 @@
 {
     "max_errors": 1000,
     "checks": {
+        "ableism.offensive_terms"       : true,
+        "ableism.terms"                 : true,
         "airlinese.misc"                : true,
         "annotations.misc"              : true,
         "archaism.misc"                 : true,
