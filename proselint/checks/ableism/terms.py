@@ -23,7 +23,7 @@ def check(text):
     msg = u"""'{}' is potentially an ableist term. Consider the context and find
              some other way to say it."""
 
-    list = [
+    terms_to_flag = [
         # "add", FIXME use topic detetor to decide whether "add" is offensive
         "autism",
         "autistic",
@@ -78,6 +78,8 @@ def check(text):
         "wheelchair bound",
         "yuppie flu"
     ]
-    list = [term.replace(" ","[ -]") for term in list]
 
-    return existence_check(text, ableism, err, msg)
+    # Test for both hyphenated and two-word forms
+    terms_to_flag = [term.replace(" ","[ -]") for term in terms_to_flag]
+
+    return existence_check(text, terms_to_flag, err, msg)
