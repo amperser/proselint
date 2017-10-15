@@ -134,6 +134,8 @@ You can disable any of the checks by modifying `~/.proselintrc`:
 
 | ID    | Description     |
 | ----- | --------------- |
+| `ableism.offensive_terms` | Avoiding offensive ableist terms |
+| `ableism.terms` | Potentially ableist language |
 | `airlinese.misc` | Avoiding jargon of the airline industry |
 | `annotations.misc` | Catching annotations left in the text |
 | `archaism.misc` | Avoiding archaic forms |
