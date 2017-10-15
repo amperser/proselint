@@ -20,7 +20,7 @@
         "hyperbole.misc"                : true,
         "jargon.misc"                   : true,
         "lexical_illusions.misc"        : true,
-        "lgbtq.offensive_terms"         : true, 
+        "lgbtq.offensive_terms"         : true,
         "lgbtq.terms"                   : true,
         "links.broken"                  : false,
         "malapropisms.misc"             : true,
