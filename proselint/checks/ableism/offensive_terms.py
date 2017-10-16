@@ -70,6 +70,6 @@ def check(text):
     ]
 
     # Test for both hyphenated and two-word forms
-    terms_to_flag = [term.replace(" ","[ -]") for term in terms_to_flag]
+    terms_to_flag = [term.replace(" ", "[ -]") for term in terms_to_flag]
 
-    return existence_check(text, terms_to_flag, err, msg, join=True, ignore_case=False)
+    return existence_check(text, terms_to_flag, err, msg, join=True)
