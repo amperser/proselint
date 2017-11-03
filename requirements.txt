@@ -21,7 +21,7 @@ pep8==1.7.1
 queuelib==1.4.2
 redis==2.10.5
 requests==2.18.3
-rq==0.5.6
+rq==0.9.1
 six==1.11.0
 Werkzeug==0.12.2
 wikipedia==1.4.0
