@@ -24,5 +24,6 @@ redis==2.10.6
 requests==2.19.1
 rq==0.12.0
 six==1.11.0
+spacy==2.0.1
 Werkzeug==0.14.1
 wikipedia==1.4.0
