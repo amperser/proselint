@@ -23,5 +23,5 @@ redis==2.10.5
 requests==2.18.3
 rq==0.5.6
 six==1.11.0
-Werkzeug==0.12.2
+Werkzeug==0.14.1
 wikipedia==1.4.0
