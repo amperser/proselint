@@ -92,22 +92,24 @@ def print_errors(filename, errors, output_json=False, compact=False):
                 check + " " +
                 message)
 
+
 def add_checks(src):
     """Add custom checks to checks folder."""
     dest = proselint_path + "/checks/" + src[src.rfind('/')+1:]
     shutil.copytree(src, dest)
 
+
 def add_location(path):
-    """Add custom location for proselintrc"""
+    """Add custom location for proselintrc."""
     tools_path = proselint_path + "/tools.py"
     with open(tools_path, "r") as in_file:
-      buf = in_file.readlines()
- 
+        buf = in_file.readlines()
+
     with open(tools_path, "w") as out_file:
-     for line in buf:
-         if line == "    possible_defaults = (\n":
-             line = line + "        '" + path + "',\n"
-         out_file.write(line)
+        for line in buf:
+            if line == "    possible_defaults = (\n":
+                line = line + "        '" + path + "',\n"
+            out_file.write(line)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -119,14 +121,16 @@ def add_location(path):
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
-@click.option('--checks', '-chk', type=click.Path(), help="Path to custom checks")
-@click.option('--proselintrc', '-prc', type=click.Path(), help="Path to proselintrc")
+@click.option('--checks', '-chk', type=click.Path(),
+              help="Path to custom checks")
+@click.option('--proselintrc', '-prc', type=click.Path(),
+              help="Path to proselintrc")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(checks, proselintrc, paths=None, version=None, clean=None, debug=None,
-              output_json=None, time=None, demo=None, compact=None,):
+def proselint(checks, proselintrc, paths=None, version=None,
+              clean=None, debug=None, output_json=None, time=None,
+              demo=None, compact=None,):
     """A CLI for proselint, a linter for prose."""
-
     if time:
         click.echo(timing_test())
         return
@@ -155,11 +159,11 @@ def proselint(checks, proselintrc, paths=None, version=None, clean=None, debug=N
 
     # Add custom checks
     if checks:
-      add_checks(checks) 
+        add_checks(checks)
 
     # Add custom proselintrc file
     if proselintrc:
-      add_location(proselintrc)               
+        add_location(proselintrc)
 
     # Return an exit code
     close_cache_shelves()
@@ -168,7 +172,7 @@ def proselint(checks, proselintrc, paths=None, version=None, clean=None, debug=N
     else:
         sys.exit(0)
 
-   
+
 def extract_files(files):
     """Expand list of paths to include all text files matching the pattern."""
     expanded_files = []
