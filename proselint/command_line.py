@@ -95,8 +95,38 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 def add_checks(src):
     """Add custom checks to checks folder."""
-    dest = proselint_path + "/checks/" + src[src.rfind('/')+1:]
+    folder_name = src[src.rfind('/')+1:]
+    dest = proselint_path + "/checks/" + folder_name
     shutil.copytree(src, dest)
+
+    # copy over new checks to proselintrc
+    dest_prc = proselint_path + "/.proselintrc"
+    with open(dest_prc, "r") as in_file:
+        buf = in_file.readlines()
+
+    pos = len(buf)-2
+
+    tests = [f for f in os.listdir(src)]
+
+    with open(dest_prc, "w") as out_file:
+        for index, line in enumerate(buf):
+            if index == pos-1 and not line.endswith(",\n"):
+                line = line[0:line.rfind("\n")] + ",\n"
+            if index < pos:
+                out_file.write(line)
+        for index, test in enumerate(tests):
+            if test == "__init__.py" or test == "__pycache__":
+                continue
+            line = ' '*8 + "\"" + folder_name + "."
+            line = line + test[0:test.rfind('.')] + "\""
+            offset = 40 - len(line)
+            if index != len(tests)-1:
+                line = line + ' '*offset + ": true,\n"
+            else:
+                line = line + ' '*offset + ": true\n"
+            out_file.write(line)
+        out_file.write("    }\n")
+        out_file.write("}")
 
 
 def add_location(path):
