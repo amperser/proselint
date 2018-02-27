@@ -23,6 +23,25 @@ To get this up and running, install it using [pip](https://packaging.python.org/
 pip install proselint
 ```
 
+#### Fedora
+
+```
+sudo dnf install proselint
+```
+
+#### Debian
+
+```
+sudo apt install python3-proselint
+```
+
+#### Ubuntu
+
+```
+sudo add-apt-repository universe
+sudo apt install python3-proselint
+```
+
 ### Plugins for other software
 
 `proselint` is available on:
