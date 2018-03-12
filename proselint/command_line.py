@@ -49,7 +49,6 @@ def clear_cache():
     # see issue #624
     _delete_compiled_python_files()
     _delete_cache()
-    _create_home_cache()
 
 
 def _delete_compiled_python_files():
@@ -67,14 +66,6 @@ def _delete_cache():
     proselint_cache = os.path.join("proselint", "cache")
     try:
         shutil.rmtree(proselint_cache)
-    except OSError:
-        pass
-
-
-def _create_home_cache():
-    """Create a cache in the users 'HOME' directory."""
-    try:
-        os.makedirs(os.path.join(os.path.expanduser("~"), ".proselint"))
     except OSError:
         pass
 

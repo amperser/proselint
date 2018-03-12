@@ -47,6 +47,24 @@ def close_cache_shelves_after(f):
     return wrapped
 
 
+def _get_xdg_path(variable_name, default_path):
+    path = os.environ.get(variable_name)
+    if path is None or path == '':
+        return default_path
+    else:
+        return path
+
+
+def _get_xdg_config_home():
+    return _get_xdg_path('XDG_CONFIG_HOME',
+                         os.path.join(os.path.expanduser('~'), '.config'))
+
+
+def _get_xdg_cache_home():
+    return _get_xdg_path('XDG_CACHE_HOME',
+                         os.path.join(os.path.expanduser('~'), '.cache'))
+
+
 def _get_cache(cachepath):
     if cachepath in _cache_shelves:
         return _cache_shelves[cachepath]
@@ -81,11 +99,16 @@ def _get_cache(cachepath):
 def memoize(f):
     """Cache results of computations on disk."""
     # Determine the location of the cache.
-    cache_dirname = os.path.join(os.path.expanduser("~"), ".proselint")
+    cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
+    legacy_cache_dirname = os.path.join(os.path.expanduser("~"), ".proselint")
 
-    # Create the cache if it does not already exist.
     if not os.path.isdir(cache_dirname):
-        os.mkdir(cache_dirname)
+        # Migrate the cache from the legacy path to XDG complaint location.
+        if os.path.isdir(legacy_cache_dirname):
+            os.rename(legacy_cache_dirname, cache_dirname)
+        # Create the cache if it does not already exist.
+        else:
+            os.makedirs(cache_dirname)
 
     cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
@@ -157,10 +180,20 @@ def load_options():
             pass
 
     try:
-        user_options = json.load(open(os.path.expanduser('~/.proselintrc')))
+        user_options = json.load(
+            open(os.path.join(_get_xdg_config_home(), 'proselint', 'config')))
         has_overrides = True
     except IOError:
         pass
+
+    # Read user configuration from the legacy path.
+    if not has_overrides:
+        try:
+            user_options = json.load(
+                open(os.path.join(os.path.expanduser('~'), '.proselintrc')))
+            has_overrides = True
+        except IOError:
+            pass
 
     if has_overrides:
         if 'max_errors' in user_options:

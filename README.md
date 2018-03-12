@@ -123,7 +123,8 @@ This will return a list of suggestions:
 
 ### Checks
 
-You can disable any of the checks by modifying `~/.proselintrc`:
+You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used.
+Additionally for compatible reason, the legacy configuration `~/.proselintrc` will be used if `$XDG_CONFIG_HOME/proselint/config` does not exist.
 
 ```json
 {
