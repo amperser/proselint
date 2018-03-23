@@ -18,7 +18,7 @@ mock==2.0.0
 nose==1.3.7
 pep257==0.7.0
 pep8==1.7.1
-queuelib==1.4.2
+queuelib==1.5.0
 redis==2.10.5
 requests==2.18.3
 rq==0.5.6
