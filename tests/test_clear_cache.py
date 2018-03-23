@@ -140,27 +140,3 @@ class Test__delete_cache(unittest.TestCase):
     def test_on_oserror(self, mock_rmtree):
         """Ignore if general OSError."""
         cl._delete_cache()
-
-
-class Test_create_home_cache(unittest.TestCase):
-    """proselint.command_line._create_home_cache()."""
-
-    def setUp(self):
-        """Init common data."""
-        self.cache_path = os.path.join(os.path.expanduser("~"), ".proselint")
-
-    @mock.patch('os.makedirs')
-    def test_makedir(self, mock_makedir):
-        """correct directory is used."""
-        cl._create_home_cache()
-        mock_makedir.assert_called_with(self.cache_path)
-
-    @mock.patch('os.makedirs', side_effect=OSError)
-    def test_on_oserror(self, mock_rmtree):
-        """Ignore if general OSError."""
-        cl._create_home_cache()
-
-    @mock.patch('os.makedirs', side_effect=PermissionError)
-    def test__no_permission(self, mock_rmtree):
-        """Ignore if unable to delete."""
-        cl._create_home_cache()
