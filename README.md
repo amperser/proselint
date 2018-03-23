@@ -23,6 +23,25 @@ To get this up and running, install it using [pip](https://packaging.python.org/
 pip install proselint
 ```
 
+#### Fedora
+
+```
+sudo dnf install proselint
+```
+
+#### Debian
+
+```
+sudo apt install python3-proselint
+```
+
+#### Ubuntu
+
+```
+sudo add-apt-repository universe
+sudo apt install python3-proselint
+```
+
 ### Plugins for other software
 
 `proselint` is available on:
@@ -35,7 +54,8 @@ pip install proselint
 - [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
 - [x] [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
 - [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
-- [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))  
+- [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
+- [x] [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
 
 ### Usage
 
@@ -122,7 +142,8 @@ This will return a list of suggestions:
 
 ### Checks
 
-You can disable any of the checks by modifying `~/.proselintrc`:
+You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used.
+Additionally for compatible reason, the legacy configuration `~/.proselintrc` will be used if `$XDG_CONFIG_HOME/proselint/config` does not exist.
 
 ```json
 {
@@ -228,7 +249,7 @@ Automated tests are included in the `proselint/tests` directory. To run these te
 cd tests/
 nosetests
 ```
-and watch the output. Nose is compatible with Python versions 2.7, 3.3, 3.4 and 3.5.
+and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
 
 All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests.
 

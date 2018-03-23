@@ -3,9 +3,9 @@ dist: trusty
 language: python
 python:
 - '2.7'
-- '3.3'
 - '3.4'
 - '3.5'
+- '3.6'
 install:
 - pip install -r requirements.txt
 - gem install travis
@@ -60,4 +60,4 @@ deploy:
     tags: true
     repo: amperser/proselint
     branch: master
-    python: 3.5
+    python: 3.6
