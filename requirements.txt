@@ -7,7 +7,7 @@ coverage==4.5.1
 coveralls==1.3.0
 Flask-API==0.6.9
 Flask-Cors==2.1.2
-Flask==0.12.2
+Flask==1.0.1
 Flask-Limiter==0.9.3
 future==0.15.2
 gunicorn==19.7.1
