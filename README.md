@@ -56,6 +56,7 @@ sudo apt install python3-proselint
 - [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
 - [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
 - [x] [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
+- [x] [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 
 ### Usage
 
