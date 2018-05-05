@@ -128,20 +128,6 @@ def add_checks(src):
         out_file.write("    }\n")
         out_file.write("}")
 
-
-def add_location(path):
-    """Add custom location for proselintrc."""
-    tools_path = proselint_path + "/tools.py"
-    with open(tools_path, "r") as in_file:
-        buf = in_file.readlines()
-
-    with open(tools_path, "w") as out_file:
-        for line in buf:
-            if line == "    possible_defaults = (\n":
-                line = line + "        '" + path + "',\n"
-            out_file.write(line)
-
-
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
@@ -153,11 +139,9 @@ def add_location(path):
 @click.option('--compact', is_flag=True, help="Shorten output.")
 @click.option('--checks', '-chk', type=click.Path(),
               help="Path to custom checks")
-@click.option('--proselintrc', '-prc', type=click.Path(),
-              help="Path to proselintrc")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(checks, proselintrc, paths=None, version=None,
+def proselint(checks=None, paths=None, version=None,
               clean=None, debug=None, output_json=None, time=None,
               demo=None, compact=None,):
     """A CLI for proselint, a linter for prose."""
@@ -190,10 +174,6 @@ def proselint(checks, proselintrc, paths=None, version=None,
     # Add custom checks
     if checks:
         add_checks(checks)
-
-    # Add custom proselintrc file
-    if proselintrc:
-        add_location(proselintrc)
 
     # Return an exit code
     close_cache_shelves()
