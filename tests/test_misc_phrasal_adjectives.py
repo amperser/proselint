@@ -27,3 +27,12 @@ class TestCheck(Check):
         assert chk.check_ly("""He ran swiftly-fast.""")
         assert chk.check_ly("""The not-so-hotly-contested
                              result was fine.""") == []
+
+    def test_ly_position(self):
+        """Tests the start and ending position of check_ly"""
+        error = chk.check_ly("""He ran swiftly-fast""")[0]
+        assert error[0] == 6 and error[1] == 14
+
+    def test_ly_multiple_dashes(self):
+        """Tests that multiple dashes are not considered regular hyphens"""
+        assert chk.check_ly("""This is handled internally---at least""") == []
