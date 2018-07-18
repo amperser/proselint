@@ -10,7 +10,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Substitute 'damn' every time you're inclined to write 'very;' your editor will
+Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
@@ -22,7 +22,7 @@ def check(text):
     """Avoid 'very'."""
     err = "weasel_words.very"
     msg = ("Substitute 'damn' every time you're "
-           "inclined to write 'very;' your editor will delete it "
+           "inclined to write 'very'; your editor will delete it "
            "and the writing will be just as it should be.")
     regex = "very"
 
