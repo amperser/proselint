@@ -244,10 +244,9 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 
 ### Running Automated Tests
 
-Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [nose](http://nose.readthedocs.io/en/latest/) and run the following commands:
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [pytest](https://docs.pytest.org/en/latest/) and run the following commands:
 ```bash
-cd tests/
-nosetests
+pytest
 ```
 and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
 
