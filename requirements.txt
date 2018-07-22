@@ -20,7 +20,7 @@ pytest==3.6.3
 pep257==0.7.0
 pep8==1.7.1
 queuelib==1.5.0
-redis==2.10.5
+redis==2.10.6
 requests==2.18.3
 rq==0.12.0
 six==1.11.0
