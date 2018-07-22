@@ -23,7 +23,7 @@ script:
 - pep8 .
 - pep257 . --match='.*\.py'
 - bundle exec danger
-- nosetests --with-coverage --cover-package proselint
+- py.test
 - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     python scripts/insert_demo.py;
     cd site;
