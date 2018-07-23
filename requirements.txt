@@ -26,3 +26,4 @@ rq==0.12.0
 six==1.11.0
 Werkzeug==0.14.1
 wikipedia==1.4.0
+python-dbm; sys_platform == 'linux'
