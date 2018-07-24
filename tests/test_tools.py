@@ -1,6 +1,7 @@
 """Test the tools module."""
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from .check import Check
 
@@ -18,7 +19,7 @@ class TestLint(Check):
 This is also a no-good sentence.
 
 """
-        self.text_with_no_newline = """A very bad sentence."""
+        self.text_with_no_newline = u"A very bad sentence."""
 
     def extract_line_col(self, error):
         """Extract the line and column number from an error tuple."""
