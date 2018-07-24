@@ -17,3 +17,4 @@ corpora/*
 dist/
 *.pstore
 .pytest_cache/*
+*.DS_Store
