@@ -4,21 +4,27 @@
 
 from __future__ import print_function
 from __future__ import unicode_literals
+import functools
+import hashlib
+import importlib
+import inspect
+import json
+import os
+import re
+import shelve
 import sys
 import traceback
-import os
-import shelve
-import inspect
-import functools
-import re
-import hashlib
-import json
-import importlib
+import warnings
 
 try:
     import dbm
 except ImportError:
     import anydbm as dbm
+
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+
+import spacy  # noqa
 
 PY3 = sys.version_info[0] == 3
 if PY3:
@@ -246,6 +252,9 @@ def lint(input_file, debug=False):
         text = input_file
     else:
         text = input_file.read()
+
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp(text)
 
     # Get the checks.
     checks = get_checks(options)
