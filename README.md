@@ -154,6 +154,12 @@ Additionally for compatible reason, the legacy configuration `~/.proselintrc` wi
 }
 ```
 
+You can also provide a custom path to `proselintrc`. To do so:
+
+```bash
+❯ proselint --proselintrc \path\to\custom\proselintrc
+```
+
 | ID    | Description     |
 | ----- | --------------- |
 | `airlinese.misc` | Avoiding jargon of the airline industry |
