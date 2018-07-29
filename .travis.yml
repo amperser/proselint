@@ -23,7 +23,7 @@ script:
 - pep8 .
 - pep257 . --match='.*\.py'
 - bundle exec danger
-- nosetests --with-coverage --cover-package proselint
+- py.test
 - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     python scripts/insert_demo.py;
     cd site;
@@ -52,12 +52,12 @@ addons:
     repo_token: 32f92d10b6a0f99a4b35f3e7022040f10dc68b640525237af401b7c4e44faf46
 deploy:
   provider: pypi
-  user: hello@amperser.com
-  password:
-    secure: bCfE0OL+zcAiwfoVWUoFFj25IYdXz34ABOxtqBoJir3NxeWpfn8ERh2f42DPO/Zl3Yd9FCW4V+4ElyWSkJkkZYAD7Ss1SvV5RXTL8I/DGx4GgiJ8V0v1aJ/nQfVBLG5UnzDXpyRyZ3LfnQ+ueVWmTjXkiCBbW4HhfyfeWlCpDI0CybxMJZuKmVXzQxxUq0iIUZmAUKJ8xz6/KXlTELtr4upHz7fgQc9Au6a2TNR1KreCOaciTvU6/4v99b4lphxYQ9IX9hQPzEmDVnAlKkY0AQHiLjkj95CoVKQa0fm2TreW8pvURfS6l9vQ36jCV2OgFfsBpXTMuYTWoNyGFNcvMTguZvJKAPGqWQ4AT2WRczfPC/zthks/T2BcgmMHOpRpV6c+yapATEXlTFlegoUhX1ewLM26yd9kMyxBifUMeOOzp5Nwc2Y0rRkGq2LJ8QkTnHoR16r0UnJnXI3nWd1ezJ6TzTCpxIeTDDdISYgta06w2+TDEwGP7ptcbjXYTBYnmGmqBaOfcsOOWCnEQ4ygOf3bJxQk/E+TCSmzDYmvPXF79jBIjKvXx5JN19VUXWxfeKCo6oWpNtkTBZI7HMzrZriDXgRVrz3c3sQNME2K2Yf3b5YWgSQprE4YLwttg+GkdDntVP5l0JL7pLmHYQ6xdCATox7W9etJVvVZuhlVPUw=
-  distributions: "sdist bdist_wheel"
+  user: amperser
+  distributions: sdist bdist_wheel
   on:
     tags: true
     repo: amperser/proselint
     branch: master
     python: 3.6
+  password:
+    secure: g0ki780HtYsGXKuhcBw1+LCzF30gCP07V0PsTjPPCwzuJnVMMl4XeJ8Zre1IHCk2k4F92mjQfcUWuIC4VKnYnH9R9D7empEcrKa5ligYKeNIT4k6pC6T7B/gmrESddoVFqmIVdFbVxlRxTpaUoKWb5En2VCCkgKI6LoQpkKKthb0rLVkkTgEoa0CemVffz0HLE1y2Xt8eGR9CvY4P79E2VPbm8TGwrR+j3cVwshZE3gINvUYN2Y/8hogMk84v8iJiXxkEYM13ib+Ah9zI8QsSC4/lGdxXDqFkiQZwncKw9YC5DxZ5SdoAcleIEAWwEHuZ0Pq7KQ9pOfrqv38r4HBaKUZa6IrEC0A1+aeM8xrH8Bl6B+Hxng5WywPicAen97oRyteazvshUVmv8mq2rzGcOrPG8XNrO5OvLgkdo4/3Xeips6ZyBorDGabYQywc5ZydLkSGnn+5jffi1+eEJKndjkPVBjLgE2c0nt1yAxqYkrzO+R6NKpqwhUEfCblN0SOuBNJrDLOLP+wH22Hmn+N0im0S6JT5L2cXDZq2Og3/ES1g2yHS0aNCKN5awaybVuMSHLd3WTkyT3MgWUgBbkFJ3AGMpNZrVsktpKpNfz8F4doDvPwaWTcxB0/DIQNBzX4Zn8FDOBaWYuk31rDurFwSTZ/k8nvjnngSjcacL9Gjn0=
