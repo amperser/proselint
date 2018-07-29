@@ -128,6 +128,7 @@ def add_checks(src):
         out_file.write("    }\n")
         out_file.write("}")
 
+
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
