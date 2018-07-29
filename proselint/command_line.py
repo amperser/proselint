@@ -93,16 +93,16 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 
 def add_location(path):
-    """Add custom location for proselintrc"""
+    """Add custom location for proselintrc."""
     tools_path = proselint_path + "/tools.py"
     with open(tools_path, "r") as in_file:
-      buf = in_file.readlines()
+        buf = in_file.readlines()
 
     with open(tools_path, "w") as out_file:
-     for line in buf:
-         if line == "    possible_defaults = (\n":
-             line = line + "        '" + path + "',\n"
-         out_file.write(line)
+        for line in buf:
+            if line == "    possible_defaults = (\n":
+                line = line + "        '" + path + "',\n"
+            out_file.write(line)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -114,7 +114,8 @@ def add_location(path):
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
-@click.option('--proselintrc', '-prc', type=click.Path(), help="Path to proselintrc")
+@click.option('--proselintrc', '-prc', type=click.Path(),
+              help="Path to proselintrc")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
 def proselint(proselintrc, paths=None, version=None, clean=None, debug=None,
@@ -158,7 +159,7 @@ def proselint(proselintrc, paths=None, version=None, clean=None, debug=None,
 
     # Add custom proselintrc file
     if proselintrc:
-      add_location(proselintrc)
+        add_location(proselintrc)
 
     # Return an exit code
     close_cache_shelves()
