@@ -56,6 +56,7 @@ sudo apt install python3-proselint
 - [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
 - [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
 - [x] [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
+- [x] [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 
 ### Usage
 
@@ -252,10 +253,9 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 
 ### Running Automated Tests
 
-Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [nose](http://nose.readthedocs.io/en/latest/) and run the following commands:
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [pytest](https://docs.pytest.org/en/latest/) and run the following commands:
 ```bash
-cd tests/
-nosetests
+pytest
 ```
 and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
 

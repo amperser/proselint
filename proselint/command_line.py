@@ -163,9 +163,19 @@ def proselint(checks=None, paths=None, version=None,
 
     # Lint the files
     num_errors = 0
+
+    # Use stdin if no paths were specified
+    if len(paths) == 0:
+        filepaths.append('-')
+
     for fp in filepaths:
         try:
-            f = click.open_file(fp, 'r', encoding="utf-8", errors="replace")
+            if fp == '-':
+                fp = '<stdin>'
+                f = sys.stdin
+            else:
+                f = click.open_file(
+                    fp, 'r', encoding="utf-8", errors="replace")
             errors = lint(f, debug=debug)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)

@@ -1,5 +1,19 @@
 # Change Log
 
+## [0.10.0](https://github.com/amperser/proselint/tree/0.10.0) (2018-07-23)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.9.0...0.10.0)
+
+- Update dependencies to latest
+- Add support for reading from stdin with the CLI ([io12](https://github.com/io12))
+- Use pytest, not Nose, on Travis
+
+## [0.9.0](https://github.com/amperser/proselint/tree/0.9.0) (2018-07-20)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.8.0...0.9.0)
+
+- Add new plugins to README
+- Update dependencies
+- Comply with XDG spec ([xu-cheng](https://github.com/xu-cheng))
+
 ## [0.8.0](https://github.com/amperser/proselint/tree/0.8.0) (2017-02-22)
 [Full Changelog](https://github.com/amperser/proselint/compare/0.7.0...0.8.0)
 
