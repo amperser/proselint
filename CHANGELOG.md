@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.10.1](https://github.com/amperser/proselint/tree/0.10.1) (2018-08-01)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.10.0...0.10.1)
+
+- Support use as [pre-commit](https://pre-commit.com/) hook ([Andy Airey](https://github.com/aairey))
+
 ## [0.10.0](https://github.com/amperser/proselint/tree/0.10.0) (2018-07-23)
 [Full Changelog](https://github.com/amperser/proselint/compare/0.9.0...0.10.0)
 
