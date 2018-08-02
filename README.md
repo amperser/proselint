@@ -1,4 +1,4 @@
-<img src="logo.png" alt="proselint logo" width="200">
+<img src="https://github.com/amperser/proselint/blob/master/logo.png?raw=true" alt="proselint logo" width="200">
 
 [![Build Status](https://travis-ci.org/amperser/proselint.svg)](https://travis-ci.org/amperser/proselint)
 [![Build status](https://ci.appveyor.com/api/projects/status/hfgv05nkjxkg2gcc/branch/master?svg=true)](https://ci.appveyor.com/project/suchow/proselint-knwyf/branch/master)
