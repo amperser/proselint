@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.10.2](https://github.com/amperser/proselint/tree/0.10.2) (2018-08-03)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.10.1...0.10.2)
+
+- Include tests in source package ([mavit](https://github.com/mavit))
+
 ## [0.10.1](https://github.com/amperser/proselint/tree/0.10.1) (2018-08-01)
 [Full Changelog](https://github.com/amperser/proselint/compare/0.10.0...0.10.1)
 
