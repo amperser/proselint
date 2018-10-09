@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Hedges.
+
 ---
 source:     linter-just-say-no
-source_url: https://github.com/lexicalunit/linter-just-say-no/blob/master/resources/hedges.cson
+source_url: https://github.com/lexicalunit/linter-just-say-no/
+            blob/master/resources/hedges.cson
 title:      hedges
 ---
 
@@ -14,6 +16,7 @@ from proselint.tools import memoize, existence_check
 
 @memoize
 def check(text):
+    """Check the text."""
     err = "hedges.just_say_no"
     msg = "Possible hedge word: '{}'."
 
