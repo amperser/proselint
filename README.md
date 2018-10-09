@@ -169,6 +169,7 @@ Additionally for compatible reason, the legacy configuration `~/.proselintrc` wi
 | `cursing.nfl` | Avoiding words banned by the NFL |
 | `dates_times.am_pm` | Using the right form for the time of day |
 | `dates_times.dates` | Stylish formatting of dates |
+| `hedges.just_say_no` | Avoid Hedge(s) word in your content |
 | `hedging.misc` | Not hedging |
 | `hyperbole.misc` | Not being hyperbolic |
 | `jargon.misc` | Avoiding miscellaneous jargon |

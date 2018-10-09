@@ -1,0 +1,1 @@
+"""Avoid Hedging Words"""
