@@ -1,5 +1,4 @@
-from proselint.tools import memoize, existence_check
-
+# -*- coding: utf-8 -*-
 """Hedges.
 ---
 source:     linter-just-say-no
@@ -7,7 +6,10 @@ source_url: https://github.com/lexicalunit/linter-just-say-no/blob/master/resour
 title:      hedges
 ---
 
+Hedges.
+
 """
+from proselint.tools import memoize, existence_check
 
 
 @memoize
@@ -95,4 +97,3 @@ def check(text):
     ]
 
     return existence_check(text, hedges, err, msg)
-	

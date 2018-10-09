@@ -1,9 +1,8 @@
 """Tests for hedges.just_say_no check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.hedges import just_say_no as chk
+from .check import Check
 
 
 class TestCheck(Check):
@@ -19,4 +18,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for hedges.just_say_no."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""I want to sleep, perchance to dream.""")
+        assert not self.passes("""I want to sleep, and maybe dream.""")
