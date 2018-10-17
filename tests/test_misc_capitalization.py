@@ -1,9 +1,8 @@
 """Tests for misc.capitalization check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.misc import capitalization as chk
+from .check import Check
 
 
 class TestCheck(Check):
@@ -30,3 +29,11 @@ class TestCheck(Check):
         """Basic smoke test for misc.capitalization.check_days."""
         assert chk.check_days("""Smoke phrase with nothing flagged""") == []
         assert chk.check_days("""It happened on friday.""") != []
+
+    def test_smoke_check_beginning_of_sentences(self):
+        """Basic smoke test for misc.capitalization.check_days."""
+        assert chk.check_beginning_of_sentences("Smoke "
+                                                "sentence with nothing "
+                                                "flagged.") == []
+        assert chk.check_beginning_of_sentences("the sentence begins "
+                                                "with lowercase letter.") != []

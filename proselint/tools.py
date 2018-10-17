@@ -4,16 +4,17 @@
 
 from __future__ import print_function
 from __future__ import unicode_literals
+
+import functools
+import hashlib
+import importlib
+import inspect
+import json
+import os
+import re
+import shelve
 import sys
 import traceback
-import os
-import shelve
-import inspect
-import functools
-import re
-import hashlib
-import json
-import importlib
 
 try:
     import dbm
@@ -30,6 +31,52 @@ _cache_shelves = dict()
 
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 
+caps = "([A-Z])"
+prefixes = "(Mr|St|Mrs|Ms|Dr)[.]"
+suffixes = "(Inc|Ltd|Jr|Sr|Co)"
+starters = """
+            (Mr|Mrs|Ms|Dr|He\s|She\s|It\s|They\s|Their\s|
+            Our\s|We\s|But\s|However\s|That\s|This\s|Wherever)"""
+acronyms = "([A-Z][.][A-Z][.](?:[A-Z][.])?)"
+websites = "[.](com|net|org|io|gov)"
+
+
+def split_into_sentences(text):
+    text = " " + text + "  "
+    text = text.replace("\n", " ")
+    text = re.sub(prefixes, "\\1<prd>", text)
+    text = re.sub(websites, "<prd>\\1", text)
+
+    if "Ph.D" in text:
+        text = text.replace("Ph.D.", "Ph<prd>D<prd>")
+
+    text = re.sub("\s" + caps + "[.] ", " \\1<prd> ", text)
+    text = re.sub(acronyms + " " + starters, "\\1<stop> \\2", text)
+    text = re.sub(caps + "[.]" + caps + "[.]" + caps + "[.]",
+                  "\\1<prd>\\2<prd>\\3<prd>", text)
+    text = re.sub(caps + "[.]" + caps + "[.]", "\\1<prd>\\2<prd>", text)
+    text = re.sub(" " + suffixes + "[.] " + starters, " \\1<stop> \\2", text)
+    text = re.sub(" " + suffixes + "[.]", " \\1<prd>", text)
+    text = re.sub(" " + caps + "[.]", " \\1<prd>", text)
+
+    if "”" in text:
+        text = text.replace(".”", "”.")
+    if "\"" in text:
+        text = text.replace(".\"", "\".")
+    if "!" in text:
+        text = text.replace("!\"", "\"!")
+    if "?" in text:
+        text = text.replace("?\"", "\"?")
+
+    text = text.replace(".", ".<stop>")
+    text = text.replace("?", "?<stop>")
+    text = text.replace("!", "!<stop>")
+    text = text.replace("<prd>", ".")
+    sentences = text.split("<stop>")
+    sentences = sentences[:-1]
+    sentences = [s.strip() for s in sentences]
+    return sentences
+
 
 def close_cache_shelves():
     """Close previously opened cache shelves."""
@@ -40,10 +87,12 @@ def close_cache_shelves():
 
 def close_cache_shelves_after(f):
     """Decorator that ensures cache shelves are closed after the call."""
+
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
         f(*args, **kwargs)
         close_cache_shelves()
+
     return wrapped
 
 
@@ -261,7 +310,7 @@ def lint(input_file, debug=False):
             (line, column) = line_and_column(text, start)
             if not is_quoted(start, text):
                 errors += [(check, message, line, column, start, end,
-                           end - start, "warning", replacements)]
+                            end - start, "warning", replacements)]
 
         if len(errors) > options["max_errors"]:
             break
@@ -275,7 +324,7 @@ def lint(input_file, debug=False):
 def assert_error(text, check, n=1):
     """Assert that text has n errors of type check."""
     assert_error.description = "No {} error for '{}'".format(check, text)
-    assert(check in [error[0] for error in lint(text)])
+    assert (check in [error[0] for error in lint(text)])
 
 
 def consistency_check(text, word_pairs, err, msg, offset=0):
@@ -400,6 +449,7 @@ def truncate_to_max(errors, max_errors):
 
 def is_quoted(position, text):
     """Determine if the position in the text falls within a quote."""
+
     def matching(quotemark1, quotemark2):
         straight = '\"\''
         curly = '“”'
@@ -426,7 +476,7 @@ def is_quoted(position, text):
                 s = 2
             elif s == 2:
                 if c in seps:
-                    ranges.append((start+1, i-1))
+                    ranges.append((start + 1, i - 1))
                     start = None
                     s = 0
                 else:
