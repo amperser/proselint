@@ -98,7 +98,7 @@ def check_days(text):
 
 @memoize
 def check_beginning_of_sentences(text):
-    """Check for capitalizing the beginning of sentences"""
+    """Check for capitalizing the beginning of sentences."""
     sentences = split_into_sentences(text)
     err = "misc.capitalization"
     msg = "Sentence `{}` should begin with capital letter."

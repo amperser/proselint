@@ -42,6 +42,7 @@ websites = "[.](com|net|org|io|gov)"
 
 
 def split_into_sentences(text):
+    """Split the text into sentences."""
     text = " " + text + "  "
     text = text.replace("\n", " ")
     text = re.sub(prefixes, "\\1<prd>", text)
@@ -87,7 +88,6 @@ def close_cache_shelves():
 
 def close_cache_shelves_after(f):
     """Decorator that ensures cache shelves are closed after the call."""
-
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
         f(*args, **kwargs)
@@ -449,7 +449,6 @@ def truncate_to_max(errors, max_errors):
 
 def is_quoted(position, text):
     """Determine if the position in the text falls within a quote."""
-
     def matching(quotemark1, quotemark2):
         straight = '\"\''
         curly = '“”'
