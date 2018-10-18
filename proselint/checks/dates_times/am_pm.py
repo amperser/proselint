@@ -20,7 +20,7 @@ def check_lowercase_periods(text):
     err = "dates_times.am_pm.lowercase_periods"
     msg = u"With lowercase letters, the periods are standard."
 
-    return existence_check(text, ["\d{1,2} ?[ap]m"], err, msg)
+    return existence_check(text, ["\d{1,2} ?[ap]m"], err, msg, ignore_case=False)
 
 
 @memoize
