@@ -32,9 +32,7 @@ class TestCheck(Check):
         assert chk.check_days("""It happened on friday.""") != []
 
     def test_smoke_check_beginning_of_sentences(self):
-        """
-        Basic smoke test for misc.capitalization.check_beginning_of_sentences.
-        """
+        """Smoke test for misc.capitalization.check_beginning_of_sentences."""
         assert chk.check_beginning_of_sentences("Smoke " +
                                                 "sentence with nothing " +
                                                 "flagged.") == []
