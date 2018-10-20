@@ -38,7 +38,7 @@ starters = """
             (Mr|Mrs|Ms|Dr|He\s|She\s|It\s|They\s|Their\s|
             Our\s|We\s|But\s|However\s|That\s|This\s|Wherever)"""
 acronyms = "([A-Z][.][A-Z][.](?:[A-Z][.])?)"
-websites = "[.]([A-Za-z0-9]+)[.](com|net|org|io|gov)"
+websites = "[.]([\w\W\d\D]+)[.](com|net|org|io|gov)"
 digits = "([0-9])"
 
 
