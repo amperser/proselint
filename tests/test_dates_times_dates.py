@@ -70,7 +70,9 @@ class TestCheck(Check):
         assert chk.check_month_year_comma(
             "It happened in August 2008.") == []
         assert chk.check_month_year_comma(
-            "It happened in August, 2008.") != []
+            "It happened in August, 2008.") == [(
+                15, 26, 'dates_times.dates',
+                'When specifying a month and year, no comma is needed.', None)]
 
     def test_smoke_check_month_of_year(self):
         """Basic smoke test.
