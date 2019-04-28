@@ -151,14 +151,31 @@ def get_checks(options):
     """Extract the checks."""
     sys.path.append(proselint_path)
     checks = []
-    check_names = [key for (key, val)
-                   in list(options["checks"].items()) if val]
 
-    for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
+    # includes and excludes should be either modules like 'typography.symbol'
+    # or functions like 'typography.symbol.ellipsis'
+    includes = [key for (key, val)
+                in list(options["checks"].items()) if val]
+    excludes = [key for (key, val)
+                in list(options["checks"].items()) if not val]
+
+    for check_name in includes:
+        try:
+            group_name, module_name, function_name = check_name.split('.')
+        except ValueError:
+            group_name, module_name = check_name.split('.')
+            function_name = None
+
+        module = importlib.import_module(".".join(["checks", group_name, module_name]))
+
+        if function_name:
+            checks.append(getattr(module, "check_" + function_name))
+        else:
+            for d in dir(module):
+                if re.match("check", d):
+                    function_name = "{}.{}".format(check_name, d.replace("check_", ""))
+                    if function_name not in excludes:
+                        checks.append(getattr(module, d))
 
     return checks
 

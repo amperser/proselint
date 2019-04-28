@@ -147,10 +147,13 @@ This will return a list of suggestions:
 You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used.
 Additionally for compatible reason, the legacy configuration `~/.proselintrc` will be used if `$XDG_CONFIG_HOME/proselint/config` does not exist.
 
+You can disable either entire sets of tests or individual tests from within a set through the config file.
+
 ```json
 {
   "checks": {
-    "typography.diacritical_marks": false
+    "typography.diacritical_marks": false,
+    "typography.symbol.ellipsis": false
   }
 }
 ```
