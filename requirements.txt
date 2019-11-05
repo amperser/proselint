@@ -23,6 +23,6 @@ queuelib==1.5.0
 redis==2.10.6
 requests==2.19.1
 rq==0.12.0
-six==1.11.0
+six==1.13.0
 Werkzeug==0.14.1
 wikipedia==1.4.0
