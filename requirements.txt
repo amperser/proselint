@@ -10,7 +10,7 @@ Flask-Cors==3.0.4
 Flask==1.0.2
 Flask-Limiter==1.0.1
 future==0.16.0
-gunicorn==19.8.1
+gunicorn==20.0.0
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
