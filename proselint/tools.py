@@ -108,7 +108,7 @@ def memoize(f):
             os.rename(legacy_cache_dirname, cache_dirname)
         # Create the cache if it does not already exist.
         else:
-            os.makedirs(cache_dirname)
+            os.makedirs(cache_dirname, exist_ok=True)
 
     cache_filename = f.__module__ + "." + f.__name__
     cachepath = os.path.join(cache_dirname, cache_filename)
