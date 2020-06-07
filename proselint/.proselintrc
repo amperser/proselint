@@ -60,6 +60,7 @@
         "psychology.misc"               : true,
         "redundancy.misc"               : true,
         "redundancy.ras_syndrome"       : true,
+        "redundancy.adverb_dialogue"    : true,
         "skunked_terms.misc"            : true,
         "spelling.able_atable"          : true,
         "spelling.able_ible"            : true,
