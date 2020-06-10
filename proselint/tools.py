@@ -163,7 +163,7 @@ def get_checks(options):
     return checks
 
 
-def load_options():
+def load_options(config_file_path=None):
     """Read various proselintrc files, allowing user overrides."""
     possible_defaults = (
         '/etc/proselintrc',
@@ -179,12 +179,23 @@ def load_options():
         except IOError:
             pass
 
-    try:
+    # the user has explicitly passed in a config file
+    # either into the `lint' method directly, or via a
+    # Click command-line option
+    if config_file_path:
         user_options = json.load(
-            open(os.path.join(_get_xdg_config_home(), 'proselint', 'config')))
+            open(config_file_path))
         has_overrides = True
-    except IOError:
-        pass
+    # try and find a config file in the default locations,
+    # respecting environment variables
+    else:
+        try:
+            user_options = json.load(
+                open(os.path.join(_get_xdg_config_home(), 'proselint',
+                                  'config')))
+            has_overrides = True
+        except IOError:
+            pass
 
     # Read user configuration from the legacy path.
     if not has_overrides:
@@ -238,9 +249,9 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def lint(input_file, debug=False):
+def lint(input_file, debug=False, config_file_path=None):
     """Run the linter on the input file."""
-    options = load_options()
+    options = load_options(config_file_path)
 
     if isinstance(input_file, string_types):
         text = input_file
