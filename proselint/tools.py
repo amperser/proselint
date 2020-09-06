@@ -151,14 +151,20 @@ def get_checks(options):
     """Extract the checks."""
     sys.path.append(proselint_path)
     checks = []
+
     check_names = [key for (key, val)
                    in list(options["checks"].items()) if val]
+    remove_subcheck_names = [key for (key, val)
+                             in list(options["checks"].items()) if not val and
+                             key.count('.') == 2]
 
     for check_name in check_names:
         module = importlib.import_module("checks." + check_name)
         for d in dir(module):
             if re.match("check", d):
-                checks.append(getattr(module, d))
+                subcheck_name = check_name + "." + d.replace("check_", "")
+                if subcheck_name not in remove_subcheck_names:
+                    checks.append(getattr(module, d))
 
     return checks
 
