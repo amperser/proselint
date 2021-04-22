@@ -582,7 +582,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "1ae7941e8543d486f0678599833c6ef255ba7d50f025f4b464fc12ed89fd03a3"
+content-hash = "532b9ce31887ec484d8414d8b04970a27e2394ab3a5475e7ff2e432256902520"
 
 [metadata.files]
 apscheduler = [

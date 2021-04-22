@@ -6,9 +6,9 @@ authors = ["Amperser Labs <hello@amperser.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-click = ">=6.7"
-future = ">=0.16.0"
-six = ">=1.11.0"
+click = "^7.1.2"
+future = "^0.18.2"
+six = "^1.15.0"
 
 [tool.poetry.dev-dependencies]
 gmail = {git = "https://github.com/charlierguo/gmail.git"}
