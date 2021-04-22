@@ -6,16 +6,17 @@ import subprocess
 
 def test_invalid_characters():
     """Ensure that a file with illegal characters does not break us."""
+    output = ""
+    curr_dir = pth.dirname(pth.abspath(__file__))
+    test_file = pth.join(curr_dir, "illegal-chars.txt")
     try:
-        output = ""
-        curr_dir = pth.dirname(pth.abspath(__file__))
-        test_file = pth.join(curr_dir, "illegal-chars.txt")
+        # TODO: refactor CLI function
         # We only print out exception text and continue after printing a trace,
         # so the only way (currently) to test for failure is to look for the
         # exception text. Refactoring the command line function would let us
         # write better tests (one day).
         output = str(subprocess.check_output(
-            ["proselint", test_file],
+            ["python", "-m", "proselint", test_file],
             stderr=subprocess.STDOUT
         ))
     except subprocess.CalledProcessError as e:
