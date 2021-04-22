@@ -5,19 +5,21 @@ description = "A linter for prose."
 authors = ["Amperser Labs <hello@amperser.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-proselint = {git = "https://github.com/amperser/proselint.git", extras = ["proselint"]}
-gmail = {git = "https://github.com/charlierguo/gmail.git", extras = ["gmail"]}
+python = "^3.6"
+click = ">=6.7"
+future = ">=0.16.0"
+six = ">=1.11.0"
+
+[tool.poetry.dev-dependencies]
+gmail = {git = "https://github.com/charlierguo/gmail.git"}
 APScheduler = ">=3.5.3"
 bumpversion = ">=0.5.3"
-click = ">=6.7"
 coverage = "^5.5"
 coveralls = ">=1.3.0"
 Flask-API = ">=1.0"
 Flask-Cors = ">=3.0.4"
 Flask = ">=1.0.2"
 Flask-Limiter = ">=1.0.1"
-future = ">=0.16.0"
 gunicorn = ">=19.8.1"
 itsdangerous = ">=0.24"
 Jinja2 = ">=2.10"
@@ -28,14 +30,11 @@ queuelib = ">=1.5.0"
 redis = ">=2.10.6"
 requests = ">=2.19.1"
 rq = ">=0.12.0"
-six = ">=1.11.0"
 Werkzeug = ">=0.14.1"
 wikipedia = ">=1.4.0"
 pycodestyle = "^2.7.0"
 pydocstyle = "^6.0.0"
 pytest-cov = "^2.11.1"
-
-[tool.poetry.dev-dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
