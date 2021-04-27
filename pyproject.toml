@@ -34,7 +34,7 @@ Werkzeug = ">=0.14.1"
 wikipedia = ">=1.4.0"
 pycodestyle = "^2.7.0"
 pydocstyle = "^6.0.0"
-pytest-cov = "^2.11.1"
+twine = "^3.4.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
