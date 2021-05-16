@@ -26,9 +26,9 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for preferred_forms_check."""
         assert chk(
-            "We utilize this tech", self.l, self.err, self.msg) != []
+            "We utilize this tech", self.L, self.err, self.msg) != []
         assert chk(
-            "We use this tech", self.l, self.err, self.msg) == []
+            "We use this tech", self.L, self.err, self.msg) == []
 
     def test_capitalization(self):
         """Test for preferred forms involving capitalization."""

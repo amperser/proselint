@@ -25,8 +25,8 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for consistency_check."""
         assert chk(
-            "Painting colour on color", self.l, self.err, self.msg) != []
+            "Painting colour on color", self.L, self.err, self.msg) != []
         assert chk(
-            "Painting colour on colour", self.l, self.err, self.msg) == []
+            "Painting colour on colour", self.L, self.err, self.msg) == []
         assert chk(
-            "Painting color on color", self.l, self.err, self.msg) == []
+            "Painting color on color", self.L, self.err, self.msg) == []
