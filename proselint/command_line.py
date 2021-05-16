@@ -27,6 +27,7 @@ proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
 
 
+# TODO: fix broken corpus
 def timing_test(corpus="0.1.0"):
     """Measure timing performance on the named corpus."""
     import time
@@ -107,7 +108,8 @@ def proselint(paths=None, version=None, clean=None, debug=None,
               output_json=None, time=None, demo=None, compact=None):
     """A CLI for proselint, a linter for prose."""
     if time:
-        click.echo(timing_test())
+        # click.echo(timing_test())
+        print("This option does not work for the time being.")
         return
 
     # In debug or clean mode, delete cache & *.pyc files before running.

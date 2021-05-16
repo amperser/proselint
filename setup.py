@@ -3,11 +3,9 @@
 import io
 import os
 from setuptools import setup, find_packages
-
 from proselint.version import __version__
 
 DESCRIPTION = "A linter for prose."
-
 base_url = 'http://github.com/amperser/proselint'
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -30,8 +28,6 @@ setup(
     author_email='hello@amperser.com',
     license='BSD',
     classifiers=[
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
