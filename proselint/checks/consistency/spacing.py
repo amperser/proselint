@@ -23,5 +23,5 @@ def check(text):
     err = "consistency.spacing"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
 
-    regex = ["[\.\?!] [A-Z]", "[\.\?!]  [A-Z]"]
+    regex = [r"[\.\?!] [A-Z]", r"[\.\?!]  [A-Z]"]
     return consistency_check(text, [regex], err, msg)

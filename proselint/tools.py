@@ -39,7 +39,7 @@ def close_cache_shelves():
 
 
 def close_cache_shelves_after(f):
-    """Decorator that ensures cache shelves are closed after the call."""
+    """Decorate a function to ensure cache shelves are closed after call."""
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
         f(*args, **kwargs)
@@ -316,7 +316,7 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
     msg = " ".join(msg.split())
 
     errors = []
-    regex = u"[\W^]{}[\W$]"
+    regex = r"[\W^]{}[\W$]"
     for p in list:
         for r in p[1]:
             for m in re.finditer(regex.format(r), text, flags=flags):
@@ -352,9 +352,9 @@ def existence_check(text, list, err, msg, ignore_case=True,
         flags = flags | re.DOTALL
 
     if require_padding:
-        regex = u"(?:^|\W){}[\W$]"
+        regex = r"(?:^|\W){}[\W$]"
     else:
-        regex = u"{}"
+        regex = r"{}"
 
     errors = []
 

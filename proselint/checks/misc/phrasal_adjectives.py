@@ -24,7 +24,7 @@ def check_ly(text):
               ending in -ly, unless the -ly adverb is part of a longer
               phrase"""
 
-    regex = "\s[^\s-]+ly-"
+    regex = r"\s[^\s-]+ly-"
 
     return existence_check(text, [regex], err, msg,
                            require_padding=False, offset=-1)

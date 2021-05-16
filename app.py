@@ -67,7 +67,7 @@ def authenticate():
 
 
 def requires_auth(f):
-    """Decorator for methods that require authentication."""
+    """Decorate methods that require authentication."""
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization

@@ -23,8 +23,8 @@ def check(text):
     msg = u"'{}' is hyperbolic."
 
     words = [
-        "[a-z]*[!]{2,}",
-        "[a-z]*\?{2,}"
+        r"[a-z]*[!]{2,}",
+        r"[a-z]*\?{2,}"
     ]
 
     return existence_check(text, words, err, msg)

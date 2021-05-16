@@ -106,7 +106,7 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @close_cache_shelves_after
 def proselint(paths=None, version=None, clean=None, debug=None,
               output_json=None, time=None, demo=None, compact=None):
-    """A CLI for proselint, a linter for prose."""
+    """Create the CLI for proselint, a linter for prose."""
     if time:
         # click.echo(timing_test())
         print("This option does not work for the time being.")

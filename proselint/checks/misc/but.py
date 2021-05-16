@@ -21,5 +21,5 @@ def check(text):
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"
     msg = u"No paragraph should start with a 'But'."
-    regex = "(^|([\n\r]+))(\s*)But"
+    regex = r"(^|([\n\r]+))(\s*)But"
     return existence_check(text, [regex], err, msg)

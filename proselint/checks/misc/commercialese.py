@@ -20,7 +20,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.commercialese"
-    msg = u"'{}' is commercialese."
+    msg = "'{}' is commercialese."
 
     commercialese = [
         "acknowledging yours of",
@@ -30,21 +30,21 @@ def check(text):
         "further to yours of",
         "further to your letter",
         "in regard to",
-        "inst\.",
+        r"inst\.",
         "in the amount of",
         "of even date",
         "pending receipt of",
         "please be advised that",
         "please return same",
         "pleasure of a reply",
-        "prox\.",
+        r"prox\.",
         "pursuant to your request",
         "regarding the matter",
         "regret to inform",
         "thanking you in advance",
         "the undersigned",
         "this acknowledges your letter",
-        "ult\."
+        r"ult\."
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",

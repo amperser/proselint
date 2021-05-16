@@ -16,7 +16,9 @@ class chk:
 
 
 class TestCheck(Check):
-    """The test class for GMEU entry A - using a over per in the distributive sense."""
+    """The test class for GMEU entry A - using a over per in the distributive
+    sense.
+    """
 
     @property
     def this_check(self):
