@@ -32,9 +32,9 @@ class Check(TestCase):
 
         errors = []
         for text in lst:
-            errors.append(self.this_check.check(text))
+            errors += self.this_check.check(text)
 
-        return len(errors[0]) == 0
+        return len(errors) == 0
 
     def wpe_too_high(self):
         """Check whether the check is too noisy."""
