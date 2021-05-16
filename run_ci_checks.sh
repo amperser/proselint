@@ -16,7 +16,7 @@ if ! poetry run pycodestyle --config pyproject.toml || ! poetry run pydocstyle; 
     exit 1
 fi
 
-if ! poetry run pytest --cov=proselint --continue-on-collection-errors; then
+if ! poetry run pytest --continue-on-collection-errors; then
     echo -e "\n\n=== TESTS FAILED! SEE ABOVE. ==="
     exit 1
 fi
