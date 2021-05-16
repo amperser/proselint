@@ -23,7 +23,7 @@ def check(text):
     msg = u"Incorrect use of symbols in {}."
 
     symbols = [
-        "\$[\d]* ?(?:dollars|usd|us dollars)"
+        r"\$[\d]* ?(?:dollars|usd|us dollars)"
     ]
 
     return existence_check(text, symbols, err, msg)

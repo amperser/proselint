@@ -23,9 +23,9 @@ def check(text):
     msg = u"There's a lexical illusion here: a word is repeated."
 
     list = [
-        "the\sthe",
-        "am\sam",
-        "has\shas"
+        r"the\sthe",
+        r"am\sam",
+        r"has\shas"
     ]
 
     return existence_check(text, list, err, msg)

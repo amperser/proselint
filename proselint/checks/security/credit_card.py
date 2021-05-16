@@ -23,11 +23,11 @@ def check(text):
     msg = u"Don't put credit card numbers in plain text."
 
     credit_card_numbers = [
-        "4\d{15}",
-        "5[1-5]\d{14}",
-        "3[4,7]\d{13}",
-        "3[0,6,8]\d{12}",
-        "6011\d{12}",
+        r"4\d{15}",
+        r"5[1-5]\d{14}",
+        r"3[4,7]\d{13}",
+        r"3[0,6,8]\d{12}",
+        r"6011\d{12}",
     ]
 
     return existence_check(text, credit_card_numbers, err, msg)
