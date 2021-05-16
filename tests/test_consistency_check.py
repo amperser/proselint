@@ -18,7 +18,7 @@ class TestCheck(Check):
 
     def setUp(self):
         """Create some test fixtures."""
-        self.l = [['colour', 'color']]
+        self.L = [['colour', 'color']]
         self.err = 'error message'
         self.msg = 'inconsistent form of {} vs {}'
 

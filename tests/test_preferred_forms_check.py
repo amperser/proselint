@@ -18,7 +18,7 @@ class TestCheck(Check):
 
     def setUp(self):
         """Create some test fixtures."""
-        self.l = [['use', ['utilize']]]
+        self.L = [['use', ['utilize']]]
         self.l_caps = [["Stone Age",  ["stone age"]]]
         self.err = 'error message'
         self.msg = 'use the preferred form'

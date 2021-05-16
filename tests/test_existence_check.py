@@ -18,7 +18,7 @@ class TestCheck(Check):
 
     def setUp(self):
         """setUp method creating some test fixtures."""
-        self.l = ['abc']
+        self.L = ['abc']
         self.err = 'error message'
         self.msg = 'it exists'
 
