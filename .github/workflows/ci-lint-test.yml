@@ -42,7 +42,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9, pypy3]
+        python: [3.6, 3.7, 3.8, 3.9]
         os: [ubuntu-latest, macos-latest, windows-latest]
       fail-fast: false
     steps:
