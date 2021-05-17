@@ -114,7 +114,7 @@ def check(text):
         ("more", "possible")  # FIXME
     ]
 
-    all = [r"\\b" + i[0] + r"\s" + i[1] + r"[\W$]" for i in itertools.product(
+    all = [i[0] + r"\s" + i[1] + r"[\W$]" for i in itertools.product(
            comparators, uncomparables) if i not in exceptions]
 
     occ = re.finditer("|".join(all), text.lower())
