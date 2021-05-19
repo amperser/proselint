@@ -203,17 +203,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "flask"
-version = "1.1.2"
+version = "1.1.4"
 description = "A simple framework for building complex web applications."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-click = ">=5.1"
-itsdangerous = ">=0.24"
-Jinja2 = ">=2.10.1"
-Werkzeug = ">=0.15"
+click = ">=5.1,<8.0"
+itsdangerous = ">=0.24,<2.0"
+Jinja2 = ">=2.10.1,<3.0"
+Werkzeug = ">=0.15,<2.0"
 
 [package.extras]
 dev = ["pytest", "coverage", "tox", "sphinx", "pallets-sphinx-themes", "sphinxcontrib-log-cabinet", "sphinx-issues"]
@@ -943,8 +943,8 @@ docutils = [
     {file = "docutils-0.17.1.tar.gz", hash = "sha256:686577d2e4c32380bb50cbb22f575ed742d58168cee37e99117a854bcd88f125"},
 ]
 flask = [
-    {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
-    {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
+    {file = "Flask-1.1.4-py2.py3-none-any.whl", hash = "sha256:c34f04500f2cbbea882b1acb02002ad6fe6b7ffa64a6164577995657f50aed22"},
+    {file = "Flask-1.1.4.tar.gz", hash = "sha256:0fbeb6180d383a9186d0d6ed954e0042ad9f18e0e8de088b2b419d526927d196"},
 ]
 flask-api = [
     {file = "Flask-API-2.0.tar.gz", hash = "sha256:6986642e5b25b7def710ca9489ed2b88c94006bfc06eca01c78da7cf447e66e5"},
