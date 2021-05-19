@@ -6,9 +6,11 @@ updates:
       interval: weekly
       time: "12:00"
       timezone: Europe/London
+    labels: ["cat: deps", "type: chore"]
   - package-ecosystem: pip
     directory: "/"
     schedule:
       interval: weekly
       time: "12:00"
       timezone: Europe/London
+    labels: ["cat: deps", "type: chore"]
