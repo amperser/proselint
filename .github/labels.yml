@@ -115,3 +115,6 @@
 - name: "cat: false-positive"
   description: Issues and PRs related to false positives in proselint rules.
   color: CD2026
+- name: "cat: extraction"
+  description: Issues and PRs related to extracting rules from external sources.
+  color: FCFCFC
