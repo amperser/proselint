@@ -15,7 +15,7 @@ jobs:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v2
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
-        uses: ruby/setup-ruby@v1.70.1
+        uses: ruby/setup-ruby@v1.71.0
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
