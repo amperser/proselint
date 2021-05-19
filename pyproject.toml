@@ -6,7 +6,7 @@ authors = ["Amperser Labs <hello@amperser.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-click = "^7.1.2"
+click = ">=7.1.2,<9.0.0"
 future = "^0.18.2"
 six = "^1.15.0"
 
@@ -33,7 +33,7 @@ rq = ">=0.12.0"
 Werkzeug = ">=0.14.1"
 wikipedia = ">=1.4.0"
 pycodestyle = "^2.7.0"
-pydocstyle = "^6.0.0"
+pydocstyle = "^6.1.1"
 twine = "^3.4.1"
 
 [build-system]
