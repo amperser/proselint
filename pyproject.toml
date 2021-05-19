@@ -6,7 +6,7 @@ authors = ["Amperser Labs <hello@amperser.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-click = "^7.1.2"
+click = ">=7.1.2,<9.0.0"
 future = "^0.18.2"
 six = "^1.15.0"
 
@@ -25,7 +25,7 @@ itsdangerous = ">=0.24"
 Jinja2 = ">=2.10"
 MarkupSafe = ">=1.0"
 mock = ">=2.0.0"
-pytest = "^6.2.3"
+pytest = "^6.2.4"
 queuelib = ">=1.5.0"
 redis = ">=2.10.6"
 requests = ">=2.19.1"
