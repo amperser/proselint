@@ -2,7 +2,7 @@ name: "CI: Synchronize Labels"
 on:
   push:
     branches:
-      - "main"
+      - "master"
     paths:
       - ".github/labels.yml"
       - ".github/workflows/ci-label.yml"
