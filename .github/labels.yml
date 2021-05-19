@@ -114,4 +114,4 @@
   color: FCFCFC
 - name: "cat: false-positive"
   description: Issues and PRs related to false positives in proselint rules.
-  color: FCFCFC
+  color: CD2026
