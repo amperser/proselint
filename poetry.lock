@@ -136,22 +136,6 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 toml = ["toml"]
 
 [[package]]
-name = "coveralls"
-version = "3.0.1"
-description = "Show coverage stats online via coveralls.io"
-category = "dev"
-optional = false
-python-versions = ">= 3.5"
-
-[package.dependencies]
-coverage = ">=4.1,<6.0"
-docopt = ">=0.6.1"
-requests = ">=1.0.0"
-
-[package.extras]
-yaml = ["PyYAML (>=3.10)"]
-
-[[package]]
 name = "cryptography"
 version = "3.4.7"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -177,14 +161,6 @@ description = "A backport of the dataclasses module for Python 3.6"
 category = "dev"
 optional = false
 python-versions = ">=3.6, <3.7"
-
-[[package]]
-name = "docopt"
-version = "0.6.2"
-description = "Pythonic argument parser, that will make you smile"
-category = "dev"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "docutils"
@@ -745,7 +721,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "1d85f908b16761e4289775d374d9700573e8c8f70324ac49c68fdfed76c8ac9f"
+content-hash = "237bfbe6aa936e3a2dd7594deb92d34fa8345de4f3db794db53363cd3a80b63d"
 
 [metadata.files]
 apscheduler = [
@@ -893,10 +869,6 @@ coverage = [
     {file = "coverage-5.5-pp37-none-any.whl", hash = "sha256:2a3859cb82dcbda1cfd3e6f71c27081d18aa251d20a17d87d26d4cd216fb0af4"},
     {file = "coverage-5.5.tar.gz", hash = "sha256:ebe78fe9a0e874362175b02371bdfbee64d8edc42a044253ddf4ee7d3c15212c"},
 ]
-coveralls = [
-    {file = "coveralls-3.0.1-py2.py3-none-any.whl", hash = "sha256:7bd173b3425733661ba3063c88f180127cc2b20e9740686f86d2622b31b41385"},
-    {file = "coveralls-3.0.1.tar.gz", hash = "sha256:cbb942ae5ef3d2b55388cb5b43e93a269544911535f1e750e1c656aef019ce60"},
-]
 cryptography = [
     {file = "cryptography-3.4.7-cp36-abi3-macosx_10_10_x86_64.whl", hash = "sha256:3d8427734c781ea5f1b41d6589c293089704d4759e34597dce91014ac125aad1"},
     {file = "cryptography-3.4.7-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:8e56e16617872b0957d1c9742a3f94b43533447fd78321514abbe7db216aa250"},
@@ -914,9 +886,6 @@ cryptography = [
 dataclasses = [
     {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
     {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
-]
-docopt = [
-    {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
 ]
 docutils = [
     {file = "docutils-0.17.1-py2.py3-none-any.whl", hash = "sha256:cf316c8370a737a022b72b56874f6602acf974a37a9fba42ec2876387549fc61"},
