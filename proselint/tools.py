@@ -151,7 +151,7 @@ def get_checks(options):
     return checks
 
 
-def load_options(config_file_path=None):
+def load_options(config_file_path=None, fallbacks=[]):
     """Read various proselintrc files, allowing user overrides."""
     possible_defaults = (
         '/etc/proselintrc',
@@ -176,8 +176,7 @@ def load_options(config_file_path=None):
     # try to find a config file in the default locations,
     # respecting environment variables
     else:
-        for f in [os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
-                  os.path.join(home_dir, '.proselintrc')]:
+        for f in fallbacks:
             if os.path.exists(f):
                 user_options = json.load(open(f))
                 has_overrides = True
@@ -226,7 +225,11 @@ def line_and_column(text, position):
 
 def lint(input_file, debug=False, config_file_path=None):
     """Run the linter on the input file."""
-    options = load_options(config_file_path)
+    options = load_options(
+        config_file_path,
+        [os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
+         os.path.join(home_dir, '.proselintrc')]
+    )
 
     if isinstance(input_file, str):
         text = input_file
