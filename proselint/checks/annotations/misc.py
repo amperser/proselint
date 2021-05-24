@@ -19,7 +19,7 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check(text):
     """Check the text."""
-    err = "misc.annotations"
+    err = "annotations.misc"
     msg = u"Annotation left in text."
 
     annotations = [
