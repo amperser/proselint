@@ -15,20 +15,10 @@ import hashlib
 import json
 import importlib
 
-try:
-    import dbm
-except ImportError:
-    import anydbm as dbm
-
-PY3 = sys.version_info[0] == 3
-if PY3:
-    string_types = str
-else:
-    string_types = basestring,
-
+import dbm
 _cache_shelves = dict()
-
 proselint_path = os.path.dirname(os.path.realpath(__file__))
+home_dir = os.path.expanduser("~")
 
 
 def close_cache_shelves():
@@ -56,13 +46,11 @@ def _get_xdg_path(variable_name, default_path):
 
 
 def _get_xdg_config_home():
-    return _get_xdg_path('XDG_CONFIG_HOME',
-                         os.path.join(os.path.expanduser('~'), '.config'))
+    return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
 
 
 def _get_xdg_cache_home():
-    return _get_xdg_path('XDG_CACHE_HOME',
-                         os.path.join(os.path.expanduser('~'), '.cache'))
+    return _get_xdg_path('XDG_CACHE_HOME', os.path.join(home_dir, '.cache'))
 
 
 def _get_cache(cachepath):
@@ -100,10 +88,10 @@ def memoize(f):
     """Cache results of computations on disk."""
     # Determine the location of the cache.
     cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
-    legacy_cache_dirname = os.path.join(os.path.expanduser("~"), ".proselint")
+    legacy_cache_dirname = os.path.join(home_dir, ".proselint")
 
     if not os.path.isdir(cache_dirname):
-        # Migrate the cache from the legacy path to XDG complaint location.
+        # Migrate the cache from the legacy path to XDG compliant location.
         if os.path.isdir(legacy_cache_dirname):
             os.rename(legacy_cache_dirname, cache_dirname)
         # Create the cache if it does not already exist.
@@ -128,9 +116,9 @@ def memoize(f):
             signature += item[1].encode("utf-8")
 
         key = hashlib.sha256(signature).hexdigest()
+        cache = _get_cache(cachepath)
 
         try:
-            cache = _get_cache(cachepath)
             return cache[key]
         except KeyError:
             value = f(*args, **kwargs)
@@ -163,14 +151,14 @@ def get_checks(options):
     return checks
 
 
-def load_options():
+def load_options(config_file_path=None, fallbacks=[]):
     """Read various proselintrc files, allowing user overrides."""
     possible_defaults = (
         '/etc/proselintrc',
         os.path.join(proselint_path, '.proselintrc'),
     )
+    user_options = {}
     options = {}
-    has_overrides = False
 
     for filename in possible_defaults:
         try:
@@ -179,31 +167,28 @@ def load_options():
         except IOError:
             pass
 
-    try:
-        user_options = json.load(
-            open(os.path.join(_get_xdg_config_home(), 'proselint', 'config')))
+    # the user has explicitly passed in a config file
+    # either into the `lint' method directly, or via a
+    # Click command-line option
+    if config_file_path:
+        user_options = json.load(open(config_file_path))
         has_overrides = True
-    except IOError:
-        pass
+    # try to find a config file in the default locations,
+    # respecting environment variables
+    else:
+        for f in fallbacks:
+            if os.path.exists(f):
+                user_options = json.load(open(f))
+                has_overrides = True
+                break
 
     # Read user configuration from the legacy path.
-    if not has_overrides:
-        try:
-            user_options = json.load(
-                open(os.path.join(os.path.expanduser('~'), '.proselintrc')))
-            has_overrides = True
-        except IOError:
-            pass
-
-    if has_overrides:
+    if user_options:
         if 'max_errors' in user_options:
             options['max_errors'] = user_options['max_errors']
         if 'checks' in user_options:
             for (key, value) in user_options['checks'].items():
-                try:
-                    options['checks'][key] = value
-                except KeyError:
-                    pass
+                options['checks'][key] = value
 
     return options
 
@@ -238,11 +223,15 @@ def line_and_column(text, position):
             position_counter += len(line)
 
 
-def lint(input_file, debug=False):
+def lint(input_file, debug=False, config_file_path=None):
     """Run the linter on the input file."""
-    options = load_options()
+    options = load_options(
+        config_file_path,
+        [os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
+         os.path.join(home_dir, '.proselintrc')]
+    )
 
-    if isinstance(input_file, string_types):
+    if isinstance(input_file, str):
         text = input_file
     else:
         text = input_file.read()
@@ -261,7 +250,7 @@ def lint(input_file, debug=False):
             (line, column) = line_and_column(text, start)
             if not is_quoted(start, text):
                 errors += [(check, message, line, column, start, end,
-                           end - start, "warning", replacements)]
+                            end - start, "warning", replacements)]
 
         if len(errors) > options["max_errors"]:
             break

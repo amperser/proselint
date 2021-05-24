@@ -95,6 +95,8 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
+@click.option('--config', is_flag=False, type=click.Path(),
+              help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
@@ -104,7 +106,7 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--compact', is_flag=True, help="Shorten output.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, version=None, clean=None, debug=None,
+def proselint(paths=None, config=None, version=None, clean=None, debug=None,
               output_json=None, time=None, demo=None, compact=None):
     """Create the CLI for proselint, a linter for prose."""
     if time:
@@ -138,7 +140,7 @@ def proselint(paths=None, version=None, clean=None, debug=None,
             else:
                 f = click.open_file(
                     fp, 'r', encoding="utf-8", errors="replace")
-            errors = lint(f, debug=debug)
+            errors = lint(f, debug=debug, config_file_path=config)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
         except Exception:
