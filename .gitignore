@@ -16,3 +16,5 @@ corpora/*
 !corpora/README.md
 dist/
 *.pstore
+# pycharm generated
+.idea

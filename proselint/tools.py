@@ -22,8 +22,10 @@ except ImportError:
 
 PY3 = sys.version_info[0] == 3
 if PY3:
+    from html.parser import HTMLParser
     string_types = str
 else:
+    from HTMLParser import HTMLParser
     string_types = basestring,
 
 _cache_shelves = dict()
@@ -259,7 +261,7 @@ def lint(input_file, debug=False):
         for error in result:
             (start, end, check, message, replacements) = error
             (line, column) = line_and_column(text, start)
-            if not is_quoted(start, text):
+            if not is_quoted(start, text) and not is_code(start, text):
                 errors += [(check, message, line, column, start, end,
                            end - start, "warning", replacements)]
 
@@ -396,6 +398,81 @@ def truncate_to_max(errors, max_errors):
         errors = [(start1, end1, err1, msg1, replacements)] + errors
 
     return errors
+
+
+class HTMLCodeLimits(HTMLParser):
+    """Parse limit locations of <code> and </code> tags."""
+
+    def __init__(self):
+        """Initializer for HTMLCodeLimits."""
+        HTMLParser.__init__(self)
+        self.limits = []
+        self.last_start = None
+
+    def handle_starttag(self, tag, _):
+        """Implementation of the handle_starttag HTMLParser method."""
+        if tag == "code":
+            self.last_start = self.getpos()
+
+    def handle_endtag(self, tag):
+        """Implementation of the handle_endtag HTMLParser method."""
+        if tag == "code":
+            self.limits.append((self.last_start, self.getpos()))
+
+
+class MarkdownCodeLimits(object):
+    """Mimicking the functionality of HTMLCodeLimits for markdown."""
+
+    def __init__(self):
+        """Initializer for MarkdownCodeLimits."""
+        self.limits = []
+        self.last_start = None
+
+    def feed(self, text):
+        """
+        Read through text, grabbing all pairs of '```' and '---'.
+
+        :param text: a string containing markdown to be analyzed
+        :type text: str
+        :return:
+        """
+        delimiters = ['```', '---']
+        for delimiter in delimiters:
+            last_pos = -1
+            while text.find(delimiter, last_pos+1) != last_pos:
+                last_pos = text.find(delimiter, last_pos+1)
+                if last_pos < 0:
+                    return
+                if self.last_start is None:
+                    self.last_start = last_pos
+                else:
+                    self.limits.append((self.last_start, last_pos))
+                    self.last_start = None
+
+
+def is_code(position, text):
+    """Determine if the position in the text falls within a code block."""
+    code_limits = HTMLCodeLimits()
+    code_limits.feed(text)
+    # grab the line and column position of the error, and check that it does
+    # not fall in the range of line and column positions of the start of <code>
+    #  and </code> tags
+    column_line = line_and_column(text, position)
+    for limit in code_limits.limits:
+        # the line_and_column methods appear to be offset by one from the
+        # returned values from the HTMLParser.getpos()
+        if limit[0][1] < column_line[1] < limit[1][1] and \
+           limit[0][0] <= column_line[0]+1 <= limit[1][0]:
+            return True
+    # Now check markdown. The markdown parser is much simpler and returns
+    # limits as positions rather than the column_line above.
+    code_limits = MarkdownCodeLimits()
+    code_limits.feed(text)
+    for limit in code_limits.limits:
+        if limit[0] <= position <= limit[1]:
+            return True
+
+    return False
 
 
 def is_quoted(position, text):
