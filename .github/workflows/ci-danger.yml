@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
         uses: ruby/setup-ruby@v1.71.0
         with:
