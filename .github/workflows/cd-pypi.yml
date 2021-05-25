@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.1.4
+        uses: snok/install-poetry@v1.1.6
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
         uses: actions/cache@v2
