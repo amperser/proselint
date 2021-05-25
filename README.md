@@ -347,6 +347,7 @@ the same features.
 | `needless_variants`                   | Use preferred forms over uncommon variants       |
 | `nonwords`                            | Do not use nonwords                              |
 | `oxymorons`                           | Avoid oxymorons                                  |
+| `passive_voice`                       | Avoid using the passive voice unnecessarily      |
 | `psychology`                          | Avoid misusing psychological terms               |
 | `redundancy.misc`                     | Avoid redundancy in phrases                      |
 | `redundancy.ras_syndrome`             | Avoid redundancy in acronyms                     |

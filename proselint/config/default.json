@@ -15,6 +15,7 @@
         "needless_variants": true,
         "nonwords": true,
         "oxymorons": true,
+		"passive_voice": true,
         "psychology": true,
         "redundancy": true,
         "restricted": false,
