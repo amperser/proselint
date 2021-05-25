@@ -57,6 +57,7 @@
         "needless_variants.misc"        : true,
         "nonwords.misc"                 : true,
         "oxymorons.misc"                : true,
+        "passive_voice.misc"            : true,
         "psychology.misc"               : true,
         "redundancy.misc"               : true,
         "redundancy.ras_syndrome"       : true,

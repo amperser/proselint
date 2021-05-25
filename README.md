@@ -206,6 +206,7 @@ Additionally for compatible reason, the legacy configuration `~/.proselintrc` wi
 | `needless_variants.misc` | Using the preferred form |
 | `nonwords.misc` | Avoid using nonwords |
 | `oxymorons.misc` | Avoiding oxymorons |
+| `passive_voice.misc` | Reduce unnecessary use of passive voice |
 | `psychology.misc` | Avoiding misused psychological terms |
 | `redundancy.misc` | Avoiding redundancy and saying things twice |
 | `redundancy.ras_syndrome` | Avoiding RAS syndrome |
