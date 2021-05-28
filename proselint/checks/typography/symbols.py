@@ -79,13 +79,10 @@ def check_curly_quotes(text):
     u"""Use curly quotes, not straight quotes."""
     err = "typography.symbols.curly_quotes"
     msg = u'Use curly quotes “”, not straight quotes "".'
+    regex = r"\"[\w\s\d]+\""
 
-    list = [
-        [u"“ or ”", ['"']],
-    ]
-
-    return preferred_forms_check(
-        text, list, err, msg, ignore_case=False, max_errors=2)
+    return existence_check(
+        text, [regex], err, msg, max_errors=3, require_padding=False)
 
 # @memoize
 # def check_en_dash_separated_names(text):
