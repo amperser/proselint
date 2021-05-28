@@ -47,4 +47,7 @@ class TestCheck(Check):
 
     def test_curly_quotes(self):  # FIXME
         """Find "" quotes in a string."""
-        pass
+        assert chk.check_curly_quotes(
+            "\"This should produce an error\", he said.")
+        assert not chk.check_curly_quotes("But this should not.")
+        assert chk.check_curly_quotes("Alas, \"it should here too\".")
