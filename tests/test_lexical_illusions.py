@@ -20,3 +20,4 @@ class TestCheck(Check):
         """Basic smoke test for lexical_illusions.misc."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes("""Paris in the the springtime.""")
+        assert self.passes("""And he's gone, gone with the breeze""")
