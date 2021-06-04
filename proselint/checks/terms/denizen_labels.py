@@ -11,12 +11,15 @@ def check(text):
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
+    ---
+    source:     Mary Norris
+    source_url: http://nyr.kr/1rGienj
     """
     err = "terms.denizen_labels.garner"
     msg = "'{}' is the preferred denizen label."
 
     preferences = [
-
+        # Garner
         ["Afrikaner",         ["Afrikaaner"]],
         ["Afrikaner",         ["Afrikander"]],
         ["Alabamian",         ["Alabaman"]],
@@ -53,22 +56,7 @@ def check(text):
         ["Tusconan",          ["Tusconian", "Tusconite"]],
         ["Utahn",             ["Utahan"]],
         ["Saudi",             ["Saudi Arabian"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
-
-
-@memoize
-def check_denizen_labels_norris(text):
-    """Suggest the preferred forms.
-
-    source:     Mary Norris
-    source_url: http://nyr.kr/1rGienj
-    """
-    err = "terms.denizen_labels.norris"
-    msg = "Would you like '{}'?"
-
-    preferences = [
+        # Mary Norris
         ["Mancunian",         ["Manchesterian"]],
         ["Mancunians",        ["Manchesterians"]],
         ["Vallisoletano",     ["Valladolidian"]],
