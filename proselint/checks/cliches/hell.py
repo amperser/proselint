@@ -3,7 +3,7 @@
 
 ---
 layout:     post
-source:     ???
+source:     Elmore Leonard's 10 Rules of Writing
 source_url: ???
 title:      yelling
 date:       2014-06-10 12:31:19
@@ -11,7 +11,6 @@ categories: writing
 ---
 
 Never use the phrase 'all hell broke loose'.
-
 """
 from proselint.tools import existence_check, memoize
 
@@ -19,10 +18,9 @@ from proselint.tools import existence_check, memoize
 @memoize
 def check_repeated_exclamations(text):
     """Check the text."""
-    err = "leonard.hell"
-    msg = u"Never use the words 'all hell broke loose'."
+    err = "cliches.hell"
+    msg = u"Never use the phrase 'all hell broke loose'."
 
     regex = r"all hell broke loose"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=1)
+    return existence_check(text, [regex], err, msg, max_errors=1)
