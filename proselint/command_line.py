@@ -145,6 +145,7 @@ def proselint(paths=None, config=None, version=None, clean=None, debug=None,
             print_errors(fp, errors, output_json, compact=compact)
         except Exception:
             traceback.print_exc()
+            sys.exit(2)
 
     # Return an exit code
     close_cache_shelves()

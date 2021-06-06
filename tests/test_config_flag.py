@@ -22,7 +22,14 @@ def test_config_flag():
     output = subprocess.run(["python", "-m", "proselint", "--demo"],
                             stdout=subprocess.PIPE, encoding='utf-8')
     assert "uncomparables.misc" in output.stdout
+
     output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
                              "tests/test_config_flag_proselintrc"],
                             stdout=subprocess.PIPE, encoding='utf-8')
     assert "uncomparables.misc" not in output.stdout
+
+    output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
+                             "non_existing_file"],
+                            stderr=subprocess.PIPE, encoding='utf-8')
+    assert output.returncode == 2
+    assert 'FileNotFoundError' in output.stderr
