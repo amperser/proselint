@@ -185,6 +185,9 @@ def load_options(config_file_path=None):
         os.path.join(home_dir, '.proselintrc')
     ]
     if config_file_path:
+        if not os.path.isfile(config_file_path):
+            raise FileNotFoundError(
+                'Config file %s does not exist' % config_file_path)
         user_config_paths.insert(0, config_file_path)
 
     user_options = {}
