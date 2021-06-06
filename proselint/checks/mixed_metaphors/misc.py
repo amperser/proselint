@@ -1,44 +1,32 @@
 # -*- coding: utf-8 -*-
 
-"""Mixed metaphors."""
+"""Mixed metaphors.
 
-from proselint.tools import memoize, existence_check, preferred_forms_check
+---
+layout:     post
+source:     Garner's Modern American Usage
+source_url: http://bit.ly/1T4alrY
+title:      ????????
+date:       ????????
+categories: writing
+---
 
+Avoid mixing metaphors.
 
-@memoize
-def check_bottleneck(text):
-    """Avoid mixing metaphors about bottles and their necks.
+"""
 
-    source:     Sir Ernest Gowers
-    source_url: http://bit.ly/1CQPH61
-    """
-    err = "mixed_metaphors.misc.bottleneck"
-    msg = u"Mixed metaphor — bottles with big necks are easy to pass through."
-    list = [
-        "biggest bottleneck",
-        "big bottleneck",
-        "large bottleneck",
-        "largest bottleneck",
-        "world-wide bottleneck",
-        "huge bottleneck",
-        "massive bottleneck",
-    ]
-
-    return existence_check(text, list, err, msg, max_errors=1)
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check_misc(text):
+def check(text):
     """Avoid mixing metaphors.
 
-    source:     Garner's Modern American Usage
-    source_url: http://bit.ly/1T4alrY
     """
-    err = "mixed_metaphors.misc.misc"
+    err = "mixed_metaphors.misc"
     msg = u"Mixed metaphor. Try '{}'."
 
-    preferences = [
-
+    list = [
         ["cream rises to the top",    ["cream rises to the crop"]],
         ["fasten your seatbelts",     ["button your seatbelts"]],
         ["a minute to decompress",    ["a minute to decompose"]],
@@ -46,4 +34,4 @@ def check_misc(text):
         ["not rocket science",        ["not rocket surgery"]],
     ]
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check(text, list, err, msg)
