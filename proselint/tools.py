@@ -14,6 +14,7 @@ import re
 import hashlib
 import json
 import importlib
+import copy
 
 import dbm
 _cache_shelves = dict()
@@ -151,44 +152,46 @@ def get_checks(options):
     return checks
 
 
-def load_options(config_file_path=None, fallbacks=[]):
+def deepmerge_dicts(dict1, dict2):
+    """Deep merge dictionaries, second dict will take priority."""
+    result = copy.deepcopy(dict1)
+
+    for key, value in dict2.items():
+        if isinstance(value, dict):
+            result[key] = deepmerge_dicts(result[key] or {}, value)
+        else:
+            result[key] = value
+
+    return result
+
+
+def load_options(config_file_path=None):
     """Read various proselintrc files, allowing user overrides."""
-    possible_defaults = (
+    system_config_paths = (
         '/etc/proselintrc',
         os.path.join(proselint_path, '.proselintrc'),
     )
-    user_options = {}
-    options = {}
 
-    for filename in possible_defaults:
-        try:
-            options = json.load(open(filename))
+    system_options = {}
+    for path in system_config_paths:
+        if os.path.isfile(path):
+            system_options = json.load(open(path))
             break
-        except IOError:
-            pass
 
-    # the user has explicitly passed in a config file
-    # either into the `lint' method directly, or via a
-    # Click command-line option
+    user_config_paths = [
+        os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
+        os.path.join(home_dir, '.proselintrc')
+    ]
     if config_file_path:
-        user_options = json.load(open(config_file_path))
-        has_overrides = True
-    # try to find a config file in the default locations,
-    # respecting environment variables
-    else:
-        for f in fallbacks:
-            if os.path.exists(f):
-                user_options = json.load(open(f))
-                has_overrides = True
-                break
+        user_config_paths.insert(0, config_file_path)
 
-    # Read user configuration from the legacy path.
-    if user_options:
-        if 'max_errors' in user_options:
-            options['max_errors'] = user_options['max_errors']
-        if 'checks' in user_options:
-            for (key, value) in user_options['checks'].items():
-                options['checks'][key] = value
+    user_options = {}
+    for path in user_config_paths:
+        if os.path.isfile(path):
+            user_options = json.load(open(path))
+            break
+
+    options = deepmerge_dicts(system_options, user_options)
 
     return options
 
@@ -225,11 +228,7 @@ def line_and_column(text, position):
 
 def lint(input_file, debug=False, config_file_path=None):
     """Run the linter on the input file."""
-    options = load_options(
-        config_file_path,
-        [os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
-         os.path.join(home_dir, '.proselintrc')]
-    )
+    options = load_options(config_file_path)
 
     if isinstance(input_file, str):
         text = input_file
