@@ -20,6 +20,7 @@ import dbm
 _cache_shelves = dict()
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 home_dir = os.path.expanduser("~")
+cwd = os.getcwd()
 
 
 def close_cache_shelves():
@@ -179,6 +180,7 @@ def load_options(config_file_path=None):
             break
 
     user_config_paths = [
+        os.path.join(cwd, '.proselintrc'),
         os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
         os.path.join(home_dir, '.proselintrc')
     ]
