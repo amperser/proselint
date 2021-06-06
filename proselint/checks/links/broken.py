@@ -14,20 +14,15 @@ Check that links are not broken.
 
 """
 from proselint.tools import memoize
-from future import standard_library
 import re
-try:
-    import urllib.request as urllib_request  # for Python 3
-except ImportError:
-    import urllib2 as urllib_request         # for Python 2
+from urllib import error, request
 from socket import error as SocketError
-standard_library.install_aliases()
 
 
 @memoize
 def check(text):
     """Check the text."""
-    err = "links.valid"
+    err = "links.broken"
     msg = u"Broken link: {}"
 
     regex = re.compile(
@@ -50,15 +45,12 @@ def check(text):
     return errors
 
 
-@memoize
 def is_broken_link(url):
     """Determine whether the link returns a 404 error."""
     try:
-        request = urllib_request.Request(
+        req = request.Request(
             url, headers={'User-Agent': 'Mozilla/5.0'})
-        urllib_request.urlopen(request).read()
+        request.urlopen(req).read()
         return False
-    except urllib_request.URLError:
-        return True
-    except SocketError:
+    except (error.URLError, SocketError):
         return True
