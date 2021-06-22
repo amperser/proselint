@@ -31,7 +31,7 @@ class Check(TestCase):
 
         errors = []
         for text in lst:
-            errors.append(self.this_check.check(text))
+            errors.append(self.this_check.check.__wrapped__(text))
 
         return len(errors[0]) == 0
 
@@ -51,7 +51,7 @@ class Check(TestCase):
             # Compute the number of words per (wpe) error.
             with codecs.open(example_path, "r", encoding='utf-8') as f:
                 text = f.read()
-                num_errors = len(self.this_check.check(text))
+                num_errors = len(self.this_check.check.__wrapped__(text))
                 num_words = len(text)
 
             try:
