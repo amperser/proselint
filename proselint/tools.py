@@ -216,11 +216,13 @@ def errors_to_json(errors):
 def line_and_column(text, position):
     """Return the line number and column of a position in a string."""
     position_counter = 0
-    for idx_line, line in enumerate(text.splitlines(True)):
+    line_no = 0
+    for line in text.splitlines(True):
         if (position_counter + len(line.rstrip())) >= position:
-            return (idx_line, position - position_counter)
-        else:
-            position_counter += len(line)
+            break
+        position_counter += len(line)
+        line_no += 1
+    return (line_no, position - position_counter)
 
 
 def lint(input_file, debug=False, config_file_path=None):
