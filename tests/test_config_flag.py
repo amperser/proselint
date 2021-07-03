@@ -33,3 +33,10 @@ def test_config_flag():
                             stderr=subprocess.PIPE, encoding='utf-8')
     assert output.returncode == 1
     assert "FileNotFoundError" in output.stderr
+
+    output = subprocess.run(["python", "-m", "proselint", "--config",
+                             "tests/test_config_flag_proselintrc",
+                             "non_existent_file"],
+                            stderr=subprocess.PIPE, encoding='utf-8')
+    assert output.returncode == 2
+    assert "FileNotFoundError" in output.stderr
