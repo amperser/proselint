@@ -1,6 +1,7 @@
 """Test user option overrides using --config and load_options"""
-import subprocess
+from click.testing import CliRunner
 from proselint.tools import deepmerge_dicts, load_options
+from proselint.command_line import proselint
 
 
 def test_deepmerge_dicts():
@@ -19,24 +20,18 @@ def test_load_options_function():
 
 def test_config_flag():
     """Test the --config CLI argument"""
-    output = subprocess.run(["python", "-m", "proselint", "--demo"],
-                            stdout=subprocess.PIPE, encoding='utf-8')
+    runner = CliRunner()
+
+    output = runner.invoke(proselint, "--demo")
     assert "uncomparables.misc" in output.stdout
 
-    output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
-                             "tests/test_config_flag_proselintrc"],
-                            stdout=subprocess.PIPE, encoding='utf-8')
+    output = runner.invoke(
+        proselint, "--demo --config tests/test_config_flag_proselintrc")
     assert "uncomparables.misc" not in output.stdout
 
-    output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
-                             "non_existent_file"],
-                            stderr=subprocess.PIPE, encoding='utf-8')
-    assert output.returncode == 1
-    assert "FileNotFoundError" in output.stderr
+    output = runner.invoke(proselint, "--demo --config non_existent_file")
+    assert output.exit_code == 1
+    assert "FileNotFoundError" == output.exc_info[0].__name__
 
-    output = subprocess.run(["python", "-m", "proselint", "--config",
-                             "tests/test_config_flag_proselintrc",
-                             "non_existent_file"],
-                            stderr=subprocess.PIPE, encoding='utf-8')
-    assert output.returncode == 2
-    assert "FileNotFoundError" in output.stderr
+    output = runner.invoke(proselint, "non_existent_file")
+    assert output.exit_code == 2
