@@ -1,0 +1,28 @@
+name: "CI: Danger"
+on: [pull_request]
+jobs:
+  danger:
+    name: Danger
+    if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        ruby: [3.0.0]
+    steps:
+      - name: "[INIT] Checkout repository"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
+        uses: ruby/setup-ruby@v1.75.0
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: "[EXEC] Run Danger"
+        run: bundle exec danger
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}

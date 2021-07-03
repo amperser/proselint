@@ -3,8 +3,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 import gmail
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from worker import conn
 import requests
 import hashlib
@@ -100,5 +100,6 @@ def check_email():
                     u.archive()
 
                     print("Email {} has been replied to.".format(hash))
+
 
 scheduler.start()

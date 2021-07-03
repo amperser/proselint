@@ -12,17 +12,17 @@ class Check(TestCase):
     __test__ = False
 
     def setUp(self):
-        """Placeholder for setup procedure."""
+        """Create a placeholder for setup procedure."""
         pass
 
     def tearDown(self):
-        """Placeholder for teardown procedure."""
+        """Create a placeholder for teardown procedure."""
         from proselint.tools import close_cache_shelves
         close_cache_shelves()
 
     @property
     def this_check(self):
-        """The specific check."""
+        """Create a placeholder for the specific check."""
         raise NotImplementedError
 
     def passes(self, lst):

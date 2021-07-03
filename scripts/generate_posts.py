@@ -25,6 +25,7 @@ def is_check(fn):
 
     return True
 
+
 for root, subdirs, files in listing:
     for file in files:
         fn = os.path.join(root, file)

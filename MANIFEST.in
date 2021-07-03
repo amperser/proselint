@@ -1,1 +1,1 @@
-include README.md LICENSE.md CHANGELOG.md tests/illegal-chars.txt
+include README.md LICENSE.md CHANGELOG.md tests/illegal-chars.txt tests/*.py tests/test_gmeu/*.py

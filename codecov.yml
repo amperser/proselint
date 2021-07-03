@@ -1,0 +1,12 @@
+codecov:
+  strict_yaml_branch: main
+comment:
+  require_changes: true
+coverage:
+  status:
+    project:
+      proselint:
+        target: auto
+        threshold: 1%
+ignore:
+  - tests

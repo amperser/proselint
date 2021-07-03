@@ -28,6 +28,7 @@ proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
 
 
+# TODO: fix broken corpus
 def timing_test(corpus="0.1.0"):
     """Measure timing performance on the named corpus."""
     import time
@@ -131,6 +132,8 @@ def add_checks(src):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
+@click.option('--config', is_flag=False, type=click.Path(),
+              help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
@@ -142,12 +145,12 @@ def add_checks(src):
               help="Path to custom checks")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(checks=None, paths=None, version=None,
-              clean=None, debug=None, output_json=None, time=None,
-              demo=None, compact=None,):
-    """A CLI for proselint, a linter for prose."""
+def proselint(paths=None, config=None, version=None, clean=None, debug=None,
+              output_json=None, time=None, demo=None, compact=None):
+    """Create the CLI for proselint, a linter for prose."""
     if time:
-        click.echo(timing_test())
+        # click.echo(timing_test())
+        print("This option does not work for the time being.")
         return
 
     # In debug or clean mode, delete cache & *.pyc files before running.
@@ -176,7 +179,7 @@ def proselint(checks=None, paths=None, version=None,
             else:
                 f = click.open_file(
                     fp, 'r', encoding="utf-8", errors="replace")
-            errors = lint(f, debug=debug)
+            errors = lint(f, debug=debug, config_file_path=config)
             num_errors += len(errors)
             print_errors(fp, errors, output_json, compact=compact)
         except Exception:

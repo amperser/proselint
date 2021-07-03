@@ -3,24 +3,35 @@
 
 """Test GMEU entry 'a', part B."""
 
+from __future__ import absolute_import
+
 from proselint.tools import assert_error
-from nose import SkipTest
+
+from tests.check import Check
 
 
-def test_a_distributive():
-    """Use a over per in the distributive sense."""
-    raise SkipTest
+class chk:
+    def check(self, text):
+        return assert_error, text, "misc.a_distributive"
 
-    sentences = [
-        "An apple per day keeps the doctor away.",
-        "I sleep eight hours per night.",
-        "Their policy allows one golf cart a couple.",
-        "The company donated five books a student.",
-        "Our a-unit cost is less than $1000.",
-        "The $50-a-parent fee seems unreasonably high."
-    ]
 
-    error_check_name = "misc.a_distributive"
+class TestCheck(Check):
+    """The test class for GMEU entry A - using a over per in the distributive
+    sense.
+    """
 
-    for sentence in sentences:
-        yield assert_error, sentence, error_check_name
+    @property
+    def this_check(self):
+        return chk
+
+    def test_smoke(self):
+        sentences = [
+            "An apple per day keeps the doctor away.",
+            "I sleep eight hours per night.",
+            "Their policy allows one golf cart a couple.",
+            "The company donated five books a student.",
+            "Our a-unit cost is less than $1000.",
+            "The $50-a-parent fee seems unreasonably high."
+        ]
+        for sentence in sentences:
+            assert not self.passes(sentence)

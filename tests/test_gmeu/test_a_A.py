@@ -3,15 +3,26 @@
 
 """Test GMEU entry 'a', part A."""
 
+from __future__ import absolute_import
+
 from proselint.tools import assert_error
-from nose import SkipTest
+
+from tests.check import Check
 
 
-def test_a_vs_an():
-    """Use the correct determiner."""
-    raise SkipTest
+class chk:
+    def check(self, text):
+        return assert_error, text, "misc.a_vs_an"
 
-    sentences = [
+
+class TestCheck(Check):
+    """The test class for GMEU entry A - using the correct determiner."""
+
+    @property
+    def this_check(self):
+        return chk
+
+    sentences_with_errors = [
         "Are you an Yankee fan?",
         "Coffee tastes less sweet in an white mug.",
         "One of them wore a opalescent vest.",
@@ -42,7 +53,6 @@ def test_a_vs_an():
         "She laughed aloud, an hysterical sort of giggled, quickly stifled",
     ]
 
-    error_check_name = "misc.a_vs_an"
-
-    for sentence in sentences:
-        yield assert_error, sentence, error_check_name
+    def test_smoke(self):
+        for sentence in sentences_with_errors:
+            assert not self.passes(sentence)
