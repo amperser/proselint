@@ -187,7 +187,7 @@ def load_options(config_file_path=None):
     if config_file_path:
         if not os.path.isfile(config_file_path):
             raise FileNotFoundError(
-                'Config file %s does not exist' % config_file_path)
+                f"Config file {config_file_path} does not exist")
         user_config_paths.insert(0, config_file_path)
 
     user_options = {}

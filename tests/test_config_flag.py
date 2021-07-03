@@ -29,7 +29,7 @@ def test_config_flag():
     assert "uncomparables.misc" not in output.stdout
 
     output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
-                             "non_existing_file"],
+                             "non_existent_file"],
                             stderr=subprocess.PIPE, encoding='utf-8')
-    assert output.returncode == 2
-    assert 'FileNotFoundError' in output.stderr
+    assert output.returncode == 1
+    assert "FileNotFoundError" in output.stderr

@@ -138,7 +138,8 @@ def proselint(paths=None, config=None, version=None, clean=None, debug=None,
             f = sys.stdin
         else:
             try:
-                f = click.open_file(fp, 'r', encoding="utf-8", errors="replace")
+                f = click.open_file(
+                    fp, 'r', encoding="utf-8", errors="replace")
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
