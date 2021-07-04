@@ -327,8 +327,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
 def existence_check(text, list, err, msg, ignore_case=True,
                     str=False, max_errors=float("inf"), offset=0,
                     require_padding=True, dotall=False,
-                    excluded_topics=None, join=False):
-    """Build a checker that blacklists certain words."""
+                    excluded_topics=None, exceptions=[], join=False):
+    """Build a checker that prohibits certain words or phrases."""
     flags = 0
 
     msg = " ".join(msg.split())
@@ -358,6 +358,8 @@ def existence_check(text, list, err, msg, ignore_case=True,
     rx = "|".join(regex.format(w) for w in list)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
+        if any([re.search(exception, txt) for exception in exceptions]):
+            continue
         errors.append((
             m.start() + 1 + offset,
             m.end() + offset,
