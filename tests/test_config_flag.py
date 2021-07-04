@@ -1,6 +1,14 @@
 """Test user option overrides using --config and load_options"""
-import subprocess
-from proselint.tools import load_options
+from click.testing import CliRunner
+from proselint.tools import deepmerge_dicts, load_options
+from proselint.command_line import proselint
+
+
+def test_deepmerge_dicts():
+    """Test deepmerge_dicts"""
+    d1 = {'a': 1, 'b': {'c': 2, 'd': 3}}
+    d2 = {'a': 2, 'b': {'c': 3, 'e': 4}}
+    assert deepmerge_dicts(d1, d2) == {'a': 2, 'b': {'c': 3, 'd': 3, 'e': 4}}
 
 
 def test_load_options_function():
@@ -10,20 +18,20 @@ def test_load_options_function():
     assert not overrides["checks"]["uncomparables.misc"]
 
 
-def test_load_fallbacks():
-    """Test load_options with a fallback path"""
-    fallbacks = load_options(None, ["tests/test_config_flag_proselintrc"])
-    assert not fallbacks["checks"]["uncomparables.misc"]
-    fallbacks = load_options(None, ["./.proselintrc"])
-    assert fallbacks["checks"]["uncomparables.misc"]
-
-
 def test_config_flag():
     """Test the --config CLI argument"""
-    output = subprocess.run(["python", "-m", "proselint", "--demo"],
-                            stdout=subprocess.PIPE, encoding='utf-8')
+    runner = CliRunner()
+
+    output = runner.invoke(proselint, "--demo")
     assert "uncomparables.misc" in output.stdout
-    output = subprocess.run(["python", "-m", "proselint", "--demo", "--config",
-                             "tests/test_config_flag_proselintrc"],
-                            stdout=subprocess.PIPE, encoding='utf-8')
+
+    output = runner.invoke(
+        proselint, "--demo --config tests/test_config_flag_proselintrc")
     assert "uncomparables.misc" not in output.stdout
+
+    output = runner.invoke(proselint, "--demo --config non_existent_file")
+    assert output.exit_code == 1
+    assert "FileNotFoundError" == output.exc_info[0].__name__
+
+    output = runner.invoke(proselint, "non_existent_file")
+    assert output.exit_code == 2

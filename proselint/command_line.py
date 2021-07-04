@@ -133,18 +133,19 @@ def proselint(paths=None, config=None, version=None, clean=None, debug=None,
         filepaths.append('-')
 
     for fp in filepaths:
-        try:
-            if fp == '-':
-                fp = '<stdin>'
-                f = sys.stdin
-            else:
+        if fp == '-':
+            fp = '<stdin>'
+            f = sys.stdin
+        else:
+            try:
                 f = click.open_file(
                     fp, 'r', encoding="utf-8", errors="replace")
-            errors = lint(f, debug=debug, config_file_path=config)
-            num_errors += len(errors)
-            print_errors(fp, errors, output_json, compact=compact)
-        except Exception:
-            traceback.print_exc()
+            except Exception:
+                traceback.print_exc()
+                sys.exit(2)
+        errors = lint(f, debug=debug, config_file_path=config)
+        num_errors += len(errors)
+        print_errors(fp, errors, output_json, compact=compact)
 
     # Return an exit code
     close_cache_shelves()
