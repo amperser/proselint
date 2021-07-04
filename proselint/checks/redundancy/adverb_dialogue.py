@@ -2,18 +2,15 @@
 
 """Redundancy."""
 
-from proselint.tools import memoize, is_quoted
-import re
+from proselint.tools import memoize, existence_check
 
 
 @memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "redundancy.adverbdialogue"
+    err = "redundancy.adverb_dialogue"
     msg = "Redundant adverb. Remove {}."
 
-    # find if any of the text is in quote
     regex = r'[\'"].*[,?!][\'"][\s\w]*?(\w+?ly)[\s\w]*[,.!?]'
-    matches = re.finditer(regex, text)
-    return [(match.start(1), match.end(1), err, msg.format(
-        match.groups(0)[0]), None) for match in matches]
+
+    return existence_check(text, [regex], err, msg)
