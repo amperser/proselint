@@ -50,3 +50,14 @@ class TestCheck(Check):
         assert chk("abc is easy as 123", self.L, self.err, self.msg) != []
         assert chk(u'abc is easy as 123', self.L, self.err, self.msg) != []
         assert chk(u"abc is easy as 123", self.L, self.err, self.msg) != []
+
+    def test_exceptions(self):
+        """Test that existence_check does not report excluded phrases"""
+        regex = [r"\b(\w+)\b\s\1"]
+        no = ["should should"]
+        errs = chk("should should flag flag.", regex, "", "",
+                   require_padding=False)
+        assert len(errs) == 2
+        errs = chk("should should flag flag.", regex, "", "", exceptions=no,
+                   require_padding=False)
+        assert len(errs) == 1
