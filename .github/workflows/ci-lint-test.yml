@@ -32,7 +32,7 @@ jobs:
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: pip install poetry && poetry install
       - name: "[EXEC] Lint"
-        run: poetry run pycodestyle --config pyproject.toml && poetry run pydocstyle
+        run: poetry run pycodestyle --config pyproject.toml . && poetry run pydocstyle .
   test-cover:
     name: Test & Cover
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
