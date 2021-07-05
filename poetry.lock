@@ -575,7 +575,7 @@ idna2008 = ["idna"]
 
 [[package]]
 name = "rq"
-version = "1.8.1"
+version = "1.9.0"
 description = "RQ is a simple, lightweight, library for creating background jobs, and processing them."
 category = "dev"
 optional = false
@@ -1058,8 +1058,8 @@ rfc3986 = [
     {file = "rfc3986-1.5.0.tar.gz", hash = "sha256:270aaf10d87d0d4e095063c65bf3ddbc6ee3d0b226328ce21e036f946e421835"},
 ]
 rq = [
-    {file = "rq-1.8.1-py2.py3-none-any.whl", hash = "sha256:2c7f795a2c85d84125314e49853ed66ca9acf062e997ada16e259c1c284f525f"},
-    {file = "rq-1.8.1.tar.gz", hash = "sha256:feec0f914e69cae2380e2f46d82901e2abbd6fb09db320acb295f486a338f89f"},
+    {file = "rq-1.9.0-py2.py3-none-any.whl", hash = "sha256:7af1e9706dbe6f1eac16dffacd8271ec27c1369950941f14dab6bb08a62979d7"},
+    {file = "rq-1.9.0.tar.gz", hash = "sha256:bdfef943de838955e474cfd0e25b9b8c53ed4b9c361fe4bb11cf56d17a87acc5"},
 ]
 secretstorage = [
     {file = "SecretStorage-3.3.1-py3-none-any.whl", hash = "sha256:422d82c36172d88d6a0ed5afdec956514b189ddbfb72fefab0c8a1cee4eaf71f"},
