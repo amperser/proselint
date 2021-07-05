@@ -28,8 +28,10 @@ jobs:
       - name: "[EXEC] Insert demo"
         run: python scripts/insert_demo.py
       - name: "[EXEC] Build site"
-        run: cd site && jekyll build
+        run: cd site && ~/.gem/ruby/${{ matrix.ruby }}/jekyll build
       - name: "[EXEC] Push to s3"
         run: s3_website push
       - name: "[POST] Verify crawl"
-        run: "cd .. && wget --spider -e robots=off -w 1 -r -p http://www.proselint.com"
+        run: |
+          cd ..
+          wget --spider -e robots=off -w 1 -r -p https://www.proselint.com
