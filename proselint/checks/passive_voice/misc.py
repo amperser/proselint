@@ -29,4 +29,4 @@ def check(text):
              r"\b(?:by)\b"),
             r"let(\b[\w\s]+\b){4,}?be"]
 
-    return existence_check(text, list, err, msg, require_padding=False)
+    return existence_check(text, list, err, msg)
