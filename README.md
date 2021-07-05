@@ -8,35 +8,35 @@
 
 Writing is notoriously hard, even for the best writers, and it's not for lack of good advice — a tremendous amount of knowledge about the craft is strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from *Garner’s Modern English Usage*, an 1100-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
 
-We devised a simple solution: `proselint`, a linter for English prose. (A linter is a computer program that, like a spell checker, scans through a document and analyzes it.)
+We devised a simple solution: `proselint`, a linter for English prose. A linter is a computer program that, akin to a spell checker, scans through a file and detects issues — like how a real lint roller helps you get unwanted lint off of your shirt.
 
-`proselint` places the world’s greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.
-
-`proselint` is a command-line utility that can be integrated into existing tools.
+`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, Elwyn White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose; all in a neat command-line utility that you can integrate into other tools, scripts, and workflows.
 
 ### Installation
 
-To get this up and running, install it using [pip](https://packaging.python.org/installing/#use-pip-for-installing):
+To get this up and running, install it using [pip]:
 
-```
+```bash
 pip install proselint
 ```
 
+[pip]: https://packaging.python.org/installing/#use-pip-for-installing
+
 #### Fedora
 
-```
+```bash
 sudo dnf install proselint
 ```
 
 #### Debian
 
-```
+```bash
 sudo apt install python3-proselint
 ```
 
 #### Ubuntu
 
-```
+```bash
 sudo add-apt-repository universe
 sudo apt install python3-proselint
 ```
@@ -59,7 +59,7 @@ sudo apt install python3-proselint
 
 ### Usage
 
-Suppose you had a document `text.md` with the following text:
+Suppose you have a document `text.md` with the following text:
 
 ```
 John is very unique.
@@ -68,7 +68,7 @@ John is very unique.
 You can run `proselint` over the document using the command line:
 
 ```bash
-❯ proselint text.md
+proselint text.md
 ```
 
 This prints a list of suggestions to stdout, one per line. Each suggestion has the form:
@@ -85,48 +85,48 @@ text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' cann
 
 The command-line utility can also print suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
 
-```javascript
+```jsonc
 {
-    // Type of check that output this suggestion.
-    check: "wallace.uncomparables",
+	// Type of check that output this suggestion.
+	check: "wallace.uncomparables",
 
-    // Message to describe the suggestion.
-    message: "Comparison of an uncomparable: 'unique' cannot be compared.",
+	// Message to describe the suggestion.
+	message: "Comparison of an uncomparable: 'unique' cannot be compared.",
 
-    // The person or organization giving the suggestion.
-    source: "David Foster Wallace"
+	// The person or organization giving the suggestion.
+	source: "David Foster Wallace"
 
-    // URL pointing to the source material.
-    source_url: "http://www.telegraph.co.uk/a/9715551"
+	// URL pointing to the source material.
+	source_url: "http://www.telegraph.co.uk/a/9715551"
 
-    // Line where the error starts.
-    line: 0,
+	// Line where the error starts.
+	line: 0,
 
-    // Column where the error starts.
-    column: 10,
+	// Column where the error starts.
+	column: 10,
 
-    // Index in the text where the error starts.
-    start: 10,
+	// Index in the text where the error starts.
+	start: 10,
 
-    // Index in the text where the error ends.
-    end: 21,
+	// Index in the text where the error ends.
+	end: 21,
 
-    // start - end
-    extent: 11,
+	// length from start -> end
+	extent: 11,
 
-    // How important is this? Can be "suggestion", "warning", or "error".
-    severity: "warning",
+	// How important is this? Can be "suggestion", "warning", or "error".
+	severity: "warning",
 
-    // Possible replacements.
-    replacements: [
-        {
-            value: "unique"
-        }
-    ]
+	// Possible replacements.
+	replacements: [
+		{
+			value: "unique"
+		}
+	]
 }
 ```
 
-To run the linter as part of another program, you can use the `lint` function in `proselint.tools`:
+To run the linter as part of another Python program, you can use the `lint` function in `proselint.tools`:
 
 ```python
 import proselint
@@ -142,14 +142,13 @@ This will return a list of suggestions:
 
 ### Checks
 
-You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used.
-Additionally for compatible reason, the legacy configuration `~/.proselintrc` will be used if `$XDG_CONFIG_HOME/proselint/config` does not exist.
+You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used. Additionally, for compatibility reasons, the legacy configuration `~/.proselintrc` will be checked if `$XDG_CONFIG_HOME/proselint/config` does not exist.
 
 ```json
 {
-  "checks": {
-    "typography.diacritical_marks": false
-  }
+	"checks": {
+		"typography.diacritical_marks": false
+	}
 }
 ```
 
@@ -233,10 +232,12 @@ Additionally for compatible reason, the legacy configuration `~/.proselintrc` wi
 
 ### Contributing
 
-Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build `proselint` into the greatest writing tool in the world.
+Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website], where we describe how you can help us build `proselint` into the greatest writing tool in the world.
 
 - [Issue Tracker](http://github.com/amperser/proselint/issues)
 - [Source Code](http://github.com/amperser/proselint)
+
+[our website]: http://proselint.com/contributing/
 
 ### Support
 
@@ -244,13 +245,7 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 
 ### Running Automated Tests
 
-Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [pytest](https://docs.pytest.org/en/latest/) and run the following commands:
-```bash
-pytest
-```
-and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
-
-All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests.
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, you can use `./run_ci_checks.sh`.
 
 ### License
 

@@ -2,7 +2,14 @@
 name = "proselint"
 version = "0.11.0"
 description = "A linter for prose."
+license = "BSD-3-Clause"
 authors = ["Amperser Labs <hello@amperser.com>"]
+readme = "README.md"
+homepage = "https://proselint.com"
+repository = "https://github.com/amperser/proselint"
+classifiers = ["Programming Language :: Python :: Implementation :: CPython"]
+include = ["proselint", "demo.md", ".proselintrc"]
+exclude = ["tests"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -28,6 +35,9 @@ rq = ">=0.12.0"
 pycodestyle = "^2.7.0"
 pydocstyle = "^6.1.1"
 twine = "^3.4.1"
+
+[tool.poetry.scripts]
+proselint = "proselint.command_line:proselint"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
