@@ -1,5 +1,11 @@
 # Change Log
 
+## [proselint@0.11.1](https://github.com/amperser/proselint/compare/0.11.0...0.11.1)
+
+### Bug fixes
+
+- fix package metadata and pypi upload (hotfix release)
+
 ## [proselint@0.11.0](https://github.com/amperser/proselint/compare/0.10.2...0.11.0)
 
 ### Bug fixes
