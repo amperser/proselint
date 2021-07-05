@@ -1,6 +1,5 @@
 """Check that a check is working."""
 
-from past.builtins import basestring
 from unittest import TestCase
 import os
 import codecs
@@ -26,14 +25,14 @@ class Check(TestCase):
 
     def passes(self, lst):
         """Check if the test runs cleanly on the given text."""
-        if isinstance(lst, basestring):
+        if isinstance(lst, str):
             lst = [lst]
 
         errors = []
         for text in lst:
-            errors.append(self.this_check.check.__wrapped__(text))
+            errors += self.this_check.check.__wrapped__(text)
 
-        return len(errors[0]) == 0
+        return len(errors) == 0
 
     def wpe_too_high(self):
         """Check whether the check is too noisy."""
