@@ -1,9 +1,9 @@
 """Tests for weasel_words.very check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.weasel_words import very as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

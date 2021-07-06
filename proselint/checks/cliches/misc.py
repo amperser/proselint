@@ -2,7 +2,7 @@
 
 u"""Cliches are cliché."""
 
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

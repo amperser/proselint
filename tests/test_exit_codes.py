@@ -1,8 +1,10 @@
 """Check that the CLI returns the appropriate exit code."""
 
-from .check import Check
 from click.testing import CliRunner
+
 from proselint.command_line import proselint
+
+from .check import Check
 
 
 class TestExitCodes(Check):

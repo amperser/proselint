@@ -13,7 +13,7 @@ categories: writing
 Points out excessive apologizing.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

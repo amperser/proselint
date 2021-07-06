@@ -1,9 +1,9 @@
 """Tests for oxymorons.misc check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.oxymorons import misc as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

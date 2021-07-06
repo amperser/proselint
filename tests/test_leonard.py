@@ -1,9 +1,9 @@
 """Test garner.dates."""
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
+
+from proselint.checks.typography import exclamation
 
 from .check import Check
-from proselint.checks.typography import exclamation
 
 
 class TestCheck(Check):

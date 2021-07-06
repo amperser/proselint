@@ -3,12 +3,11 @@
 """Compute the lintscore on the corpus."""
 
 from __future__ import print_function
-from builtins import input
-from builtins import int
 
 import os
-import subprocess
 import re
+import subprocess
+from builtins import input, int
 
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 

@@ -1,9 +1,9 @@
 """Tests for cursing.nfl check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.cursing import nfl as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

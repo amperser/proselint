@@ -2,21 +2,21 @@
 
 """General-purpose tools shared across linting checks."""
 
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import print_function, unicode_literals
+
+import copy
+import dbm
+import functools
+import hashlib
+import importlib
+import inspect
+import json
+import os
+import re
+import shelve
 import sys
 import traceback
-import os
-import shelve
-import inspect
-import functools
-import re
-import hashlib
-import json
-import importlib
-import copy
 
-import dbm
 _cache_shelves = dict()
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 home_dir = os.path.expanduser("~")
@@ -25,7 +25,7 @@ cwd = os.getcwd()
 
 def close_cache_shelves():
     """Close previously opened cache shelves."""
-    for pth, cache in _cache_shelves.items():
+    for _, cache in _cache_shelves.items():
         cache.close()
     _cache_shelves.clear()
 
@@ -331,7 +331,7 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
 def existence_check(text, list, err, msg, ignore_case=True,
                     str=False, max_errors=float("inf"), offset=0,
                     require_padding=True, dotall=False,
-                    excluded_topics=None, exceptions=[], join=False):
+                    excluded_topics=None, exceptions=(), join=False):
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
 

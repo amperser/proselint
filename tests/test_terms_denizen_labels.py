@@ -1,9 +1,9 @@
 """Tests for terms.denizen_labels check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.terms import denizen_labels as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

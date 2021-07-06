@@ -1,9 +1,9 @@
 """Tests for dates_times.dates check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.dates_times import dates as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

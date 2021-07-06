@@ -13,7 +13,7 @@ categories: writing
 Names for groups of animals.
 
 """
-from proselint.tools import preferred_forms_check, memoize
+from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize

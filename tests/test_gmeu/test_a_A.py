@@ -6,7 +6,6 @@
 from __future__ import absolute_import
 
 from proselint.tools import assert_error
-
 from tests.check import Check
 
 

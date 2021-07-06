@@ -13,14 +13,14 @@ categories: writing
 Check that links are not broken.
 
 """
-from proselint.tools import memoize
-from future import standard_library
 import re
-try:
-    import urllib.request as urllib_request  # for Python 3
-except ImportError:
-    import urllib2 as urllib_request         # for Python 2
+import urllib.request as urllib_request  # for Python 3
 from socket import error as SocketError
+
+from future import standard_library
+
+from proselint.tools import memoize
+
 standard_library.install_aliases()
 
 

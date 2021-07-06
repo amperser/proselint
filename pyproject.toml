@@ -12,7 +12,7 @@ include = ["proselint", "demo.md", ".proselintrc"]
 exclude = ["tests"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.1"
 click = "^8.0.0"
 future = "^0.18.2"
 six = "^1.15.0"
@@ -37,6 +37,7 @@ twine = "^3.4.1"
 flake8 = "^3.9.2"
 flake8-bugbear = "^21.4.3"
 flake8-import-order = "^0.18.1"
+isort = "^5.9.1"
 
 [tool.poetry.scripts]
 proselint = "proselint.command_line:proselint"

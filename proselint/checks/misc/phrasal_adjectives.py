@@ -13,7 +13,7 @@ categories: writing
 Phrasal adjectives.
 
 """
-from proselint.tools import existence_check, preferred_forms_check, memoize
+from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize

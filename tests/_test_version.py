@@ -1,8 +1,10 @@
 """Test version number."""
-from .check import Check
 from click.testing import CliRunner
-from proselint.version import __version__
+
 from proselint.command_line import proselint
+from proselint.version import __version__
+
+from .check import Check
 
 
 class TestCheck(Check):

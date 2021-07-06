@@ -2,7 +2,7 @@
 
 """Mixed metaphors."""
 
-from proselint.tools import memoize, existence_check, preferred_forms_check
+from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize

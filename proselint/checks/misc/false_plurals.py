@@ -13,7 +13,7 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
-from proselint.tools import memoize, preferred_forms_check, existence_check
+from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize

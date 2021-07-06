@@ -1,9 +1,9 @@
 """Tests for typography.diacritical_marks check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.typography import diacritical_marks as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

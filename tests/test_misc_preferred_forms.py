@@ -1,9 +1,9 @@
 """Tests for misc.preferred_forms check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.misc import preferred_forms as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

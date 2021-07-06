@@ -1,9 +1,9 @@
 """Test the existence_check function from the tools.py module."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.tools import existence_check as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

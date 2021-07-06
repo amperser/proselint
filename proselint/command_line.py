@@ -1,25 +1,20 @@
 # -*- coding: utf-8 -*-
 
 """Command line utility for proselint."""
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
+from __future__ import absolute_import, print_function
 
-
-import click
 import os
-from .tools import (
-    close_cache_shelves_after,
-    close_cache_shelves,
-    errors_to_json,
-    lint,
-)
 import shutil
 import subprocess
 import sys
-from .version import __version__
 import traceback
+from builtins import str
 
+import click
+
+from .tools import (close_cache_shelves, close_cache_shelves_after,
+                    errors_to_json, lint)
+from .version import __version__
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 base_url = "proselint.com/"

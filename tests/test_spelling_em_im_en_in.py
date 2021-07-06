@@ -1,9 +1,9 @@
 """Tests for spelling.em_im_en_in check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.spelling import em_im_en_in as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

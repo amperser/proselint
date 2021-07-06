@@ -13,7 +13,7 @@ categories: writing
 Points out misuse of scare quotes.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

@@ -1,9 +1,12 @@
 """Check that the CLI can handle invalid characters."""
 
-from .check import Check
+from os.path import abspath, dirname, join
+
 from click.testing import CliRunner
-from os.path import dirname, abspath, join
+
 from proselint.command_line import proselint
+
+from .check import Check
 
 
 class TestInvalidCharacters(Check):

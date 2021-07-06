@@ -13,8 +13,9 @@ categories: writing
 Dates.
 
 """
-from proselint.tools import existence_check, memoize
 import calendar
+
+from proselint.tools import existence_check, memoize
 
 
 @memoize

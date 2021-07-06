@@ -1,9 +1,9 @@
 """Tests for redundancy.ras_syndrome check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.redundancy import ras_syndrome as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

@@ -1,7 +1,8 @@
 """Test user option overrides using --config and load_options"""
 from click.testing import CliRunner
-from proselint.tools import deepmerge_dicts, load_options
+
 from proselint.command_line import proselint
+from proselint.tools import deepmerge_dicts, load_options
 
 
 def test_deepmerge_dicts():

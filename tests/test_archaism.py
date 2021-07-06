@@ -1,9 +1,9 @@
 """Tests for archaism.misc check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.archaism import misc as chk
+
+from .check import Check
 
 
 class TestCheck(Check):
