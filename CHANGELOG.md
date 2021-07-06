@@ -1,5 +1,13 @@
 # Change Log
 
+## [proselint@0.11.2](https://github.com/amperser/proselint/compare/0.11.1...0.11.2)
+
+Note: This is a hotfix release.
+
+### Bug fixes
+
+- correct false positives in `lexical_illusions.misc` ([#1192](https://github.com/amperser/proselint/pull/1192))
+
 ## [proselint@0.11.1](https://github.com/amperser/proselint/compare/0.11.0...0.11.1)
 
 ### Bug fixes
