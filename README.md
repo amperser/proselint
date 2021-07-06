@@ -45,17 +45,17 @@ sudo apt install python3-proselint
 
 `proselint` is available on:
 
-- [x] A [demo editor](http://proselint.com/write)
-- [x] [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
-- [x] [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
-- [x] [Emacs via Flycheck](http://www.flycheck.org/).
-- [x] Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
-- [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [x] [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
-- [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
-- [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
-- [x] [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
-- [x] [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
+- A [demo editor](http://proselint.com/write)
+- [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
+- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
+- [Emacs via Flycheck](http://www.flycheck.org/).
+- Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
+- [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
+- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
+- [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
+- [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
+- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
+- [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 
 ### Usage
 
@@ -87,42 +87,42 @@ The command-line utility can also print suggestions in JSON using the `--json` f
 
 ```jsonc
 {
-	// Type of check that output this suggestion.
-	check: "wallace.uncomparables",
+  // Type of check that output this suggestion.
+  check: "wallace.uncomparables",
 
-	// Message to describe the suggestion.
-	message: "Comparison of an uncomparable: 'unique' cannot be compared.",
+  // Message to describe the suggestion.
+  message: "Comparison of an uncomparable: 'unique' cannot be compared.",
 
-	// The person or organization giving the suggestion.
-	source: "David Foster Wallace"
+  // The person or organization giving the suggestion.
+  source: "David Foster Wallace"
 
-	// URL pointing to the source material.
-	source_url: "http://www.telegraph.co.uk/a/9715551"
+  // URL pointing to the source material.
+  source_url: "http://www.telegraph.co.uk/a/9715551"
 
-	// Line where the error starts.
-	line: 0,
+  // Line where the error starts.
+  line: 0,
 
-	// Column where the error starts.
-	column: 10,
+  // Column where the error starts.
+  column: 10,
 
-	// Index in the text where the error starts.
-	start: 10,
+  // Index in the text where the error starts.
+  start: 10,
 
-	// Index in the text where the error ends.
-	end: 21,
+  // Index in the text where the error ends.
+  end: 21,
 
-	// length from start -> end
-	extent: 11,
+  // length from start -> end
+  extent: 11,
 
-	// How important is this? Can be "suggestion", "warning", or "error".
-	severity: "warning",
+  // How important is this? Can be "suggestion", "warning", or "error".
+  severity: "warning",
 
-	// Possible replacements.
-	replacements: [
-		{
-			value: "unique"
-		}
-	]
+  // Possible replacements.
+  replacements: [
+    {
+      value: "unique"
+    }
+  ]
 }
 ```
 
@@ -146,9 +146,9 @@ You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/confi
 
 ```json
 {
-	"checks": {
-		"typography.diacritical_marks": false
-	}
+  "checks": {
+    "typography.diacritical_marks": false
+  }
 }
 ```
 
