@@ -45,7 +45,7 @@ One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
 import re
-from proselint.tools import memoize
+from proselint.tools import existence_check, memoize
 import itertools
 
 
@@ -114,9 +114,7 @@ def check(text):
         ("more", "possible")  # FIXME
     ]
 
-    all = ["\\b" + i[0] + "\s" + i[1] + "[\W$]" for i in itertools.product(
-           comparators, uncomparables) if i not in exceptions]
+    uncomparables = [fr"{i[0]}\s{i[1]}" for i in itertools.product(
+        comparators, uncomparables) if i not in exceptions]
 
-    occ = re.finditer("|".join(all), text.lower())
-    return [(o.start(), o.end(), err, msg.format(o.group(0)), None)
-            for o in occ]
+    return existence_check(text, uncomparables, err, msg, require_padding=True)

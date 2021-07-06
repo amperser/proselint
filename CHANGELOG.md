@@ -1,5 +1,50 @@
 # Change Log
 
+## [proselint@0.11.2](https://github.com/amperser/proselint/compare/0.11.1...0.11.2)
+
+Note: This is a hotfix release.
+
+### Bug fixes
+
+- correct false positives in `lexical_illusions.misc` ([#1192](https://github.com/amperser/proselint/pull/1192))
+
+## [proselint@0.11.1](https://github.com/amperser/proselint/compare/0.11.0...0.11.1)
+
+### Bug fixes
+
+- fix package metadata and pypi upload (hotfix release)
+
+## [proselint@0.11.0](https://github.com/amperser/proselint/compare/0.10.2...0.11.0)
+
+### Bug fixes
+
+- add warning for missing corpus ([535c330](https://github.com/amperser/proselint/commit/535c33095afacd6fbce4dcd428ffcffc01543077))
+- reduce false positives for uncomparables.misc ([#1152](https://github.com/amperser/proselint/pull/1152))
+- correct "attorney and not a republic" mondegreen ([#985](https://github.com/amperser/proselint/pull/985))
+- correct unbound line and column in error printing ([#1181](https://github.com/amperser/proselint/pull/1181))
+- fix false positive in `misc.but` ([#691](https://github.com/amperser/proselint/pull/691))
+
+### Features
+
+- add `--config` CLI argument ([#1081](https://github.com/amperser/proselint/pull/1081))
+- add exceptions for `proselint.tools.existence_check` ([#1182](https://github.com/amperser/proselint/pull/1182))
+- use regex for `lexical_illusions.misc` ([#1174](https://github.com/amperser/proselint/pull/1174))
+- implement project-wide proselintrc ([#1173](https://github.com/amperser/proselint/pull/1173))
+
+### Breaking Changes
+
+N/A.
+
+## [0.10.2](https://github.com/amperser/proselint/tree/0.10.2) (2018-08-03)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.10.1...0.10.2)
+
+- Include tests in source package ([mavit](https://github.com/mavit))
+
+## [0.10.1](https://github.com/amperser/proselint/tree/0.10.1) (2018-08-01)
+[Full Changelog](https://github.com/amperser/proselint/compare/0.10.0...0.10.1)
+
+- Support use as [pre-commit](https://pre-commit.com/) hook ([Andy Airey](https://github.com/aairey))
+
 ## [0.10.0](https://github.com/amperser/proselint/tree/0.10.0) (2018-07-23)
 [Full Changelog](https://github.com/amperser/proselint/compare/0.9.0...0.10.0)
 

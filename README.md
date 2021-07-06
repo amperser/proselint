@@ -1,43 +1,42 @@
-<img src="logo.png" alt="proselint logo" width="200">
+<img src="https://raw.githubusercontent.com/amperser/proselint/main/logo.png" alt="proselint logo" width="200">
 
-[![Build Status](https://travis-ci.org/amperser/proselint.svg)](https://travis-ci.org/amperser/proselint)
-[![Build status](https://ci.appveyor.com/api/projects/status/hfgv05nkjxkg2gcc/branch/master?svg=true)](https://ci.appveyor.com/project/suchow/proselint-knwyf/branch/master)
+![Workflow status](https://github.com/amperser/proselint/actions/workflows/ci-lint-test.yml/badge.svg)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 [![Code Climate](https://codeclimate.com/repos/5538989ee30ba0793100090f/badges/e10a2fe18a9256d69e2a/gpa.svg)](https://codeclimate.com/repos/5538989ee30ba0793100090f/feed)
-[![Coverage Status](https://coveralls.io/repos/github/amperser/proselint/badge.svg?branch=master)](https://coveralls.io/github/amperser/proselint?branch=master)
-[![Dependency Status](https://gemnasium.com/amperser/proselint.svg)](https://gemnasium.com/amperser/proselint)
+[![codecov](https://codecov.io/gh/amperser/proselint/branch/main/graph/badge.svg?token=8E0I9sRpot)](https://codecov.io/gh/amperser/proselint)
 [![License](https://img.shields.io/badge/License-BSD-blue.svg)](https://en.wikipedia.org/wiki/BSD_licenses)
 
-Writing is notoriously hard, even for the best writers, and it's not for lack of good advice — a tremendous amount of knowledge about the craft is strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from *Garner’s Modern American Usage*, a 975-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
+Writing is notoriously hard, even for the best writers, and it's not for lack of good advice — a tremendous amount of knowledge about the craft is strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk & White hardly makes one a better writer — it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from *Garner’s Modern English Usage*, an 1100-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.
 
-We devised a simple solution: `proselint`, a linter for English prose. (A linter is a computer program that, like a spell checker, scans through a document and analyzes it.)
+We devised a simple solution: `proselint`, a linter for English prose. A linter is a computer program that, akin to a spell checker, scans through a file and detects issues — like how a real lint roller helps you get unwanted lint off of your shirt.
 
-`proselint` places the world’s greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.
-
-`proselint` is a command-line utility that can be integrated into existing tools.
+`proselint` places the world's greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, Elwyn White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose; all in a neat command-line utility that you can integrate into other tools, scripts, and workflows.
 
 ### Installation
 
-To get this up and running, install it using [pip](https://packaging.python.org/installing/#use-pip-for-installing):
+To get this up and running, install it using [pip]:
 
-```
+```bash
 pip install proselint
 ```
 
+[pip]: https://packaging.python.org/installing/#use-pip-for-installing
+
 #### Fedora
 
-```
+```bash
 sudo dnf install proselint
 ```
 
 #### Debian
 
-```
+```bash
 sudo apt install python3-proselint
 ```
 
 #### Ubuntu
 
-```
+```bash
 sudo add-apt-repository universe
 sudo apt install python3-proselint
 ```
@@ -46,21 +45,21 @@ sudo apt install python3-proselint
 
 `proselint` is available on:
 
-- [x] A [demo editor](http://proselint.com/write)
-- [x] [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
-- [x] [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
-- [x] [Emacs via Flycheck](http://www.flycheck.org/).
-- [x] Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
-- [x] [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [x] [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
-- [x] [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
-- [x] [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
-- [x] [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
-- [x] [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
+- A [demo editor](http://proselint.com/write)
+- [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
+- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
+- [Emacs via Flycheck](http://www.flycheck.org/).
+- Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
+- [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
+- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
+- [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
+- [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
+- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
+- [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 
 ### Usage
 
-Suppose you had a document `text.md` with the following text:
+Suppose you have a document `text.md` with the following text:
 
 ```
 John is very unique.
@@ -69,7 +68,7 @@ John is very unique.
 You can run `proselint` over the document using the command line:
 
 ```bash
-❯ proselint text.md
+proselint text.md
 ```
 
 This prints a list of suggestions to stdout, one per line. Each suggestion has the form:
@@ -86,48 +85,48 @@ text.md:0:10: wallace.uncomparables Comparison of an uncomparable: 'unique' cann
 
 The command-line utility can also print suggestions in JSON using the `--json` flag. In this case, the output is considerably richer:
 
-```javascript
+```jsonc
 {
-    // Type of check that output this suggestion.
-    check: "wallace.uncomparables",
+  // Type of check that output this suggestion.
+  check: "wallace.uncomparables",
 
-    // Message to describe the suggestion.
-    message: "Comparison of an uncomparable: 'unique' cannot be compared.",
+  // Message to describe the suggestion.
+  message: "Comparison of an uncomparable: 'unique' cannot be compared.",
 
-    // The person or organization giving the suggestion.
-    source: "David Foster Wallace"
+  // The person or organization giving the suggestion.
+  source: "David Foster Wallace"
 
-    // URL pointing to the source material.
-    source_url: "http://www.telegraph.co.uk/a/9715551"
+  // URL pointing to the source material.
+  source_url: "http://www.telegraph.co.uk/a/9715551"
 
-    // Line where the error starts.
-    line: 0,
+  // Line where the error starts.
+  line: 0,
 
-    // Column where the error starts.
-    column: 10,
+  // Column where the error starts.
+  column: 10,
 
-    // Index in the text where the error starts.
-    start: 10,
+  // Index in the text where the error starts.
+  start: 10,
 
-    // Index in the text where the error ends.
-    end: 21,
+  // Index in the text where the error ends.
+  end: 21,
 
-    // start - end
-    extent: 11,
+  // length from start -> end
+  extent: 11,
 
-    // How important is this? Can be "suggestion", "warning", or "error".
-    severity: "warning",
+  // How important is this? Can be "suggestion", "warning", or "error".
+  severity: "warning",
 
-    // Possible replacements.
-    replacements: [
-        {
-            value: "unique"
-        }
-    ]
+  // Possible replacements.
+  replacements: [
+    {
+      value: "unique"
+    }
+  ]
 }
 ```
 
-To run the linter as part of another program, you can use the `lint` function in `proselint.tools`:
+To run the linter as part of another Python program, you can use the `lint` function in `proselint.tools`:
 
 ```python
 import proselint
@@ -143,8 +142,7 @@ This will return a list of suggestions:
 
 ### Checks
 
-You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used.
-Additionally for compatible reason, the legacy configuration `~/.proselintrc` will be used if `$XDG_CONFIG_HOME/proselint/config` does not exist.
+You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/config`. If `$XDG_CONFIG_HOME` is not set or empty, `~/.config/proselint/config` will be used. Additionally, for compatibility reasons, the legacy configuration `~/.proselintrc` will be checked if `$XDG_CONFIG_HOME/proselint/config` does not exist.
 
 ```json
 {
@@ -234,10 +232,12 @@ Additionally for compatible reason, the legacy configuration `~/.proselintrc` wi
 
 ### Contributing
 
-Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website](http://proselint.com/contributing/), where we describe how you can help us build `proselint` into the greatest writing tool in the world.
+Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website], where we describe how you can help us build `proselint` into the greatest writing tool in the world.
 
 - [Issue Tracker](http://github.com/amperser/proselint/issues)
 - [Source Code](http://github.com/amperser/proselint)
+
+[our website]: http://proselint.com/contributing/
 
 ### Support
 
@@ -245,13 +245,7 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 
 ### Running Automated Tests
 
-Automated tests are included in the `proselint/tests` directory. To run these tests locally, use the test runner [pytest](https://docs.pytest.org/en/latest/) and run the following commands:
-```bash
-pytest
-```
-and watch the output. Nose is compatible with Python versions 2.7, 3.4, 3.5 and 3.6.
-
-All automated tests in `tests/` are run as part of each submitted pull request, including newly added tests.
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, you can use `./run_ci_checks.sh`.
 
 ### License
 

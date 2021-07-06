@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "proselint"
+version = "0.11.2"
+description = "A linter for prose."
+license = "BSD-3-Clause"
+authors = ["Amperser Labs <hello@amperser.com>"]
+readme = "README.md"
+homepage = "https://proselint.com"
+repository = "https://github.com/amperser/proselint"
+classifiers = ["Programming Language :: Python :: Implementation :: CPython"]
+include = ["proselint", "demo.md", ".proselintrc"]
+exclude = ["tests"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+click = "^8.0.0"
+future = "^0.18.2"
+six = "^1.15.0"
+
+[tool.poetry.dev-dependencies]
+gmail = {git = "https://github.com/charlierguo/gmail.git"}
+APScheduler = ">=3.5.3"
+bumpversion = ">=0.5.3"
+coverage = "^5.5"
+Flask-API = ">=1.0"
+Flask-Cors = ">=3.0.4"
+Flask = ">=1.1.4"
+Flask-Limiter = ">=1.0.1"
+gunicorn = ">=19.8.1"
+mock = ">=2.0.0"
+pytest = "^6.2.4"
+redis = ">=2.10.6"
+requests = ">=2.19.1"
+rq = ">=0.12.0"
+pycodestyle = "^2.7.0"
+pydocstyle = "^6.1.1"
+twine = "^3.4.1"
+
+[tool.poetry.scripts]
+proselint = "proselint.command_line:proselint"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[pycodestyle]
+show-source = true
+show-pep8 = true

@@ -14,21 +14,13 @@ import re
 import hashlib
 import json
 import importlib
+import copy
 
-try:
-    import dbm
-except ImportError:
-    import anydbm as dbm
-
-PY3 = sys.version_info[0] == 3
-if PY3:
-    string_types = str
-else:
-    string_types = basestring,
-
+import dbm
 _cache_shelves = dict()
-
 proselint_path = os.path.dirname(os.path.realpath(__file__))
+home_dir = os.path.expanduser("~")
+cwd = os.getcwd()
 
 
 def close_cache_shelves():
@@ -39,7 +31,7 @@ def close_cache_shelves():
 
 
 def close_cache_shelves_after(f):
-    """Decorator that ensures cache shelves are closed after the call."""
+    """Decorate a function to ensure cache shelves are closed after call."""
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
         f(*args, **kwargs)
@@ -56,13 +48,11 @@ def _get_xdg_path(variable_name, default_path):
 
 
 def _get_xdg_config_home():
-    return _get_xdg_path('XDG_CONFIG_HOME',
-                         os.path.join(os.path.expanduser('~'), '.config'))
+    return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
 
 
 def _get_xdg_cache_home():
-    return _get_xdg_path('XDG_CACHE_HOME',
-                         os.path.join(os.path.expanduser('~'), '.cache'))
+    return _get_xdg_path('XDG_CACHE_HOME', os.path.join(home_dir, '.cache'))
 
 
 def _get_cache(cachepath):
@@ -100,10 +90,10 @@ def memoize(f):
     """Cache results of computations on disk."""
     # Determine the location of the cache.
     cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
-    legacy_cache_dirname = os.path.join(os.path.expanduser("~"), ".proselint")
+    legacy_cache_dirname = os.path.join(home_dir, ".proselint")
 
     if not os.path.isdir(cache_dirname):
-        # Migrate the cache from the legacy path to XDG complaint location.
+        # Migrate the cache from the legacy path to XDG compliant location.
         if os.path.isdir(legacy_cache_dirname):
             os.rename(legacy_cache_dirname, cache_dirname)
         # Create the cache if it does not already exist.
@@ -128,9 +118,9 @@ def memoize(f):
             signature += item[1].encode("utf-8")
 
         key = hashlib.sha256(signature).hexdigest()
+        cache = _get_cache(cachepath)
 
         try:
-            cache = _get_cache(cachepath)
             return cache[key]
         except KeyError:
             value = f(*args, **kwargs)
@@ -163,47 +153,50 @@ def get_checks(options):
     return checks
 
 
-def load_options():
+def deepmerge_dicts(dict1, dict2):
+    """Deep merge dictionaries, second dict will take priority."""
+    result = copy.deepcopy(dict1)
+
+    for key, value in dict2.items():
+        if isinstance(value, dict):
+            result[key] = deepmerge_dicts(result[key] or {}, value)
+        else:
+            result[key] = value
+
+    return result
+
+
+def load_options(config_file_path=None):
     """Read various proselintrc files, allowing user overrides."""
-    possible_defaults = (
+    system_config_paths = (
         '/etc/proselintrc',
         os.path.join(proselint_path, '.proselintrc'),
     )
-    options = {}
-    has_overrides = False
 
-    for filename in possible_defaults:
-        try:
-            options = json.load(open(filename))
+    system_options = {}
+    for path in system_config_paths:
+        if os.path.isfile(path):
+            system_options = json.load(open(path))
             break
-        except IOError:
-            pass
 
-    try:
-        user_options = json.load(
-            open(os.path.join(_get_xdg_config_home(), 'proselint', 'config')))
-        has_overrides = True
-    except IOError:
-        pass
+    user_config_paths = [
+        os.path.join(cwd, '.proselintrc'),
+        os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
+        os.path.join(home_dir, '.proselintrc')
+    ]
+    if config_file_path:
+        if not os.path.isfile(config_file_path):
+            raise FileNotFoundError(
+                f"Config file {config_file_path} does not exist")
+        user_config_paths.insert(0, config_file_path)
 
-    # Read user configuration from the legacy path.
-    if not has_overrides:
-        try:
-            user_options = json.load(
-                open(os.path.join(os.path.expanduser('~'), '.proselintrc')))
-            has_overrides = True
-        except IOError:
-            pass
+    user_options = {}
+    for path in user_config_paths:
+        if os.path.isfile(path):
+            user_options = json.load(open(path))
+            break
 
-    if has_overrides:
-        if 'max_errors' in user_options:
-            options['max_errors'] = user_options['max_errors']
-        if 'checks' in user_options:
-            for (key, value) in user_options['checks'].items():
-                try:
-                    options['checks'][key] = value
-                except KeyError:
-                    pass
+    options = deepmerge_dicts(system_options, user_options)
 
     return options
 
@@ -231,18 +224,20 @@ def errors_to_json(errors):
 def line_and_column(text, position):
     """Return the line number and column of a position in a string."""
     position_counter = 0
-    for idx_line, line in enumerate(text.splitlines(True)):
+    line_no = 0
+    for line in text.splitlines(True):
         if (position_counter + len(line.rstrip())) >= position:
-            return (idx_line, position - position_counter)
-        else:
-            position_counter += len(line)
+            break
+        position_counter += len(line)
+        line_no += 1
+    return (line_no, position - position_counter)
 
 
-def lint(input_file, debug=False):
+def lint(input_file, debug=False, config_file_path=None):
     """Run the linter on the input file."""
-    options = load_options()
+    options = load_options(config_file_path)
 
-    if isinstance(input_file, string_types):
+    if isinstance(input_file, str):
         text = input_file
     else:
         text = input_file.read()
@@ -261,7 +256,7 @@ def lint(input_file, debug=False):
             (line, column) = line_and_column(text, start)
             if not is_quoted(start, text):
                 errors += [(check, message, line, column, start, end,
-                           end - start, "warning", replacements)]
+                            end - start, "warning", replacements)]
 
         if len(errors) > options["max_errors"]:
             break
@@ -316,7 +311,7 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
     msg = " ".join(msg.split())
 
     errors = []
-    regex = u"[\W^]{}[\W$]"
+    regex = r"[\W^]{}[\W$]"
     for p in list:
         for r in p[1]:
             for m in re.finditer(regex.format(r), text, flags=flags):
@@ -336,8 +331,8 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
 def existence_check(text, list, err, msg, ignore_case=True,
                     str=False, max_errors=float("inf"), offset=0,
                     require_padding=True, dotall=False,
-                    excluded_topics=None, join=False):
-    """Build a checker that blacklists certain words."""
+                    excluded_topics=None, exceptions=[], join=False):
+    """Build a checker that prohibits certain words or phrases."""
     flags = 0
 
     msg = " ".join(msg.split())
@@ -352,9 +347,9 @@ def existence_check(text, list, err, msg, ignore_case=True,
         flags = flags | re.DOTALL
 
     if require_padding:
-        regex = u"(?:^|\W){}[\W$]"
+        regex = r"(?:^|\W){}[\W$]"
     else:
-        regex = u"{}"
+        regex = r"{}"
 
     errors = []
 
@@ -367,6 +362,8 @@ def existence_check(text, list, err, msg, ignore_case=True,
     rx = "|".join(regex.format(w) for w in list)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
+        if any([re.search(exception, txt) for exception in exceptions]):
+            continue
         errors.append((
             m.start() + 1 + offset,
             m.end() + offset,

@@ -1,6 +1,6 @@
 - id: proselint
   name: A linter for prose
-  description: This hook checks grammar and spelling of text files.
+  description: This hook checks language usage and style in text files.
   entry: proselint
   language: python
   types: [text]

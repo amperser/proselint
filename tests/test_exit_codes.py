@@ -1,21 +1,24 @@
 """Check that the CLI returns the appropriate exit code."""
 
-import subprocess
+from .check import Check
+from click.testing import CliRunner
+from proselint.command_line import proselint
 
 
-def test_exit_code_demo():
-    """Ensure that linting the demo returns an exit code of 1."""
-    try:
-        subprocess.check_output(["proselint", "--demo"])
+class TestExitCodes(Check):
+    """Test class for CLI exit codes"""
 
-    except subprocess.CalledProcessError as grepexc:
-        assert(grepexc.returncode == 1)
+    __test__ = True
 
+    def setUp(self):
+        self.runner = CliRunner()
 
-def test_exit_code_version():
-    """Ensure that getting the version returns an exit code of 0."""
-    try:
-        subprocess.check_output(["proselint", "--version"])
+    def test_exit_code_demo(self):
+        """Ensure that linting the demo returns an exit code of 1."""
+        output = self.runner.invoke(proselint, "--demo")
+        assert output.exit_code == 1
 
-    except subprocess.CalledProcessError:
-        assert(False)
+    def test_exit_code_version(self):
+        """Ensure that getting the version returns an exit code of 0."""
+        output = self.runner.invoke(proselint, "--version")
+        assert output.exit_code == 0

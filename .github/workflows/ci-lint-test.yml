@@ -1,0 +1,75 @@
+name: "CI: Lint & Test"
+on: [push, pull_request]
+jobs:
+  lint:
+    name: Lint
+    if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        python: [3.9]
+    steps:
+      - name: "[INIT] Checkout repository"
+        uses: actions/checkout@v2
+      - name: "[INIT] Install Python ${{ matrix.python }}"
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: "[INIT] Install Poetry"
+        uses: snok/install-poetry@v1.1.6
+      - name: "[INIT] Restore dependency cache"
+        id: cache-restore
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/pypoetry
+          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+      - name: "[INIT] Install dependencies"
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
+        run: pip install poetry && poetry install
+      - name: "[EXEC] Lint"
+        run: poetry run pycodestyle --config pyproject.toml . && poetry run pydocstyle .
+  test-cover:
+    name: Test & Cover
+    if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9, pypy3]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: "[INIT] Checkout repository"
+        uses: actions/checkout@v2
+      - name: "[INIT] Install Python ${{ matrix.python }}"
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: "[INIT] Install Poetry"
+        uses: snok/install-poetry@v1.1.6
+      - name: "[INIT] Restore dependency cache"
+        id: cache-restore
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/pypoetry
+          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+      - name: "[INIT] Install dependencies"
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
+        run: pip install poetry && poetry install
+      - name: "[EXEC] Test"
+        run: poetry run coverage run -m pytest --continue-on-collection-errors
+      - name: "[EXEC] Convert to XML coverage report"
+        run: poetry run coverage xml
+      - name: "[EXEC] Upload coverage to Codecov"
+        uses: codecov/codecov-action@v1.5.2
+        with:
+          fail_ci_if_error: true
+          flags: ${{ matrix.os }},py${{ matrix.python }}

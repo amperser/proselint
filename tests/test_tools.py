@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 from .check import Check
 
-from proselint.tools import lint as lint
+from proselint.tools import lint, existence_check
 
 
 class TestLint(Check):

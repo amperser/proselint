@@ -1,0 +1,120 @@
+- name: "bug: unconfirmed"
+  description: Bugs that need to be reproduced.
+  color: 6C1010
+- name: "bug: irreproducible"
+  description: Bugs that couldn't be triaged.
+  color: EEEEEE
+- name: "bug: confirmed"
+  description: Bugs that were confirmed in triage.
+  color: F80000
+- name: "bug: fixed"
+  description: Bugs that have been fixed.
+  color: FF8383
+- name: "bug: fixed-in-next"
+  description: Bugs present in the current release but fixed on the main branch.
+  color: 36080A
+- name: "type: feat"
+  description: Issues and PRs related to new features.
+  color: 26E9FF
+- name: "type: fix"
+  description: Issues and PRs related to bugs.
+  color: D71F1F
+- name: "type: style"
+  description: Issues and PRs related to stylistic code choices.
+  color: FFD1DC
+- name: "type: refactor"
+  description: Issues and PRs related to code cleanup.
+  color: FFFF00
+- name: "type: perf"
+  description: Issues and PRs related to performance.
+  color: FFFF00
+- name: "type: test"
+  description: Issues and PRs related to unit and integration testing.
+  color: FFFF00
+- name: "type: build"
+  description: Issues and PRs related to application build steps.
+  color: FFFF00
+- name: "type: ci"
+  description: Issues and PRs related to continuous integration.
+  color: FFFF00
+- name: "type: chore"
+  description: Issues and PRs related to changes that do not fit into other categories.
+  color: FFFF00
+- name: "type: revert"
+  description: Issues and PRs related to changes that undo regressions.
+  color: FFFF00
+- name: "priority: urgent"
+  description: Issues and PRs that must be resolved immediately.
+  color: B60205
+- name: "priority: high"
+  description: Issues and PRs that should be resolved as soon as possible.
+  color: D93F0B
+- name: "priority: medium"
+  description: Issues and PRs that should be resolved soon.
+  color: FBCA04
+- name: "priority: low"
+  description: Issues and PRs that should be resolved, but can be postponed.
+  color: 0E8A16
+- name: "priority: null"
+  description: Issues and PRs that are of negligible importance so may be postponed.
+  color: "818181"
+- name: "version: major"
+  description: Issues and PRs with breaking changes belonging to the next major release.
+  color: 9A35BE
+- name: "version: minor"
+  description: Issues and PRs with new features belonging to the next minor release.
+  color: D38DFA
+- name: "version: patch"
+  description: Issues and PRs with bug fixes belonging to the next patch release.
+  color: 66D8EB
+- name: "status: blocked"
+  description: Issues and PRs that cannot be resolved until others are.
+  color: FBCA04
+- name: "status: conflicted"
+  description: Issues and PRs that have unresolved merge conflicts.
+  color: D81AFF
+- name: "status: awaiting-triage"
+  description: Issues and PRs awaiting investigation and relabelling.
+  color: D81A0D
+- name: "status: rejected"
+  description: Issues and PRs that have been denied and will not be worked on.
+  color: 080F1C
+- name: "status: needs-help"
+  description: Issues and PRs that require volunteer assistance to proceed.
+  color: 128A0C
+- name: "status: awaiting-tests"
+  description: Issues and PRs that require tests to proceed.
+  color: D93F0B
+- name: "status: merge-ready"
+  description: PRs that are ready to merge.
+  color: 05F541
+- name: "status: review-ready"
+  description: PRs that are ready for author review.
+  color: 05F541
+- name: "status: postponed"
+  description: Issues and PRs that are being temporarily set aside in favour of others.
+  color: FBCA04
+- name: "status: wip"
+  description: Issues and PRs that are still a work in progress.
+  color: F5EB6B
+- name: "cat: maintenance"
+  description: Issues and PRs related to the maintenance of a module.
+  color: F5EB6B
+- name: "cat: rfc"
+  description: Issues that propose changes, or a Request For Comments.
+  color: FCFCFC
+- name: "cat: qna"
+  description: Issues that exist solely to ask a question, or a Question and Answer.
+  color: FCFCFC
+- name: "cat: deps"
+  description: Issues and PRs related to dependency upgrades.
+  color: FCFCFC
+- name: "cat: new-rule"
+  description: Issues and PRs related to new proselint rules.
+  color: FCFCFC
+- name: "cat: false-positive"
+  description: Issues and PRs related to false positives in proselint rules.
+  color: CD2026
+- name: "cat: extraction"
+  description: Issues and PRs related to extracting rules from external sources.
+  color: FCFCFC

@@ -20,7 +20,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "skunked_terms.misc"
-    msg = u"""'{}' is a bit of a skunked term — impossible to use without issue.
+    msg = u"""'{}' is a bit of a skunked term, impossible to use without issue.
              Find some other way to say it."""
 
     skunked_terms = [
