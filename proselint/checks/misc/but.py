@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Don't start a paragraph with 'But'.
+"""Don't start a paragraph with 'But'.
 
 ---
 layout:
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"
-    msg = u"No paragraph should start with a 'But'."
+    msg = "No paragraph should start with a 'But'."
     regex = r"(^|([\n\r]+))(\s*)But"
 
     return existence_check(text, [regex], err, msg, ignore_case=False)

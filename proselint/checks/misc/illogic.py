@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Illogic.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.illogic"
-    msg = u"'{}' is illogical."
+    msg = "'{}' is illogical."
 
     illogics = [
         "preplan",

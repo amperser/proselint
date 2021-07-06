@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Redundant Acronym Syndrome (RAS) syndrome."""
 
 from proselint.tools import memoize, preferred_forms_check

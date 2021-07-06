@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Cliches.
+"""Cliches.
 
 ---
 layout:     post
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "jargon.misc"
-    msg = u"'{}' is jargon. Can you replace it with something more standard?"
+    msg = "'{}' is jargon. Can you replace it with something more standard?"
 
     jargon = [
         "in the affirmative",

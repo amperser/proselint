@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Mixed metaphors."""
 
 from proselint.tools import existence_check, memoize, preferred_forms_check
@@ -13,7 +11,7 @@ def check_bottleneck(text):
     source_url: http://bit.ly/1CQPH61
     """
     err = "mixed_metaphors.misc.bottleneck"
-    msg = u"Mixed metaphor — bottles with big necks are easy to pass through."
+    msg = "Mixed metaphor — bottles with big necks are easy to pass through."
     list = [
         "biggest bottleneck",
         "big bottleneck",
@@ -35,7 +33,7 @@ def check_misc(text):
     source_url: http://bit.ly/1T4alrY
     """
     err = "mixed_metaphors.misc.misc"
-    msg = u"Mixed metaphor. Try '{}'."
+    msg = "Mixed metaphor. Try '{}'."
 
     preferences = [
 

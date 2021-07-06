@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """From whence it came.
 
 ---
@@ -20,6 +19,6 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.whence"
-    msg = u"The 'from' in 'from whence' is not needed."
+    msg = "The 'from' in 'from whence' is not needed."
 
     return existence_check(text, ["from whence"], err, msg)

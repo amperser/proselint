@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-
 """General-purpose tools shared across linting checks."""
 
-from __future__ import print_function, unicode_literals
 
 import copy
 import dbm
@@ -269,7 +266,7 @@ def lint(input_file, debug=False, config_file_path=None):
 
 def assert_error(text, check, n=1):
     """Assert that text has n errors of type check."""
-    assert_error.description = "No {} error for '{}'".format(check, text)
+    assert_error.description = f"No {check} error for '{text}'"
     assert(check in [error[0] for error in lint(text)])
 
 
@@ -387,7 +384,7 @@ def truncate_to_max(errors, max_errors):
         if len(errors) == (max_errors + 1):
             msg1 += " Found once elsewhere."
         else:
-            msg1 += " Found {} times elsewhere.".format(len(errors))
+            msg1 += f" Found {len(errors)} times elsewhere."
 
         errors = errors[1:max_errors]
         errors = [(start1, end1, err1, msg1, replacements)] + errors

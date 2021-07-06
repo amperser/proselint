@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Phrasal adjectives.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize, preferred_forms_check
 def check_ly(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.ly"
-    msg = u"""No hyphen is necessary in phrasal adjectives with an adverb
+    msg = """No hyphen is necessary in phrasal adjectives with an adverb
               ending in -ly, unless the -ly adverb is part of a longer
               phrase"""
 
@@ -34,7 +33,7 @@ def check_ly(text):
 def check(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
-    msg = u"""Hyphenate '{1}', a phrasal adjective, as '{0}'."""
+    msg = """Hyphenate '{1}', a phrasal adjective, as '{0}'."""
 
     list = [
         ["across-the-board discounts", ["across the board discounts"]],

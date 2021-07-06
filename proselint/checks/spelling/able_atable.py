@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """-able vs. -atable."""
 
 from proselint.tools import memoize, preferred_forms_check

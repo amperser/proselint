@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Suddenly.
+"""Suddenly.
 
 ---
 layout:     post
@@ -32,7 +31,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"
-    msg = u"Suddenly is nondescript, slows the action, and warns your reader."
+    msg = "Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"
 
     return existence_check(text, [regex], err, msg, max_errors=3,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Psychological and psychiatric terms to avoid.
 
 ---

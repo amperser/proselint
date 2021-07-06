@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tense present.
 
 ---
@@ -40,7 +39,7 @@ def check(text):
 
     errors = []
     for i in illogics:
-        for m in re.finditer(r"\s{}\s".format(i), text, flags=re.U | re.I):
+        for m in re.finditer(fr"\s{i}\s", text, flags=re.U | re.I):
             txt = m.group(0).strip()
             errors.append((
                 m.start() + 1,

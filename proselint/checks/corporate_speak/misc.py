@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Corporate speak.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "corporate_speak.misc"
-    msg = u"Minimize your use of corporate catchphrases like this one."
+    msg = "Minimize your use of corporate catchphrases like this one."
 
     list = [
         "at the end of the day",

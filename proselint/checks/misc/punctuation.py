@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Punctuation.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "garner.punctuation"
-    msg = u"Misplaced punctuation. It's 'et al.'"
+    msg = "Misplaced punctuation. It's 'et al.'"
 
     list = [
         "et. al",

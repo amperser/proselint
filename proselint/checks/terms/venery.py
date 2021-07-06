@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Names for groups of animals.
 
 ---
@@ -82,8 +81,8 @@ def check(text):
     list = []
     for term_pair in term_list:
         for generic in generic_terms:
-            wrong = "a {} of {}".format(generic, term_pair[0])
-            right = "a {} of {}".format(term_pair[1], term_pair[0])
+            wrong = f"a {generic} of {term_pair[0]}"
+            right = f"a {term_pair[1]} of {term_pair[0]}"
             list += [[right, [wrong]]]
 
     return preferred_forms_check(text, list, err, msg)

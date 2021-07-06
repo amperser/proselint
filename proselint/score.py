@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """Compute the lintscore on the corpus."""
 
-from __future__ import print_function
 
 import os
 import re
 import subprocess
-from builtins import input, int
 
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -41,13 +37,13 @@ def score(check=None):
             fullpath = os.path.join(root, f)
 
             # Run the linter.
-            print("Linting {}".format(f))
+            print(f"Linting {f}")
             out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            print("Found {} errors.".format(num_errors))
+            print(f"Found {num_errors} errors.")
 
             # Open the document.
             subprocess.call(["open", fullpath])
@@ -66,7 +62,7 @@ def score(check=None):
                 except ValueError:
                     pass
 
-            print("Currently {} hits and {} false alarms\n---".format(tp, fp))
+            print(f"Currently {tp} hits and {fp} false alarms\n---")
 
     if (tp + fp) > 0:
         return tp * (1.0 * tp / (tp + fp)) ** 2

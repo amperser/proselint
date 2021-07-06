@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Many a singular.
+"""Many a singular.
 
 ---
 layout:     post

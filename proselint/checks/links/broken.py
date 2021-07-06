@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Checks that links are viable.
 
 ---
@@ -28,7 +27,7 @@ standard_library.install_aliases()
 def check(text):
     """Check the text."""
     err = "links.valid"
-    msg = u"Broken link: {}"
+    msg = "Broken link: {}"
 
     regex = re.compile(
         r"""(?i)\b((?:https?://|www\d{0,3}[.]

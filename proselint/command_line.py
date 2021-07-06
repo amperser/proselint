@@ -1,14 +1,10 @@
-# -*- coding: utf-8 -*-
-
 """Command line utility for proselint."""
-from __future__ import absolute_import, print_function
 
 import os
 import shutil
 import subprocess
 import sys
 import traceback
-from builtins import str
 
 import click
 

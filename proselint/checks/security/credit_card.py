@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Credit card number printed.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "security.credit_card"
-    msg = u"Don't put credit card numbers in plain text."
+    msg = "Don't put credit card numbers in plain text."
 
     credit_card_numbers = [
         r"4\d{15}",

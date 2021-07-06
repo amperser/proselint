@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Too much yelling.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check_repeated_exclamations(text):
     """Check the text."""
     err = "leonard.hell"
-    msg = u"Never use the words 'all hell broke loose'."
+    msg = "Never use the words 'all hell broke loose'."
 
     regex = r"all hell broke loose"
 
