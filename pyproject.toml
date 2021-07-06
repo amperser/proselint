@@ -8,8 +8,13 @@ readme = "README.md"
 homepage = "https://proselint.com"
 repository = "https://github.com/amperser/proselint"
 classifiers = ["Programming Language :: Python :: Implementation :: CPython"]
-include = ["proselint", "demo.md", ".proselintrc"]
-exclude = ["tests"]
+include = [
+	"proselint/",
+	"tests/",
+	"proselint/demo.md",
+	"proselint/.proselintrc"
+]
+exclude = ["tests/.gitignore"]
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
