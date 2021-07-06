@@ -230,6 +230,14 @@ You can disable any of the checks by modifying `$XDG_CONFIG_HOME/proselint/confi
 | `weasel_words.misc` | Avoiding weasel words |
 | `weasel_words.very` | Avoiding the word "very" |
 
+#### Adding custom checks
+
+You can add any custom checks by defining them in the format used by proselint pre-defined checks. To add any custom check use the ``--checks`` flag and specify the path to the folder where the custom checks are placed.
+
+```bash
+❯ proselint --checks \path\to\custom\checks\folder
+```
+
 ### Contributing
 
 Interested in contributing to `proselint`? Great — there are plenty of ways you can help. Read more on [our website], where we describe how you can help us build `proselint` into the greatest writing tool in the world.

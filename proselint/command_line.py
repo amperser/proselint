@@ -8,6 +8,7 @@ from builtins import str
 
 import click
 import os
+import shutil
 from .tools import (
     close_cache_shelves_after,
     close_cache_shelves,
@@ -93,6 +94,42 @@ def print_errors(filename, errors, output_json=False, compact=False):
                 message)
 
 
+def add_checks(src):
+    """Add custom checks to checks folder."""
+    folder_name = src[src.rfind('/')+1:]
+    dest = proselint_path + "/checks/" + folder_name
+    shutil.copytree(src, dest)
+
+    # copy over new checks to proselintrc
+    dest_prc = proselint_path + "/.proselintrc"
+    with open(dest_prc, "r") as in_file:
+        buf = in_file.readlines()
+
+    pos = len(buf)-2
+
+    tests = [f for f in os.listdir(src)]
+
+    with open(dest_prc, "w") as out_file:
+        for index, line in enumerate(buf):
+            if index == pos-1 and not line.endswith(",\n"):
+                line = line[0:line.rfind("\n")] + ",\n"
+            if index < pos:
+                out_file.write(line)
+        for index, test in enumerate(tests):
+            if test == "__init__.py" or test == "__pycache__":
+                continue
+            line = ' '*8 + "\"" + folder_name + "."
+            line = line + test[0:test.rfind('.')] + "\""
+            offset = 40 - len(line)
+            if index != len(tests)-1:
+                line = line + ' '*offset + ": true,\n"
+            else:
+                line = line + ' '*offset + ": true\n"
+            out_file.write(line)
+        out_file.write("    }\n")
+        out_file.write("}")
+
+
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
 @click.option('--config', is_flag=False, type=click.Path(),
@@ -104,6 +141,8 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
+@click.option('--checks', '-chk', type=click.Path(),
+              help="Path to custom checks")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
 def proselint(paths=None, config=None, version=None, clean=None, debug=None,
@@ -146,6 +185,10 @@ def proselint(paths=None, config=None, version=None, clean=None, debug=None,
         errors = lint(f, debug=debug, config_file_path=config)
         num_errors += len(errors)
         print_errors(fp, errors, output_json, compact=compact)
+
+    # Add custom checks
+    if checks:
+        add_checks(checks)
 
     # Return an exit code
     close_cache_shelves()
