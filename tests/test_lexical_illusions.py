@@ -24,3 +24,6 @@ class TestCheck(Check):
         assert self.passes("You should know that that sentence wasn't wrong.")
         assert self.passes("She had had dessert on the balcony.")
         assert not self.passes("You should know that that that was wrong.")
+        assert self.passes("The practitioner's side")
+        assert self.passes("An antimatter particle")
+        assert self.passes("The theory")
