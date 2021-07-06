@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Not guilty beyond a reasonable doubt.
 
 ---
@@ -30,7 +29,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.not_guilty"
-    msg = u"'not guilty beyond a reasonable doubt' is an ambiguous phrasing."
+    msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."
     regex = r"not guilty beyond (a |any )?reasonable doubt"
 
     return existence_check(text, [regex], err, msg)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """GLAAD.
 
 ---
@@ -15,7 +14,7 @@ raises an error marking them as offensive. The New York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Password in plain text.
 
 ---
@@ -19,16 +18,16 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "security.password"
-    msg = u"Don't put passwords in plain text."
+    msg = "Don't put passwords in plain text."
 
     pwd_regex = r"[:]? [\S]{6,30}"
 
     password = [
-        "the password is{}".format(pwd_regex),
-        "my password is{}".format(pwd_regex),
-        "the password's{}".format(pwd_regex),
-        "my password's{}".format(pwd_regex),
-        "^[pP]assword{}".format(pwd_regex),
+        f"the password is{pwd_regex}",
+        f"my password is{pwd_regex}",
+        f"the password's{pwd_regex}",
+        f"my password's{pwd_regex}",
+        f"^[pP]assword{pwd_regex}",
     ]
 
     return existence_check(text, password, err, msg)

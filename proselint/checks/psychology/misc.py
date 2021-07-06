@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Psychological and psychiatric terms to avoid.
 
 ---
@@ -13,7 +12,7 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from proselint.tools import preferred_forms_check, existence_check, memoize
+from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize

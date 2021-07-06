@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Mixed one vs. two spaces after a period.
 
 ---

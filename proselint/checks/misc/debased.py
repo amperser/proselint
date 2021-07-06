@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Debased language.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.debased"
-    msg = u"Bad usage, debased language, a continuous temptation."
+    msg = "Bad usage, debased language, a continuous temptation."
 
     list = [
         "a not unjustifiable assumption",

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Metadiscourse.
 
 ---
@@ -13,7 +12,7 @@ categories: writing
 Points out metadiscourse.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

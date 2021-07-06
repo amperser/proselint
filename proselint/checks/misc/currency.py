@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Currency.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "misc.currency"
-    msg = u"Incorrect use of symbols in {}."
+    msg = "Incorrect use of symbols in {}."
 
     symbols = [
         r"\$[\d]* ?(?:dollars|usd|us dollars)"

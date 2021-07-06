@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Pretension.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "ogilvy.pretension"
-    msg = u"Jargon words like this one are the hallmarks of a pretentious ass."
+    msg = "Jargon words like this one are the hallmarks of a pretentious ass."
 
     list = [
         "reconceptualize",

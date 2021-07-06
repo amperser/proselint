@@ -13,8 +13,9 @@ Strunk & White say:
 
 
 """
-from proselint.tools import memoize
 import re
+
+from proselint.tools import memoize
 
 
 @memoize

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Denizen labels."""
 
 from proselint.tools import memoize, preferred_forms_check
@@ -74,7 +72,7 @@ def check_denizen_labels_norris(text):
         ["Vallisoletano",     ["Valladolidian"]],
         ["Wulfrunian",        ["Wolverhamptonian", "Wolverhamptonite"]],
         ["Novocastrian",      ["Newcastleite", "Newcastlite"]],
-        ["Trifluvian",        [u"Trois-Rivièrester"]],
+        ["Trifluvian",        ["Trois-Rivièrester"]],
         ["Leodenisian",       ["Leedsian"]],
         ["Minneapolitan",     ["Minneapolisian"]],
         ["Hartlepudlian",     ["Hartlepoolian"]],

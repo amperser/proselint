@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Airlinese.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "airlinese.misc"
-    msg = u"'{}' is airlinese."
+    msg = "'{}' is airlinese."
 
     airlinese = [
         "enplan(?:e|ed|ing|ement)",

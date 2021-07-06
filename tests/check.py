@@ -1,8 +1,8 @@
 """Check that a check is working."""
 
-from unittest import TestCase
-import os
 import codecs
+import os
+from unittest import TestCase
 
 
 class Check(TestCase):

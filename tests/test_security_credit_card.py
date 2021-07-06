@@ -1,9 +1,9 @@
 """Tests for security.credit_card check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.security import credit_card as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

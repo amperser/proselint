@@ -1,9 +1,9 @@
 """Tests for lgbtq.terms check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.lgbtq import offensive_terms as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

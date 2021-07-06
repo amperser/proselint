@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Checks that links are viable.
 
 ---
@@ -13,14 +12,14 @@ categories: writing
 Check that links are not broken.
 
 """
-from proselint.tools import memoize
-from future import standard_library
 import re
-try:
-    import urllib.request as urllib_request  # for Python 3
-except ImportError:
-    import urllib2 as urllib_request         # for Python 2
+import urllib.request as urllib_request  # for Python 3
 from socket import error as SocketError
+
+from future import standard_library
+
+from proselint.tools import memoize
+
 standard_library.install_aliases()
 
 
@@ -28,7 +27,7 @@ standard_library.install_aliases()
 def check(text):
     """Check the text."""
     err = "links.valid"
-    msg = u"Broken link: {}"
+    msg = "Broken link: {}"
 
     regex = re.compile(
         r"""(?i)\b((?:https?://|www\d{0,3}[.]

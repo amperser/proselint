@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """in- vs. un-."""
 
 from proselint.tools import memoize, preferred_forms_check

@@ -11,7 +11,7 @@ Please install it from python-poetry.org."
     exit 1
 fi
 
-if ! poetry run pycodestyle --config pyproject.toml || ! poetry run pydocstyle; then
+if ! poetry run flake8 proselint || ! poetry run pydocstyle proselint; then
     echo -e "\n\n=== LINT ISSUES FOUND! SEE ABOVE. ==="
     exit 1
 fi

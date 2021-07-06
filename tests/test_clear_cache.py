@@ -6,7 +6,6 @@ import unittest
 
 from proselint import command_line as cl
 
-
 try:
     from unittest import mock
 except ImportError:

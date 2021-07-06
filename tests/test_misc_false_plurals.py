@@ -1,9 +1,9 @@
 """Tests for misc.false_plurals check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.misc import false_plurals as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

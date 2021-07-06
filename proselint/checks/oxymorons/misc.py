@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Oxymorons.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "oxymorons.misc"
-    msg = u"'{}' is an oxymoron."
+    msg = "'{}' is an oxymoron."
 
     oxymorons = [
         "amateur expert",
