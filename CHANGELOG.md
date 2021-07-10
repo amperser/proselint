@@ -1,5 +1,13 @@
 # Change Log
 
+## [proselint@0.11.3](https://github.com/amperser/proselint/compare/0.11.2...0.11.3)
+
+Note: This is a hotfix release.
+
+### Bug fixes
+
+- fix package bundling to include proselintrc ([#1195](https://github.com/amperser/proselint/pull/1195))
+
 ## [proselint@0.11.2](https://github.com/amperser/proselint/compare/0.11.1...0.11.2)
 
 Note: This is a hotfix release.
