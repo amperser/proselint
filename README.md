@@ -245,7 +245,7 @@ If you run into a problem, please [open an issue](http://github.com/amperser/pro
 
 ### Running Automated Tests
 
-Automated tests are included in the `proselint/tests` directory. To run these tests locally, you can use `./run_ci_checks.sh`.
+Automated tests are included in the `proselint/tests` directory. To run these tests locally, you can use `./utils`.
 
 ### License
 
