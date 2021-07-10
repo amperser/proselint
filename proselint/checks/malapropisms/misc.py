@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Malaproprisms.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "malapropisms.misc"
-    msg = u"'{}' is a malapropism."
+    msg = "'{}' is a malapropism."
 
     illogics = [
         "the infinitesimal universe",

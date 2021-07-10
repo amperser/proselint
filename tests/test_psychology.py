@@ -1,9 +1,9 @@
 """Tests for psychology.misc check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.psychology import misc as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

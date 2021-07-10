@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proselint"
-version = "0.11.2"
+version = "0.11.3"
 description = "A linter for prose."
 license = "BSD-3-Clause"
 authors = ["Amperser Labs <hello@amperser.com>"]
@@ -8,11 +8,16 @@ readme = "README.md"
 homepage = "https://proselint.com"
 repository = "https://github.com/amperser/proselint"
 classifiers = ["Programming Language :: Python :: Implementation :: CPython"]
-include = ["proselint", "demo.md", ".proselintrc"]
-exclude = ["tests"]
+include = [
+	"proselint/",
+	"tests/",
+	"proselint/demo.md",
+	"proselint/.proselintrc"
+]
+exclude = ["tests/.gitignore"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.1"
 click = "^8.0.0"
 future = "^0.18.2"
 six = "^1.15.0"
@@ -32,9 +37,12 @@ pytest = "^6.2.4"
 redis = ">=2.10.6"
 requests = ">=2.19.1"
 rq = ">=0.12.0"
-pycodestyle = "^2.7.0"
 pydocstyle = "^6.1.1"
 twine = "^3.4.1"
+flake8 = "^3.9.2"
+flake8-bugbear = "^21.4.3"
+flake8-import-order = "^0.18.1"
+isort = "^5.9.1"
 
 [tool.poetry.scripts]
 proselint = "proselint.command_line:proselint"
@@ -42,7 +50,3 @@ proselint = "proselint.command_line:proselint"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[pycodestyle]
-show-source = true
-show-pep8 = true

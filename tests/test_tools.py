@@ -2,9 +2,9 @@
 
 from __future__ import absolute_import
 
-from .check import Check
+from proselint.tools import existence_check, lint
 
-from proselint.tools import lint, existence_check
+from .check import Check
 
 
 class TestLint(Check):

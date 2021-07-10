@@ -1,9 +1,9 @@
 """Tests for misc.tense_present check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.misc import tense_present as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

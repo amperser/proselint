@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Cliches.
+"""Cliches.
 
 ---
 layout:     post
@@ -13,14 +12,14 @@ categories: writing
 Cliches are cliché.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
     """Check the text."""
     err = "jargon.misc"
-    msg = u"'{}' is jargon. Can you replace it with something more standard?"
+    msg = "'{}' is jargon. Can you replace it with something more standard?"
 
     jargon = [
         "in the affirmative",

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Password in plain text.
 
 ---
@@ -23,12 +22,12 @@ from proselint.tools import blacklist, memoize
 def check(text):
     """Check the text."""
     err = "MSC104"
-    msg = u"Don't fail to capitalize roman numeral abbreviations."
+    msg = "Don't fail to capitalize roman numeral abbreviations."
 
     pwd_regex = " (I(i*)|i*)"
 
     password = [
-        "World War{}".format(pwd_regex),
+        f"World War{pwd_regex}",
     ]
 
     return blacklist(text, password, err, msg)

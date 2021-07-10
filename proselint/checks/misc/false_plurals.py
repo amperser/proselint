@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""False plurals.
+"""False plurals.
 
 ---
 layout:     post
@@ -13,7 +12,7 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
-from proselint.tools import memoize, preferred_forms_check, existence_check
+from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize
@@ -34,6 +33,6 @@ def check(text):
 def check_kudos(text):
     """Check the text."""
     err = "misc.false_plurals.kudos"
-    msg = u"Kudos is singular."
+    msg = "Kudos is singular."
 
     return existence_check(text, ["many kudos"], err, msg)

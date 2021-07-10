@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Very.
 
 ---
@@ -14,7 +13,7 @@ Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

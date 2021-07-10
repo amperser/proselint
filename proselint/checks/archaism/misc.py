@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Archaism.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "archaism.misc"
-    msg = u"'{}' is archaic."
+    msg = "'{}' is archaic."
 
     archaisms = [
         "alack",

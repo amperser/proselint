@@ -1,1 +1,1 @@
-u"""Corporate-speak."""
+"""Corporate-speak."""

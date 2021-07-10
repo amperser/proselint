@@ -1,9 +1,9 @@
 """Tests for typography.exclamation check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.typography import exclamation as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

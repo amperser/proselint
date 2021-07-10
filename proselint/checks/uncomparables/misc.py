@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Comparing uncomparables.
+"""Comparing uncomparables.
 
 ---
 layout:     post
@@ -44,9 +43,9 @@ better chance of penetrating — and simple penetration is what AE is all about.
 One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
-import re
-from proselint.tools import existence_check, memoize
 import itertools
+
+from proselint.tools import existence_check, memoize
 
 
 @memoize

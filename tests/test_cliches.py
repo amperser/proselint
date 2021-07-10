@@ -1,9 +1,9 @@
 """Test the Cliches.misc module."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.cliches import misc as chk
+
+from .check import Check
 
 
 class TestCheck(Check):

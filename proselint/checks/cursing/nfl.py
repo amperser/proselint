@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Words the NFL won't print on a jersey.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "cursing.nfl"
-    msg = u"The NFL won't print this word on a jersey."
+    msg = "The NFL won't print this word on a jersey."
 
     list = [
         "420",

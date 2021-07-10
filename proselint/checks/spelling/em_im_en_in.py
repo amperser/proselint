@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Em vs. im, en vs. in."""
 
 from proselint.tools import memoize, preferred_forms_check

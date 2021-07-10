@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
+"""Cliches are cliché."""
 
-u"""Cliches are cliché."""
-
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize
@@ -13,7 +11,7 @@ def check_cliches_garner(text):
     source_url: http://bit.ly/1T4alrY
     """
     err = "cliches.garner"
-    msg = u"'{}' is cliché."
+    msg = "'{}' is cliché."
 
     cliches = [
         "a fate worse than death",
@@ -107,7 +105,7 @@ def check_cliches_write_good(text):
     source_url: https://github.com/btford/write-good
     """
     err = "cliches.write_good"
-    msg = u"'{}' is a cliché."
+    msg = "'{}' is a cliché."
 
     cliches = [
         "a chip off the old block",
@@ -820,7 +818,7 @@ def check_cliches_gnu_diction(text):
     source_url: https://directory.fsf.org/wiki/Diction
     """
     err = "cliches.gnu_diction"
-    msg = u"'{}' is a cliché."
+    msg = "'{}' is a cliché."
 
     list = [
         "a matter of concern",

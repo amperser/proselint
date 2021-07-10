@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Redundancy."""
 
 from proselint.tools import memoize, preferred_forms_check
@@ -148,7 +146,7 @@ def check_atd(text):
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
-        [u"Bō",               ["Bo Staff"]],
+        ["Bō",               ["Bo Staff"]],
         ["Challah",           ["Challah bread"]],
         ["Hallah",            ["Hallah bread"]],
         ["Challah",           ["Challah bread"]],

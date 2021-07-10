@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Professional narcissism.
 
 ---
@@ -13,7 +12,7 @@ categories: writing
 Points out academic narcissism.
 
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize

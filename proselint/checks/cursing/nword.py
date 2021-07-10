@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """On 'the N word'.
 
 ---
@@ -20,7 +19,7 @@ from proselint.tools import existence_check, memoize
 def check(text):
     """Check the text."""
     err = "cursing.nword"
-    msg = u"Take responsibility for the shitty words you want to say."
+    msg = "Take responsibility for the shitty words you want to say."
 
     list = [
         "the n-word",

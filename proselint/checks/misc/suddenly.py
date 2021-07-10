@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-u"""Suddenly.
+"""Suddenly.
 
 ---
 layout:     post
@@ -25,14 +24,14 @@ apparent in the action itself. For example, in “Suddenly, I don’t hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
 """
-from proselint.tools import memoize, existence_check
+from proselint.tools import existence_check, memoize
 
 
 @memoize
 def check(text):
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"
-    msg = u"Suddenly is nondescript, slows the action, and warns your reader."
+    msg = "Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"
 
     return existence_check(text, [regex], err, msg, max_errors=3,

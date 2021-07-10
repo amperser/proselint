@@ -1,9 +1,9 @@
 """Tests for misc.illogic check."""
 from __future__ import absolute_import
 
-from .check import Check
-
 from proselint.checks.misc import illogic as chk
+
+from .check import Check
 
 
 class TestCheck(Check):
