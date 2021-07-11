@@ -14,7 +14,7 @@ fi
 
 ci() {
 	fail() { printf "\n\n=== %s%s FAILED!%s ===" "${red}" "$1" "${clr}"; exit 2; }
-	lint() { ($prun flake8 proselint && $prun pydocstyle proselint) || fail "LINT"; }
+	lint() { ($prun flake8 proselint tests && $prun pydocstyle proselint tests) || fail "LINT"; }
 	unittest() {
 		pytest="pytest --continue-on-collection-errors"
 		if [ "$1" = "-c" ] || [ "$1" = "--coverage" ]; then
