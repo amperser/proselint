@@ -1,5 +1,4 @@
 """Tests for dates_times.am_pm check."""
-from __future__ import absolute_import
 
 from proselint.checks.dates_times import am_pm as chk
 
@@ -29,6 +28,8 @@ class TestCheck(Check):
             "It happened at 7 a.m.") == []
         assert chk.check_lowercase_periods(
             "It happened at 7 am.") != []
+        assert chk.check_lowercase_periods(
+            "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:") == []
 
     def test_smoke_check_spacing(self):
         """Basic smoke test.
@@ -65,9 +66,9 @@ class TestCheck(Check):
         dates_times.am_pm.check_redundancy.
 
         """
-        assert chk.check_redundancy(
-            "Basic smoke phrase without issues.") == []
-        assert chk.check_redundancy(
-            "It happened at 7 a.m.") == []
-        assert chk.check_redundancy(
-            "It happened at 7a.m. in the morning.") != []
+        assert len(chk.check_redundancy(
+            "Basic smoke phrase without issues.")) == 0
+        assert len(chk.check_redundancy(
+            "It happened at 7 a.m.")) == 0
+        assert len(chk.check_redundancy(
+            "It happened at 7a.m. in the morning.")) == 1
