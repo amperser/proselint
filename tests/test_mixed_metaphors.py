@@ -1,5 +1,4 @@
 """Tests for mixed_metaphors.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.mixed_metaphors import misc as chk
 

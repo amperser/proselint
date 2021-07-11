@@ -1,5 +1,4 @@
 """Test uncomparables.misc"""
-from __future__ import absolute_import
 
 from proselint.checks.uncomparables import misc as chk
 

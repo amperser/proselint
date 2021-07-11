@@ -1,5 +1,4 @@
 """Tests for skunked_terms.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.skunked_terms import misc as chk
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Test GMEU entry 'a', part B."""
 
-from __future__ import absolute_import
 
 from proselint.tools import assert_error
+
 from tests.check import Check
 
 

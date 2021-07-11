@@ -1,5 +1,4 @@
 """Tests for cursing.filth check."""
-from __future__ import absolute_import
 
 from proselint.checks.cursing import filth as chk
 

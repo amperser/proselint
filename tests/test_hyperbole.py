@@ -1,5 +1,4 @@
 """Tests for hyperbole.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.hyperbole import misc as chk
 

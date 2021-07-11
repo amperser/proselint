@@ -1,5 +1,4 @@
 """Tests for jargon.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.jargon import misc as chk
 

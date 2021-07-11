@@ -1,5 +1,4 @@
 """Tests for misc.scare_quotes check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import scare_quotes as chk
 

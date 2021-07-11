@@ -1,5 +1,4 @@
 """Tests for security.credit_card check."""
-from __future__ import absolute_import
 
 from proselint.checks.security import credit_card as chk
 

@@ -1,5 +1,4 @@
 """Tests for misc.usage check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import usage as chk
 

@@ -1,5 +1,4 @@
 """Tests for misc.not_guilty check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import not_guilty as chk
 

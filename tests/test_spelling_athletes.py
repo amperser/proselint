@@ -1,5 +1,4 @@
 """Tests for spelling.athletes check."""
-from __future__ import absolute_import
 
 from proselint.checks.spelling import athletes as chk
 

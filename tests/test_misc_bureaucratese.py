@@ -1,5 +1,4 @@
 """Tests for misc.bureaucratese check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import bureaucratese as chk
 

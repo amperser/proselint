@@ -1,5 +1,4 @@
 """Test Butterick's symbols."""
-from __future__ import absolute_import
 
 from proselint.checks.typography import symbols as chk
 

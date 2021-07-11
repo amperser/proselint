@@ -1,5 +1,4 @@
 """Tests for misc.pretension check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import pretension as chk
 

@@ -1,5 +1,4 @@
 """Tests for terms.animal_adjectives check."""
-from __future__ import absolute_import
 
 from proselint.checks.terms import animal_adjectives as chk
 

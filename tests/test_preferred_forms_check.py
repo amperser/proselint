@@ -1,5 +1,4 @@
 """Test the preferred_forms_check function from the tools.py module."""
-from __future__ import absolute_import
 
 from proselint.tools import preferred_forms_check as chk
 

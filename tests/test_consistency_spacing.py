@@ -1,5 +1,4 @@
 """Tests for consistency.spacing check."""
-from __future__ import absolute_import
 
 from proselint.checks.consistency import spacing as chk
 

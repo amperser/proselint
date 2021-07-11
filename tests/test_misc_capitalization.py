@@ -1,5 +1,4 @@
 """Tests for misc.capitalization check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import capitalization as chk
 

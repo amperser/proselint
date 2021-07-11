@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Test GMEU entry 'a', part A."""
 
-from __future__ import absolute_import
 
 from proselint.tools import assert_error
+
 from tests.check import Check
 
 
@@ -35,7 +34,7 @@ class TestCheck(Check):
         "Out of 186 managers participating, 57 had a MBA degree.",
         "Smith announced that a SEC filing is pending.",
         "This argument is an historical desecration.",
-        u"The treatment of crime in Britain shows an historic shift away…",
+        "The treatment of crime in Britain shows an historic shift away…",
         "It is, in some ways, an humble form.",
         "The thief turned out to be an habitual offender from Darlington.",
         "This stage displays an hallucinatory image that signifies itself.",
@@ -53,5 +52,5 @@ class TestCheck(Check):
     ]
 
     def test_smoke(self):
-        for sentence in sentences_with_errors:
+        for sentence in self.sentences_with_errors:
             assert not self.passes(sentence)

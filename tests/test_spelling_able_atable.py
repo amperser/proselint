@@ -1,5 +1,4 @@
 """Tests for spelling.able_atable check."""
-from __future__ import absolute_import
 
 from proselint.checks.spelling import able_atable as chk
 

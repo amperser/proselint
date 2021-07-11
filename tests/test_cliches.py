@@ -1,5 +1,4 @@
 """Test the Cliches.misc module."""
-from __future__ import absolute_import
 
 from proselint.checks.cliches import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for cursing.nword check."""
-from __future__ import absolute_import
 
 from proselint.checks.cursing import nword as chk
 

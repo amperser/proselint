@@ -1,5 +1,4 @@
 """Tests for lexical_illusions.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.lexical_illusions import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for misc.illogic check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import illogic as chk
 

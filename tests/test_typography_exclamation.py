@@ -1,5 +1,4 @@
 """Tests for typography.exclamation check."""
-from __future__ import absolute_import
 
 from proselint.checks.typography import exclamation as chk
 

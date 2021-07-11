@@ -1,5 +1,4 @@
 """Tests for spelling.er_or check."""
-from __future__ import absolute_import
 
 from proselint.checks.spelling import er_or as chk
 

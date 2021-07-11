@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Tests for the clear cache operation from proselint.command_line."""
 
 import os
@@ -10,7 +9,7 @@ try:
     from unittest import mock
 except ImportError:
     # Py2.x
-    import mock
+    from unittest import mock
 
 try:
     from builtins import PermissionError

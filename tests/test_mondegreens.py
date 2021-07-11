@@ -1,5 +1,4 @@
 """Tests for mondegreens.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.mondegreens import misc as chk
 

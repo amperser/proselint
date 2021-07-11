@@ -1,5 +1,4 @@
 """Tests for oxymorons.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.oxymorons import misc as chk
 

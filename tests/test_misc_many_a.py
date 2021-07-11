@@ -1,5 +1,4 @@
 """Tests for misc.many_a check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import many_a as chk
 

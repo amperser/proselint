@@ -60,4 +60,4 @@ class Check(TestCase):
 
             # Make sure that
             assert wpe > min_wpe, \
-                "{} has only {} wpe.".format(example, round(wpe, 2))
+                f"{example} has only {round(wpe, 2)} wpe."

@@ -1,8 +1,7 @@
 """Test the tools module."""
 
-from __future__ import absolute_import
 
-from proselint.tools import existence_check, lint
+from proselint.tools import lint
 
 from .check import Check
 

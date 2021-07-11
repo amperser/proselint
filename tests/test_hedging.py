@@ -1,5 +1,4 @@
 """Tests for hedging.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.hedging import misc as chk
 

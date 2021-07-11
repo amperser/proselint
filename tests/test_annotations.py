@@ -1,5 +1,4 @@
 """Tests for annotations.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.annotations import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for malaproprisms.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.malapropisms import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for psychology.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.psychology import misc as chk
 

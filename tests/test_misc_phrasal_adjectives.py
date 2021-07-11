@@ -1,5 +1,4 @@
 """Tests for misc.phrasal_adjectives check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import phrasal_adjectives as chk
 

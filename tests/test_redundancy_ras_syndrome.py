@@ -1,5 +1,4 @@
 """Tests for redundancy.ras_syndrome check."""
-from __future__ import absolute_import
 
 from proselint.checks.redundancy import ras_syndrome as chk
 

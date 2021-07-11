@@ -1,5 +1,4 @@
 """Tests for spelling.em_im_en_in check."""
-from __future__ import absolute_import
 
 from proselint.checks.spelling import em_im_en_in as chk
 

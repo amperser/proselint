@@ -1,5 +1,4 @@
 """Tests for terms.denizen_labels check."""
-from __future__ import absolute_import
 
 from proselint.checks.terms import denizen_labels as chk
 

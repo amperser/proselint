@@ -1,5 +1,4 @@
 """Tests for redundancy.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.redundancy import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for sexism.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.sexism import misc as chk
 

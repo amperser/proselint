@@ -1,5 +1,4 @@
 """Tests for misc.metadiscourse check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import metadiscourse as chk
 

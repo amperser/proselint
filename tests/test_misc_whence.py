@@ -1,5 +1,4 @@
 """Tests for misc.whence check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import whence as chk
 

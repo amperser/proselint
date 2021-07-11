@@ -1,5 +1,4 @@
 """Tests for corporate_speak.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.corporate_speak import misc as chk
 

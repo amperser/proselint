@@ -1,5 +1,4 @@
 """Tests for misc.commercialese check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import commercialese as chk
 

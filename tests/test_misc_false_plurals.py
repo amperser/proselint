@@ -1,5 +1,4 @@
 """Tests for misc.false_plurals check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import false_plurals as chk
 

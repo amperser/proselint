@@ -1,5 +1,4 @@
 """Tests for misc.greylist check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import greylist as chk
 

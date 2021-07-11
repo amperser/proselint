@@ -1,5 +1,4 @@
 """Tests for misc.back_formations check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import back_formations as chk
 

@@ -1,5 +1,4 @@
 """Tests for needless_variants.misc check."""
-from __future__ import absolute_import
 
 from proselint.checks.needless_variants import misc as chk
 

@@ -1,5 +1,4 @@
 """Tests for terms.venery check."""
-from __future__ import absolute_import
 
 from proselint.checks.terms import venery as chk
 

@@ -1,5 +1,4 @@
 """Test the consistency_check function from the tools.py module."""
-from __future__ import absolute_import
 
 from proselint.tools import consistency_check as chk
 

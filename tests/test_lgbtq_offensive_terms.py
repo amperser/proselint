@@ -1,5 +1,4 @@
 """Tests for lgbtq.terms check."""
-from __future__ import absolute_import
 
 from proselint.checks.lgbtq import offensive_terms as chk
 

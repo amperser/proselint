@@ -1,5 +1,4 @@
 """Test garner.dates."""
-from __future__ import absolute_import, print_function
 
 from proselint.checks.dates_times import dates
 

@@ -1,5 +1,4 @@
 """Tests for dates_times.dates check."""
-from __future__ import absolute_import
 
 from proselint.checks.dates_times import dates as chk
 

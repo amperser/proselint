@@ -1,5 +1,4 @@
 """Tests for misc.waxed check."""
-from __future__ import absolute_import
 
 from proselint.checks.misc import waxed as chk
 
