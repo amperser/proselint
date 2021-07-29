@@ -1,6 +1,7 @@
 """General-purpose tools shared across linting checks."""
 
 
+from .config import default
 import copy
 import dbm
 import functools
@@ -13,6 +14,7 @@ import re
 import shelve
 import sys
 import traceback
+from warnings import showwarning as warn
 
 _cache_shelves = dict()
 proselint_path = os.path.dirname(os.path.realpath(__file__))
@@ -163,24 +165,19 @@ def deepmerge_dicts(dict1, dict2):
     return result
 
 
-def load_options(config_file_path=None):
+def load_options(default=None, config_file_path=None):
     """Read various proselintrc files, allowing user overrides."""
-    system_config_paths = (
-        '/etc/proselintrc',
-        os.path.join(proselint_path, '.proselintrc'),
-    )
 
-    system_options = {}
-    for path in system_config_paths:
-        if os.path.isfile(path):
-            system_options = json.load(open(path))
-            break
+    conf_default = default
+    if os.path.isfile("/etc/proselintrc"):
+        conf_default = json.load(open("/etc/proselintrc"))
 
     user_config_paths = [
-        os.path.join(cwd, '.proselintrc'),
-        os.path.join(_get_xdg_config_home(), 'proselint', 'config'),
-        os.path.join(home_dir, '.proselintrc')
+        os.path.join(cwd, '.proselintrc.json'),
+        os.path.join(_get_xdg_config_home(), 'proselint', 'config.json'),
+        os.path.join(home_dir, '.proselintrc.json')
     ]
+
     if config_file_path:
         if not os.path.isfile(config_file_path):
             raise FileNotFoundError(
@@ -192,8 +189,14 @@ def load_options(config_file_path=None):
         if os.path.isfile(path):
             user_options = json.load(open(path))
             break
+        oldpath = path.replace(".json", "")
+        if os.path.isfile(oldpath):
+            warn(f"{oldpath} was found instead of a JSON file."
+                 f" Rename to {path}.", DeprecationWarning, "", 0)
+            user_options = json.load(open(oldpath))
+            break
 
-    options = deepmerge_dicts(system_options, user_options)
+    options = deepmerge_dicts(conf_default, user_options)
 
     return options
 
