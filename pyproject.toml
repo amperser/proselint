@@ -42,7 +42,7 @@ twine = "^3.4.2"
 flake8 = "^3.9.2"
 flake8-bugbear = "^21.4.3"
 flake8-import-order = "^0.18.1"
-isort = "^5.9.2"
+isort = "^5.9.3"
 
 [tool.poetry.scripts]
 proselint = "proselint.command_line:proselint"
