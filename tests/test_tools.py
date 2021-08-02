@@ -1,9 +1,14 @@
 """Test the tools module."""
 
 
-from proselint.tools import lint
+from proselint.config import default
+from proselint.tools import lint as proselint, load_options
 
 from .check import Check
+
+
+def lint(text):
+    return proselint(text, config=load_options(conf_default=default))
 
 
 class TestLint(Check):
