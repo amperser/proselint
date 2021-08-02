@@ -1,5 +1,6 @@
 """Command line utility for proselint."""
 
+import json
 import os
 import shutil
 import subprocess
@@ -8,11 +9,12 @@ import traceback
 
 import click
 
+from .config import default
 from .tools import (close_cache_shelves, close_cache_shelves_after,
-                    errors_to_json, lint)
+                    errors_to_json, lint, load_options)
 from .version import __version__
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
 base_url = "proselint.com/"
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 demo_file = os.path.join(proselint_path, "demo.md")
@@ -95,11 +97,23 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
+@click.option('--dump-config', is_flag=True, help="Prints current config.")
+@click.option('--dump-default-config', is_flag=True,
+              help="Prints default config.")
 @click.argument('paths', nargs=-1, type=click.Path())
 @close_cache_shelves_after
-def proselint(paths=None, config=None, version=None, clean=None, debug=None,
-              output_json=None, time=None, demo=None, compact=None):
+def proselint(paths=None, config=None, version=None, clean=None,
+              debug=None, output_json=None, time=None, demo=None, compact=None,
+              dump_config=None, dump_default_config=None):
     """Create the CLI for proselint, a linter for prose."""
+    if dump_default_config:
+        return print(json.dumps(default, sort_keys=True, indent=4))
+
+    config = load_options(config, default)
+    if dump_config:
+        print(json.dumps(config, sort_keys=True, indent=4))
+        return
+
     if time:
         # click.echo(timing_test())
         print("This option does not work for the time being.")
@@ -129,14 +143,13 @@ def proselint(paths=None, config=None, version=None, clean=None, debug=None,
             f = sys.stdin
         else:
             try:
-                f = click.open_file(
-                    fp, 'r', encoding="utf-8", errors="replace")
+                f = click.open_file(fp, 'r', "utf-8", "replace")
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-        errors = lint(f, debug=debug, config_file_path=config)
+        errors = lint(f, debug, config)
         num_errors += len(errors)
-        print_errors(fp, errors, output_json, compact=compact)
+        print_errors(fp, errors, output_json, compact)
 
     # Return an exit code
     close_cache_shelves()

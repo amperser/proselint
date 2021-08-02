@@ -1,7 +1,5 @@
 """General-purpose tools shared across linting checks."""
 
-
-from .config import default
 import copy
 import dbm
 import functools
@@ -24,7 +22,7 @@ cwd = os.getcwd()
 
 def close_cache_shelves():
     """Close previously opened cache shelves."""
-    for _, cache in _cache_shelves.items():
+    for cache in _cache_shelves.values():
         cache.close()
     _cache_shelves.clear()
 
@@ -140,8 +138,7 @@ def get_checks(options):
     """Extract the checks."""
     sys.path.append(proselint_path)
     checks = []
-    check_names = [key for (key, val)
-                   in list(options["checks"].items()) if val]
+    check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
         module = importlib.import_module("checks." + check_name)
@@ -165,10 +162,9 @@ def deepmerge_dicts(dict1, dict2):
     return result
 
 
-def load_options(default=None, config_file_path=None):
+def load_options(config_file_path=None, conf_default=None):
     """Read various proselintrc files, allowing user overrides."""
-
-    conf_default = default
+    conf_default = conf_default or {}
     if os.path.isfile("/etc/proselintrc"):
         conf_default = json.load(open("/etc/proselintrc"))
 
@@ -196,9 +192,7 @@ def load_options(default=None, config_file_path=None):
             user_options = json.load(open(oldpath))
             break
 
-    options = deepmerge_dicts(conf_default, user_options)
-
-    return options
+    return deepmerge_dicts(conf_default, user_options)
 
 
 def errors_to_json(errors):
@@ -218,7 +212,7 @@ def errors_to_json(errors):
         })
 
     return json.dumps(
-        dict(status="success", data={"errors": out}), sort_keys=True)
+        {"status": "success", "data": {"errors": out}}, sort_keys=True)
 
 
 def line_and_column(text, position):
@@ -233,17 +227,16 @@ def line_and_column(text, position):
     return (line_no, position - position_counter)
 
 
-def lint(input_file, debug=False, config_file_path=None):
+def lint(input_file, debug=False, config=None):
     """Run the linter on the input file."""
-    options = load_options(config_file_path)
-
+    config = config or {}
     if isinstance(input_file, str):
         text = input_file
     else:
         text = input_file.read()
 
     # Get the checks.
-    checks = get_checks(options)
+    checks = get_checks(config)
 
     # Apply all the checks.
     errors = []
@@ -258,11 +251,11 @@ def lint(input_file, debug=False, config_file_path=None):
                 errors += [(check, message, line, column, start, end,
                             end - start, "warning", replacements)]
 
-        if len(errors) > options["max_errors"]:
+        if len(errors) > config["max_errors"]:
             break
 
     # Sort the errors by line and column number.
-    errors = sorted(errors[:options["max_errors"]], key=lambda e: (e[2], e[3]))
+    errors = sorted(errors[:config["max_errors"]], key=lambda e: (e[2], e[3]))
 
     return errors
 
