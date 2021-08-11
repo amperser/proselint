@@ -1,7 +1,7 @@
 SublimeLinter-contrib-proselint
 ================================
 
-[![Build Status](https://travis-ci.org/amperser/proselint.svg?branch=master)](https://travis-ci.org/amperser/proselint)
+[![Build Status](https://travis-ci.org/amperser/proselint.svg?branch=main)](https://travis-ci.org/amperser/proselint)
 
 This linter plugin for [SublimeLinter][docs] provides an interface to [proselint](http://proselint.com). It will be used with files that have the “markdown”, “text”, or “plain text” syntaxes.
 
@@ -43,7 +43,7 @@ In addition to the standard SublimeLinter settings, SublimeLinter-contrib-prosel
 If you would like to contribute enhancements or fixes, please do the following:
 
 1. Fork the main repository, http://github.com/amperser/proselint. This plugin can be found in `/plugins/sublime/`
-1. Hack on a separate topic branch off the latest `master`.
+1. Hack on a separate topic branch off the latest `main`.
 1. Commit to the topic branch and push it.
 1. Create a pull request.
 1. Be patient.  ;-)

@@ -46,7 +46,7 @@ sudo apt install python3-proselint
 `proselint` is available on:
 
 - A [demo editor](http://proselint.com/write)
-- [Sublime Text](https://github.com/amperser/proselint/tree/master/plugins/sublime/SublimeLinter-contrib-proselint)
+- [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
 - [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
 - [Emacs via Flycheck](http://www.flycheck.org/).
 - Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
