@@ -56,6 +56,7 @@ sudo apt install python3-proselint
 - [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
 - [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
 - [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
+- [Statick](https://github.com/sscpac/statick-md)
 
 ### Usage
 
