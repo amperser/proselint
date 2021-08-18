@@ -14,6 +14,8 @@
         "cursing.nword"                 : true,
         "dates_times.am_pm"             : true,
         "dates_times.dates"             : true,
+        "garner.jargon"                 : true,
+        "garner.substitutions"          : true,
         "hedging.misc"                  : true,
         "hyperbole.misc"                : true,
         "jargon.misc"                   : true,
