@@ -75,6 +75,7 @@
         "terms.denizen_labels"          : true,
         "terms.eponymous_adjectives"    : true,
         "terms.venery"                  : true,
+        "technical_language.javascript" : true,
         "typography.diacritical_marks"  : true,
         "typography.exclamation"        : true,
         "typography.symbols"            : true,
