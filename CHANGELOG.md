@@ -1,5 +1,20 @@
 # Change Log
 
+## [proselint@0.12.0](https://github.com/amperser/proselint/compare/0.11.3...0.12.0)
+
+### Bug fixes
+
+- make am_pm checks case-sensitive ([#620](https://github.com/amperser/proselint/pull/620))
+
+### Features
+
+- added `--dump-config` and `--dump-default-config` CLI arguments ([#1212](https://github.com/amperser/proselint/pull/1212))
+- now exports `proselint.config.default` ([#1212](https://github.com/amperser/proselint/pull/1212))
+
+### Breaking Changes
+
+- `proselint.tools.lint` now takes a config object instead of using `load_options` ([#1212](https://github.com/amperser/proselint/pull/1212))
+
 ## [proselint@0.11.3](https://github.com/amperser/proselint/compare/0.11.2...0.11.3)
 
 Note: This is a hotfix release.
