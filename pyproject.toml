@@ -12,7 +12,6 @@ include = [
 	"proselint/",
 	"tests/",
 	"proselint/demo.md",
-	"proselint/.proselintrc"
 ]
 exclude = ["tests/.gitignore"]
 
