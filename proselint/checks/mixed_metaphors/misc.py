@@ -1,8 +1,10 @@
 """Mixed metaphors."""
 
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from proselint.tools import (existence_check, max_errors, memoize,
+                             preferred_forms_check)
 
 
+@max_errors(1)
 @memoize
 def check_bottleneck(text):
     """Avoid mixing metaphors about bottles and their necks.
@@ -22,7 +24,7 @@ def check_bottleneck(text):
         "massive bottleneck",
     ]
 
-    return existence_check(text, list, err, msg, max_errors=1)
+    return existence_check(text, list, err, msg)
 
 
 @memoize

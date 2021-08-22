@@ -107,7 +107,7 @@ def memoize(f):
         if hasattr(f, '__self__'):
             args = args[1:]
 
-        signature = (f.__module__ + '.' + f.__name__).encode("utf-8")
+        signature = cache_filename.encode("utf-8")
 
         tempargdict = inspect.getcallargs(f, *args, **kwargs)
 
@@ -293,8 +293,7 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     return errors
 
 
-def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
-                          max_errors=float("inf")):
+def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -316,14 +315,11 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0,
                     msg.format(p[0], txt),
                     p[0]))
 
-    errors = truncate_to_max(errors, max_errors)
-
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True,
-                    str=False, max_errors=float("inf"), offset=0,
-                    require_padding=True, dotall=False,
+def existence_check(text, list, err, msg, ignore_case=True, str=False,
+                    offset=0, require_padding=True, dotall=False,
                     excluded_topics=None, exceptions=(), join=False):
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
@@ -364,26 +360,33 @@ def existence_check(text, list, err, msg, ignore_case=True,
             msg.format(txt),
             None))
 
-    errors = truncate_to_max(errors, max_errors)
-
     return errors
 
 
-def truncate_to_max(errors, max_errors):
-    """If max_errors was specified, truncate the list of errors.
+def max_errors(limit):
+    """Decorate a check to truncate error output to a specified limit."""
+    def wrapper(f):
+        @functools.wraps(f)
+        def wrapped(*args, **kwargs):
+            return truncate_errors(f(*args, **kwargs), limit)
+        return wrapped
+    return wrapper
+
+
+def truncate_errors(errors, limit=float("inf")):
+    """If limit was specified, truncate the list of errors.
 
     Give the total number of times that the error was found elsewhere.
     """
-    if len(errors) > max_errors:
+    if len(errors) > limit:
         start1, end1, err1, msg1, replacements = errors[0]
 
-        if len(errors) == (max_errors + 1):
+        if len(errors) == limit + 1:
             msg1 += " Found once elsewhere."
         else:
             msg1 += f" Found {len(errors)} times elsewhere."
 
-        errors = errors[1:max_errors]
-        errors = [(start1, end1, err1, msg1, replacements)] + errors
+        errors = [(start1, end1, err1, msg1, replacements)] + errors[1:limit]
 
     return errors
 
