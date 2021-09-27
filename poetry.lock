@@ -1,6 +1,6 @@
 [[package]]
 name = "apscheduler"
-version = "3.7.0"
+version = "3.8.0"
 description = "In-process task scheduler with Cron-like capabilities"
 category = "dev"
 optional = false
@@ -804,8 +804,8 @@ content-hash = "1202219bf639275caa652b2b59c365e555cdc594edfb7d99acb18e4d4cbbfd43
 
 [metadata.files]
 apscheduler = [
-    {file = "APScheduler-3.7.0-py2.py3-none-any.whl", hash = "sha256:c06cc796d5bb9eb3c4f77727f6223476eb67749e7eea074d1587550702a7fbe3"},
-    {file = "APScheduler-3.7.0.tar.gz", hash = "sha256:1cab7f2521e107d07127b042155b632b7a1cd5e02c34be5a28ff62f77c900c6a"},
+    {file = "APScheduler-3.8.0-py2.py3-none-any.whl", hash = "sha256:82d6d21b2f0343510d07bb35618333a794653439a265635555b12935647b460a"},
+    {file = "APScheduler-3.8.0.tar.gz", hash = "sha256:793b2d37c52ece53e34626619e6142e99b20b59a12155f39e1e6932e324f079d"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
