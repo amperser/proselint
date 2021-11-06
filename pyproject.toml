@@ -25,7 +25,7 @@ six = "^1.15.0"
 gmail = {git = "https://github.com/charlierguo/gmail.git"}
 APScheduler = ">=3.5.3"
 bumpversion = ">=0.5.3"
-coverage = "^5.5"
+coverage = "^6.1"
 Flask-API = ">=1.0"
 Flask-Cors = ">=3.0.4"
 Flask = ">=1.1.4"
