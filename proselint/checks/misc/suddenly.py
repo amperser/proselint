@@ -24,9 +24,10 @@ apparent in the action itself. For example, in “Suddenly, I don’t hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(3)
 @memoize
 def check(text):
     """Advice on sudden vs suddenly."""
@@ -34,5 +35,5 @@ def check(text):
     msg = "Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"
 
-    return existence_check(text, [regex], err, msg, max_errors=3,
-                           require_padding=False, offset=-1, ignore_case=False)
+    return existence_check(text, [regex], err, msg, require_padding=False,
+                           offset=-1, ignore_case=False)

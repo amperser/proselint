@@ -4,9 +4,10 @@ source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
 """
 
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(3)
 @memoize
 def check_ellipsis(text):
     """Use an ellipsis instead of three dots."""
@@ -14,10 +15,11 @@ def check_ellipsis(text):
     msg = "'...' is an approximation, use the ellipsis symbol '…'."
     regex = r"\.\.\."
 
-    return existence_check(text, [regex], err, msg, max_errors=3,
-                           require_padding=False, offset=0)
+    return existence_check(text, [regex], err, msg, require_padding=False,
+                           offset=0)
 
 
+@max_errors(1)
 @memoize
 def check_copyright_symbol(text):
     """Use the copyright symbol instead of (c)."""
@@ -25,10 +27,10 @@ def check_copyright_symbol(text):
     msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
     regex = r"\([cC]\)"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=1, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 
+@max_errors(3)
 @memoize
 def check_trademark_symbol(text):
     """Use the trademark symbol instead of (TM)."""
@@ -36,10 +38,10 @@ def check_trademark_symbol(text):
     msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
     regex = r"\(TM\)"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 
+@max_errors(3)
 @memoize
 def check_registered_trademark_symbol(text):
     """Use the registered trademark symbol instead of (R)."""
@@ -47,10 +49,10 @@ def check_registered_trademark_symbol(text):
     msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
     regex = r"\([rR]\)"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 
+@max_errors(3)
 @memoize
 def check_sentence_spacing(text):
     """Use no more than two spaces after a period."""
@@ -58,10 +60,10 @@ def check_sentence_spacing(text):
     msg = "More than two spaces after the period; use 1 or 2."
     regex = r"\. {3}"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 
+@max_errors(3)
 @memoize
 def check_multiplication_symbol(text):
     """Use the multiplication symbol ×, not the lowercase letter x."""
@@ -69,10 +71,10 @@ def check_multiplication_symbol(text):
     msg = "Use the multiplication symbol ×, not the letter x."
     regex = r"[0-9]+ ?x ?[0-9]+"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 
+@max_errors(3)
 @memoize
 def check_curly_quotes(text):
     """Use curly quotes, not straight quotes."""
@@ -80,8 +82,7 @@ def check_curly_quotes(text):
     msg = 'Use curly quotes “”, not straight quotes "".'
     regex = r"\"[\w\s\d]+\""
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=3, require_padding=False)
+    return existence_check(text, [regex], err, msg, require_padding=False)
 
 # @memoize
 # def check_en_dash_separated_names(text):

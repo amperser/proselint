@@ -14,9 +14,10 @@ Too much yelling.
 """
 import re
 
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(1)
 @memoize
 def check_repeated_exclamations(text):
     """Check the text."""
@@ -25,9 +26,8 @@ def check_repeated_exclamations(text):
 
     regex = r"[\!]\s*?[\!]{1,}"
 
-    return existence_check(
-        text, [regex], err, msg, require_padding=False, ignore_case=False,
-        max_errors=1, dotall=True)
+    return existence_check(text, [regex], err, msg, require_padding=False,
+                           ignore_case=False, dotall=True)
 
 
 @memoize

@@ -12,9 +12,10 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(1)
 @memoize
 def check(text):
     """Check the text."""
@@ -28,4 +29,4 @@ def check(text):
         "judgmentally",
     ]
 
-    return existence_check(text, list, err, msg, max_errors=1)
+    return existence_check(text, list, err, msg)

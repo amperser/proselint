@@ -13,9 +13,10 @@ Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(1)
 @memoize
 def check(text):
     """Avoid 'very'."""
@@ -25,4 +26,4 @@ def check(text):
            "and the writing will be just as it should be.")
     regex = "very"
 
-    return existence_check(text, [regex], err, msg, max_errors=1)
+    return existence_check(text, [regex], err, msg)

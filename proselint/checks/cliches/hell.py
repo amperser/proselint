@@ -12,9 +12,10 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check, max_errors, memoize
 
 
+@max_errors(1)
 @memoize
 def check_repeated_exclamations(text):
     """Check the text."""
@@ -23,5 +24,4 @@ def check_repeated_exclamations(text):
 
     regex = r"all hell broke loose"
 
-    return existence_check(
-        text, [regex], err, msg, max_errors=1)
+    return existence_check(text, [regex], err, msg)
