@@ -12,9 +12,7 @@ categories: writing
 Too much yelling.
 
 """
-import re
-
-from proselint.tools import existence_check, max_errors, memoize
+from proselint.tools import existence_check, max_errors, memoize, ppm_threshold
 
 
 @max_errors(1)
@@ -30,6 +28,7 @@ def check_repeated_exclamations(text):
                            ignore_case=False, dotall=True)
 
 
+@ppm_threshold(30)
 @memoize
 def check_exclamations_ppm(text):
     """Make sure that the exclamation ppm is under 30."""
@@ -38,13 +37,4 @@ def check_exclamations_ppm(text):
 
     regex = r"\w!"
 
-    count = len(re.findall(regex, text))
-    num_words = len(text.split(" "))
-
-    ppm = (count*1.0 / num_words) * 1e6
-
-    if ppm > 30 and count > 1:
-        loc = re.search(regex, text).start() + 1
-        return [(loc, loc+1, err, msg, ".")]
-    else:
-        return []
+    return existence_check(text, [regex], err, msg, require_padding=False)

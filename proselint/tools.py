@@ -392,6 +392,27 @@ def truncate_errors(errors, limit=float("inf")):
     return errors
 
 
+def ppm_threshold(threshold):
+    """Decorate a check to error if the PPM threshold is surpassed."""
+    def wrapped(f):
+        @functools.wraps(f)
+        def wrapper(*args, **kwargs):
+            return threshold_check(f(*args, **kwargs), threshold, len(args[0]))
+        return wrapper
+    return wrapped
+
+
+def threshold_check(errors, threshold, length):
+    """Check that returns an error if the PPM threshold is surpassed."""
+    if length > 0:
+        errcount = len(errors)
+        ppm = (errcount / length) * 1e6
+
+        if ppm >= threshold and errcount >= 1:
+            return [errors[0]]
+    return []
+
+
 def is_quoted(position, text):
     """Determine if the position in the text falls within a quote."""
     def matching(quotemark1, quotemark2):
