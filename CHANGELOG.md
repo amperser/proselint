@@ -1,5 +1,15 @@
 # Change Log
 
+## [proselint@0.13.0](https://github.com/amperser/proselint/compare/0.12.0...0.13.0)
+
+### Bug Fixes
+
+- made memoize safe for both arguments and keyword arguments ([#1217](https://github.com/amperser/proselint/pull/1217))
+
+### Features
+
+- now exports decorators that wrap meta-checks ([#1188](https://github.com/amperser/proselint/pull/1188)]
+
 ## [proselint@0.12.0](https://github.com/amperser/proselint/compare/0.11.3...0.12.0)
 
 ### Bug fixes
