@@ -14,6 +14,8 @@ import sys
 import traceback
 from warnings import showwarning as warn
 
+from . import config
+
 _cache_shelves = dict()
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 home_dir = os.path.expanduser("~")
@@ -228,9 +230,8 @@ def line_and_column(text, position):
     return (line_no, position - position_counter)
 
 
-def lint(input_file, debug=False, config=None):
+def lint(input_file, debug=False, config=config.default):
     """Run the linter on the input file."""
-    config = config or {}
     if isinstance(input_file, str):
         text = input_file
     else:
