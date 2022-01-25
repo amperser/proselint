@@ -131,7 +131,6 @@ def check(text):
         ["reckless",          ["wreckless"]],
         ["remuneration",      ["renumeration"]],
         ["restaurateur",      ["restauranteur"]],
-        ["retractable",       ["retractible"]],
         ["reverie",           ["revery"]],
         ["spicy",             ["spicey"]],
         ["stupefy",           ["stupify"]],
