@@ -10,6 +10,7 @@ def check(text):
     msg = "-ally vs. -ly. '{}' is the correct spelling."
 
     preferences = [
+        ["academically", ["academicly"]],
         ["accidentally", ["accidently"]],
         ["automatically", ["automaticly"]],
         ["basically", ["basicly"]],
