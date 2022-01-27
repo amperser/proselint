@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response, Response
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from functools import wraps
-from future.moves.urllib.parse import unquote
+from urllib.parse import unquote
 import hashlib
 import proselint
 from rq import Queue
