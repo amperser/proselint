@@ -1,6 +1,4 @@
 """Insert the demo into the codemirror site."""
-from __future__ import print_function
-
 import os
 import fileinput
 import shutil

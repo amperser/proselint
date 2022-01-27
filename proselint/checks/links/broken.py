@@ -16,11 +16,7 @@ import re
 import urllib.request as urllib_request  # for Python 3
 from socket import error as SocketError
 
-from future import standard_library
-
 from proselint.tools import memoize
-
-standard_library.install_aliases()
 
 
 @memoize
