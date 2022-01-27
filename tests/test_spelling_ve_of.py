@@ -1,6 +1,6 @@
 """Tests for spelling.ve_of check."""
 
-from proselint.checks.spelling import er_or as chk
+from proselint.checks.spelling import ve_of as chk
 
 from .check import Check
 

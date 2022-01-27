@@ -1,6 +1,6 @@
 """Tests for spelling.ally_ly check."""
 
-from proselint.checks.spelling import er_or as chk
+from proselint.checks.spelling import ally_ly as chk
 
 from .check import Check
 

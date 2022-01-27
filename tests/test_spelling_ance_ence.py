@@ -1,6 +1,6 @@
 """Tests for spelling.ance_ence check."""
 
-from proselint.checks.spelling import er_or as chk
+from proselint.checks.spelling import ance_ence as chk
 
 from .check import Check
 
