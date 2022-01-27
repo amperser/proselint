@@ -23,8 +23,6 @@ def check(text):
 
     misspellings = [
         ["a lot",             ["alot"]],
-        ["academically",      ["academicly"]],
-        ["accidentally",      ["accidently"]],
         ["accommodable",      ["accomodatable"]],
         ["anilingus",         ["analingus"]],
         ["aren't i",          ["amn't i"]],
@@ -133,7 +131,6 @@ def check(text):
         ["reckless",          ["wreckless"]],
         ["remuneration",      ["renumeration"]],
         ["restaurateur",      ["restauranteur"]],
-        ["retractable",       ["retractible"]],
         ["reverie",           ["revery"]],
         ["spicy",             ["spicey"]],
         ["stupefy",           ["stupify"]],
