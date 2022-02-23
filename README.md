@@ -218,7 +218,7 @@ Additionally, for compatibility reasons, the legacy configurations `~/.proselint
 | `spelling.em_im_en_in` | -em vs. -im and -en vs. -in |
 | `spelling.er_or` | -er vs. -or |
 | `spelling.in_un` | in- vs. un- |
-| `spelling.misc` | Spelling words corectly |
+| `spelling.misc` | Spelling words correctly |
 | `security.credit_card` | Keeping credit card numbers secret |
 | `security.password` | Keeping passwords secret |
 | `sexism.misc` | Avoiding sexist language |
