@@ -17,7 +17,7 @@ jobs:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v2
       - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
