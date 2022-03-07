@@ -13,7 +13,7 @@ jobs:
         python: [3.9]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: "[INIT] Install Python ${{ matrix.python }}"
         uses: actions/setup-python@v2
         with:
@@ -46,7 +46,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: "[INIT] Install Python ${{ matrix.python }}"
         uses: actions/setup-python@v2
         with:
