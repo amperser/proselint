@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
-        uses: ruby/setup-ruby@v1.95.0
+        uses: ruby/setup-ruby@v1.105.0
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
