@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
-        uses: ruby/setup-ruby@v1.95.0
+        uses: ruby/setup-ruby@v1.113.3
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
