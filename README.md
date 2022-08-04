@@ -57,6 +57,7 @@ sudo apt install python3-proselint
 - [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
 - [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 - [Statick](https://github.com/sscpac/statick-md)
+- [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
 
 ### Usage
 
