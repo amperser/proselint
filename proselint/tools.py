@@ -1,6 +1,7 @@
 """General-purpose tools shared across linting checks."""
 
 import copy
+import collections
 import dbm
 import functools
 import hashlib
@@ -140,14 +141,14 @@ def memoize(f):
 def get_checks(options):
     """Extract the checks."""
     sys.path.append(proselint_path)
-    checks = []
+    checks = {}
     check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
         module = importlib.import_module("checks." + check_name)
         for d in dir(module):
             if re.match("check", d):
-                checks.append(getattr(module, d))
+                checks[check_name] = getattr(module, d)
 
     return checks
 
@@ -230,6 +231,48 @@ def line_and_column(text, position):
     return (line_no, position - position_counter)
 
 
+def find_ignored_checks(available_checks, text):
+    ignored_checks = collections.defaultdict(dict)
+    for match in re.finditer(r"^[!-/:-@[-`{-~\s]*proselint: (?P<action>disable|enable)(?P<checks>(?:=(?:[\w\.,]*)))?", text, flags=re.MULTILINE):
+        if match.group("checks") == "=":
+            # The equal sign indicates that this only applies to some, but
+            # checks were specified. We just ignore this.
+            # TODO: Should this be considered an error?
+            continue
+        checks = [c for c in (match.group("checks") or "").lstrip("=").split(",") if c]
+        if not checks:
+            # This applies to all checks.
+            checks = available_checks
+
+        for check in checks:
+            start, end = match.span()
+            if match.group("action") == "enable":
+                try:
+                    closest_start = max(ignored_checks[check].keys())
+                except ValueError:
+                    # The check wasn't disabled previously, so this is a no-op
+                    # FIXME: Print an error here?
+                    pass
+                else:
+                    ignored_checks[check][closest_start] = end
+            else:
+                ignored_checks[check][start] = None
+    return ignored_checks
+
+
+def is_check_ignored(ignored_checks, check, start):
+    try:
+        closest_start = max(s for s in ignored_checks[check].keys() if s <= start)
+    except ValueError:
+        # The check wasn't disabled at all.
+        return False
+
+    closest_end = ignored_checks[check][closest_start]
+    if closest_end is None or closest_end >= start:
+        return True
+    return False
+
+
 def lint(input_file, debug=False, config=config.default):
     """Run the linter on the input file."""
     if isinstance(input_file, str):
@@ -240,14 +283,18 @@ def lint(input_file, debug=False, config=config.default):
     # Get the checks.
     checks = get_checks(config)
 
+    ignored_checks = find_ignored_checks(checks.keys(), text)
+
     # Apply all the checks.
     errors = []
-    for check in checks:
+    for check in checks.values():
 
         result = check(text)
 
         for error in result:
             (start, end, check, message, replacements) = error
+            if is_check_ignored(ignored_checks, check, start):
+                continue
             if is_quoted(start, text):
                 continue
             (line, column) = line_and_column(text, start)

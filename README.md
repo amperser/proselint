@@ -155,6 +155,19 @@ Additionally, for compatibility reasons, the legacy configurations `~/.proselint
 }
 ```
 
+You can also disable checks inside a file using special comments. Use
+`proselint: disable` to disable *all* checks or `proselint: disable=<check>` to
+disable only specific checks.
+
+```tex
+Here, all checks are used.
+% proselint: disable=nonwords.misc,weasel_words.very
+Here, the \texttt{nonwords.misc} and \texttt{weasel\_words.very}
+checks are disabled.
+% proselint: enable=nonwords.misc
+At this point, the \texttt{nonwords.misc} check has been reenabled.
+```
+
 | ID    | Description     |
 | ----- | --------------- |
 | `airlinese.misc` | Avoiding jargon of the airline industry |
