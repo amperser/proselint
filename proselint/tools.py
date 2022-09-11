@@ -248,10 +248,11 @@ def lint(input_file, debug=False, config=config.default):
 
         for error in result:
             (start, end, check, message, replacements) = error
+            if is_quoted(start, text):
+                continue
             (line, column) = line_and_column(text, start)
-            if not is_quoted(start, text):
-                errors += [(check, message, line, column, start, end,
-                            end - start, "warning", replacements)]
+            errors += [(check, message, line, column, start, end,
+                        end - start, "warning", replacements)]
 
         if len(errors) > config["max_errors"]:
             break
