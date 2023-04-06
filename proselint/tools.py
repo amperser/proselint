@@ -144,11 +144,14 @@ def get_checks(options):
     check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
-
+        try:
+            module = importlib.import_module("checks." + check_name)
+            for d in dir(module):
+                if re.match("check", d):
+                    checks.append(getattr(module, d))
+        except:
+            print("Warning: Failed to locate module {} in {}".format(
+                check_name, proselint_path))
     return checks
 
 
