@@ -24,13 +24,13 @@ def test_deepmerge_dicts():
 def test_load_options_function(isfile):
     """Test load_options by specifying a user options path"""
 
-    isfile.side_effect = "tests/test_config_flag_proselintrc".__eq__
+    isfile.side_effect = "tests/test_config_flag_proselintrc.json".__eq__
 
-    overrides = load_options("tests/test_config_flag_proselintrc", default)
+    overrides = load_options("tests/test_config_flag_proselintrc.json", default)
     assert load_options(conf_default=default)["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
 
-    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc").__eq__
+    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
 
     TestCase().assertRaises(FileNotFoundError, load_options)
 
@@ -41,7 +41,7 @@ def test_config_flag():
     assert "uncomparables.misc" in output.stdout
 
     output = runner.invoke(
-        proselint, "--demo --config tests/test_config_flag_proselintrc")
+        proselint, "--demo --config tests/test_config_flag_proselintrc.json")
     assert "uncomparables.misc" not in output.stdout
 
     output = runner.invoke(proselint, "--demo --config non_existent_file")
@@ -58,6 +58,6 @@ def test_dump_config():
     assert json.loads(output.stdout) == default
 
     output = runner.invoke(
-        proselint, "--dump-config --config tests/test_config_flag_proselintrc")
+        proselint, "--dump-config --config tests/test_config_flag_proselintrc.json")
     assert json.loads(output.stdout) == json.load(
-        open("tests/test_config_flag_proselintrc"))
+        open("tests/test_config_flag_proselintrc.json"))
