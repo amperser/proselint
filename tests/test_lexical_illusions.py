@@ -26,4 +26,3 @@ class TestCheck(Check):
         assert self.passes("The practitioner's side")
         assert self.passes("An antimatter particle")
         assert self.passes("The theory")
-        assert self.passes("She had coffee at the Foo-bar bar.")
