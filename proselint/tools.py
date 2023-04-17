@@ -182,10 +182,50 @@ def lint_path(
     results = {}
     chars = 0
 
-    if len(paths) == 0:
-        # Use stdin if no paths were specified
-        log.info("No path specified -> will read from <stdin>")
-        results["<stdin>"] = lint(sys.stdin, config=config, checks=checks)
+    msg = " ".join(msg.split())
+
+    for w in word_pairs:
+        matches = [
+            [m for m in re.finditer(w[0], text)],
+            [m for m in re.finditer(w[1], text)]
+        ]
+
+        if len(matches[0]) > 0 and len(matches[1]) > 0:
+
+            idx_minority = len(matches[0]) > len(matches[1])
+
+            for m in matches[idx_minority]:
+                errors.append((
+                    m.start() + offset,
+                    m.end() + offset,
+                    err,
+                    msg.format(w[~idx_minority], m.group(0)),
+                    w[~idx_minority]))
+
+    return errors
+
+
+def punctuation_check(text, pattern, err, msg, offset=0):
+    """Build a checker for unnacceptable number of spaces behind puncuation."""
+    errors = []
+
+    period_spaces = re.finditer(pattern, text)
+
+    for inst in period_spaces:
+        errors.append((
+            inst.start() + offset,
+            inst.end() + offset,
+            err,
+            msg,
+            None))
+
+    return errors
+
+
+def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
+    """Build a checker that suggests the preferred form."""
+    if ignore_case:
+        flags = re.IGNORECASE
     else:
         # offer "outer" executor, to make multiprocessing more effective
         exe = ProcessPoolExecutor() if config["parallelize"] else None

@@ -32,7 +32,7 @@ def test_load_options_function(isfile):
     assert load_options()["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
 
-    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
+    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc").__eq__
 
     assert load_options() == default
 
@@ -46,7 +46,6 @@ def test_config_flag_config():
     result = runner.invoke(proselint, ["--demo", "--debug"] + FLAG)
     print_invoke_return(result)
     assert "uncomparables.misc" not in result.stdout
-
 
 def test_config_flag_config_nonexist():
     result = CliRunner().invoke(proselint, ["--demo", "--config", "non_existent_file"])
@@ -73,3 +72,4 @@ def test_dump_config():
     """
     output = runner.invoke(proselint, ["--dump-config"] + FLAG)
     assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())
+
