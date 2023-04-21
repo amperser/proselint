@@ -1,5 +1,14 @@
 """Check if the text contains only words in top 1000 most popular words.
 
+---
+layout:     Website
+source:     THE UP-GOER FIVE TEXT EDITOR
+source_url: https://splasho.com/upgoer5/
+title:      ?
+date:       2023-04-16 16:32:01
+categories: writing/app
+---
+
 Top 1000.
 
 """
