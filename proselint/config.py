@@ -87,6 +87,7 @@ default = {
         "uncomparables.misc": True,
         "weasel_words.misc": True,
         "weasel_words.very": True,
-        "reverse_existence.top1000": False
+        "reverse_existence.top1000": False,
+        "reverse_existence.elementary": False
     }
 }
