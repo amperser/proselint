@@ -84,6 +84,7 @@
         "typography.symbols"            : true,
         "uncomparables.misc"            : false,
         "weasel_words.misc"             : true,
-        "weasel_words.very"             : true
+        "weasel_words.very"             : true,
+        "reverse_existence.top1000"     : false
     }
 }
