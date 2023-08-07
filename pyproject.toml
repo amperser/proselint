@@ -8,20 +8,16 @@ readme = "README.md"
 homepage = "https://proselint.com"
 repository = "https://github.com/amperser/proselint"
 classifiers = ["Programming Language :: Python :: Implementation :: CPython"]
-include = [
-	"proselint/",
-	"tests/",
-	"proselint/demo.md",
-]
+include = ["proselint/", "tests/", "proselint/demo.md"]
 exclude = ["tests/.gitignore"]
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.6.7"
 click = "^8.0.0"
 future = "^0.18.2"
 
 [tool.poetry.dev-dependencies]
-gmail = {git = "https://github.com/charlierguo/gmail.git"}
+gmail = { git = "https://github.com/charlierguo/gmail.git" }
 APScheduler = ">=3.5.3"
 bumpversion = ">=0.5.3"
 coverage = "^6.1"
