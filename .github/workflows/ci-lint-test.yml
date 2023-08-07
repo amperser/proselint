@@ -10,19 +10,19 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        python: [3.9]
+        python: ["3.10"]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Poetry"
         uses: snok/install-poetry@v1.3
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
@@ -36,26 +36,26 @@ jobs:
   test-cover:
     name: Test & Cover
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     defaults:
       run:
         shell: bash
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9, pypy3]
+        python: ["3.8", "3.9", "3.10", "pypy3.9", "pypy3.10"]
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Poetry"
         uses: snok/install-poetry@v1.3
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
@@ -67,7 +67,7 @@ jobs:
       - name: "[EXEC] Test"
         run: ./utils ci test --coverage
       - name: "[EXEC] Upload coverage to Codecov"
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
           flags: ${{ matrix.os }},py${{ matrix.python }}
