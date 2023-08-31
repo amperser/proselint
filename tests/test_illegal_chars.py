@@ -15,9 +15,15 @@ class TestInvalidCharacters(Check):
     __test__ = True
 
     def test_invalid_characters(self):
+<<<<<<< HEAD:tests/test_illegal_chars.py
         """Ensure that a file with illegal characters does not break us."""
         curr_dir = dirname(abspath(__file__))
         test_file = join(curr_dir, "illegal-chars.txt")
+||||||| parent of 5d92d50... chore: lint:tests/test_invalid_chars.py
+        """Ensure that a file with invalid characters does not break proselint."""
+=======
+        """Ensure that invalid characters do not break proselint."""
+>>>>>>> 5d92d50... chore: lint:tests/test_invalid_chars.py
         runner = CliRunner()
 
         output = runner.invoke(proselint, test_file)
