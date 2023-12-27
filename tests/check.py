@@ -2,6 +2,8 @@
 
 import codecs
 import os
+from pathlib import Path
+from typing import Union
 from unittest import TestCase
 
 
@@ -23,7 +25,7 @@ class Check(TestCase):
         """Create a placeholder for the specific check."""
         raise NotImplementedError
 
-    def passes(self, lst):
+    def passes(self, lst: Union[list, str]) -> bool:
         """Check if the test runs cleanly on the given text."""
         if isinstance(lst, str):
             lst = [lst]
@@ -34,22 +36,22 @@ class Check(TestCase):
 
         return len(errors) == 0
 
-    def wpe_too_high(self):
+    def wpe_too_high(self) -> None:
         """Check whether the check is too noisy."""
         min_wpe = 50
 
-        examples_dir = os.path.join(os.getcwd(), "tests", "corpus")
-        examples = os.listdir(examples_dir)
+        examples_path = Path.cwd() / "tests" / "corpus"  # TODO: probably old path to corpus
+        examples = os.listdir(examples_path)
 
         for example in examples:
-            example_path = os.path.join(examples_dir, example)
+            example_path = examples_path / example
 
             if ".DS_Store" in example_path:
                 break
 
             # Compute the number of words per (wpe) error.
-            with codecs.open(example_path, "r", encoding='utf-8') as f:
-                text = f.read()
+            with example_path.open(encoding='utf-8') as fh:
+                text = fh.read()
                 num_errors = len(self.this_check.check.__wrapped__(text))
                 num_words = len(text)
 

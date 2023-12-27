@@ -12,17 +12,19 @@ import re
 import shelve
 import sys
 import traceback
+from pathlib import Path
+from typing import Optional, Union, IO
 from warnings import showwarning as warn
 
 from . import config
 
-_cache_shelves = dict()
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-home_dir = os.path.expanduser("~")
-cwd = os.getcwd()
+_cache_shelves = {}
+proselint_path = Path(__file__).parent
+home_dir = Path("~").expanduser()
+cwd = Path.cwd()
 
 
-def close_cache_shelves():
+def close_cache_shelves() -> None:
     """Close previously opened cache shelves."""
     for cache in _cache_shelves.values():
         cache.close()
@@ -38,35 +40,35 @@ def close_cache_shelves_after(f):
     return wrapped
 
 
-def _get_xdg_path(variable_name, default_path):
-    path = os.environ.get(variable_name)
-    if path is None or path == '':
+def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
+    _value = os.environ.get(variable_name)
+    if _value is None or _value == '':
         return default_path
     else:
-        return path
+        return Path(_value)
 
 
-def _get_xdg_config_home():
-    return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
+def _get_xdg_config_home() -> Path:
+    return _get_xdg_path('XDG_CONFIG_HOME', home_dir / '.config')
 
 
-def _get_xdg_cache_home():
-    return _get_xdg_path('XDG_CACHE_HOME', os.path.join(home_dir, '.cache'))
+def _get_xdg_cache_home() -> Path:
+    return _get_xdg_path('XDG_CACHE_HOME', home_dir / '.cache')
 
 
-def _get_cache(cachepath):
+def _get_cache(cachepath: Path):
     if cachepath in _cache_shelves:
         return _cache_shelves[cachepath]
 
     try:
-        cache = shelve.open(cachepath, protocol=2)
+        cache = shelve.open(cachepath.as_posix(), protocol=2)
     except dbm.error:
         # dbm error on open - delete and retry
         print('Error (%s) opening %s - will attempt to delete and re-open.' %
               (sys.exc_info()[1], cachepath))
         try:
-            os.remove(cachepath)
-            cache = shelve.open(cachepath, protocol=2)
+            cachepath.unlink()
+            cache = shelve.open(cachepath.as_posix(), protocol=2)
         except Exception:
             print('Error on re-open: %s' % sys.exc_info()[1])
             cache = None
@@ -88,19 +90,19 @@ def _get_cache(cachepath):
 def memoize(f):
     """Cache results of computations on disk."""
     # Determine the location of the cache.
-    cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
-    legacy_cache_dirname = os.path.join(home_dir, ".proselint")
+    cache_path = _get_xdg_cache_home() / 'proselint'
+    cache_legacy_path = home_dir / ".proselint"
 
-    if not os.path.isdir(cache_dirname):
+    if not cache_path.is_dir():
         # Migrate the cache from the legacy path to XDG compliant location.
-        if os.path.isdir(legacy_cache_dirname):
-            os.rename(legacy_cache_dirname, cache_dirname)
+        if cache_legacy_path.is_dir():
+            cache_legacy_path.rename(cache_path)
         # Create the cache if it does not already exist.
         else:
-            os.makedirs(cache_dirname)
+            cache_path.mkdir(parents=True)
 
     cache_filename = f.__module__ + "." + f.__name__
-    cachepath = os.path.join(cache_dirname, cache_filename)
+    cachepath = cache_path / cache_filename
 
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
@@ -139,7 +141,7 @@ def memoize(f):
 
 def get_checks(options):
     """Extract the checks."""
-    sys.path.append(proselint_path)
+    sys.path.append(proselint_path.as_posix())
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
@@ -152,47 +154,49 @@ def get_checks(options):
     return checks
 
 
-def deepmerge_dicts(dict1, dict2):
+def deepmerge_dicts(dict1, dict2):  # TODO: this can be faster, we can just add dicts
     """Deep merge dictionaries, second dict will take priority."""
     result = copy.deepcopy(dict1)
 
     for key, value in dict2.items():
         if isinstance(value, dict):
-            result[key] = deepmerge_dicts(result[key] or {}, value)
+            result[key] = deepmerge_dicts(result.get(key) or {}, value)
         else:
             result[key] = value
 
     return result
 
 
-def load_options(config_file_path=None, conf_default=None):
+def load_options(config_file_path: Optional[Path] = None, conf_default: Optional[dict] = None) -> dict:
     """Read various proselintrc files, allowing user overrides."""
-    conf_default = conf_default or {}
-    if os.path.isfile("/etc/proselintrc"):
-        conf_default = json.load(open("/etc/proselintrc"))
+    if conf_default is None:
+        conf_default = config.default
+    config_global_path = Path("/etc/proselintrc")
+    if config_global_path.is_file():
+        conf_default = json.load(config_global_path.open())
 
     user_config_paths = [
-        os.path.join(cwd, '.proselintrc.json'),
-        os.path.join(_get_xdg_config_home(), 'proselint', 'config.json'),
-        os.path.join(home_dir, '.proselintrc.json'),
+        cwd / '.proselintrc.json',
+        _get_xdg_config_home() / 'proselint/config.json',
+        home_dir / '.proselintrc.json',
     ]
 
     if config_file_path:
-        if not os.path.isfile(config_file_path):
+        if not config_file_path.is_file():
             raise FileNotFoundError(
                 f"Config file {config_file_path} does not exist")
         user_config_paths.insert(0, config_file_path)
 
     user_options = {}
     for path in user_config_paths:
-        if os.path.isfile(path):
-            user_options = json.load(open(path))
+        if path.is_file():
+            user_options = json.load(path.open())
             break
-        oldpath = path.replace(".json", "")
-        if os.path.isfile(oldpath):
-            warn(f"{oldpath} was found instead of a JSON file."
+        path_old = path.with_suffix("")
+        if path_old.is_file():
+            warn(f"{path_old} was found instead of a JSON file."
                  f" Rename to {path}.", DeprecationWarning, "", 0)
-            user_options = json.load(open(oldpath))
+            user_options = json.load(path_old.open())
             break
 
     return deepmerge_dicts(conf_default, user_options)
@@ -230,12 +234,12 @@ def line_and_column(text, position):
     return (line_no, position - position_counter)
 
 
-def lint(input_file, debug=False, config=config.default):
+def lint(content: Union[str, IO], debug: bool = False, config: dict = config.default):
     """Run the linter on the input file."""
-    if isinstance(input_file, str):
-        text = input_file
+    if isinstance(content, str):
+        text = content
     else:
-        text = input_file.read()
+        text = content.read()
 
     # Get the checks.
     checks = get_checks(config)

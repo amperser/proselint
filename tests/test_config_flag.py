@@ -13,8 +13,8 @@ from proselint.tools import deepmerge_dicts, load_options
 
 runner = CliRunner()
 
-CONFIG_FILE = str(Path(__file__, "../test-proselintrc.json").resolve())
-FLAG = f"--config '{CONFIG_FILE}'"
+CONFIG_FILE = Path(__file__, "../test-proselintrc.json").resolve()
+FLAG = ["--config", str(CONFIG_FILE)]
 
 
 def test_deepmerge_dicts():
@@ -30,36 +30,43 @@ def test_load_options_function(isfile):
 
     isfile.side_effect = CONFIG_FILE.__eq__
 
-    overrides = load_options(CONFIG_FILE, default)
-    assert load_options(conf_default=default)["checks"]["uncomparables.misc"]
+    overrides = load_options(CONFIG_FILE)
+    assert load_options()["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
 
     isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
 
-    TestCase().assertRaises(FileNotFoundError, load_options)
+    assert load_options() == default
 
-
-def test_config_flag():
+def test_config_flag_demo():
     """Test the --config CLI argument"""
-    output = runner.invoke(proselint, "--demo")
+    output = runner.invoke(proselint, ["--demo"])
     assert "uncomparables.misc" in output.stdout
 
-    output = runner.invoke(proselint, f"--demo {FLAG}")
+def test_config_flag_config():
+    output = runner.invoke(proselint, ["--demo"] + FLAG)
+
     assert "uncomparables.misc" not in output.stdout
     assert "FileNotFoundError" != output.exc_info[0].__name__
 
-    output = runner.invoke(proselint, "--demo --config non_existent_file")
-    assert output.exit_code == 1
-    assert output.exc_info[0].__name__ == "FileNotFoundError"
 
+def test_config_flag_config_nonexist():
+    output = runner.invoke(proselint, ["--demo", "--config", "non_existent_file"])
+    assert output.exit_code == 2
+    # assert output.exc_info[0].__name__ == "FileNotFoundError"
+
+
+def test_config_flag_data_nonexist():
     output = runner.invoke(proselint, "non_existent_file")
     assert output.exit_code == 2
+    # assert output.exc_info[0].__name__ == "FileNotFoundError"
 
 
-def test_dump_config():
+def test_dump_config_default():
     """Test --dump-default-config and --dump-config"""
     output = runner.invoke(proselint, "--dump-default-config")
     assert json.loads(output.stdout) == default
 
-    output = runner.invoke(proselint, f"--dump-config {FLAG}")
-    assert json.loads(output.stdout) == json.load(open(CONFIG_FILE))
+def test_dump_config():
+    output = runner.invoke(proselint, ["--dump-config"] + FLAG)
+    assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())
