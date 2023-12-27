@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "pinker.scare_quotes"
     msg = "Misuse of 'scare quotes'. Delete them."

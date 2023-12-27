@@ -6,12 +6,12 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "typography.diacritical_marks"
     msg = "Use diacritical marks in '{}'."
 
-    list = [
+    items = [
         # French loanwords
         ["beau idéal",         ["beau ideal"]],
         ["boutonnière",        ["boutonniere"]],
@@ -109,4 +109,4 @@ def check(text):
         ["Škoda",              ["Skoda"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

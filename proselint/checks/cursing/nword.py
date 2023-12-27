@@ -16,13 +16,13 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "cursing.nword"
     msg = "Take responsibility for the shitty words you want to say."
 
-    list = [
+    items = [
         "the n-word",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

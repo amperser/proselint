@@ -4,7 +4,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """-ely vs. -ly."""
     err = "spelling.ely_ly"
     msg = "-ely vs. -ly. '{}' is the correct spelling."

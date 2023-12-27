@@ -16,7 +16,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "spelling.misc"
     msg = "Misspelling. '{}' is the preferred spelling."

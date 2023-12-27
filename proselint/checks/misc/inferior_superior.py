@@ -16,7 +16,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "misc.inferior_superior"
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."

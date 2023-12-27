@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "misc.false_plurals.examples"
     msg = "The plural is {}"

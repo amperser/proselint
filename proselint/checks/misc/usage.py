@@ -36,7 +36,7 @@ grammatical subject.
 
 
 # @memoize
-# def check(text):
+# def check(text: str):
 #     err = "strunk_white.usage"
 #     msg = "Use of '{}'. {}"
 

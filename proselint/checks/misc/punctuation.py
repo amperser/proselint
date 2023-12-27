@@ -16,13 +16,13 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "garner.punctuation"
     msg = "Misplaced punctuation. It's 'et al.'"
 
-    list = [
+    items = [
         "et. al",
         "et. al.",
     ]
-    return existence_check(text, list, err, msg, join=True)
+    return existence_check(text, items, err, msg, join=True)

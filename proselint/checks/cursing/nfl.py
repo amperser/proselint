@@ -16,12 +16,12 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
 
-    list = [
+    items = [
         "420",
         "666",
         "2 on 1",
@@ -1179,4 +1179,4 @@ def check(text):
         "yellowman",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

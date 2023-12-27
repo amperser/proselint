@@ -16,12 +16,12 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "corporate_speak.misc"
     msg = "Minimize your use of corporate catchphrases like this one."
 
-    list = [
+    items = [
         "at the end of the day",
         "back to the drawing board",
         "hit the ground running",
@@ -49,4 +49,4 @@ def check(text):
         "on my plate",
     ]
 
-    return existence_check(text, list, err, msg, ignore_case=True)
+    return existence_check(text, items, err, msg, ignore_case=True)

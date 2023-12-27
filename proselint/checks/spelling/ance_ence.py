@@ -4,7 +4,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """-ance vs. -ence."""
     err = "spelling.ance_ence"
     msg = "-ance vs. -ence. '{}' is the correct spelling."

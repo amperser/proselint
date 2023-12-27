@@ -19,7 +19,7 @@ from proselint.tools import memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "strunk_white.greylist"
     msg = "Use of '{}'. {}"
@@ -38,7 +38,7 @@ def check(text):
 
     errors = []
     for word in bad_words:
-        occ = [m for m in re.finditer(word, text.lower())]
+        occ = list(re.finditer(word, text.lower()))
         for o in occ:
             errors.append((
                 o.start(),

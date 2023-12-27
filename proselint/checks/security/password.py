@@ -15,7 +15,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "security.password"
     msg = "Don't put passwords in plain text."

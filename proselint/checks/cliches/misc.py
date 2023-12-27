@@ -13,7 +13,7 @@ def check_cliches_garner(text):
     err = "cliches.garner"
     msg = "'{}' is cliché."
 
-    cliches = [
+    items = [
         "a fate worse than death",
         "alas and alack",
         "at the end of the day",
@@ -94,7 +94,7 @@ def check_cliches_garner(text):
         "wool pulled over our eyes",
         "writ large",
     ]
-    return existence_check(text, cliches, err, msg, join=True)
+    return existence_check(text, items, err, msg, join=True)
 
 
 @memoize
@@ -107,7 +107,7 @@ def check_cliches_write_good(text):
     err = "cliches.write_good"
     msg = "'{}' is a cliché."
 
-    cliches = [
+    items = [
         "a chip off the old block",
         "a clean slate",
         "a dark and stormy night",
@@ -807,7 +807,7 @@ def check_cliches_write_good(text):
         "young and vibrant",
     ]
 
-    return existence_check(text, cliches, err, msg, join=True)
+    return existence_check(text, items, err, msg, join=True)
 
 
 @memoize
@@ -820,7 +820,7 @@ def check_cliches_gnu_diction(text):
     err = "cliches.gnu_diction"
     msg = "'{}' is a cliché."
 
-    list = [
+    items = [
         "a matter of concern",
         "all things being equal",
         "as a last resort",
@@ -850,4 +850,4 @@ def check_cliches_gnu_diction(text):
         "you are hereby advised that",
     ]
 
-    return existence_check(text, list, err, msg, join=True, ignore_case=True)
+    return existence_check(text, items, err, msg, join=True, ignore_case=True)

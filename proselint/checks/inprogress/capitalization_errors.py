@@ -19,7 +19,7 @@ from proselint.tools import blacklist, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "MSC104"
     msg = "Don't fail to capitalize roman numeral abbreviations."

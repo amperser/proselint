@@ -18,7 +18,7 @@ from proselint.tools import existence_check, max_errors, memoize
 
 @max_errors(1)
 @memoize
-def check(text):
+def check(text: str):
     """Avoid 'very'."""
     err = "weasel_words.very"
     msg = ("Substitute 'damn' every time you're "

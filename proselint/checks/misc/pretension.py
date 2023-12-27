@@ -17,16 +17,16 @@ from proselint.tools import existence_check, max_errors, memoize
 
 @max_errors(1)
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "ogilvy.pretension"
     msg = "Jargon words like this one are the hallmarks of a pretentious ass."
 
-    list = [
+    items = [
         "reconceptualize",
         "demassification",
         "attitudinally",
         "judgmentally",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

@@ -16,13 +16,13 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "misc.back_formations"
     msg = "Back-formation. '{}' is the preferred form."
 
-    list = [
+    items = [
         ["improper",       ["improprietous"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

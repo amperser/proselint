@@ -16,36 +16,36 @@ from proselint.tools import existence_check, memoize, preferred_forms_check
 
 
 @memoize
-def check_lie_detector_test(text):
+def check_lie_detector_test(text: str):
     """Suggest the preferred forms."""
     err = "psychology.lie_detector"
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
 
-    list = [
+    items = [
         ["polygraph test",      ["lie detector test"]],
         ["polygraph machine",   ["lie detector machine"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)
 
 
 @memoize
-def check_p_equals_zero(text):
+def check_p_equals_zero(text: str):
     """Check for p = 0.000."""
     err = "psychology.p_equals_zero"
     msg = "Unless p really equals zero, you should use more decimal places."
 
-    list = [
+    items = [
         "p = 0.00",
         "p = 0.000",
         "p = 0.0000",
     ]
 
-    return existence_check(text, list, err, msg, join=True)
+    return existence_check(text, items, err, msg, join=True)
 
 
 @memoize
-def check_mental_telepathy(text):
+def check_mental_telepathy(text: str):
     """Check for 'mental telepathy'."""
     err = "psychology.mental_telepathy"
     msg = "This is redundant because all purported telepathy is mental."

@@ -59,17 +59,17 @@ def check_email():
                      u.subject.decode('utf-8') +
                      u.body.decode('utf-8'))
 
-        hash = hashlib.sha256(signature.encode('utf-8')).hexdigest()
+        _hash = hashlib.sha256(signature.encode('utf-8')).hexdigest()
 
         if user_to in u.to or user_to in u.headers.get('Cc', []):
 
-            job_id = conn.get(hash)
+            job_id = conn.get(_hash)
 
             if not job_id:
                 # If the email hasn't been sent for processing, send it.
                 r = requests.post(api_url, data={"text": u.body})
-                conn.set(hash, r.json()["job_id"])
-                print(f"Email {hash} sent for processing.")
+                conn.set(_hash, r.json()["job_id"])
+                print(f"Email {_hash} sent for processing.")
 
             else:
                 # Otherwise, check whether the results are ready, and if so,
@@ -101,7 +101,7 @@ def check_email():
                     u.read()
                     u.archive()
 
-                    print(f"Email {hash} has been replied to.")
+                    print(f"Email {_hash} has been replied to.")
 
 
 scheduler.start()

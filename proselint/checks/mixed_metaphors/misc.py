@@ -5,7 +5,7 @@ from proselint.tools import existence_check, max_errors, memoize, preferred_form
 
 @max_errors(1)
 @memoize
-def check_bottleneck(text):
+def check_bottleneck(text: str):
     """Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
@@ -13,7 +13,7 @@ def check_bottleneck(text):
     """
     err = "mixed_metaphors.misc.bottleneck"
     msg = "Mixed metaphor — bottles with big necks are easy to pass through."
-    list = [
+    items = [
         "biggest bottleneck",
         "big bottleneck",
         "large bottleneck",
@@ -23,11 +23,11 @@ def check_bottleneck(text):
         "massive bottleneck",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)
 
 
 @memoize
-def check_misc(text):
+def check_misc(text: str):
     """Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage

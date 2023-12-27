@@ -81,7 +81,7 @@ def _get_cache(cachepath: Path):
     # Don't fail on bad caches
     if cache is None:
         print('Using in-memory shelf for cache file %s' % cachepath)
-        cache = shelve.Shelf(dict())
+        cache = shelve.Shelf({})
 
     _cache_shelves[cachepath] = cache
     return cache
@@ -266,13 +266,13 @@ def lint(content: Union[str, IO], debug: bool = False, config: dict = config.def
     return errors
 
 
-def assert_error(text, check, n=1):
+def assert_error(text: str, check, n=1):
     """Assert that text has n errors of type check."""
     assert_error.description = f"No {check} error for '{text}'"
     assert(check in [error[0] for error in lint(text)])
 
 
-def consistency_check(text, word_pairs, err, msg, offset=0):
+def consistency_check(text: str, word_pairs: list, err: str, msg: str, offset: int = 0):
     """Build a consistency checker for the given word_pairs."""
     errors = []
 
@@ -280,8 +280,8 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
 
     for w in word_pairs:
         matches = [
-            [m for m in re.finditer(w[0], text)],
-            [m for m in re.finditer(w[1], text)],
+            list(re.finditer(w[0], text)),
+            list(re.finditer(w[1], text)),
         ]
 
         if len(matches[0]) > 0 and len(matches[1]) > 0:
@@ -299,7 +299,7 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     return errors
 
 
-def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
+def preferred_forms_check(text: str, items: list, err: str, msg: str, ignore_case: bool = True, offset: int = 0):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -310,23 +310,23 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
 
     errors = []
     regex = r"[\W^]{}[\W$]"
-    for p in list:
-        for r in p[1]:
+    for item in items:
+        for r in item[1]:
             for m in re.finditer(regex.format(r), text, flags=flags):
                 txt = m.group(0).strip()
                 errors.append((
                     m.start() + 1 + offset,
                     m.end() + offset,
                     err,
-                    msg.format(p[0], txt),
-                    p[0]))
+                    msg.format(item[0], txt),
+                    item[0]))
 
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True, str=False,
-                    offset=0, require_padding=True, dotall=False,
-                    excluded_topics=None, exceptions=(), join=False):
+def existence_check(text: str, items: list, err: str, msg: str, ignore_case: bool = True, string: bool = False,
+                    offset: int = 0, require_padding: bool = True, dotall: bool = False,
+                    excluded_topics: Optional[list] = None, exceptions=(), join: bool = False):
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
 
@@ -335,7 +335,7 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     if ignore_case:
         flags = flags | re.IGNORECASE
 
-    if str:
+    if string:
         flags = flags | re.UNICODE
 
     if dotall:
@@ -354,7 +354,7 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
         if any([t in excluded_topics for t in tps]):
             return errors
 
-    rx = "|".join(regex.format(w) for w in list)
+    rx = "|".join(regex.format(w) for w in items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         if any([re.search(exception, txt) for exception in exceptions]):
@@ -379,7 +379,7 @@ def max_errors(limit):
     return wrapper
 
 
-def truncate_errors(errors, limit=float("inf")):
+def truncate_errors(errors: list, limit: float = float("inf")) -> list:
     """If limit was specified, truncate the list of errors.
 
     Give the total number of times that the error was found elsewhere.
@@ -418,7 +418,7 @@ def threshold_check(errors, threshold, length):
     return []
 
 
-def is_quoted(position, text):
+def is_quoted(position, text: str):
     """Determine if the position in the text falls within a quote."""
     def matching(quotemark1, quotemark2):
         straight = '\"\''
@@ -463,7 +463,7 @@ def is_quoted(position, text):
     return position_in_ranges(find_ranges(text), position)
 
 
-def detector_50_Cent(text):
+def detector_50_Cent(text: str):
     """Determine whether 50 Cent is a topic."""
     keywords = [
         "50 Cent",
@@ -483,7 +483,7 @@ def detector_50_Cent(text):
     return ("50 Cent", float(num_keywords > 2))
 
 
-def topics(text):
+def topics(text: str):
     """Return a list of topics."""
     detectors = [
         detector_50_Cent,

@@ -24,7 +24,7 @@ def is_check(file_path: Path) -> bool:
     return True
 
 
-for root, subdirs, files in listing:
+for root, _, files in listing:
     root_path = Path(root)
     for file in files:
         file_path = root_path / file
@@ -37,9 +37,9 @@ for root, subdirs, files in listing:
             post_filename = project_path / f"site/_posts/{datetime.date.today()}-{docstring[0:6]}.md"
 
             # Chop off the first two lines
-            for i in range(2):
+            for _ in range(2):
                 docstring = '\n'.join(docstring.split('\n')[1:])
 
             # Create a new post in the blog.
-            with post_filename.open('x') as f:  # TODO: maybe add b, so xb
+            with post_filename.open('xb') as f:  # TODO: maybe add b, so xb
                 f.write(docstring.encode('utf8'))

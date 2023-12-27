@@ -107,14 +107,14 @@ def lint():
                 status="error",
                 message="No job with requested job_id."), 404
 
-        elif job.result is None:
+        elif job.return_value() is None:
             return jsonify(
                 status="error",
                 message="Job is not yet ready."), 202
 
         else:
             errors = []
-            for i, e in enumerate(job.result):
+            for _, e in enumerate(job.return_value()):
                 app.logger.debug(e)
                 errors.append({
                     "check": e[0],

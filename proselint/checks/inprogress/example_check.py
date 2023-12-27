@@ -15,7 +15,7 @@ The first line always is always wrong.
 from proselint.tools import reverse
 
 
-def check(text):
+def check(text: str):
     """Check the text."""
     error_code = "example.first"
     msg = "First line always has an error."

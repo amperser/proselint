@@ -49,7 +49,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "strunk_white.composition"
     msg = "Try '{}' instead of '{}'."

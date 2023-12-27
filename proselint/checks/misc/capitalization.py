@@ -16,19 +16,19 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "misc.captalization"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
-    list = [
+    items = [
         ["Stone Age",          ["stone age"]],
         ["space age",          ["Space Age"]],
         ["the American West",  ["the American west"]],
         ["Mother Nature",      ["mother nature"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
 # @memoize
@@ -53,7 +53,7 @@ def check_months(text):
     err = "MAU102"
     msg = "Months should be capitalized. '{}' is the preferred form."
 
-    list = [
+    items = [
 
         ["January",         ["january"]],
         ["February",        ["february"]],
@@ -69,7 +69,7 @@ def check_months(text):
         ["December",        ["december"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
 @memoize
@@ -78,7 +78,7 @@ def check_days(text):
     err = "MAU102"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
-    list = [
+    items = [
 
         ["Monday",       ["monday"]],
         ["Tuesday",      ["tuesday"]],
@@ -89,4 +89,4 @@ def check_days(text):
         ["Sunday",       ["sunday"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
