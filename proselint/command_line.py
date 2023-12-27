@@ -10,8 +10,13 @@ import traceback
 import click
 
 from .config import default
-from .tools import (close_cache_shelves, close_cache_shelves_after,
-                    errors_to_json, lint, load_options)
+from .tools import (
+    close_cache_shelves,
+    close_cache_shelves_after,
+    errors_to_json,
+    lint,
+    load_options,
+)
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
@@ -30,7 +35,7 @@ def timing_test(corpus="0.1.0"):
     start = time.time()
     for file in os.listdir(corpus_path):
         filepath = os.path.join(corpus_path, file)
-        if ".md" == filepath[-3:]:
+        if filepath[-3:] == ".md":
             subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
@@ -112,12 +117,12 @@ def proselint(paths=None, config=None, version=None, clean=None,
     config = load_options(config, default)
     if dump_config:
         print(json.dumps(config, sort_keys=True, indent=4))
-        return
+        return None
 
     if time:
         # click.echo(timing_test())
         print("This option does not work for the time being.")
-        return
+        return None
 
     # In debug or clean mode, delete cache & *.pyc files before running.
     if debug or clean:

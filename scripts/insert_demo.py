@@ -1,6 +1,6 @@
 """Insert the demo into the codemirror site."""
-import os
 import fileinput
+import os
 import shutil
 
 proselint_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -20,7 +20,7 @@ shutil.copytree(code_mirror_path, live_write_path)
 
 demo_path = os.path.join(proselint_path, "proselint", "demo.md")
 
-with open(demo_path, "r") as f:
+with open(demo_path) as f:
     demo = f.read()
 
 for line in fileinput.input(

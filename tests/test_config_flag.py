@@ -46,7 +46,7 @@ def test_config_flag():
 
     output = runner.invoke(proselint, "--demo --config non_existent_file")
     assert output.exit_code == 1
-    assert "FileNotFoundError" == output.exc_info[0].__name__
+    assert output.exc_info[0].__name__ == "FileNotFoundError"
 
     output = runner.invoke(proselint, "non_existent_file")
     assert output.exit_code == 2

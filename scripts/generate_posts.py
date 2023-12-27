@@ -1,11 +1,9 @@
 """Generate blog posts from check docstrings."""
 
-from builtins import str
-from builtins import range
-import os
 import ast
 import datetime
-
+import os
+from builtins import range, str
 
 grandparent = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 checks_dir = os.path.join(grandparent, "proselint", "checks")
@@ -14,7 +12,7 @@ listing = os.walk(checks_dir)
 
 def is_check(fn):
     """Check whether a file contains a check."""
-    if not fn[-3:] == ".py":
+    if fn[-3:] != ".py":
         return False
 
     if fn[-11:] == "__init__.py":

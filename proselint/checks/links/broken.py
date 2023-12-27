@@ -14,7 +14,6 @@ Check that links are not broken.
 """
 import re
 import urllib.request as urllib_request  # for Python 3
-from socket import error as SocketError
 
 from proselint.tools import memoize
 
@@ -55,5 +54,5 @@ def is_broken_link(url):
         return False
     except urllib_request.URLError:
         return True
-    except SocketError:
+    except OSError:
         return True

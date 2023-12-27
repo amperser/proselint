@@ -1,17 +1,19 @@
 """Check emails to editor@proselint.com, lint them, and reply."""
 
-from apscheduler.schedulers.blocking import BlockingScheduler
-import gmail
+import hashlib
+import json
+import logging
+import os
+import re
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from worker import conn
+
+import gmail
 import requests
-import hashlib
-import json
-import os
-import logging
-import re
+from apscheduler.schedulers.blocking import BlockingScheduler
+
+from worker import conn
 
 logging.basicConfig()
 scheduler = BlockingScheduler()
@@ -67,7 +69,7 @@ def check_email():
                 # If the email hasn't been sent for processing, send it.
                 r = requests.post(api_url, data={"text": u.body})
                 conn.set(hash, r.json()["job_id"])
-                print("Email {} sent for processing.".format(hash))
+                print(f"Email {hash} sent for processing.")
 
             else:
                 # Otherwise, check whether the results are ready, and if so,
@@ -81,7 +83,7 @@ def check_email():
                     reply += "\r\n\r\n".join([json.dumps(e) for e in errors])
 
                     msg = MIMEMultipart()
-                    msg["From"] = "{} <{}>".format(name, user)
+                    msg["From"] = f"{name} <{user}>"
                     msg["To"] = u.fr
                     msg["Subject"] = "Re: " + u.subject
 
@@ -99,7 +101,7 @@ def check_email():
                     u.read()
                     u.archive()
 
-                    print("Email {} has been replied to.".format(hash))
+                    print(f"Email {hash} has been replied to.")
 
 
 scheduler.start()
