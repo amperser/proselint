@@ -2,7 +2,8 @@
 
 
 from proselint.config import default
-from proselint.tools import lint as proselint, load_options
+from proselint.tools import lint as proselint
+from proselint.tools import load_options
 
 from .check import Check
 
