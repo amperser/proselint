@@ -289,8 +289,8 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
                     m.start() + offset,
                     m.end() + offset,
                     err,
-                    msg.format(w[~idx_minority], m.group(0)),
-                    w[~idx_minority]))
+                    msg.format(w[not idx_minority], m.group(0)),
+                    w[not idx_minority]))
 
     return errors
 
