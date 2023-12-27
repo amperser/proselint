@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "hedging.misc"
     msg = "Hedging. Just say it."

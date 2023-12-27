@@ -17,7 +17,7 @@ from proselint.tools import consistency_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "consistency.spacing"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."

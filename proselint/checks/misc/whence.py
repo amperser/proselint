@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "misc.whence"
     msg = "The 'from' in 'from whence' is not needed."

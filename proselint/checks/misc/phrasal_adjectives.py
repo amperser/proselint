@@ -30,12 +30,12 @@ def check_ly(text):
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
     msg = """Hyphenate '{1}', a phrasal adjective, as '{0}'."""
 
-    list = [
+    items = [
         ["across-the-board discounts", ["across the board discounts"]],
         ["acute-care treatment", ["acute care treatment"]],
         ["agreed-upon answer", ["agreed upon answer"]],
@@ -146,4 +146,4 @@ def check(text):
 
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

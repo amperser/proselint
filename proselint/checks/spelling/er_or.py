@@ -4,7 +4,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """-er vs. -or."""
     err = "spelling.er_or"
     msg = "-er vs. -or. '{}' is the preferred spelling."

@@ -29,7 +29,7 @@ from proselint.tools import existence_check, max_errors, memoize
 
 @max_errors(3)
 @memoize
-def check(text):
+def check(text: str):
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"
     msg = "Suddenly is nondescript, slows the action, and warns your reader."

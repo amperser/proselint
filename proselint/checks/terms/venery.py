@@ -16,7 +16,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "oxford.venery_terms"
     msg = "The venery term is '{}'."
@@ -78,11 +78,11 @@ def check(text):
         "bunch",
     ]
 
-    list = []
+    items = []
     for term_pair in term_list:
         for generic in generic_terms:
             wrong = f"a {generic} of {term_pair[0]}"
             right = f"a {term_pair[1]} of {term_pair[0]}"
-            list += [[right, [wrong]]]
+            items += [[right, [wrong]]]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

@@ -4,7 +4,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "garner.redundancy.ras"
     msg = "RAS syndrome. Use '{}' instead of '{}'."

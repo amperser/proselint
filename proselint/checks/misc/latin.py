@@ -16,16 +16,16 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "pinker.latin"
     msg = "Use English. '{}' is the preferred form."
 
-    list = [
+    items = [
         ["other things being equal",          ["ceteris paribus"]],
         ["among other things",                ["inter alia"]],
         ["in and of itself",                  ["simpliciter"]],
         ["having made the necessary changes", ["mutatis mutandis"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

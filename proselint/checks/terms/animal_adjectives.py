@@ -16,7 +16,7 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "garner.animal_labels"
     msg = "There's a word for this: '{}'."

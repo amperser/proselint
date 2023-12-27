@@ -16,12 +16,12 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest the preferred forms."""
     err = "misc.mondegreens"
     msg = "'{}' is the preferred form."
 
-    list = [
+    items = [
         ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
         ["a partridge in a pear tree",    ["a part-red gingerbread tree"]],
         ["attorney and notary public",    ["attorney and not a republic"]],
@@ -32,4 +32,4 @@ def check(text):
         ["to the manner born",            ["to the manor born"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

@@ -48,11 +48,11 @@ def check_redundancy(text):
     err = "dates_times.am_pm.midnight_noon"
     msg = ("'a.m.' is always morning; 'p.m.' is always night.")
 
-    list = [
+    items = [
         r"\d{1,2} ?a\.?m\.? in the morning",
         r"\d{1,2} ?p\.?m\.? in the evening",
         r"\d{1,2} ?p\.?m\.? at night",
         r"\d{1,2} ?p\.?m\.? in the afternoon",
     ]
 
-    return existence_check(text, list, err, msg, join=True)
+    return existence_check(text, items, err, msg, join=True)

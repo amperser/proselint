@@ -16,12 +16,12 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "annotations.misc"
     msg = "Annotation left in text."
 
-    annotations = [
+    items = [
         "FIXME",
         "FIX ME",
         "TODO",
@@ -31,4 +31,4 @@ def check(text):
     ]
 
     return existence_check(
-        text, annotations, err, msg, ignore_case=False, join=True)
+        text, items, err, msg, ignore_case=False, join=True)

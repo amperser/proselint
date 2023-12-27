@@ -18,7 +18,7 @@ from proselint.tools import memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "misc.tense_present"
     msg = r"'{}'."

@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "skunked_terms.misc"
     msg = """'{}' is a bit of a skunked term, impossible to use without issue.

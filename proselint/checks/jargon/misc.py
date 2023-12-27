@@ -16,7 +16,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "jargon.misc"
     msg = "'{}' is jargon. Can you replace it with something more standard?"

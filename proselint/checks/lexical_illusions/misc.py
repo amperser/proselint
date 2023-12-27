@@ -17,7 +17,7 @@ from proselint.tools import existence_check, memoize
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Check the text."""
     err = "lexical_illusions.misc"
     msg = "There's a lexical illusion here: a word is repeated."

@@ -18,12 +18,12 @@ from proselint.tools import memoize, preferred_forms_check
 
 
 @memoize
-def check(text):
+def check(text: str):
     """Suggest preferred forms given the reference document."""
     err = "glaad.terms"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
 
-    list = [
+    items = [
         ["gay man",            ["homosexual man"]],
         ["gay men",            ["homosexual men"]],
         ["lesbian",            ["homosexual woman"]],
@@ -35,4 +35,4 @@ def check(text):
         ["equal rights",       ["special rights"]],
         ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)

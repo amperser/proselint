@@ -16,7 +16,7 @@ Point out misuse of scare quotes.
 
 
 # @memoize
-# def check(text):
+# def check(text: str):
 #     """Suggest the preferred forms."""
 #     err = "pinker.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."
