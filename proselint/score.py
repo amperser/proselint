@@ -54,7 +54,7 @@ def score(check=None):
                 try:
                     input_val = input("# of false alarms? ")
                     if input_val == "exit":
-                        return
+                        return None
                     else:
                         input_val = int(input_val)
                         fp += input_val
