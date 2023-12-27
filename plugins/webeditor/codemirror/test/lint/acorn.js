@@ -647,7 +647,7 @@
   }
 
   // Read an integer, octal integer, or floating-point number.
-  
+
   function readNumber(ch) {
     var start = tokPos, isFloat = ch === ".";
     if (!isFloat && readInt(10) == null) raise(start, "Invalid number");
@@ -808,7 +808,7 @@
   // ### Parser utilities
 
   // Continue to the next token.
-  
+
   function next() {
     lastStart = tokStart;
     lastEnd = tokEnd;
@@ -1071,7 +1071,7 @@
       // In `return` (and `break`/`continue`), the keywords with
       // optional arguments, we eagerly look for a semicolon or the
       // possibility to insert one.
-      
+
       if (eat(_semi) || canInsertSemicolon()) node.argument = null;
       else { node.argument = parseExpression(); semicolon(); }
       return finishNode(node, "ReturnStatement");
@@ -1086,7 +1086,7 @@
       // Statements under must be grouped (by label) in SwitchCase
       // nodes. `cur` is used to keep the node that we are currently
       // adding statements to.
-      
+
       for (var cur, sawDefault; tokType != _braceR;) {
         if (tokType === _case || tokType === _default) {
           var isCase = tokType === _case;
@@ -1460,7 +1460,7 @@
 
   // New's precedence is slightly tricky. It must allow its argument
   // to be a `[]` or dot subscript expression, but not a call — at
-  // least, not without wrapping it in parentheses. Thus, it uses the 
+  // least, not without wrapping it in parentheses. Thus, it uses the
 
   function parseNew() {
     var node = startNode();

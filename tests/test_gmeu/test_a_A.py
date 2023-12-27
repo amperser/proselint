@@ -4,7 +4,6 @@
 
 
 from proselint.tools import assert_error
-
 from tests.check import Check
 
 

@@ -72,7 +72,7 @@ module butterfly
    assign ya_im = xa_im_z + xbw_im;
    assign yb_re = xa_re_z - xbw_re;
    assign yb_im = xa_im_z - xbw_im;
-   
+
    // Create the multiply module.
    multiply_complex #(WIDTH) multiply_complex_0
      (.clk(clk),
@@ -101,7 +101,7 @@ module butterfly
               end
          end
     end
-   
+
 endmodule
 </textarea></form>
 
