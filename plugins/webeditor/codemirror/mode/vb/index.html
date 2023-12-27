@@ -11,7 +11,7 @@
       .CodeMirror {border: 1px solid #aaa; height:210px; height: auto;}
       .CodeMirror-scroll { overflow-x: auto; overflow-y: hidden;}
       .CodeMirror pre { font-family: Inconsolata; font-size: 14px}
-    </style> 
+    </style>
     <script type="text/javascript" src="../../addon/runmode/runmode.js"></script>
   </head>
   <body onload="init()">
@@ -29,7 +29,7 @@ function test(golden, text) {
     }
     i++;
   }
-  CodeMirror.runMode(text, "text/x-vb",callback); 
+  CodeMirror.runMode(text, "text/x-vb",callback);
 
   if (ok) return "Tests OK";
 }
@@ -74,7 +74,7 @@ function init() {
 function runTest() {
 	document.getElementById('testresult').innerHTML = testAll();
   initText(editor);
-	
+
 }
 </script>
 

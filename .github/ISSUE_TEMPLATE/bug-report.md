@@ -21,7 +21,7 @@ assignees: ''
 
 ## Logs & Screenshots
 
-<!-- If applicable, add screenshots to help explain your problem, or 
+<!-- If applicable, add screenshots to help explain your problem, or
 alternatively add your console logs here. -->
 
 ## Environment

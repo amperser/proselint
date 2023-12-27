@@ -1014,7 +1014,7 @@
         return null;
       },
       jumpToMark: function(cm, motionArgs, vim) {
-        var best = cm.getCursor(); 
+        var best = cm.getCursor();
         for (var i = 0; i < motionArgs.repeat; i++) {
           var cursor = best;
           for (var key in vim.marks) {
@@ -1033,7 +1033,7 @@
             }
 
             var equal = cursorEqual(cursor, best);
-            var between = (motionArgs.forward) ? 
+            var between = (motionArgs.forward) ?
               cusrorIsBetween(cursor, mark, best) :
               cusrorIsBetween(best, mark, cursor);
 
