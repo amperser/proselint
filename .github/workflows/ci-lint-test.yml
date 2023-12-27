@@ -22,7 +22,7 @@ jobs:
         uses: snok/install-poetry@v1.3
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
@@ -55,7 +55,7 @@ jobs:
         uses: snok/install-poetry@v1.3
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
