@@ -78,7 +78,7 @@ def check(text):
         ["I did not know that / I was unaware that",
             ["I was unaware of the fact that"]],
         ["his failure",             ["the fact that he had not succeeded"]],
-        ["my arrival",              ["the fact that i had arrived"]]
+        ["my arrival",              ["the fact that i had arrived"]],
     ]
 
     return preferred_forms_check(text, bad_forms, err, msg)

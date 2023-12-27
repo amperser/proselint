@@ -65,7 +65,7 @@ def check(text):
         "extremely",
         "increasingly",
         "kind of",
-        "mildly"
+        "mildly",
     ]
 
     uncomparables = [
@@ -110,7 +110,7 @@ def check(text):
 
     exceptions = [
         ("more", "perfect"),
-        ("more", "possible")  # FIXME
+        ("more", "possible"),  # FIXME
     ]
 
     uncomparables = [fr"{i[0]}\s{i[1]}" for i in itertools.product(

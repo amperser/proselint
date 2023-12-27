@@ -40,7 +40,7 @@ def check(text):
                  ("poetic", "poetically"),
                  ("rhapsodic", "rhapsodically"),
                  ("romantic", "romantically"),
-                 ("sentimental", "sentimentally")
+                 ("sentimental", "sentimentally"),
                  ]
 
     def pairs(word):

@@ -4,7 +4,6 @@
 
 
 from proselint.tools import assert_error
-
 from tests.check import Check
 
 
@@ -29,7 +28,7 @@ class TestCheck(Check):
             "Their policy allows one golf cart a couple.",
             "The company donated five books a student.",
             "Our a-unit cost is less than $1000.",
-            "The $50-a-parent fee seems unreasonably high."
+            "The $50-a-parent fee seems unreasonably high.",
         ]
         for sentence in sentences:
             assert not self.passes(sentence)

@@ -23,7 +23,7 @@ def check(text):
 
     words = [
         r"[a-z]*[!]{2,}",
-        r"[a-z]*\?{2,}"
+        r"[a-z]*\?{2,}",
     ]
 
     return existence_check(text, words, err, msg)

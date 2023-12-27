@@ -32,7 +32,7 @@ def check(text):
         "gay agenda",
         "transvestite",
         "homosexual lifestyle",
-        "gay lifestyle"
+        "gay lifestyle",
         # homo - may create false positives without additional context
         # FIXME use topic detetor to decide whether "homo" is offensive
     ]

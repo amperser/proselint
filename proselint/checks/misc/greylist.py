@@ -26,14 +26,14 @@ def check(text):
 
     bad_words = [
         "obviously",
-        "utilize"
+        "utilize",
     ]
 
     explanations = {
         "obviously":
         "This is obviously an inadvisable word to use.",
         "utilize":
-        r"Do you know anyone who *needs* to utilize the word utilize?"
+        r"Do you know anyone who *needs* to utilize the word utilize?",
     }
 
     errors = []
