@@ -9,7 +9,7 @@ from .check import Check
 
 
 def lint(text):
-    return proselint(text, config=load_options(conf_default=default))
+    return proselint(text)
 
 
 class TestLint(Check):

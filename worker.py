@@ -1,7 +1,6 @@
 """Heroku web worker."""
 
 import os
-from builtins import map
 
 import redis
 from rq import Connection, Queue, Worker

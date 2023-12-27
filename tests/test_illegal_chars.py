@@ -1,6 +1,6 @@
 """Check that the CLI can handle invalid characters."""
 
-from os.path import abspath, dirname, join
+from pathlib import Path
 
 from click.testing import CliRunner
 
@@ -16,8 +16,8 @@ class TestInvalidCharacters(Check):
 
     def test_invalid_characters(self):
         """Ensure that a file with illegal characters does not break us."""
-        curr_dir = dirname(abspath(__file__))
-        test_file = join(curr_dir, "illegal-chars.txt")
+        test_path = Path(__file__).parent
+        test_file = test_path / "illegal-chars.txt"
         runner = CliRunner()
 
         output = runner.invoke(proselint, test_file)

@@ -4,8 +4,9 @@
 import os
 import re
 import subprocess
+from pathlib import Path
 
-proselint_path = os.path.dirname(os.path.realpath(__file__))
+proselint_path = Path(__file__).parent
 
 
 def score(check=None):
@@ -28,16 +29,16 @@ def score(check=None):
     """
     tp = 0
     fp = 0
-
-    parent_directory = os.path.dirname(proselint_path)
-    path_to_corpus = os.path.join(parent_directory, "corpora", "0.1.0")
+    # corpus was removed in https://github.com/amperser/proselint/pull/186
+    path_to_corpus = proselint_path.parent / "corpora" / "0.1.0"
     for root, _, files in os.walk(path_to_corpus):
         files = [f for f in files if f.endswith(".md")]
-        for f in files:
-            fullpath = os.path.join(root, f)
+        root_path = Path(root)
+        for _file in files:
+            fullpath = root_path / _file
 
             # Run the linter.
-            print(f"Linting {f}")
+            print(f"Linting {_file}")
             out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.

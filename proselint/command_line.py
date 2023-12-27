@@ -6,6 +6,8 @@ import shutil
 import subprocess
 import sys
 import traceback
+from pathlib import Path
+from typing import Union, Optional
 
 import click
 
@@ -21,27 +23,25 @@ from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
 base_url = "proselint.com/"
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-demo_file = os.path.join(proselint_path, "demo.md")
+proselint_path = Path(__file__).parent
+demo_file = proselint_path / "demo.md"
 
 
-# TODO: fix broken corpus
-def timing_test(corpus="0.1.0"):
+def timing_test(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     import time
-    dirname = os.path.dirname
-    corpus_path = os.path.join(
-        dirname(dirname(os.path.realpath(__file__))), "corpora", corpus)
+    # corpus was removed in https://github.com/amperser/proselint/pull/186
+    corpus_path = proselint_path.parent / "corpora" / corpus
     start = time.time()
     for file in os.listdir(corpus_path):
-        filepath = os.path.join(corpus_path, file)
-        if filepath[-3:] == ".md":
+        filepath = corpus_path / file
+        if filepath.suffix == ".md":
             subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
 
 
-def clear_cache():
+def clear_cache() -> None:
     """Delete the contents of the cache."""
     click.echo("Deleting the cache...")
 
@@ -50,26 +50,26 @@ def clear_cache():
     _delete_cache()
 
 
-def _delete_compiled_python_files():
+def _delete_compiled_python_files() -> None:
     """Remove files with a 'pyc' extension."""
-    for path, _, files in os.walk(os.getcwd()):
-        for fname in [f for f in files if os.path.splitext(f)[1] == ".pyc"]:
+    for path, _, files in os.walk(Path.cwd()):
+        for file in [f for f in files if Path(f).suffix == ".pyc"]:
             try:
-                os.remove(os.path.join(path, fname))
+                (Path(path) / file).unlink()
             except OSError:
                 pass
 
 
-def _delete_cache():
+def _delete_cache() -> None:
     """Remove the proselint cache."""
-    proselint_cache = os.path.join("proselint", "cache")
+    proselint_cache = os.path.join("proselint", "cache")  # TODO: where is this?
     try:
         shutil.rmtree(proselint_cache)
     except OSError:
         pass
 
 
-def print_errors(filename, errors, output_json=False, compact=False):
+def print_errors(filename: Union[Path,str], errors, output_json: bool = False, compact: bool = False) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
         click.echo(errors_to_json(errors))
@@ -82,8 +82,10 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
             if compact:
                 filename = "-"
+            if isinstance(filename, Path):
+                filename = filename.name  # TODO: just for now, should be path - cwd
 
-            click.echo(
+            click.echo(  # TODO: fname+line to link (see ruff code)
                 filename + ":" +
                 str(1 + line) + ":" +
                 str(1 + column) + ": " +
@@ -93,7 +95,7 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False, type=click.Path(),
+@click.option('--config', is_flag=False, type=click.Path(exists=True, dir_okay=False, resolve_path=True),
               help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
@@ -105,16 +107,19 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--dump-config', is_flag=True, help="Prints current config.")
 @click.option('--dump-default-config', is_flag=True,
               help="Prints default config.")
-@click.argument('paths', nargs=-1, type=click.Path())
+@click.argument('paths', nargs=-1, type=click.Path(exists=True, resolve_path=True))
 @close_cache_shelves_after
-def proselint(paths=None, config=None, version=None, clean=None,
-              debug=None, output_json=None, time=None, demo=None, compact=None,
-              dump_config=None, dump_default_config=None):
+def proselint(paths: Union[list[Path], Path, None], config: Optional[Path] = None, version=None, clean: bool = False,
+              debug: bool = False, output_json: bool = False, time: bool = False, demo: bool = False, compact: bool = False,
+              dump_config: bool = False, dump_default_config: bool = False):
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:
         return print(json.dumps(default, sort_keys=True, indent=4))
 
-    config = load_options(config, default)
+    if isinstance(config, str):
+        config = Path(config)
+    config = load_options(config)
+
     if dump_config:
         print(json.dumps(config, sort_keys=True, indent=4))
         return None
@@ -132,29 +137,42 @@ def proselint(paths=None, config=None, version=None, clean=None,
     if demo:
         paths = [demo_file]
 
+    # prepare list
+    if paths is None:
+        paths = []
+    if isinstance(paths, str):
+        paths = [Path(paths)]
+    if isinstance(paths, Path):
+        paths = [paths]
+    if isinstance(paths, list):
+        paths = [Path(path) for path in paths]
+
     # Expand the list of directories and files.
-    filepaths = extract_files(list(paths))
+    filepaths = extract_files(paths)
 
     # Lint the files
     num_errors = 0
 
     # Use stdin if no paths were specified
     if len(paths) == 0:
-        filepaths.append('-')
-
-    for fp in filepaths:
-        if fp == '-':
-            fp = '<stdin>'
-            f = sys.stdin
-        else:
-            try:
-                f = click.open_file(fp, 'r', "utf-8", "replace")
-            except Exception:
-                traceback.print_exc()
-                sys.exit(2)
+        fp = '<stdin>'
+        f = sys.stdin
         errors = lint(f, debug, config)
         num_errors += len(errors)
         print_errors(fp, errors, output_json, compact)
+    else:
+        for fp in filepaths:
+            try:
+                # print(f"Opening file {fp.name}")
+                # TODO: is errors-replace the best? can we detect coding?
+                f = fp.open(encoding="utf-8", errors="replace")
+            except Exception:
+                traceback.print_exc()
+                sys.exit(2)
+            errors = lint(f, debug, config)
+            num_errors += len(errors)
+
+            print_errors(fp, errors, output_json, compact)
 
     # Return an exit code
     close_cache_shelves()
@@ -164,24 +182,24 @@ def proselint(paths=None, config=None, version=None, clean=None,
         sys.exit(0)
 
 
-def extract_files(files):
+def extract_files(files: list[Path]) -> list[Path]:
     """Expand list of paths to include all text files matching the pattern."""
     expanded_files = []
     legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
 
-    for f in files:
+    for file in files:
         # If it's a directory, recursively walk through it and find the files.
-        if os.path.isdir(f):
-            for dir_, _, filenames in os.walk(f):
-                for filename in filenames:
-                    fn, file_extension = os.path.splitext(filename)
-                    if file_extension in legal_extensions:
-                        joined_file = os.path.join(dir_, filename)
-                        expanded_files.append(joined_file)
+        if file.is_dir():
+            for _dir, _, _filenames in os.walk(file):
+                _path = Path(_dir)
+                for filename in _filenames:
+                    _file_path = _path / filename
+                    if _file_path.suffix.lower() in legal_extensions:
+                        expanded_files.append(_file_path)
 
         # Otherwise add the file directly.
         else:
-            expanded_files.append(f)
+            expanded_files.append(file)
 
     return expanded_files
 

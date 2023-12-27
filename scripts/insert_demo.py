@@ -2,29 +2,26 @@
 import fileinput
 import os
 import shutil
+from pathlib import Path
 
-proselint_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+project_path = Path(__file__).parent.parent
 
-code_mirror_path = os.path.join(
-    proselint_path,
-    "plugins",
-    "webeditor")
+code_mirror_path = project_path / "plugins" / "webeditor"
 
-code_mirror_demo_path = os.path.join(code_mirror_path, "index.html")
+code_mirror_demo_path = code_mirror_path / "index.html"
 
-live_write_path = os.path.join(proselint_path, "site", "write")
+live_write_path = project_path / "site" / "write"
 
-if os.path.exists(live_write_path):
+if live_write_path.exists():
     shutil.rmtree(live_write_path)
 shutil.copytree(code_mirror_path, live_write_path)
 
-demo_path = os.path.join(proselint_path, "proselint", "demo.md")
+demo_path = project_path / "proselint" / "demo.md"
 
-with open(demo_path) as f:
+with demo_path.open() as f:
     demo = f.read()
 
-for line in fileinput.input(
-        os.path.join(live_write_path, "index.html"), inplace=True):
+for line in fileinput.input(live_write_path / "index.html", inplace=True):
 
     if "##DEMO_PLACEHOLDER##" in line:
         print(demo)

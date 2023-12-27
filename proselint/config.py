@@ -1,6 +1,6 @@
 """Proselint config - replacement for default .proselintrc since #1212."""
 
-default = {
+default: dict = {
     "max_errors": 1000,
     "checks": {
         "airlinese.misc": True,
