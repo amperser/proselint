@@ -174,7 +174,7 @@ def load_options(config_file_path=None, conf_default=None):
     user_config_paths = [
         os.path.join(cwd, '.proselintrc.json'),
         os.path.join(_get_xdg_config_home(), 'proselint', 'config.json'),
-        os.path.join(home_dir, '.proselintrc.json')
+        os.path.join(home_dir, '.proselintrc.json'),
     ]
 
     if config_file_path:
@@ -277,7 +277,7 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     for w in word_pairs:
         matches = [
             [m for m in re.finditer(w[0], text)],
-            [m for m in re.finditer(w[1], text)]
+            [m for m in re.finditer(w[1], text)],
         ]
 
         if len(matches[0]) > 0 and len(matches[1]) > 0:
@@ -482,7 +482,7 @@ def detector_50_Cent(text):
 def topics(text):
     """Return a list of topics."""
     detectors = [
-        detector_50_Cent
+        detector_50_Cent,
     ]
     ts = []
     for detector in detectors:

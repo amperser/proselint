@@ -1176,7 +1176,7 @@ def check(text):
         "wuutang",
         "xxx",
         "yellow man",
-        "yellowman"
+        "yellowman",
     ]
 
     return existence_check(text, list, err, msg)

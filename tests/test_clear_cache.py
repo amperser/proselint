@@ -58,7 +58,7 @@ class Test__delete_compiled_python_files(unittest.TestCase):
         self.files = [
             (self.base_dir, ('dummy',), (self.pyc_file,
                                          self.python_file,
-                                         self.dot_pyc))
+                                         self.dot_pyc)),
         ]
 
         self.pyc_file_path = os.path.join(self.base_dir, self.pyc_file)

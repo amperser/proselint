@@ -23,6 +23,6 @@ def check(text):
 
     list = [
         "et. al",
-        "et. al."
+        "et. al.",
     ]
     return existence_check(text, list, err, msg, join=True)

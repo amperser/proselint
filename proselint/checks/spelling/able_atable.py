@@ -78,7 +78,7 @@ def check(text):
         ["subjugable",        ["subjugatable"]],
         ["vindicable",        ["vindicatable"]],
         ["violable",          ["violatable"]],
-        ["vitiable",          ["vitiatable"]]
+        ["vitiable",          ["vitiatable"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

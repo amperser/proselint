@@ -167,7 +167,7 @@ def check(text):
         ["transmissible",   ["transmissable"]],
         ["uncollectible",   ["uncollectable"]],
         ["vendible",        ["vendable"]],
-        ["visible",         ["visable"]]
+        ["visible",         ["visable"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

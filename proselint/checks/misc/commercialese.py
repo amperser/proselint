@@ -47,7 +47,7 @@ def check(text):
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",
-        "yours of even date"
+        "yours of even date",
     ]
 
     return existence_check(text, commercialese, err, msg, join=True)

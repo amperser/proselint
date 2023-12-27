@@ -44,7 +44,7 @@ def check(text):
         "THNX",
         "THX",
         "TTYL",
-        "XOXO"
+        "XOXO",
     ]
 
     return existence_check(text, words, err, msg)
