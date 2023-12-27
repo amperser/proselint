@@ -1,7 +1,6 @@
 """Mixed metaphors."""
 
-from proselint.tools import (existence_check, max_errors, memoize,
-                             preferred_forms_check)
+from proselint.tools import existence_check, max_errors, memoize, preferred_forms_check
 
 
 @max_errors(1)

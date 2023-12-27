@@ -1,15 +1,16 @@
 """Web app that serves proselint's API."""
 
-from flask import Flask, request, jsonify, make_response, Response
-from flask_cors import CORS, cross_origin
-from flask_limiter import Limiter
+import hashlib
 from functools import wraps
 from urllib.parse import unquote
-import hashlib
-import proselint
-from rq import Queue
-from worker import conn
 
+from flask import Flask, Response, jsonify, make_response, request
+from flask_cors import CORS, cross_origin
+from flask_limiter import Limiter
+from rq import Queue
+
+import proselint
+from worker import conn
 
 app = Flask(__name__)
 cors = CORS(app)
