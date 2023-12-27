@@ -5,44 +5,7 @@ import unittest
 
 from proselint import command_line as cli
 
-try:
-    from unittest import mock
-except ImportError:
-    # Py2.x
-    from unittest import mock
-
-try:
-    from builtins import PermissionError
-except ImportError:
-
-    class PermissionError(OSError):
-        """Introduced in Py3.3, emulate for earlier versions."""
-
-        def __init__(self, *args, **kwargs):
-            """Constructor."""
-            OSError.__init__(self, *args, **kwargs)
-
-try:
-    from builtins import FileNotFoundError
-except ImportError:
-
-    class FileNotFoundError(OSError):
-        """Introduced in Py3.3, emulate for earlier versions."""
-
-        def __init__(self, *args, **kwargs):
-            """Constructor."""
-            OSError.__init__(self, *args, **kwargs)
-
-try:
-    from builtins import IsADirectoryError
-except ImportError:
-
-    class IsADirectoryError(OSError):
-        """Introduced in Py3.3, emulate for earlier versions."""
-
-        def __init__(self, *args, **kwargs):
-            """Constructor."""
-            OSError.__init__(self, *args, **kwargs)
+from unittest import mock
 
 
 class Test__delete_compiled_python_files(unittest.TestCase):

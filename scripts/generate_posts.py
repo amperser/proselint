@@ -3,7 +3,6 @@
 import ast
 import datetime
 import os
-from builtins import range, str
 from pathlib import Path
 
 project_path = Path(__file__).parent.parent
