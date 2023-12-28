@@ -12,13 +12,15 @@ categories: writing
 Archaism.
 
 """
+from __future__ import annotations
+
 import re
 
-from proselint.tools import memoize
+from proselint.tools import ResultCheck, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.tense_present"
     msg = r"'{}'."
@@ -37,15 +39,15 @@ def check(text: str):
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
 
-    errors = []
+    results = []
     for i in illogics:
         for m in re.finditer(fr"\s{i}\s", text, flags=re.U | re.I):
             txt = m.group(0).strip()
-            errors.append((
+            results.append((
                 m.start() + 1,
                 m.end(),
                 err,
                 msg.format(txt),
                 None))
 
-    return errors
+    return results

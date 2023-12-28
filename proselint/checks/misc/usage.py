@@ -32,11 +32,12 @@ grammatical subject.
 """
 
 # from proselint.tools import memoize
+# from __future__ import annotations
 # import re
 
 
 # @memoize
-# def check(text: str):
+# def check(text: str) -> list[Result]:
 #     err = "strunk_white.usage"
 #     msg = "Use of '{}'. {}"
 
@@ -52,11 +53,11 @@ grammatical subject.
 #         r"Do you know anyone who *needs* to utilize the word utilize?"
 #     }
 
-#     errors = []
+#     results = []
 #     for word in bad_words:
 #         occ = [m for m in re.finditer(word, text.lower())]
 #         for o in occ:
-#             errors.append((o.start(), o.end(), err,
+#             results.append((o.start(), o.end(), err,
 #                           msg.format(word, explanations[word])))
 
-#     return errors
+#     return results

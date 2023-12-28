@@ -29,11 +29,11 @@ class Check(TestCase):
         if isinstance(lst, str):
             lst = [lst]
 
-        errors = []
+        results = []
         for text in lst:
-            errors += self.this_check.check.__wrapped__(text)
+            results += self.this_check.check.__wrapped__(text)
 
-        return len(errors) == 0
+        return len(results) == 0
 
     def wpe_too_high(self) -> None:
         """Check whether the check is too noisy."""

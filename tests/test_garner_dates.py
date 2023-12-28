@@ -13,8 +13,8 @@ class TestCheck(Check):
     def test_50s_hyphenation(self):
         """Find unneeded hyphen in 50's."""
         text = """The 50's were swell."""
-        errors = dates.check_decade_apostrophes_short(text)
-        assert len(errors) == 1
+        results = dates.check_decade_apostrophes_short(text)
+        assert len(results) == 1
 
     def test_50_Cent_hyphenation(self):
         """Don't flag 50's when it refers to 50 Cent's manager."""
@@ -22,12 +22,12 @@ class TestCheck(Check):
             Dr. Dre suggested to 50's manager that he look into signing
             Eminem to the G-Unit record label.
         """
-        errors = dates.check_decade_apostrophes_short(text)
-        assert len(errors) == 0
+        results = dates.check_decade_apostrophes_short(text)
+        assert len(results) == 0
 
     def test_dash_and_from(self):
         """Test garner.check_dash_and_from."""
         text = """From 1999-2002, Sally served as chair of the committee."""
-        errors = dates.check_dash_and_from(text)
-        print(errors)
-        assert len(errors) == 1
+        results = dates.check_dash_and_from(text)
+        print(results)
+        assert len(results) == 1

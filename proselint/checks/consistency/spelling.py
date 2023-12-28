@@ -19,11 +19,13 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
-from proselint.tools import consistency_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, consistency_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "consistency.spelling"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."

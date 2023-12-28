@@ -12,11 +12,13 @@ categories: writing
 Phrasal adjectives.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize, preferred_forms_check
 
 
 @memoize
-def check_ly(text):
+def check_ly(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "garner.phrasal_adjectives.ly"
     msg = """No hyphen is necessary in phrasal adjectives with an adverb
@@ -30,7 +32,7 @@ def check_ly(text):
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
     msg = """Hyphenate '{1}', a phrasal adjective, as '{0}'."""

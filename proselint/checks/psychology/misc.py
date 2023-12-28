@@ -12,11 +12,13 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize, preferred_forms_check
 
 
 @memoize
-def check_lie_detector_test(text: str):
+def check_lie_detector_test(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "psychology.lie_detector"
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
@@ -30,7 +32,7 @@ def check_lie_detector_test(text: str):
 
 
 @memoize
-def check_p_equals_zero(text: str):
+def check_p_equals_zero(text: str) -> list[ResultCheck]:
     """Check for p = 0.000."""
     err = "psychology.p_equals_zero"
     msg = "Unless p really equals zero, you should use more decimal places."
@@ -45,7 +47,7 @@ def check_p_equals_zero(text: str):
 
 
 @memoize
-def check_mental_telepathy(text: str):
+def check_mental_telepathy(text: str) -> list[ResultCheck]:
     """Check for 'mental telepathy'."""
     err = "psychology.mental_telepathy"
     msg = "This is redundant because all purported telepathy is mental."

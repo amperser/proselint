@@ -13,10 +13,10 @@ Point out misuse of scare quotes.
 
 """
 # from proselint.tools import memoize, existence_check
-
+# from __future__ import annotations
 
 # @memoize
-# def check(text: str):
+# def check(text: str) -> list[Result]:
 #     """Suggest the preferred forms."""
 #     err = "pinker.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."

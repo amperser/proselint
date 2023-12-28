@@ -12,11 +12,13 @@ categories: writing
 Filthy words.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "cursing.filth"
     msg = """Nobody ever tells you this as a kid, but you're supposed to avoid

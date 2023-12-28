@@ -14,11 +14,13 @@ makes more acceptable recommendations. TheNew York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest preferred forms given the reference document."""
     err = "glaad.terms"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."

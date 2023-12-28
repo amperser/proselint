@@ -7,7 +7,7 @@ from proselint.tools import assert_error
 from tests.check import Check
 
 
-class chk:
+class Chk:
     def check(self, text):
         return assert_error, text, "misc.a_distributive"
 
@@ -19,7 +19,7 @@ class TestCheck(Check):
 
     @property
     def this_check(self):
-        return chk
+        return Chk
 
     def test_smoke(self):
         sentences = [

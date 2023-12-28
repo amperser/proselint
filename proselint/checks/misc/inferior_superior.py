@@ -12,11 +12,13 @@ categories: writing
 Corrects 'inferior/superior than' to 'inferior/superior to'.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.inferior_superior"
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."

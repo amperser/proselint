@@ -12,12 +12,14 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize
 
 
 @max_errors(1)
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "ogilvy.pretension"
     msg = "Jargon words like this one are the hallmarks of a pretentious ass."

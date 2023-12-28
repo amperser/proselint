@@ -13,13 +13,15 @@ Strunk & White say:
 
 
 """
+from __future__ import annotations
+
 import re
 
-from proselint.tools import memoize
+from proselint.tools import ResultCheck, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "strunk_white.greylist"
     msg = "Use of '{}'. {}"
@@ -36,15 +38,22 @@ def check(text: str):
         r"Do you know anyone who *needs* to utilize the word utilize?",
     }
 
-    errors = []
+    results = []
     for word in bad_words:
         occ = list(re.finditer(word, text.lower()))
+# TODO: faster replacement
+#        results += [(
+#                o.start(),
+#                o.end(),
+#                err,
+#                msg.format(word, explanations[word]),
+#                None) for o in occ]
         for o in occ:
-            errors.append((
+            results.append((
                 o.start(),
                 o.end(),
                 err,
                 msg.format(word, explanations[word]),
                 None))
 
-    return errors
+    return results

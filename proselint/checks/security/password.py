@@ -11,23 +11,25 @@ categories: writing
 
 Don't put pass
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "security.password"
     msg = "Don't put passwords in plain text."
 
-    pwd_regex = r"[:]? [\S]{6,30}"
+    _regex = r"[:]? [\S]{6,30}"
 
-    password = [
-        f"the password is{pwd_regex}",
-        f"my password is{pwd_regex}",
-        f"the password's{pwd_regex}",
-        f"my password's{pwd_regex}",
-        f"^[pP]assword{pwd_regex}",
+    items = [
+        f"the password is{_regex}",
+        f"my password is{_regex}",
+        f"the password's{_regex}",
+        f"my password's{_regex}",
+        f"^[pP]assword{_regex}",
     ]
 
-    return existence_check(text, password, err, msg)
+    return existence_check(text, items, err, msg)

@@ -1,5 +1,7 @@
 """General-purpose tools shared across linting checks."""
 
+from __future__ import annotations
+
 import copy
 import dbm
 import functools
@@ -13,7 +15,7 @@ import shelve
 import sys
 import traceback
 from pathlib import Path
-from typing import IO, Optional, Union
+from typing import IO, Callable, Optional, Union
 from warnings import showwarning as warn
 
 from . import config
@@ -23,6 +25,12 @@ proselint_path = Path(__file__).parent
 home_dir = Path("~").expanduser()
 cwd = Path.cwd()
 
+type ResultCheck = tuple[int, int, str, str, Optional[str]]
+# content: start_pos, end_pos, check_name, message, replacement)
+type ResultLint = tuple[str, str, int, int, int, int, int, str, str]
+# content: check_name, message, line, column, start, end, length, type, replacement
+# note: NewType() is too strict here
+
 
 def close_cache_shelves() -> None:
     """Close previously opened cache shelves."""
@@ -31,7 +39,7 @@ def close_cache_shelves() -> None:
     _cache_shelves.clear()
 
 
-def close_cache_shelves_after(f):
+def close_cache_shelves_after(f: Callable) -> Callable:
     """Decorate a function to ensure cache shelves are closed after call."""
     @functools.wraps(f)
     def wrapped(*args, **kwargs):
@@ -44,8 +52,7 @@ def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
     _value = os.environ.get(variable_name)
     if _value is None or _value == '':
         return default_path
-    else:
-        return Path(_value)
+    return Path(_value)
 
 
 def _get_xdg_config_home() -> Path:
@@ -87,7 +94,7 @@ def _get_cache(cachepath: Path):
     return cache
 
 
-def memoize(f):
+def memoize(f: Callable) -> Callable:  # TODO: there should be a cleaner way with builtins
     """Cache results of computations on disk."""
     # Determine the location of the cache.
     cache_path = _get_xdg_cache_home() / 'proselint'
@@ -139,7 +146,7 @@ def memoize(f):
     return wrapped
 
 
-def get_checks(options):
+def get_checks(options: dict) -> list[Callable[[str], list[ResultCheck]]]:
     """Extract the checks."""
     sys.path.append(proselint_path.as_posix())
     checks = []
@@ -154,7 +161,7 @@ def get_checks(options):
     return checks
 
 
-def deepmerge_dicts(dict1, dict2):  # TODO: this can be faster, we can just add dicts
+def deepmerge_dicts(dict1: dict, dict2: dict) -> dict:  # TODO: this can be faster, we can just add dicts
     """Deep merge dictionaries, second dict will take priority."""
     result = copy.deepcopy(dict1)
 
@@ -202,20 +209,20 @@ def load_options(config_file_path: Optional[Path] = None, conf_default: Optional
     return deepmerge_dicts(conf_default, user_options)
 
 
-def errors_to_json(errors):
+def errors_to_json(items: list[ResultLint]) -> str:
     """Convert the errors to JSON."""
     out = []
-    for e in errors:
+    for item in items:
         out.append({
-            "check": e[0],
-            "message": e[1],
-            "line": 1 + e[2],
-            "column": 1 + e[3],
-            "start": 1 + e[4],
-            "end": 1 + e[5],
-            "extent": e[6],
-            "severity": e[7],
-            "replacements": e[8],
+            "check": item[0],
+            "message": item[1],
+            "line": 1 + item[2],
+            "column": 1 + item[3],
+            "start": 1 + item[4],
+            "end": 1 + item[5],
+            "extent": item[6],
+            "severity": item[7],
+            "replacements": item[8],
         })
 
     return json.dumps(
@@ -231,39 +238,40 @@ def line_and_column(text, position):
             break
         position_counter += len(line)
         line_no += 1
-    return (line_no, position - position_counter)
+    return line_no, position - position_counter
 
 
-def lint(content: Union[str, IO], debug: bool = False, config: dict = config.default):
+def lint(content: Union[str, IO], debug: bool = False, cfg: Optional[dict] = None) -> list[ResultLint]:
     """Run the linter on the input file."""
     if isinstance(content, str):
         text = content
     else:
         text = content.read()
 
+    if not isinstance(cfg, dict):
+        cfg = config.default
+
     # Get the checks.
-    checks = get_checks(config)
+    checks = get_checks(cfg)
 
     # Apply all the checks.
     errors = []
     for check in checks:
+        # TODO: can be run this in parallel
+        results = check(text)
 
-        result = check(text)
-
-        for error in result:
-            (start, end, check, message, replacements) = error
+        for result in results:
+            (start, end, check_name, message, replacements) = result
             (line, column) = line_and_column(text, start)
             if not is_quoted(start, text):
-                errors += [(check, message, line, column, start, end,
+                errors += [(check_name, message, line, column, start, end,
                             end - start, "warning", replacements)]
 
-        if len(errors) > config["max_errors"]:
+        if len(errors) > cfg["max_errors"]:
             break
 
     # Sort the errors by line and column number.
-    errors = sorted(errors[:config["max_errors"]], key=lambda e: (e[2], e[3]))
-
-    return errors
+    return sorted(errors[:cfg["max_errors"]], key=lambda e: (e[2], e[3]))
 
 
 def assert_error(text: str, check, n=1):
@@ -272,9 +280,9 @@ def assert_error(text: str, check, n=1):
     assert(check in [error[0] for error in lint(text)])
 
 
-def consistency_check(text: str, word_pairs: list, err: str, msg: str, offset: int = 0):
+def consistency_check(text: str, word_pairs: list, err: str, msg: str, offset: int = 0) -> list[ResultCheck]:
     """Build a consistency checker for the given word_pairs."""
-    errors = []
+    results = []
 
     msg = " ".join(msg.split())
 
@@ -289,17 +297,17 @@ def consistency_check(text: str, word_pairs: list, err: str, msg: str, offset: i
             idx_minority = len(matches[0]) > len(matches[1])
 
             for m in matches[idx_minority]:
-                errors.append((
+                results.append((
                     m.start() + offset,
                     m.end() + offset,
                     err,
                     msg.format(w[not idx_minority], m.group(0)),
                     w[not idx_minority]))
 
-    return errors
+    return results
 
 
-def preferred_forms_check(text: str, items: list, err: str, msg: str, ignore_case: bool = True, offset: int = 0):
+def preferred_forms_check(text: str, items: list, err: str, msg: str, ignore_case: bool = True, offset: int = 0) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form."""
     if ignore_case:
         flags = re.IGNORECASE
@@ -308,25 +316,25 @@ def preferred_forms_check(text: str, items: list, err: str, msg: str, ignore_cas
 
     msg = " ".join(msg.split())
 
-    errors = []
+    results = []
     regex = r"[\W^]{}[\W$]"
     for item in items:
         for r in item[1]:
             for m in re.finditer(regex.format(r), text, flags=flags):
                 txt = m.group(0).strip()
-                errors.append((
+                results.append((
                     m.start() + 1 + offset,
                     m.end() + offset,
                     err,
                     msg.format(item[0], txt),
                     item[0]))
 
-    return errors
+    return results
 
 
 def existence_check(text: str, items: list, err: str, msg: str, ignore_case: bool = True, string: bool = False,
                     offset: int = 0, require_padding: bool = True, dotall: bool = False,
-                    excluded_topics: Optional[list] = None, exceptions=(), join: bool = False):
+                    excluded_topics: Optional[list] = None, exceptions=(), join: bool = False) -> list[ResultCheck]:
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
 
@@ -346,7 +354,7 @@ def existence_check(text: str, items: list, err: str, msg: str, ignore_case: boo
     else:
         regex = r"{}"
 
-    errors = []
+    errors: list[ResultCheck] = []
 
     # If the topic of the text is in the excluded list, return immediately.
     if excluded_topics:
@@ -369,7 +377,7 @@ def existence_check(text: str, items: list, err: str, msg: str, ignore_case: boo
     return errors
 
 
-def max_errors(limit):
+def max_errors(limit: int):  # TODO: should be called limit_returned_items()
     """Decorate a check to truncate error output to a specified limit."""
     def wrapper(f):
         @functools.wraps(f)
@@ -379,12 +387,12 @@ def max_errors(limit):
     return wrapper
 
 
-def truncate_errors(errors: list, limit: float = float("inf")) -> list:
+def truncate_errors(errors: list[ResultCheck], limit: Optional[int] = None) -> list[ResultCheck]:
     """If limit was specified, truncate the list of errors.
 
     Give the total number of times that the error was found elsewhere.
     """
-    if len(errors) > limit:
+    if limit and len(errors) > limit:
         start1, end1, err1, msg1, replacements = errors[0]
 
         if len(errors) == limit + 1:
@@ -397,7 +405,7 @@ def truncate_errors(errors: list, limit: float = float("inf")) -> list:
     return errors
 
 
-def ppm_threshold(threshold):
+def ppm_threshold(threshold: float):
     """Decorate a check to error if the PPM threshold is surpassed."""
     def wrapped(f):
         @functools.wraps(f)
@@ -407,7 +415,7 @@ def ppm_threshold(threshold):
     return wrapped
 
 
-def threshold_check(errors, threshold, length):
+def threshold_check(errors: list, threshold: float, length: int):
     """Check that returns an error if the PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)
@@ -418,9 +426,9 @@ def threshold_check(errors, threshold, length):
     return []
 
 
-def is_quoted(position, text: str):
+def is_quoted(position: int, text: str) -> bool:
     """Determine if the position in the text falls within a quote."""
-    def matching(quotemark1, quotemark2):
+    def matching(quotemark1: str, quotemark2: str) -> bool:
         straight = '\"\''
         curly = '“”'
         if quotemark1 in straight and quotemark2 in straight:
@@ -430,14 +438,14 @@ def is_quoted(position, text: str):
         else:
             return False
 
-    def find_ranges(text):
+    def find_ranges(_text: str) -> list[tuple[int, int]]:
         s = 0
         q = pc = ''
         start = None
         ranges = []
         seps = " .,:;-\r\n"
         quotes = ['\"', '“', '”', "'"]
-        for i, c in enumerate(text + "\n"):
+        for i, c in enumerate(_text + "\n"):
             if s == 0 and c in quotes and pc in seps:
                 start = i
                 s = 1
@@ -454,16 +462,16 @@ def is_quoted(position, text: str):
             pc = c
         return ranges
 
-    def position_in_ranges(ranges, position):
+    def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
         for start, end in ranges:
-            if start <= position < end:
+            if start <= _position < end:
                 return True
         return False
 
     return position_in_ranges(find_ranges(text), position)
 
 
-def detector_50_Cent(text: str):
+def detector_50_Cent(text: str) -> tuple[str, float]:
     """Determine whether 50 Cent is a topic."""
     keywords = [
         "50 Cent",
@@ -480,10 +488,10 @@ def detector_50_Cent(text: str):
         "Interscope",
     ]
     num_keywords = sum(word in text for word in keywords)
-    return ("50 Cent", float(num_keywords > 2))
+    return "50 Cent", float(num_keywords > 2)
 
 
-def topics(text: str):
+def topics(text: str) -> list[str]:
     """Return a list of topics."""
     detectors = [
         detector_50_Cent,

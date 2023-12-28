@@ -7,8 +7,8 @@ from proselint.tools import assert_error
 from tests.check import Check
 
 
-class chk:
-    def check(self, text):
+class Chk:
+    def check(self, text: str):
         return assert_error, text, "misc.a_vs_an"
 
 
@@ -17,7 +17,7 @@ class TestCheck(Check):
 
     @property
     def this_check(self):
-        return chk
+        return Chk
 
     sentences_with_errors = [
         "Are you an Yankee fan?",

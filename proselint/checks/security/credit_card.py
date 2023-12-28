@@ -12,11 +12,13 @@ categories: writing
 Credit card number printed.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "security.credit_card"
     msg = "Don't put credit card numbers in plain text."

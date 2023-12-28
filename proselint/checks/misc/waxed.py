@@ -15,11 +15,13 @@ naturally to the sense 'pass into a specified state or mood, begin to use a
 specified tone. In this meaning a following modifier must be an adj. not an
 adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.waxed"
     msg = "The modifier following 'waxed' must be an adj.: '{}' is correct"
@@ -43,12 +45,12 @@ def check(text: str):
                  ("sentimental", "sentimentally"),
                  ]
 
-    def pairs(word):
+    def pairs(word: str) -> list:
         return [[word + ' ' + pair[0], [word + ' ' + pair[1]]]
                 for pair in modifiers]
 
     preferred = []
-    for word in waxes:
-        preferred += pairs(word)
+    for _word in waxes:
+        preferred += pairs(_word)
 
     return preferred_forms_check(text, preferred, err, msg)

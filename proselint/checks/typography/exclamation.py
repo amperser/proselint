@@ -12,12 +12,14 @@ categories: writing
 Too much yelling.
 
 """
-from proselint.tools import existence_check, max_errors, memoize, ppm_threshold
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize, ppm_threshold
 
 
 @max_errors(1)
 @memoize
-def check_repeated_exclamations(text):
+def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "leonard.exclamation.multiple"
     msg = "Stop yelling. Keep your exclamation points under control."
@@ -30,7 +32,7 @@ def check_repeated_exclamations(text):
 
 @ppm_threshold(30)
 @memoize
-def check_exclamations_ppm(text):
+def check_exclamations_ppm(text: str) -> list[ResultCheck]:
     """Make sure that the exclamation ppm is under 30."""
     err = "leonard.exclamation.30ppm"
     msg = "More than 30 ppm of exclamations. Keep them under control."

@@ -12,11 +12,13 @@ categories: writing
 Points out excessive apologizing.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "pinker.apologizing"
     msg = "Excessive apologizing."

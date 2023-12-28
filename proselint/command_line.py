@@ -1,5 +1,8 @@
 """Command line utility for proselint."""
 
+from __future__ import annotations
+
+import contextlib
 import json
 import os
 import shutil
@@ -13,6 +16,7 @@ import click
 
 from .config import default
 from .tools import (
+    ResultLint,
     close_cache_shelves,
     close_cache_shelves_after,
     errors_to_json,
@@ -54,22 +58,18 @@ def _delete_compiled_python_files() -> None:
     """Remove files with a 'pyc' extension."""
     for path, _, files in os.walk(Path.cwd()):
         for file in [f for f in files if Path(f).suffix == ".pyc"]:
-            try:
+            with contextlib.suppress(OSError):
                 (Path(path) / file).unlink()
-            except OSError:
-                pass
 
 
 def _delete_cache() -> None:
     """Remove the proselint cache."""
     proselint_cache = os.path.join("proselint", "cache")  # TODO: where is this?
-    try:
+    with contextlib.suppress(OSError):
         shutil.rmtree(proselint_cache)
-    except OSError:
-        pass
 
 
-def print_errors(filename: Union[Path,str], errors, output_json: bool = False, compact: bool = False) -> None:
+def print_errors(filename: Union[Path, str], errors: list[ResultLint], output_json: bool = False, compact: bool = False) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
         click.echo(errors_to_json(errors))
