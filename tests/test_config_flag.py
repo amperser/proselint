@@ -2,7 +2,6 @@
 import json
 import os
 from pathlib import Path
-from unittest import TestCase
 from unittest.mock import patch
 
 from click.testing import CliRunner

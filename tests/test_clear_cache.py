@@ -2,10 +2,10 @@
 
 import os
 import unittest
+from unittest import mock
 
 from proselint import command_line as cli
 
-from unittest import mock
 
 class Test__delete_compiled_python_files(unittest.TestCase):
     """proselint.command_line._delete_compiled_python_files()."""
