@@ -1,10 +1,12 @@
 """Cliches are cliché."""
 
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check_cliches_garner(text):
+def check_cliches_garner(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     Garner's Modern American Usage
@@ -98,7 +100,7 @@ def check_cliches_garner(text):
 
 
 @memoize
-def check_cliches_write_good(text):
+def check_cliches_write_good(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     write-good
@@ -811,7 +813,7 @@ def check_cliches_write_good(text):
 
 
 @memoize
-def check_cliches_gnu_diction(text):
+def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     GNU diction

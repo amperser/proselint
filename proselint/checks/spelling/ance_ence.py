@@ -1,10 +1,12 @@
 """-ance vs. -ence."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """-ance vs. -ence."""
     err = "spelling.ance_ence"
     msg = "-ance vs. -ence. '{}' is the correct spelling."

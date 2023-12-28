@@ -1,10 +1,12 @@
 """-ally vs. -ly."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """-ally vs. -ly."""
     err = "spelling.ally_ly"
     msg = "-ally vs. -ly. '{}' is the correct spelling."

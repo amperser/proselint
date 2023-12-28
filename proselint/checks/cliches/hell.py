@@ -12,12 +12,14 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize
 
 
 @max_errors(1)
 @memoize
-def check_repeated_exclamations(text):
+def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "leonard.hell"
     msg = "Never use the words 'all hell broke loose'."

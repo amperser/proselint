@@ -1,5 +1,7 @@
 """Web app that serves proselint's API."""
 
+from __future__ import annotations
+
 import hashlib
 from functools import wraps
 from urllib.parse import unquote
@@ -10,6 +12,7 @@ from flask_limiter import Limiter
 from rq import Queue
 
 import proselint
+from proselint.tools import ResultLint
 from worker import conn
 
 app = Flask(__name__)
@@ -20,7 +23,7 @@ limiter = Limiter(app)
 q = Queue(connection=conn)
 
 
-def worker_function(text):
+def worker_function(text: str) -> list[ResultLint]:
     """Lint the text using a worker dyno."""
     return proselint.tools.lint(text)
 
@@ -84,8 +87,8 @@ def rate():
 
     if not auth or not check_auth(auth.username, auth.password):
         return "60/minute"
-    else:
-        return "600/minute"
+
+    return "600/minute"
 
 
 @app.route('/v0/', methods=['GET', 'POST'])
@@ -96,10 +99,9 @@ def lint():
     if 'text' in request.values:
         text = unquote(request.values['text'])
         job = q.enqueue(worker_function, text)
-
         return jsonify(job_id=job.id), 202
 
-    elif 'job_id' in request.values:
+    if 'job_id' in request.values:
         job = q.fetch_job(request.values['job_id'])
 
         if not job:
@@ -107,31 +109,30 @@ def lint():
                 status="error",
                 message="No job with requested job_id."), 404
 
-        elif job.return_value() is None:
+        if job.return_value() is None:
             return jsonify(
                 status="error",
                 message="Job is not yet ready."), 202
 
-        else:
-            errors = []
-            for _, e in enumerate(job.return_value()):
-                app.logger.debug(e)
-                errors.append({
-                    "check": e[0],
-                    "message": e[1],
-                    "line": e[2],
-                    "column": e[3],
-                    "start": e[4],
-                    "end": e[5],
-                    "extent": e[5] - e[4],
-                    "severity": e[7],
-                    "replacements": e[8],
-                    "source_name": "",
-                    "source_url": "",
-                })
-            return jsonify(
-                status="success",
-                data={"errors": errors})
+        errors = []
+        for _, e in enumerate(job.return_value()):
+            app.logger.debug(e)
+            errors.append({
+                "check": e[0],
+                "message": e[1],
+                "line": e[2],
+                "column": e[3],
+                "start": e[4],
+                "end": e[5],
+                "extent": e[5] - e[4],
+                "severity": e[7],
+                "replacements": e[8],
+                "source_name": "",
+                "source_url": "",
+            })
+        return jsonify(
+            status="success",
+            data={"errors": errors})
 
 
 if __name__ == '__main__':

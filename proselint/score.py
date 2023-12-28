@@ -9,7 +9,7 @@ from pathlib import Path
 proselint_path = Path(__file__).parent
 
 
-def score(check=None):
+def score(check=None):  # TODO: can be combined with cli.timing_test()
     """Compute the linter's score on the corpus.
 
     Proselint's score reflects the desire to have a linter that catches many
@@ -32,13 +32,13 @@ def score(check=None):
     # corpus was removed in https://github.com/amperser/proselint/pull/186
     path_to_corpus = proselint_path.parent / "corpora" / "0.1.0"
     for root, _, files in os.walk(path_to_corpus):
-        files = [f for f in files if f.endswith(".md")]
+        files_md = [f for f in files if f.endswith(".md")]
         root_path = Path(root)
-        for _file in files:
-            fullpath = root_path / _file
+        for file_md in files_md:
+            fullpath = root_path / file_md
 
             # Run the linter.
-            print(f"Linting {_file}")
+            print(f"Linting {file_md}")
             out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.
@@ -56,10 +56,9 @@ def score(check=None):
                     input_val = input("# of false alarms? ")
                     if input_val == "exit":
                         return None
-                    else:
-                        input_val = int(input_val)
-                        fp += input_val
-                        tp += (num_errors - input_val)
+                    input_val = int(input_val)
+                    fp += input_val
+                    tp += (num_errors - input_val)
                 except ValueError:
                     pass
 
@@ -67,5 +66,5 @@ def score(check=None):
 
     if (tp + fp) > 0:
         return tp * (1.0 * tp / (tp + fp)) ** 2
-    else:
-        return 0
+
+    return 0

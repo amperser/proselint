@@ -1,10 +1,12 @@
 """Em vs. im, en vs. in."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """em- vs. en-, im- vs. in-."""
     err = "spelling.em_im_en_in"
     msg = "em-, im-, en-, and in-. '{}' is the preferred spelling."

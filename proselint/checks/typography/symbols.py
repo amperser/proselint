@@ -4,12 +4,14 @@ source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
 """
 
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize
 
 
 @max_errors(3)
 @memoize
-def check_ellipsis(text):
+def check_ellipsis(text: str) -> list[ResultCheck]:
     """Use an ellipsis instead of three dots."""
     err = "typography.symbols.ellipsis"
     msg = "'...' is an approximation, use the ellipsis symbol '…'."
@@ -21,7 +23,7 @@ def check_ellipsis(text):
 
 @max_errors(1)
 @memoize
-def check_copyright_symbol(text):
+def check_copyright_symbol(text: str) -> list[ResultCheck]:
     """Use the copyright symbol instead of (c)."""
     err = "typography.symbols.copyright"
     msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
@@ -32,7 +34,7 @@ def check_copyright_symbol(text):
 
 @max_errors(3)
 @memoize
-def check_trademark_symbol(text):
+def check_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the trademark symbol instead of (TM)."""
     err = "typography.symbols.trademark"
     msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
@@ -43,7 +45,7 @@ def check_trademark_symbol(text):
 
 @max_errors(3)
 @memoize
-def check_registered_trademark_symbol(text):
+def check_registered_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the registered trademark symbol instead of (R)."""
     err = "typography.symbols.trademark"
     msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
@@ -54,7 +56,7 @@ def check_registered_trademark_symbol(text):
 
 @max_errors(3)
 @memoize
-def check_sentence_spacing(text):
+def check_sentence_spacing(text: str) -> list[ResultCheck]:
     """Use no more than two spaces after a period."""
     err = "typography.symbols.sentence_spacing"
     msg = "More than two spaces after the period; use 1 or 2."
@@ -65,7 +67,7 @@ def check_sentence_spacing(text):
 
 @max_errors(3)
 @memoize
-def check_multiplication_symbol(text):
+def check_multiplication_symbol(text: str) -> list[ResultCheck]:
     """Use the multiplication symbol ×, not the lowercase letter x."""
     err = "typography.symbols.multiplication_symbol"
     msg = "Use the multiplication symbol ×, not the letter x."
@@ -76,7 +78,7 @@ def check_multiplication_symbol(text):
 
 @max_errors(3)
 @memoize
-def check_curly_quotes(text):
+def check_curly_quotes(text: str) -> list[ResultCheck]:
     """Use curly quotes, not straight quotes."""
     err = "typography.symbols.curly_quotes"
     msg = 'Use curly quotes “”, not straight quotes "".'
@@ -85,7 +87,7 @@ def check_curly_quotes(text):
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 # @memoize
-# def check_en_dash_separated_names(text):
+# def check_en_dash_separated_names(text: str) -> list[ResultCheck]:
 #     """Use an en-dash to separate names."""
 #     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
 #     #     u"Use an en dash (–) to separate names."],

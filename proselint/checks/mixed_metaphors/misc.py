@@ -1,11 +1,13 @@
 """Mixed metaphors."""
 
-from proselint.tools import existence_check, max_errors, memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize, preferred_forms_check
 
 
 @max_errors(1)
 @memoize
-def check_bottleneck(text: str):
+def check_bottleneck(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
@@ -27,7 +29,7 @@ def check_bottleneck(text: str):
 
 
 @memoize
-def check_misc(text: str):
+def check_misc(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage

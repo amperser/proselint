@@ -12,14 +12,16 @@ categories: writing
 Check that links are not broken.
 
 """
+from __future__ import annotations
+
 import re
 import urllib.request as urllib_request  # for Python 3
 
-from proselint.tools import memoize
+from proselint.tools import ResultCheck, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "links.valid"
     msg = "Broken link: {}"
@@ -31,7 +33,7 @@ def check(text: str):
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
         re.U | re.X)
 
-    errors = []
+    results: list[ResultCheck] = []
     for m in re.finditer(regex, text):
         url = m.group(0).strip()
 
@@ -39,13 +41,13 @@ def check(text: str):
             url = "http://" + url
 
         if is_broken_link(url):
-            errors.append((m.start(), m.end(), err, msg.format(url), None))
+            results.append((m.start(), m.end(), err, msg.format(url), None))
 
-    return errors
+    return results
 
 
 @memoize
-def is_broken_link(url):
+def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
         request = urllib_request.Request(

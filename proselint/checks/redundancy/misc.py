@@ -1,10 +1,12 @@
 """Redundancy."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "redundancy.wallace"
     msg = "Redundancy. Use '{}' instead of '{}'."
@@ -17,7 +19,7 @@ def check(text: str):
 
 
 @memoize
-def check_garner(text):
+def check_garner(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 
     source:     Garner's Modern American Usage
@@ -121,7 +123,7 @@ def check_garner(text):
 
 
 @memoize
-def check_nordquist(text):
+def check_nordquist(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 
     source:     Richard Nordquist
@@ -140,7 +142,7 @@ def check_nordquist(text):
 
 
 @memoize
-def check_atd(text):
+def check_atd(text: str) -> list[ResultCheck]:
     """Check for redundancies from After the Deadline."""
     err = "after_the_deadline.redundancy"
     msg = "Redundancy. Use '{}' instead of '{}'."

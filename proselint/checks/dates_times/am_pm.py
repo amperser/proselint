@@ -10,11 +10,13 @@ categories: writing
 ---
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check_lowercase_periods(text):
+def check_lowercase_periods(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.lowercase_periods"
     msg = "With lowercase letters, the periods are standard."
@@ -24,7 +26,7 @@ def check_lowercase_periods(text):
 
 
 @memoize
-def check_spacing(text):
+def check_spacing(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.spacing"
     msg = "It's standard to put a space before 'a.m.' or 'p.m.'."
@@ -33,7 +35,7 @@ def check_spacing(text):
 
 
 @memoize
-def check_midnight_noon(text):
+def check_midnight_noon(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
     msg = ("12 a.m. and 12 p.m. are wrong and confusing."
@@ -43,7 +45,7 @@ def check_midnight_noon(text):
 
 
 @memoize
-def check_redundancy(text):
+def check_redundancy(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
     msg = ("'a.m.' is always morning; 'p.m.' is always night.")

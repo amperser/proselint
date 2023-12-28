@@ -12,13 +12,15 @@ categories: writing
 Dates.
 
 """
+from __future__ import annotations
+
 import calendar
 
-from proselint.tools import existence_check, memoize
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check_decade_apostrophes_short(text):
+def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:
     """Check the text for dates of the form X0's."""
     err = "dates_times.dates"
     msg = "Apostrophes aren't needed for decades."
@@ -30,7 +32,7 @@ def check_decade_apostrophes_short(text):
 
 
 @memoize
-def check_decade_apostrophes_long(text):
+def check_decade_apostrophes_long(text: str) -> list[ResultCheck]:
     """Check the text for dates of the form XXX0's."""
     err = "dates_times.dates"
     msg = "Apostrophes aren't needed for decades."
@@ -40,7 +42,7 @@ def check_decade_apostrophes_long(text):
 
 
 @memoize
-def check_dash_and_from(text):
+def check_dash_and_from(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a date range, write 'from X to Y'."
@@ -49,7 +51,7 @@ def check_dash_and_from(text):
     return existence_check(text, [regex], err, msg)
 
 
-def check_month_year_comma(text):
+def check_month_year_comma(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a month and year, no comma is needed."
@@ -59,7 +61,7 @@ def check_month_year_comma(text):
 
 
 @memoize
-def check_month_of_year(text):
+def check_month_of_year(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a month and year, 'of' is unnecessary."

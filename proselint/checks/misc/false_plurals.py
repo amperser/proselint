@@ -12,11 +12,13 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.false_plurals.examples"
     msg = "The plural is {}"
@@ -30,7 +32,7 @@ def check(text: str):
 
 
 @memoize
-def check_kudos(text):
+def check_kudos(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.false_plurals.kudos"
     msg = "Kudos is singular."

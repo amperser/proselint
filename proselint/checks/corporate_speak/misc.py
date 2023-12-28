@@ -12,11 +12,13 @@ categories: writing
 Avoid these cases of business jargon.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "corporate_speak.misc"
     msg = "Minimize your use of corporate catchphrases like this one."

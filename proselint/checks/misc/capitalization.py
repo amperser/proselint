@@ -12,13 +12,15 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.captalization"
+    err = "misc.capitalization"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
     items = [
@@ -32,7 +34,7 @@ def check(text: str):
 
 
 # @memoize
-# def check_seasons(text):
+# def check_seasons(text: str) -> list[Result]:
 #     """Suggest the preferred forms."""
 #     err = "MAU102"
 #     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
@@ -48,7 +50,7 @@ def check(text: str):
 
 
 @memoize
-def check_months(text):
+def check_months(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Months should be capitalized. '{}' is the preferred form."
@@ -73,7 +75,7 @@ def check_months(text):
 
 
 @memoize
-def check_days(text):
+def check_days(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."

@@ -12,11 +12,13 @@ categories: writing
 Points out sexist language.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "sexism.misc"
     msg = "Gender bias. Use '{}' instead of '{}'."
@@ -52,7 +54,7 @@ def check(text: str):
         # ["hero",             ["heroine"]]
     ]
 
-    errors = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+    results = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
 
     msg = "Not a preferred form. Use '{}' instead of '{}'."
     pref = [
@@ -66,6 +68,6 @@ def check(text: str):
             ["mail carrier",     ["mailperson"]],
     ]
     for x in preferred_forms_check(text, pref, err, msg, ignore_case=False):
-        errors.append(x)
+        results.append(x)
 
-    return errors
+    return results

@@ -13,12 +13,14 @@ Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, max_errors, memoize
 
 
 @max_errors(1)
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Avoid 'very'."""
     err = "weasel_words.very"
     msg = ("Substitute 'damn' every time you're "

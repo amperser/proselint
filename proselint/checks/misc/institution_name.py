@@ -12,11 +12,13 @@ categories: writing
 Institution names.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check_vtech(text):
+def check_vtech(text: str) -> list[ResultCheck]:
     """Suggest the correct name.
 
     source: Virginia Tech Division of Student Affairs

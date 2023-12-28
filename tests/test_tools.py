@@ -1,12 +1,14 @@
 """Test the tools module."""
 
+from __future__ import annotations
 
+from proselint.tools import ResultLint
 from proselint.tools import lint as proselint
 
 from .check import Check
 
 
-def lint(text):
+def lint(text: str) -> list[ResultLint]:
     return proselint(text)
 
 

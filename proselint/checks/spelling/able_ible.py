@@ -1,10 +1,12 @@
 """-able vs. -ible."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, memoize, preferred_forms_check
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """-able vs. -ible."""
     err = "spelling.able_ible"
     msg = "-able vs. -ible. '{}' is the preferred spelling."

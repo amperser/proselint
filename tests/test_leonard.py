@@ -15,12 +15,12 @@ class TestCheck(Check):
         text = """
              The QUICK BROWN fox juMPED over the lazy cat.
         """
-        errors = exclamation.check_repeated_exclamations(text)
-        assert len(errors) == 0
+        results = exclamation.check_repeated_exclamations(text)
+        assert len(results) == 0
 
     def test_exclamation(self):
         """Test leonard.exclamation. with exclamation marks."""
         text = """Sally sells seashells and they were too expensive!!!!"""
-        errors = exclamation.check_repeated_exclamations(text)
-        print(errors)
-        assert len(errors) == 1
+        results = exclamation.check_repeated_exclamations(text)
+        print(results)
+        assert len(results) == 1

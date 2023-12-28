@@ -12,11 +12,13 @@ categories: writing
 Cliches are cliché.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "jargon.misc"
     msg = "'{}' is jargon. Can you replace it with something more standard?"

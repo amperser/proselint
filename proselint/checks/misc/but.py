@@ -12,11 +12,13 @@ categories: writing
 Paragraphs should not start with certain bad words.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.tools import ResultCheck, existence_check, memoize
 
 
 @memoize
-def check(text: str):
+def check(text: str) -> list[ResultCheck]:
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"
     msg = "No paragraph should start with a 'But'."
