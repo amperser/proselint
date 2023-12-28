@@ -1,6 +1,5 @@
 """Insert the demo into the codemirror site."""
 import fileinput
-import os
 import shutil
 from pathlib import Path
 

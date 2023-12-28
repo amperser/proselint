@@ -1,6 +1,5 @@
 """Check that a check is working."""
 
-import codecs
 import os
 from pathlib import Path
 from typing import Union

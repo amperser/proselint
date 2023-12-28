@@ -13,7 +13,7 @@ import shelve
 import sys
 import traceback
 from pathlib import Path
-from typing import Optional, Union, IO
+from typing import IO, Optional, Union
 from warnings import showwarning as warn
 
 from . import config
