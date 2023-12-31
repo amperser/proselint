@@ -12,9 +12,12 @@ include = ["proselint/", "tests/", "proselint/demo.md"]
 exclude = ["tests/.gitignore"]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-click = "^8.0.0"
-# TODO: add chromalog as optional
+python = ">=3.8.1"
+click = ">=8.0.0"
+chromalog = { version = ">=1.0.0", optional = true }
+
+[tool.poetry.extras]
+color = ["chromalog"]
 
 [tool.poetry.group.dev.dependencies]
 gmail = { git = "https://github.com/charlierguo/gmail.git" }
