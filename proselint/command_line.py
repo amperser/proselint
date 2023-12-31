@@ -14,13 +14,14 @@ import click
 
 from .config import default
 from .logger import log, set_verbosity
-from .paths import demo_file, proselint_path
+from .paths import demo_file
 from .tools import (
     ResultLint,
     clear_cache,
     close_cache_on_exit,
     close_cache_shelves,
     errors_to_json,
+    initialize_cache,
     lint,
     load_options,
 )
@@ -34,16 +35,28 @@ def timing_test(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     import time
 
+    # force a clean slate
+    clear_cache()
+    initialize_cache()
     # corpus was removed in https://github.com/amperser/proselint/pull/186
-    log.error("This option does not work for the time being (no corpus) -> will use demo.")
+    log.error(
+        "Benchmarking the corpus does not work for the time being -> will use demo",
+    )
     corpus_path = demo_file.parent  # proselint_path.parent / "corpora" / corpus
-    start = time.time()
-    for file in os.listdir(corpus_path):
-        filepath = corpus_path / file
-        if filepath.suffix == ".md":
-            subprocess.call(["proselint", filepath.as_posix(), ">/dev/null"])
-    duration = time.time() - start
-    log.info("Linting corpus took %.3f ss.", duration)
+    for _type in ["uncached", "cached"]:
+        start = time.time()
+        for file in os.listdir(corpus_path):
+            filepath = corpus_path / file
+            if filepath.suffix == ".md":
+                subprocess.call(
+                    ["proselint", filepath.as_posix()],
+                    timeout=4,
+                    shell=False,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+        duration = time.time() - start
+        log.info("Linting corpus %s took %.3f s.", _type, duration)
     return duration
 
 
@@ -72,9 +85,12 @@ def print_errors(
             ) = error
 
             if compact:
+                # TODO: is this useful?
                 filename = "-"
             if isinstance(filename, Path):
-                filename = filename.name  # TODO: just for now, should be path - cwd
+                filename = (
+                    filename.name
+                )  # TODO: just for now, should be relative path (@cwd)
 
             log.info(  # TODO: fname+line to link (see ruff code)
                 filename
@@ -98,8 +114,13 @@ def print_errors(
     type=click.Path(exists=True, dir_okay=False, resolve_path=True),
     help="Path to configuration file.",
 )
-@click.option("--debug", "-d", is_flag=True, help="Give verbose output.")
-@click.option("--clean", "-c", is_flag=True, help="Clear the cache.")
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    help="Give verbose output (also clears cache at start).",
+)
+@click.option("--clean", "-c", is_flag=True, help="Clear the cache and exit.")
 @click.option("--json", "-j", "output_json", is_flag=True, help="Output as JSON.")
 @click.option("--time", "-t", is_flag=True, help="Time on a corpus.")
 @click.option("--demo", is_flag=True, help="Run over demo file.")
@@ -111,17 +132,28 @@ def print_errors(
 def proselint(
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,
-    version=None,
-    clean: bool = False,
-    debug: bool = False,
+    version=None,  # TODO: verbose/debug should also print proselint-, py- & click-version
+    clean: bool = False,  # TODO: this should be a subcommand
+    debug: bool = False,  # TODO: verbose is a better name
     output_json: bool = False,
-    time: bool = False,
+    time: bool = False,  # TODO: this should be a subcommand benchmark
     demo: bool = False,
     compact: bool = False,
-    dump_config: bool = False,
-    dump_default_config: bool = False,
+    dump_config: bool = False,  # TODO: this should be a subcommand
+    dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
 ):
     """Create the CLI for proselint, a linter for prose."""
+    # In debug or clean mode, delete cache & *.pyc files before running.
+    if debug or clean:
+        set_verbosity(True)
+        log.info("Debug-mode activated -> will clean cache now")
+        clear_cache()
+
+    if clean:
+        sys.exit(0)
+    else:
+        initialize_cache()
+
     if dump_default_config:
         _json = json.dumps(default, sort_keys=True, indent=4)
         log.info(_json)
@@ -133,17 +165,11 @@ def proselint(
 
     if dump_config:
         log.info(json.dumps(config, sort_keys=True, indent=4))
-        return None
+        sys.exit(0)
 
     if time:
         timing_test()
-        return None
-
-    # In debug or clean mode, delete cache & *.pyc files before running.
-    if debug or clean:
-        set_verbosity(True)
-        log.info("Debug-mode activated -> will clean cache now")
-        clear_cache()
+        sys.exit(0)
 
     # Use the demo file by default.
     if demo:
@@ -157,8 +183,9 @@ def proselint(
         paths = [Path(paths)]
     if isinstance(paths, Path):
         paths = [paths]
-    if isinstance(paths, list):
+    if isinstance(paths, (list, tuple)):
         paths = [Path(path) for path in paths]
+    log.debug("Paths to lint: %s", paths)
 
     # Expand the list of directories and files.
     filepaths = extract_files(paths)

@@ -23,11 +23,12 @@ from warnings import showwarning as warn
 from . import config
 from .logger import log
 from .paths import (
+    cache_user_path,
+    config_global_path,
+    config_user_paths,
     cwd_path,
     proselint_path,
-    cache_user_path,
-    config_user_paths,
-    user_path, config_global_path,
+    user_path,
 )
 
 type ResultCheck = tuple[int, int, str, str, Optional[str]]
@@ -135,6 +136,16 @@ def _get_cache(cache_path: Path):
     return cache
 
 
+def memoize_null(fn: Callable) -> Callable:
+    """Decorate a function to ensure cache shelves are closed after call."""
+
+    @functools.wraps(fn)
+    def wrapped(*args, **kwargs):
+        fn(*args, **kwargs)
+
+    return wrapped
+
+
 def memoize(
     fn: Callable,
 ) -> Callable:
@@ -183,6 +194,7 @@ def memoize(
 ###############################################################################
 ############################# Config ##########################################
 ###############################################################################
+
 
 def deepmerge_dicts(
     base: dict,
@@ -345,6 +357,7 @@ def assert_error(text: str, check, n=1):
 ###############################################################################
 ############################# Checks ##########################################
 ###############################################################################
+# TODO: refactor into lint_checks, lint_main, lint_cache, ...
 
 
 def consistency_check(
