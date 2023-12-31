@@ -19,6 +19,7 @@ from typing import IO, Callable, Optional, Union
 from warnings import showwarning as warn
 
 from . import config
+from .logger import logger
 
 _cache_shelves = {}
 proselint_path = Path(__file__).parent
@@ -73,27 +74,27 @@ def _get_cache(cachepath: Path):
         cache = shelve.open(cachepath.as_posix(), protocol=2)
     except dbm.error:
         # dbm error on open - delete and retry
-        print(
-            "Error (%s) opening %s - will attempt to delete and re-open."
-            % (sys.exc_info()[1], cachepath),
+        logger.error(
+            "Error (%s) opening %s - will attempt to delete and re-open.",
+            sys.exc_info()[1], cachepath,
         )
         try:
             cachepath.unlink()
             cache = shelve.open(cachepath.as_posix(), protocol=2)
         except Exception:
-            print("Error on re-open: %s" % sys.exc_info()[1])
+            logger.error("Error on re-open: %s", sys.exc_info()[1])
             cache = None
     except Exception:
         # unknown error
-        print(
+        logger.error(
             "Could not open cache file %s, maybe name collision. "
-            "Error: %s" % (cachepath, traceback.format_exc()),
+            "Error: %s", cachepath, traceback.format_exc(),
         )
         cache = None
 
     # Don't fail on bad caches
     if cache is None:
-        print("Using in-memory shelf for cache file %s" % cachepath)
+        logger.debug("Using in-memory shelf for cache file %s", cachepath)
         cache = shelve.Shelf({})
 
     _cache_shelves[cachepath] = cache
@@ -145,10 +146,10 @@ def memoize(
             return value
         except TypeError:
             call_to = f.__module__ + "." + f.__name__
-            print(
+            logger.error(
                 "Warning: could not disk cache call to %s;"
-                "it probably has unhashable args. Error: %s"
-                % (call_to, traceback.format_exc()),
+                "it probably has unhashable args. Error: %s",
+                call_to, traceback.format_exc(),
             )
             return f(*args, **kwargs)
 

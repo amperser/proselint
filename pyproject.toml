@@ -14,6 +14,7 @@ exclude = ["tests/.gitignore"]
 [tool.poetry.dependencies]
 python = "^3.8.1"
 click = "^8.0.0"
+# TODO: add chromalog as optional
 
 [tool.poetry.group.dev.dependencies]
 gmail = { git = "https://github.com/charlierguo/gmail.git" }

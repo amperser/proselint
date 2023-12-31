@@ -13,6 +13,7 @@ import gmail
 import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+from proselint import logger
 from worker import conn
 
 logging.basicConfig()
@@ -67,7 +68,7 @@ def check_email():
                 # If the email hasn't been sent for processing, send it.
                 r = requests.post(api_url, data={"text": u.body})
                 conn.set(_hash, r.json()["job_id"])
-                print(f"Email {_hash} sent for processing.")
+                logger.info(f"Email %s sent for processing.", _hash)
 
             else:
                 # Otherwise, check whether the results are ready, and if so,
@@ -98,7 +99,7 @@ def check_email():
                     u.read()
                     u.archive()
 
-                    print(f"Email {_hash} has been replied to.")
+                    logger.info(f"Email %s has been replied to.", _hash)
 
 
 scheduler.start()
