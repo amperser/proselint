@@ -6,7 +6,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from .logger import logger
+from .logger import log
 from .paths import proselint_path
 
 
@@ -39,13 +39,13 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
             fullpath = root_path / file_md
 
             # Run the linter.
-            logger.debug("Linting %s", file_md)
+            log.debug("Linting %s", file_md)
             out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            logger.debug(" -> found %d errors.", num_errors)
+            log.debug(" -> found %d errors.", num_errors)
 
             # Open the document.
             subprocess.call(["open", fullpath])
@@ -64,7 +64,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
                 except ValueError:
                     pass
 
-            logger.debug(" -> currently %d hits and %d false alarms", tp, fp)
+            log.debug(" -> currently %d hits and %d false alarms", tp, fp)
 
     if (tp + fp) > 0:
         return tp * (1.0 * tp / (tp + fp)) ** 2

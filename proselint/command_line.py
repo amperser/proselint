@@ -13,7 +13,7 @@ from typing import Optional, Union
 import click
 
 from .config import default
-from .logger import logger, set_verbosity
+from .logger import log, set_verbosity
 from .paths import demo_file, proselint_path
 from .tools import (
     ResultLint,
@@ -35,7 +35,7 @@ def timing_test(corpus: str = "0.1.0") -> float:
     import time
 
     # corpus was removed in https://github.com/amperser/proselint/pull/186
-    logger.error("This option does not work for the time being.")
+    log.error("This option does not work for the time being.")
     corpus_path = proselint_path.parent / "corpora" / corpus
     start = time.time()
     for file in os.listdir(corpus_path):
@@ -43,7 +43,7 @@ def timing_test(corpus: str = "0.1.0") -> float:
         if filepath.suffix == ".md":
             subprocess.call(["proselint", filepath, ">/dev/null"])
     duration = time.time() - start
-    logger.info("Linting corpus took %.3f.", duration)
+    log.info("Linting corpus took %.3f.", duration)
     return duration
 
 
@@ -55,7 +55,7 @@ def print_errors(
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
-        logger.info(errors_to_json(errors))
+        log.info(errors_to_json(errors))
 
     else:
         for error in errors:
@@ -76,7 +76,7 @@ def print_errors(
             if isinstance(filename, Path):
                 filename = filename.name  # TODO: just for now, should be path - cwd
 
-            logger.info(  # TODO: fname+line to link (see ruff code)
+            log.info(  # TODO: fname+line to link (see ruff code)
                 filename
                 + ":"
                 + str(1 + line)
@@ -123,7 +123,7 @@ def proselint(
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:
         _json = json.dumps(default, sort_keys=True, indent=4)
-        logger.info(_json)
+        log.info(_json)
         return _json  # TODO: here dump is returned, below None is returned?
 
     if isinstance(config, str):
@@ -131,22 +131,22 @@ def proselint(
     config = load_options(config)
 
     if dump_config:
-        logger.info(json.dumps(config, sort_keys=True, indent=4))
+        log.info(json.dumps(config, sort_keys=True, indent=4))
         return None
 
     if time:
         timing_test()
         return None
-
+    print("its running")
     # In debug or clean mode, delete cache & *.pyc files before running.
     if debug or clean:
         set_verbosity(True)
-        logger.info("Debug-mode activated -> will clean cache now")
+        log.info("Debug-mode activated -> will clean cache now")
         clear_cache()
 
     # Use the demo file by default.
     if demo:
-        logger.info("Demo-mode activated")
+        log.info("Demo-mode activated")
         paths = [demo_file]
 
     # prepare list
@@ -167,7 +167,7 @@ def proselint(
 
     # Use stdin if no paths were specified
     if len(paths) == 0:
-        logger.info("No path specified -> will read from <stdin>")
+        log.info("No path specified -> will read from <stdin>")
         fp = "<stdin>"
         f = sys.stdin
         errors = lint(f, debug, config)
@@ -175,7 +175,7 @@ def proselint(
         print_errors(fp, errors, output_json, compact)
     else:
         for fp in filepaths:
-            logger.debug("Opening file '%s'", fp.name)
+            log.debug("Opening file '%s'", fp.name)
             try:
                 # TODO: is errors-replace the best? can we detect coding?
                 f = fp.open(encoding="utf-8", errors="replace")

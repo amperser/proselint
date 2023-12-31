@@ -3,6 +3,6 @@
 """Proselint applies advice from great writers to your writing."""
 from . import tools
 from .version import __version__
-from .logger import logger
+from .logger import log
 
-__all__ = ["tools", "logger"]
+__all__ = ["tools", "log"]
