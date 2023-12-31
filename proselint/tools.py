@@ -9,7 +9,6 @@ import hashlib
 import importlib
 import inspect
 import json
-import os
 import re
 import shelve
 import sys
@@ -20,9 +19,11 @@ from warnings import showwarning as warn
 
 from . import config
 from .logger import logger
-from .paths import proselint_path, user_path, cwd_path
-
-_cache_shelves = {}
+from .paths import (
+    proselint_path,
+    user_cache_path,
+    user_config_paths,
+)
 
 
 type ResultCheck = tuple[int, int, str, str, Optional[str]]
@@ -31,6 +32,22 @@ type ResultLint = tuple[str, str, int, int, int, int, int, str, str]
 # content: check_name, message, line, column, start, end, length, type, replacement
 # note: NewType() is too strict here
 
+###############################################################################
+############################# Caching #########################################
+###############################################################################
+
+def initialize_cache() -> None:
+    cache_legacy_path = user_path / ".proselint"
+    if not user_cache_path.is_dir():
+        # Migrate the cache from the legacy path to XDG compliant location.
+        if cache_legacy_path.is_dir():
+            cache_legacy_path.rename(user_cache_path)
+        else:
+            # Create the cache if it does not already exist.
+            user_cache_path.mkdir(parents=True)
+
+
+_cache_shelves = {}
 
 def close_cache_shelves() -> None:
     """Close previously opened cache shelves."""
@@ -39,30 +56,15 @@ def close_cache_shelves() -> None:
     _cache_shelves.clear()
 
 
-def close_cache_shelves_after(f: Callable) -> Callable:
+def close_cache_shelves_after(fn: Callable) -> Callable:
     """Decorate a function to ensure cache shelves are closed after call."""
 
-    @functools.wraps(f)
+    @functools.wraps(fn)
     def wrapped(*args, **kwargs):
-        f(*args, **kwargs)
+        fn(*args, **kwargs)
         close_cache_shelves()
 
     return wrapped
-
-
-def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
-    _value = os.environ.get(variable_name)
-    if _value is None or _value == "":
-        return default_path
-    return Path(_value)
-
-
-def _get_xdg_config_home() -> Path:
-    return _get_xdg_path("XDG_CONFIG_HOME", user_path / ".config")
-
-
-def _get_xdg_cache_home() -> Path:
-    return _get_xdg_path("XDG_CACHE_HOME", user_path / ".cache")
 
 
 def _get_cache(cachepath: Path):
@@ -75,7 +77,8 @@ def _get_cache(cachepath: Path):
         # dbm error on open - delete and retry
         logger.error(
             "Error (%s) opening %s - will attempt to delete and re-open.",
-            sys.exc_info()[1], cachepath,
+            sys.exc_info()[1],
+            cachepath,
         )
         try:
             cachepath.unlink()
@@ -86,8 +89,9 @@ def _get_cache(cachepath: Path):
     except Exception:
         # unknown error
         logger.error(
-            "Could not open cache file %s, maybe name collision. "
-            "Error: %s", cachepath, traceback.format_exc(),
+            "Could not open cache file %s, maybe name collision. " "Error: %s",
+            cachepath,
+            traceback.format_exc(),
         )
         cache = None
 
@@ -101,59 +105,54 @@ def _get_cache(cachepath: Path):
 
 
 def memoize(
-    f: Callable,
-) -> Callable:  # TODO: there should be a cleaner way with builtins
+    fn: Callable,
+) -> Callable:
     """Cache results of computations on disk."""
     # Determine the location of the cache.
-    cache_path = _get_xdg_cache_home() / "proselint"
-    cache_legacy_path = user_path / ".proselint"
+    cache_filename = f"{fn.__module__}.{fn.__name__}"
+    cache_path = user_cache_path / cache_filename
 
-    if not cache_path.is_dir():
-        # Migrate the cache from the legacy path to XDG compliant location.
-        if cache_legacy_path.is_dir():
-            cache_legacy_path.rename(cache_path)
-        # Create the cache if it does not already exist.
-        else:
-            cache_path.mkdir(parents=True)
-
-    cache_filename = f.__module__ + "." + f.__name__
-    cachepath = cache_path / cache_filename
-
-    @functools.wraps(f)
+    @functools.wraps(fn)
     def wrapped(*args, **kwargs):
         # handle instance methods
-        if hasattr(f, "__self__"):
+        if hasattr(fn, "__self__"):
             args = args[1:]
 
         signature = cache_filename.encode("utf-8")
 
-        tempargdict = inspect.getcallargs(f, *args, **kwargs)
+        tempargdict = inspect.getcallargs(fn, *args, **kwargs)
 
         for item in list(tempargdict.items()):
             if item[0] == "text":
                 signature += item[1].encode("utf-8")
 
         key = hashlib.sha256(signature).hexdigest()
-        cache = _get_cache(cachepath)
+        cache = _get_cache(cache_path)
 
         try:
             return cache[key]
         except KeyError:
-            value = f(*args, **kwargs)
+            value = fn(*args, **kwargs)
             cache[key] = value
             cache.sync()
             return value
         except TypeError:
-            call_to = f.__module__ + "." + f.__name__
+            call_to = fn.__module__ + "." + fn.__name__
             logger.error(
                 "Warning: could not disk cache call to %s;"
                 "it probably has unhashable args. Error: %s",
-                call_to, traceback.format_exc(),
+                call_to,
+                traceback.format_exc(),
             )
-            return f(*args, **kwargs)
+            return fn(*args, **kwargs)
 
     return wrapped
 
+
+###############################################################################
+############################# Checks ##########################################
+###############################################################################
+# TODO: refactor further, this includes config, linting, ...
 
 def get_checks(options: dict) -> list[Callable[[str], list[ResultCheck]]]:
     """Extract the checks."""
@@ -196,12 +195,6 @@ def load_options(
     config_global_path = Path("/etc/proselintrc")
     if config_global_path.is_file():
         conf_default = json.load(config_global_path.open())
-
-    user_config_paths = [
-        cwd_path / ".proselintrc.json",
-        _get_xdg_config_home() / "proselint/config.json",
-        user_path / ".proselintrc.json",
-    ]
 
     if config_file_path:
         if not config_file_path.is_file():
@@ -248,7 +241,7 @@ def errors_to_json(items: list[ResultLint]) -> str:
     return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
 
 
-def line_and_column(text, position):
+def get_line_and_column(text, position):
     """Return the line number and column of a position in a string."""
     position_counter = 0
     line_no = 0
@@ -285,7 +278,7 @@ def lint(
 
         for result in results:
             (start, end, check_name, message, replacements) = result
-            (line, column) = line_and_column(text, start)
+            (line, column) = get_line_and_column(text, start)
             if not is_quoted(start, text):
                 errors += [
                     (
