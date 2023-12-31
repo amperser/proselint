@@ -1,5 +1,5 @@
 """Test garner.dates."""
-
+from proselint import logger
 from proselint.checks.typography import exclamation
 
 from .check import Check
@@ -22,5 +22,5 @@ class TestCheck(Check):
         """Test leonard.exclamation. with exclamation marks."""
         text = """Sally sells seashells and they were too expensive!!!!"""
         results = exclamation.check_repeated_exclamations(text)
-        print(results)
+        logger.info(results)
         assert len(results) == 1

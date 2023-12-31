@@ -1,5 +1,5 @@
 """Test garner.dates."""
-
+from proselint import logger
 from proselint.checks.dates_times import dates
 
 from .check import Check
@@ -29,5 +29,5 @@ class TestCheck(Check):
         """Test garner.check_dash_and_from."""
         text = """From 1999-2002, Sally served as chair of the committee."""
         results = dates.check_dash_and_from(text)
-        print(results)
+        logger.info(results)
         assert len(results) == 1

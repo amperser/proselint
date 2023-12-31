@@ -6,6 +6,8 @@ import re
 import subprocess
 from pathlib import Path
 
+from .logger import logger
+
 proselint_path = Path(__file__).parent
 
 
@@ -38,18 +40,19 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
             fullpath = root_path / file_md
 
             # Run the linter.
-            print(f"Linting {file_md}")
+            logger.debug("Linting %s", file_md)
             out = subprocess.check_output(["proselint", fullpath])
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            print(f"Found {num_errors} errors.")
+            logger.debug(" -> found %d errors.", num_errors)
 
             # Open the document.
             subprocess.call(["open", fullpath])
 
             # Ask the scorer how many of the errors were false alarms?
+            # TODO: this should not be manual - data can be stored in corpus
             input_val = None
             while not isinstance(input_val, int):
                 try:
@@ -62,7 +65,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
                 except ValueError:
                     pass
 
-            print(f"Currently {tp} hits and {fp} false alarms\n---")
+            logger.debug(" -> currently %d hits and %d false alarms", tp, fp)
 
     if (tp + fp) > 0:
         return tp * (1.0 * tp / (tp + fp)) ** 2
