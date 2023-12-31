@@ -25,9 +25,9 @@ from .logger import log
 from .paths import (
     cwd_path,
     proselint_path,
-    user_cache_path,
-    user_config_paths,
-    user_path,
+    cache_user_path,
+    config_user_paths,
+    user_path, config_global_path,
 )
 
 type ResultCheck = tuple[int, int, str, str, Optional[str]]
@@ -45,13 +45,13 @@ _cache_shelves = {}
 
 def initialize_cache() -> None:
     cache_legacy_path = user_path / ".proselint"
-    if not user_cache_path.is_dir():
+    if not cache_user_path.is_dir():
         # Migrate the cache from the legacy path to XDG compliant location.
         if cache_legacy_path.is_dir():
-            cache_legacy_path.rename(user_cache_path)
+            cache_legacy_path.rename(cache_user_path)
         else:
             # Create the cache if it does not already exist.
-            user_cache_path.mkdir(parents=True)
+            cache_user_path.mkdir(parents=True)
 
 
 def clear_cache() -> None:
@@ -75,7 +75,7 @@ def _delete_compiled_python_files() -> None:
 def _delete_cache() -> None:
     """Remove the proselint cache."""
     with contextlib.suppress(OSError):
-        shutil.rmtree(user_cache_path)
+        shutil.rmtree(cache_user_path)
 
 
 def close_cache_shelves() -> None:
@@ -90,6 +90,7 @@ def close_cache_on_exit(fn: Callable) -> Callable:
 
     @functools.wraps(fn)
     def wrapped(*args, **kwargs):
+        initialize_cache()
         fn(*args, **kwargs)
         close_cache_shelves()
 
@@ -97,6 +98,7 @@ def close_cache_on_exit(fn: Callable) -> Callable:
 
 
 def _get_cache(cache_path: Path):
+    # TODO: there is protocol-version 4 and 5 (4 is default)
     if cache_path in _cache_shelves:
         return _cache_shelves[cache_path]
 
@@ -139,7 +141,7 @@ def memoize(
     """Cache results of computations on disk."""
     # Determine the location of the cache.
     cache_filename = f"{fn.__module__}.{fn.__name__}"
-    cache_path = user_cache_path / cache_filename
+    cache_path = cache_user_path / cache_filename
 
     @functools.wraps(fn)
     def wrapped(*args, **kwargs):
@@ -182,15 +184,14 @@ def memoize(
 ############################# Config ##########################################
 ###############################################################################
 
-
 def deepmerge_dicts(
-    dict1: dict,
-    dict2: dict,
+    base: dict,
+    overrides: dict,
 ) -> dict:  # TODO: this can be faster, we can just add dicts
     """Deep merge dictionaries, second dict will take priority."""
-    result = copy.deepcopy(dict1)
+    result = copy.deepcopy(base)
 
-    for key, value in dict2.items():
+    for key, value in overrides.items():
         if isinstance(value, dict):
             result[key] = deepmerge_dicts(result.get(key) or {}, value)
         else:
@@ -201,29 +202,30 @@ def deepmerge_dicts(
 
 def load_options(
     config_file_path: Optional[Path] = None,
-    conf_default: Optional[dict] = None,
 ) -> dict:
     """Read various proselintrc files, allowing user overrides."""
-    if conf_default is None:
-        conf_default = config.default
-    config_global_path = Path("/etc/proselintrc")
+    cfg_default = config.default
+
     if config_global_path.is_file():
-        conf_default = json.load(config_global_path.open())
+        log.debug("Config read from global '%s' (as base)", config_global_path)
+        _cfg = json.load(config_global_path.open())
+        cfg_default = deepmerge_dicts(cfg_default, _cfg)
 
     if config_file_path:
         if not config_file_path.is_file():
             raise FileNotFoundError(f"Config file {config_file_path} does not exist")
-        user_config_paths.insert(0, config_file_path)
+        config_user_paths.insert(0, config_file_path)
 
     user_options = {}
-    for path in user_config_paths:
+    for path in config_user_paths:
         if path.is_file():
+            log.debug("Config read from '%s'", path)
             user_options = json.load(path.open())
             break
         path_old = path.with_suffix("")
-        if path_old.is_file():
+        if path_old.is_file() and path.suffix != "":
             warn(
-                f"{path_old} was found instead of a JSON file." f" Rename to {path}.",
+                f"{path_old} was found instead of a JSON file. Rename to {path}.",
                 DeprecationWarning,
                 "",
                 0,
@@ -231,7 +233,7 @@ def load_options(
             user_options = json.load(path_old.open())
             break
 
-    return deepmerge_dicts(conf_default, user_options)
+    return deepmerge_dicts(cfg_default, user_options)
 
 
 ###############################################################################

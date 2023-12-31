@@ -35,15 +35,15 @@ def timing_test(corpus: str = "0.1.0") -> float:
     import time
 
     # corpus was removed in https://github.com/amperser/proselint/pull/186
-    log.error("This option does not work for the time being.")
-    corpus_path = proselint_path.parent / "corpora" / corpus
+    log.error("This option does not work for the time being (no corpus) -> will use demo.")
+    corpus_path = demo_file.parent  # proselint_path.parent / "corpora" / corpus
     start = time.time()
     for file in os.listdir(corpus_path):
         filepath = corpus_path / file
         if filepath.suffix == ".md":
-            subprocess.call(["proselint", filepath, ">/dev/null"])
+            subprocess.call(["proselint", filepath.as_posix(), ">/dev/null"])
     duration = time.time() - start
-    log.info("Linting corpus took %.3f.", duration)
+    log.info("Linting corpus took %.3f ss.", duration)
     return duration
 
 
@@ -87,6 +87,7 @@ def print_errors(
                 + " "
                 + message,
             )
+        log.info("Found %d lint-results", len(errors))
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -137,7 +138,7 @@ def proselint(
     if time:
         timing_test()
         return None
-    print("its running")
+
     # In debug or clean mode, delete cache & *.pyc files before running.
     if debug or clean:
         set_verbosity(True)
