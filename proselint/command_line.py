@@ -25,7 +25,7 @@ from .tools import (
 )
 from .version import __version__
 
-CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
+CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
 proselint_path = Path(__file__).parent
 demo_file = proselint_path / "demo.md"
@@ -34,6 +34,7 @@ demo_file = proselint_path / "demo.md"
 def timing_test(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     import time
+
     # corpus was removed in https://github.com/amperser/proselint/pull/186
     corpus_path = proselint_path.parent / "corpora" / corpus
     start = time.time()
@@ -69,16 +70,29 @@ def _delete_cache() -> None:
         shutil.rmtree(proselint_cache)
 
 
-def print_errors(filename: Union[Path, str], errors: list[ResultLint], output_json: bool = False, compact: bool = False) -> None:
+def print_errors(
+    filename: Union[Path, str],
+    errors: list[ResultLint],
+    output_json: bool = False,
+    compact: bool = False,
+) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
         click.echo(errors_to_json(errors))
 
     else:
         for error in errors:
-
-            (check, message, line, column, start, end,
-             extent, severity, replacements) = error
+            (
+                check,
+                message,
+                line,
+                column,
+                start,
+                end,
+                extent,
+                severity,
+                replacements,
+            ) = error
 
             if compact:
                 filename = "-"
@@ -86,32 +100,49 @@ def print_errors(filename: Union[Path, str], errors: list[ResultLint], output_js
                 filename = filename.name  # TODO: just for now, should be path - cwd
 
             click.echo(  # TODO: fname+line to link (see ruff code)
-                filename + ":" +
-                str(1 + line) + ":" +
-                str(1 + column) + ": " +
-                check + " " +
-                message)
+                filename
+                + ":"
+                + str(1 + line)
+                + ":"
+                + str(1 + column)
+                + ": "
+                + check
+                + " "
+                + message,
+            )
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False, type=click.Path(exists=True, dir_okay=False, resolve_path=True),
-              help="Path to configuration file.")
-@click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
-@click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
-@click.option('--json', '-j', 'output_json', is_flag=True,
-              help="Output as JSON.")
-@click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
-@click.option('--demo', is_flag=True, help="Run over demo file.")
-@click.option('--compact', is_flag=True, help="Shorten output.")
-@click.option('--dump-config', is_flag=True, help="Prints current config.")
-@click.option('--dump-default-config', is_flag=True,
-              help="Prints default config.")
-@click.argument('paths', nargs=-1, type=click.Path(exists=True, resolve_path=True))
+@click.version_option(__version__, "--version", "-v", message="%(version)s")
+@click.option(
+    "--config",
+    is_flag=False,
+    type=click.Path(exists=True, dir_okay=False, resolve_path=True),
+    help="Path to configuration file.",
+)
+@click.option("--debug", "-d", is_flag=True, help="Give verbose output.")
+@click.option("--clean", "-c", is_flag=True, help="Clear the cache.")
+@click.option("--json", "-j", "output_json", is_flag=True, help="Output as JSON.")
+@click.option("--time", "-t", is_flag=True, help="Time on a corpus.")
+@click.option("--demo", is_flag=True, help="Run over demo file.")
+@click.option("--compact", is_flag=True, help="Shorten output.")
+@click.option("--dump-config", is_flag=True, help="Prints current config.")
+@click.option("--dump-default-config", is_flag=True, help="Prints default config.")
+@click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
 @close_cache_shelves_after
-def proselint(paths: Union[list[Path], Path, None], config: Optional[Path] = None, version=None, clean: bool = False,
-              debug: bool = False, output_json: bool = False, time: bool = False, demo: bool = False, compact: bool = False,
-              dump_config: bool = False, dump_default_config: bool = False):
+def proselint(
+    paths: Union[list[Path], Path, None],
+    config: Optional[Path] = None,
+    version=None,
+    clean: bool = False,
+    debug: bool = False,
+    output_json: bool = False,
+    time: bool = False,
+    demo: bool = False,
+    compact: bool = False,
+    dump_config: bool = False,
+    dump_default_config: bool = False,
+):
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:
         return print(json.dumps(default, sort_keys=True, indent=4))
@@ -155,7 +186,7 @@ def proselint(paths: Union[list[Path], Path, None], config: Optional[Path] = Non
 
     # Use stdin if no paths were specified
     if len(paths) == 0:
-        fp = '<stdin>'
+        fp = "<stdin>"
         f = sys.stdin
         errors = lint(f, debug, config)
         num_errors += len(errors)
@@ -204,5 +235,5 @@ def extract_files(files: list[Path]) -> list[Path]:
     return expanded_files
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     proselint()

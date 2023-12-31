@@ -31,7 +31,8 @@ def check(text: str) -> list[ResultCheck]:
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
-        re.U | re.X)
+        re.U | re.X,
+    )
 
     results: list[ResultCheck] = []
     for m in re.finditer(regex, text):
@@ -50,8 +51,7 @@ def check(text: str) -> list[ResultCheck]:
 def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
-        request = urllib_request.Request(
-            url, headers={'User-Agent': 'Mozilla/5.0'})
+        request = urllib_request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         urllib_request.urlopen(request).read()
         return False
     except urllib_request.URLError:

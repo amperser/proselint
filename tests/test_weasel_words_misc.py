@@ -7,6 +7,7 @@ from .check import Check
 
 class TestCheck(Check):
     """The test class for weasel_words.misc."""
+
     __test__ = False
 
     @property

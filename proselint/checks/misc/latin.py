@@ -24,9 +24,9 @@ def check(text: str) -> list[ResultCheck]:
     msg = "Use English. '{}' is the preferred form."
 
     items = [
-        ["other things being equal",          ["ceteris paribus"]],
-        ["among other things",                ["inter alia"]],
-        ["in and of itself",                  ["simpliciter"]],
+        ["other things being equal", ["ceteris paribus"]],
+        ["among other things", ["inter alia"]],
+        ["in and of itself", ["simpliciter"]],
         ["having made the necessary changes", ["mutatis mutandis"]],
     ]
 

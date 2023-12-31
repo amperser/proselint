@@ -15,9 +15,9 @@ runner = CliRunner()
 
 def test_deepmerge_dicts():
     """Test deepmerge_dicts"""
-    d1 = {'a': 1, 'b': {'c': 2, 'd': 3}}
-    d2 = {'a': 2, 'b': {'c': 3, 'e': 4}}
-    assert deepmerge_dicts(d1, d2) == {'a': 2, 'b': {'c': 3, 'd': 3, 'e': 4}}
+    d1 = {"a": 1, "b": {"c": 2, "d": 3}}
+    d2 = {"a": 2, "b": {"c": 3, "e": 4}}
+    assert deepmerge_dicts(d1, d2) == {"a": 2, "b": {"c": 3, "d": 3, "e": 4}}
 
 
 @patch("os.path.isfile")
@@ -45,7 +45,9 @@ def test_config_flag_demo():
 
 def test_config_flag_config():
     output = runner.invoke(
-        proselint, ["--demo", "--config", "tests/test_config_flag_proselintrc.json"])
+        proselint,
+        ["--demo", "--config", "tests/test_config_flag_proselintrc.json"],
+    )
     assert "uncomparables.misc" not in output.stdout
 
 
@@ -70,6 +72,7 @@ def test_dump_config_default():
 def test_dump_config():
     config_file = Path(__file__).parent / "test_config_flag_proselintrc.json"
     output = runner.invoke(
-        proselint, ["--dump-config", "--config", "tests/test_config_flag_proselintrc.json"])
-    assert json.loads(output.stdout) == json.load(
-        config_file.open())
+        proselint,
+        ["--dump-config", "--config", "tests/test_config_flag_proselintrc.json"],
+    )
+    assert json.loads(output.stdout) == json.load(config_file.open())

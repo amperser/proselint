@@ -18,5 +18,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.many_a."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes(
-            """There were many a day I thought about it.""")
+        assert not self.passes("""There were many a day I thought about it.""")

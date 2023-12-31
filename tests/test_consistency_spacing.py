@@ -18,6 +18,5 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for consistency.spacing."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes(
-            """This is good. Only one space each time. Every time.""")
+        assert self.passes("""This is good. Only one space each time. Every time.""")
         assert not self.passes("""This is bad.  Not consistent. At all.""")

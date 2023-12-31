@@ -21,5 +21,4 @@ class TestCheck(Check):
         This makes use of a test MasterCard number.
         """
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes(
-            """My credit card number is 5555555555554444.""")
+        assert not self.passes("""My credit card number is 5555555555554444.""")

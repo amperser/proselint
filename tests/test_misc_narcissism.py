@@ -20,4 +20,5 @@ class TestCheck(Check):
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes(
             """In recent years, an increasing number of scientists have studied
-             the problem in detail.""")
+             the problem in detail.""",
+        )

@@ -31,21 +31,21 @@ def check(text: str) -> list[ResultCheck]:
         "further to yours of",
         "further to your letter",
         "in regard to",
-        r"inst\.",
+        r"inst\.",  # todo: add replacement
         "in the amount of",
         "of even date",
         "pending receipt of",
         "please be advised that",
         "please return same",
         "pleasure of a reply",
-        r"prox\.",
+        r"prox\.",  # todo: add replacement
         "pursuant to your request",
         "regarding the matter",
         "regret to inform",
         "thanking you in advance",
         "the undersigned",
         "this acknowledges your letter",
-        r"ult\."
+        r"ult\.",  # todo: add replacement -> ultimo
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",

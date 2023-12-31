@@ -36,13 +36,11 @@ class TestCheck(Check):
 
     def test_sentence_spacing(self):
         """Find a sentence followed by three or more spaces."""
-        assert chk.check_sentence_spacing(
-            """This is a sentence.   This is another.""")
+        assert chk.check_sentence_spacing("""This is a sentence.   This is another.""")
 
     def test_multiplication(self):
         """Find an x between two digits."""
-        assert chk.check_multiplication_symbol(
-            """It is obvious that 2 x 2 = 4.""")
+        assert chk.check_multiplication_symbol("""It is obvious that 2 x 2 = 4.""")
 
     def test_curly_quotes(self):  # FIXME
         """Find "" quotes in a string."""

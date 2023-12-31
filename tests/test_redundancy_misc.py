@@ -22,21 +22,18 @@ class TestCheck(Check):
 
     def test_smoke_garner(self):
         """Basic smoke test for redundancy.misc.check_garner."""
-        assert chk.check_garner(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_garner(
-            """It was blatantly obvious what to do next.""") != []
+        assert chk.check_garner("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_garner("""It was blatantly obvious what to do next.""") != []
 
     def test_smoke_nordquist(self):
         """Basic smoke test for redundancy.misc.check_norquist."""
-        assert chk.check_nordquist(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_nordquist(
-            """Taking the package was absolutely essential.""") != []
+        assert chk.check_nordquist("""Smoke phrase with nothing flagged.""") == []
+        assert (
+            chk.check_nordquist("""Taking the package was absolutely essential.""")
+            != []
+        )
 
     def test_smoke_atd(self):
         """Basic smoke test for redundancy.misc.check_norquist."""
-        assert chk.check_atd(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_atd(
-            """He often repeated the old adage.""") != []
+        assert chk.check_atd("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_atd("""He often repeated the old adage.""") != []

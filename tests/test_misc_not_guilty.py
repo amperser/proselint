@@ -18,5 +18,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.not_guilty."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes(
-            """She is not guilty beyond a reasonable doubt.""")
+        assert not self.passes("""She is not guilty beyond a reasonable doubt.""")

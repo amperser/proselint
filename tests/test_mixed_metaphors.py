@@ -17,14 +17,10 @@ class TestCheck(Check):
 
     def test_smoke_bottleneck(self):
         """Basic smoke test for check_bottleneck."""
-        assert chk.check_bottleneck(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_bottleneck(
-            """The project produced a huge bottleneck.""") != []
+        assert chk.check_bottleneck("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_bottleneck("""The project produced a huge bottleneck.""") != []
 
     def test_smoke_misc(self):
         """Basic smoke test for check_misc."""
-        assert chk.check_misc(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_misc(
-            """Writing tests is not rocket surgery.""") != []
+        assert chk.check_misc("""Smoke phrase with nothing flagged.""") == []
+        assert chk.check_misc("""Writing tests is not rocket surgery.""") != []

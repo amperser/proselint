@@ -37,5 +37,12 @@ def check(text: str) -> list[ResultCheck]:
     msg = "Suddenly is nondescript, slows the action, and warns your reader."
     regex = "Suddenly,"
 
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           offset=-1, ignore_case=False)
+    return existence_check(
+        text,
+        [regex],
+        err,
+        msg,
+        require_padding=False,
+        offset=-1,
+        ignore_case=False,
+    )

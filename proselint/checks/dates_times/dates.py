@@ -27,8 +27,7 @@ def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:
 
     regex = r"\d0\'s"
 
-    return existence_check(
-        text, [regex], err, msg, excluded_topics=["50 Cent"])
+    return existence_check(text, [regex], err, msg, excluded_topics=["50 Cent"])
 
 
 @memoize

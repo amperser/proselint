@@ -39,7 +39,9 @@ class Check(TestCase):
         """Check whether the check is too noisy."""
         min_wpe = 50
 
-        examples_path = Path.cwd() / "tests" / "corpus"  # TODO: probably old path to corpus
+        examples_path = (
+            Path.cwd() / "tests" / "corpus"
+        )  # TODO: probably old path to corpus
         examples = os.listdir(examples_path)
 
         for example in examples:
@@ -49,7 +51,7 @@ class Check(TestCase):
                 break
 
             # Compute the number of words per (wpe) error.
-            with example_path.open(encoding='utf-8') as fh:
+            with example_path.open(encoding="utf-8") as fh:
                 text = fh.read()
                 num_errors = len(self.this_check.check.__wrapped__(text))
                 num_words = len(text)
@@ -57,8 +59,7 @@ class Check(TestCase):
             try:
                 wpe = 1.0 * num_words / num_errors
             except ZeroDivisionError:
-                wpe = float('Inf')
+                wpe = float("Inf")
 
             # Make sure that
-            assert wpe > min_wpe, \
-                f"{example} has only {round(wpe, 2)} wpe."
+            assert wpe > min_wpe, f"{example} has only {round(wpe, 2)} wpe."

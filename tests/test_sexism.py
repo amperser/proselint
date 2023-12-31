@@ -18,5 +18,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for sexism.misc."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes(
-            """The legal team had two lawyers and a lady lawyer.""")
+        assert not self.passes("""The legal team had two lawyers and a lady lawyer.""")

@@ -12,7 +12,6 @@ def check(text: str) -> list[ResultCheck]:
     msg = "-ance vs. -ence. '{}' is the correct spelling."
 
     preferences = [
-
         ["appearance", ["appearence"]],
         ["occurrence", ["occurrance"]],
         ["resistance", ["resistence"]],
