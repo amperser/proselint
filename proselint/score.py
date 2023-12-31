@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 
 from .logger import logger
+from .paths import proselint_path
 
-proselint_path = Path(__file__).parent
 
 
 def score(check=None):  # TODO: can be combined with cli.timing_test()

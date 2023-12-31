@@ -24,12 +24,12 @@ from .tools import (
     lint,
     load_options,
 )
+from .paths import proselint_path, demo_file
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
-proselint_path = Path(__file__).parent
-demo_file = proselint_path / "demo.md"
+
 
 
 def timing_test(corpus: str = "0.1.0") -> float:
@@ -60,6 +60,7 @@ def clear_cache() -> None:
 
 def _delete_compiled_python_files() -> None:
     """Remove files with a 'pyc' extension."""
+    # TODO: these are in cwd? this is probably part of memoize() cache
     for path, _, files in os.walk(Path.cwd()):
         for file in [f for f in files if Path(f).suffix == ".pyc"]:
             with contextlib.suppress(OSError):

@@ -20,11 +20,10 @@ from warnings import showwarning as warn
 
 from . import config
 from .logger import logger
+from .paths import proselint_path, user_path, cwd_path
 
 _cache_shelves = {}
-proselint_path = Path(__file__).parent
-home_dir = Path("~").expanduser()
-cwd = Path.cwd()
+
 
 type ResultCheck = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
@@ -59,11 +58,11 @@ def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
 
 
 def _get_xdg_config_home() -> Path:
-    return _get_xdg_path("XDG_CONFIG_HOME", home_dir / ".config")
+    return _get_xdg_path("XDG_CONFIG_HOME", user_path / ".config")
 
 
 def _get_xdg_cache_home() -> Path:
-    return _get_xdg_path("XDG_CACHE_HOME", home_dir / ".cache")
+    return _get_xdg_path("XDG_CACHE_HOME", user_path / ".cache")
 
 
 def _get_cache(cachepath: Path):
@@ -107,7 +106,7 @@ def memoize(
     """Cache results of computations on disk."""
     # Determine the location of the cache.
     cache_path = _get_xdg_cache_home() / "proselint"
-    cache_legacy_path = home_dir / ".proselint"
+    cache_legacy_path = user_path / ".proselint"
 
     if not cache_path.is_dir():
         # Migrate the cache from the legacy path to XDG compliant location.
@@ -199,9 +198,9 @@ def load_options(
         conf_default = json.load(config_global_path.open())
 
     user_config_paths = [
-        cwd / ".proselintrc.json",
+        cwd_path / ".proselintrc.json",
         _get_xdg_config_home() / "proselint/config.json",
-        home_dir / ".proselintrc.json",
+        user_path / ".proselintrc.json",
     ]
 
     if config_file_path:
