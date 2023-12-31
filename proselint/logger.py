@@ -28,7 +28,6 @@ def set_verbosity(debug: bool = False) -> None:
         logging.logProcesses = 0
 
 
-
 def get_verbosity() -> int:
     return logger.level == "DEBUG"
 

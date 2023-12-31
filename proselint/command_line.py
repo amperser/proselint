@@ -14,8 +14,9 @@ from typing import Optional, Union
 
 import click
 
-from .logger import logger, set_verbosity
 from .config import default
+from .logger import logger, set_verbosity
+from .paths import demo_file, proselint_path
 from .tools import (
     ResultLint,
     close_cache_shelves,
@@ -24,12 +25,10 @@ from .tools import (
     lint,
     load_options,
 )
-from .paths import proselint_path, demo_file
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
-
 
 
 def timing_test(corpus: str = "0.1.0") -> float:
@@ -202,7 +201,7 @@ def proselint(
         print_errors(fp, errors, output_json, compact)
     else:
         for fp in filepaths:
-            logger.debug(f"Opening file '%s'", fp.name)
+            logger.debug("Opening file '%s'", fp.name)
             try:
                 # TODO: is errors-replace the best? can we detect coding?
                 f = fp.open(encoding="utf-8", errors="replace")
