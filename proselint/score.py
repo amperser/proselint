@@ -10,7 +10,6 @@ from .logger import logger
 from .paths import proselint_path
 
 
-
 def score(check=None):  # TODO: can be combined with cli.timing_test()
     """Compute the linter's score on the corpus.
 
