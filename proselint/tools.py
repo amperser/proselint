@@ -21,7 +21,7 @@ from typing import IO, Callable, Optional, Union
 from warnings import showwarning as warn
 
 from . import config
-from .logger import logger
+from .logger import log
 from .paths import (
     cwd_path,
     proselint_path,
@@ -56,7 +56,7 @@ def initialize_cache() -> None:
 
 def clear_cache() -> None:
     """Delete the contents of the cache."""
-    logger.debug("Deleting the cache...")
+    log.debug("Deleting the cache...")
 
     # see issue #624
     _delete_compiled_python_files()
@@ -104,7 +104,7 @@ def _get_cache(cache_path: Path):
         cache = shelve.open(cache_path.as_posix(), protocol=2)
     except dbm.error:
         # dbm error on open - delete and retry
-        logger.error(
+        log.error(
             "Error (%s) opening %s - will attempt to delete and re-open.",
             sys.exc_info()[1],
             cache_path,
@@ -113,11 +113,11 @@ def _get_cache(cache_path: Path):
             cache_path.unlink()
             cache = shelve.open(cache_path.as_posix(), protocol=2)
         except Exception:
-            logger.error("Error on re-open: %s", sys.exc_info()[1])
+            log.error("Error on re-open: %s", sys.exc_info()[1])
             cache = None
     except Exception:
         # unknown error
-        logger.error(
+        log.error(
             "Could not open cache file %s, maybe name collision. " "Error: %s",
             cache_path,
             traceback.format_exc(),
@@ -126,7 +126,7 @@ def _get_cache(cache_path: Path):
 
     # Don't fail on bad caches
     if cache is None:
-        logger.debug("Using in-memory shelf for cache file %s", cache_path)
+        log.debug("Using in-memory shelf for cache file %s", cache_path)
         cache = shelve.Shelf({})
 
     _cache_shelves[cache_path] = cache
@@ -167,7 +167,7 @@ def memoize(
             return value
         except TypeError:
             call_to = fn.__module__ + "." + fn.__name__
-            logger.error(
+            log.error(
                 "Warning: could not disk cache call to %s;"
                 "it probably has unhashable args. Error: %s",
                 call_to,
