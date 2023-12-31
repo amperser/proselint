@@ -15,14 +15,16 @@ def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
     return Path(_value)
 
 
-xdg_config_path = _get_xdg_path("XDG_CONFIG_HOME", user_path / ".config")
-xdg_cache_path = _get_xdg_path("XDG_CACHE_HOME", user_path / ".cache")
+config_global_path = Path("/etc/proselintrc")
+config_xdg_path = _get_xdg_path("XDG_CONFIG_HOME", user_path / ".config")
 
-
-user_config_paths = [
+config_user_paths = [
+    # highest prio is user provided path then as followed
     cwd_path / ".proselintrc.json",
-    xdg_config_path / "proselint/config.json",
+    config_xdg_path / "proselint/config.json",
     user_path / ".proselintrc.json",
 ]
 
-user_cache_path = xdg_cache_path / "proselint"
+cache_xdg_path = _get_xdg_path("XDG_CACHE_HOME", user_path / ".cache")
+cache_user_path = cache_xdg_path / "proselint"
+cache_user_path.mkdir(parents=True, exist_ok=True)

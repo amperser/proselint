@@ -4,7 +4,7 @@ import os
 import unittest
 from unittest import mock
 
-from proselint import command_line as cli
+from proselint import tools
 
 
 class Test__delete_compiled_python_files(unittest.TestCase):
@@ -35,7 +35,7 @@ class Test__delete_compiled_python_files(unittest.TestCase):
         """Ensure 'pyc' files are removed."""
         mock_walk.return_value = self.files
 
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
         mock_remove.assert_called_with(self.pyc_file_path)
 
     @mock.patch("os.walk")
@@ -43,7 +43,7 @@ class Test__delete_compiled_python_files(unittest.TestCase):
     def test_files_not_deleted(self, mock_remove, mock_walk):
         """Ensure non 'pyc' files are not removed."""
         mock_walk.return_value = self.files
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
 
         with self.assertRaises(AssertionError):
             mock_remove.assert_called_with(self.python_file_path)
@@ -56,28 +56,28 @@ class Test__delete_compiled_python_files(unittest.TestCase):
     def test_no_permission(self, mock_remove, mock_walk):
         """Ignore if unable to delete files."""
         mock_walk.return_value = self.files
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
 
     @mock.patch("os.walk")
     @mock.patch("os.remove", side_effect=OSError)
     def test_on_oserror(self, mock_remove, mock_walk):
         """Ignore if OSError."""
         mock_walk.return_value = self.files
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
 
     @mock.patch("os.walk")
     @mock.patch("os.remove", side_effect=FileNotFoundError)
     def test_files_not_found(self, mock_remove, mock_walk):
         """Ignore if file not found."""
         mock_walk.return_value = self.files
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
 
     @mock.patch("os.walk")
     @mock.patch("os.remove", side_effect=IsADirectoryError)
     def test__remove_dir(self, mock_remove, mock_walk):
         """Ignore if attempt to delete a directory."""
         mock_walk.return_value = self.files
-        cli._delete_compiled_python_files()
+        tools._delete_compiled_python_files()
 
 
 class Test__delete_cache(unittest.TestCase):
@@ -90,15 +90,15 @@ class Test__delete_cache(unittest.TestCase):
     @mock.patch("shutil.rmtree")
     def test_rm_cache(self, mock_rmtree):
         """Correct directory is removed."""
-        cli._delete_cache()
+        tools._delete_cache()
         mock_rmtree.assert_called_with(self.cache_path)
 
     @mock.patch("shutil.rmtree", side_effect=PermissionError)
     def test_no_permission(self, mock_rmtree):
         """Ignore if unable to delete."""
-        cli._delete_cache()
+        tools._delete_cache()
 
     @mock.patch("shutil.rmtree", side_effect=OSError)
     def test_on_oserror(self, mock_rmtree):
         """Ignore if general OSError."""
-        cli._delete_cache()
+        tools._delete_cache()
