@@ -32,4 +32,10 @@ def check(text: str) -> list[ResultCheck]:
         f"World War{numerals_regex}",
     ]
 
-    return blacklist(text, items, err, msg)  # TODO: fn missing, probably now existence_check()
+    return blacklist(
+        text,
+        items,
+        err,
+        msg,
+    )
+    # TODO: fn missing, probably now existence_check()

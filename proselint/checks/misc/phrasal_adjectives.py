@@ -27,8 +27,7 @@ def check_ly(text: str) -> list[ResultCheck]:
 
     regex = r"\s[^\s-]+ly-"
 
-    return existence_check(text, [regex], err, msg,
-                           require_padding=False, offset=-1)
+    return existence_check(text, [regex], err, msg, require_padding=False, offset=-1)
 
 
 @memoize
@@ -63,8 +62,7 @@ def check(text: str) -> list[ResultCheck]:
         ["hit-and-run statute", ["hit and run statute"]],
         ["HIV-negative person", ["HIV negative person"]],
         ["HIV-positive person", ["HIV positive person"]],
-        ["information-technology personnel",
-            ["information technology personnel"]],
+        ["information-technology personnel", ["information technology personnel"]],
         ["intellectual-property rights", ["intellectual property rights"]],
         ["interest-group pressures", ["interest group pressures"]],
         ["joint-stock company", ["joint stock company"]],
@@ -124,18 +122,19 @@ def check(text: str) -> list[ResultCheck]:
         ["stained-glass window", ["stained glass window"]],
         ["free-range chicken", ["free range chicken"]],
         ["free-range poultry", ["free range poultry"]],
-        ["non-profit-making organization",
-            ["non profit making organization",
-             "non-profit making organization",
-             "non profit-making organization"]],
-
-
+        [
+            "non-profit-making organization",
+            [
+                "non profit making organization",
+                "non-profit making organization",
+                "non profit-making organization",
+            ],
+        ],
         # Harmony
         ["three-part harmony", ["three part harmony"]],
         ["four-part harmony", ["four part harmony"]],
         ["six-part harmony", ["six part harmony"]],
         ["eight-part harmony", ["eight part harmony"]],
-
         # Losses and gains.
         ["first-quarter loss", ["first quarter loss"]],
         ["second-quarter loss", ["second quarter loss"]],
@@ -145,7 +144,6 @@ def check(text: str) -> list[ResultCheck]:
         ["second-quarter gain", ["second quarter gain"]],
         ["third-quarter gain", ["third quarter gain"]],
         ["fourth-quarter gain", ["fourth quarter gain"]],
-
     ]
 
     return preferred_forms_check(text, items, err, msg)

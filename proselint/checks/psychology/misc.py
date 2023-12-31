@@ -24,8 +24,8 @@ def check_lie_detector_test(text: str) -> list[ResultCheck]:
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
 
     items = [
-        ["polygraph test",      ["lie detector test"]],
-        ["polygraph machine",   ["lie detector machine"]],
+        ["polygraph test", ["lie detector test"]],
+        ["polygraph machine", ["lie detector machine"]],
     ]
 
     return preferred_forms_check(text, items, err, msg)

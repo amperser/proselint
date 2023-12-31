@@ -24,9 +24,8 @@ def check(text: str) -> list[ResultCheck]:
     msg = "'{}' is the preferred eponymous adjective."
 
     preferences = [
-
-        ["Mephistophelean",    ["Mephistophelian"]],
-        ["Shakespearean",      ["Shakespearian"]],
+        ["Mephistophelean", ["Mephistophelian"]],
+        ["Shakespearean", ["Shakespearian"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

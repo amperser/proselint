@@ -21,7 +21,6 @@ with demo_path.open() as f:
     demo = f.read()
 
 for line in fileinput.input(live_write_path / "index.html", inplace=True):
-
     if "##DEMO_PLACEHOLDER##" in line:
         print(demo)
     else:

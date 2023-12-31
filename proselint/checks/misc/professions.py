@@ -24,9 +24,8 @@ def check(text: str) -> list[ResultCheck]:
     msg = "'{}' is the name of that job."
 
     preferences = [
-
-        ["cobbler",    ["shoe repair guy"]],
-        ["geometer",   ["geometrist"]],
+        ["cobbler", ["shoe repair guy"]],
+        ["geometer", ["geometrist"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

@@ -17,8 +17,7 @@ def check_ellipsis(text: str) -> list[ResultCheck]:
     msg = "'...' is an approximation, use the ellipsis symbol '…'."
     regex = r"\.\.\."
 
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           offset=0)
+    return existence_check(text, [regex], err, msg, require_padding=False, offset=0)
 
 
 @max_errors(1)
@@ -85,6 +84,7 @@ def check_curly_quotes(text: str) -> list[ResultCheck]:
     regex = r"\"[\w\s\d]+\""
 
     return existence_check(text, [regex], err, msg, require_padding=False)
+
 
 # @memoize
 # def check_en_dash_separated_names(text: str) -> list[ResultCheck]:

@@ -14,7 +14,13 @@ Too much yelling.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, max_errors, memoize, ppm_threshold
+from proselint.tools import (
+    ResultCheck,
+    existence_check,
+    max_errors,
+    memoize,
+    ppm_threshold,
+)
 
 
 @max_errors(1)
@@ -26,8 +32,15 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
 
     regex = r"[\!]\s*?[\!]{1,}"
 
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           ignore_case=False, dotall=True)
+    return existence_check(
+        text,
+        [regex],
+        err,
+        msg,
+        require_padding=False,
+        ignore_case=False,
+        dotall=True,
+    )
 
 
 @ppm_threshold(30)

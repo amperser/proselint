@@ -12,7 +12,6 @@ def check(text: str) -> list[ResultCheck]:
     msg = "-ve vs. -of. '{}' is the preferred spelling."
 
     preferences = [
-
         ["could've", ["could of"]],
         ["should've", ["should of"]],
         ["would've", ["would of"]],

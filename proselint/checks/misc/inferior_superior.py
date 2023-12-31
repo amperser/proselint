@@ -24,8 +24,8 @@ def check(text: str) -> list[ResultCheck]:
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."
 
     preferences = [
-        ["inferior to",         ["inferior than"]],
-        ["superior to",         ["superior than"]],
+        ["inferior to", ["inferior than"]],
+        ["superior to", ["superior than"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

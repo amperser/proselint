@@ -58,7 +58,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
                         return None
                     input_val = int(input_val)
                     fp += input_val
-                    tp += (num_errors - input_val)
+                    tp += num_errors - input_val
                 except ValueError:
                     pass
 

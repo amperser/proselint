@@ -32,28 +32,23 @@ def check(text: str) -> list[ResultCheck]:
     ]
 
     explanations = {
-        "obviously":
-        "This is obviously an inadvisable word to use.",
-        "utilize":
-        r"Do you know anyone who *needs* to utilize the word utilize?",
+        "obviously": "This is obviously an inadvisable word to use.",
+        "utilize": r"Do you know anyone who *needs* to utilize the word utilize?",
     }
 
     results = []
     for word in bad_words:
         occ = list(re.finditer(word, text.lower()))
-# TODO: faster replacement
-#        results += [(
-#                o.start(),
-#                o.end(),
-#                err,
-#                msg.format(word, explanations[word]),
-#                None) for o in occ]
+        # TODO: faster replacement
+        #        results += [(
+        #                o.start(),
+        #                o.end(),
+        #                err,
+        #                msg.format(word, explanations[word]),
+        #                None) for o in occ]
         for o in occ:
-            results.append((
-                o.start(),
-                o.end(),
-                err,
-                msg.format(word, explanations[word]),
-                None))
+            results.append(
+                (o.start(), o.end(), err, msg.format(word, explanations[word]), None),
+            )
 
     return results

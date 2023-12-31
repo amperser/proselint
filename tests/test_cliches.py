@@ -33,13 +33,16 @@ class TestCheck(Check):
         assert chk.check_cliches_write_good("""No cliches here.""") == []
         # use one of the example cliches to verify basic functionality
         assert chk.check_cliches_write_good(self.l_write_good) != []
-        assert "cliches.write_good" in chk.check_cliches_write_good(
-            self.l_write_good)[0]
+        assert (
+            "cliches.write_good" in chk.check_cliches_write_good(self.l_write_good)[0]
+        )
 
     def test_cliches_gnu_diction_basic(self):
         """Basic check on check_cliches_gnu_diction."""
         assert chk.check_cliches_gnu_diction("""No cliches here.""") == []
         # use one of the example cliches to verify basic functionality
         assert chk.check_cliches_gnu_diction(self.l_gnu_diction) != []
-        assert "cliches.gnu_diction" in chk.check_cliches_gnu_diction(
-            self.l_gnu_diction)[0]
+        assert (
+            "cliches.gnu_diction"
+            in chk.check_cliches_gnu_diction(self.l_gnu_diction)[0]
+        )

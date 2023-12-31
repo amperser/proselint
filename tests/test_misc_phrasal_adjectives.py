@@ -24,5 +24,10 @@ class TestCheck(Check):
         """Basic smoke test for misc.phrasal_adjectives.check_ly."""
         assert chk.check_ly("""Smoke phrase with nothing flagged.""") == []
         assert chk.check_ly("""He ran swiftly-fast.""")
-        assert chk.check_ly("""The not-so-hotly-contested
-                             result was fine.""") == []
+        assert (
+            chk.check_ly(
+                """The not-so-hotly-contested
+                             result was fine.""",
+            )
+            == []
+        )

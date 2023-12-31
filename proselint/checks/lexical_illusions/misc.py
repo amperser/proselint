@@ -26,5 +26,11 @@ def check(text: str) -> list[ResultCheck]:
     regex = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
     exceptions = [r"^had had$", r"^that that$"]
 
-    return existence_check(text, [regex], err, msg, exceptions=exceptions,
-                           require_padding=False)
+    return existence_check(
+        text,
+        [regex],
+        err,
+        msg,
+        exceptions=exceptions,
+        require_padding=False,
+    )

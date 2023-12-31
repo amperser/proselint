@@ -24,10 +24,10 @@ def check(text: str) -> list[ResultCheck]:
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
     items = [
-        ["Stone Age",          ["stone age"]],
-        ["space age",          ["Space Age"]],
-        ["the American West",  ["the American west"]],
-        ["Mother Nature",      ["mother nature"]],
+        ["Stone Age", ["stone age"]],
+        ["space age", ["Space Age"]],
+        ["the American West", ["the American west"]],
+        ["Mother Nature", ["mother nature"]],
     ]
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
@@ -56,19 +56,18 @@ def check_months(text: str) -> list[ResultCheck]:
     msg = "Months should be capitalized. '{}' is the preferred form."
 
     items = [
-
-        ["January",         ["january"]],
-        ["February",        ["february"]],
+        ["January", ["january"]],
+        ["February", ["february"]],
         # ["March",           ["march"]],
-        ["April",           ["april"]],
+        ["April", ["april"]],
         # ["May",             ["may"]],
-        ["June",            ["june"]],
-        ["July",            ["july"]],
-        ["August",          ["august"]],
-        ["September",       ["september"]],
-        ["October",         ["october"]],
-        ["November",        ["november"]],
-        ["December",        ["december"]],
+        ["June", ["june"]],
+        ["July", ["july"]],
+        ["August", ["august"]],
+        ["September", ["september"]],
+        ["October", ["october"]],
+        ["November", ["november"]],
+        ["December", ["december"]],
     ]
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
@@ -81,14 +80,13 @@ def check_days(text: str) -> list[ResultCheck]:
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
     items = [
-
-        ["Monday",       ["monday"]],
-        ["Tuesday",      ["tuesday"]],
-        ["Wednesday",    ["wednesday"]],
-        ["Thursday",     ["thursday"]],
-        ["Friday",       ["friday"]],
-        ["Saturday",     ["saturday"]],
-        ["Sunday",       ["sunday"]],
+        ["Monday", ["monday"]],
+        ["Tuesday", ["tuesday"]],
+        ["Wednesday", ["wednesday"]],
+        ["Thursday", ["thursday"]],
+        ["Friday", ["friday"]],
+        ["Saturday", ["saturday"]],
+        ["Sunday", ["sunday"]],
     ]
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)

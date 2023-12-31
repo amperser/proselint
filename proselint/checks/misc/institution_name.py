@@ -28,7 +28,9 @@ def check_vtech(text: str) -> list[ResultCheck]:
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
     institution = [
-        ["Virginia Polytechnic Institute and State University",
-         ["Virginia Polytechnic and State University"]],
+        [
+            "Virginia Polytechnic Institute and State University",
+            ["Virginia Polytechnic and State University"],
+        ],
     ]
     return preferred_forms_check(text, institution, err, msg)

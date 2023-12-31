@@ -22,7 +22,7 @@ scheduler = BlockingScheduler()
 user = "hello@lifelinter.com"
 user_to = "editor@proselint.com"
 name = "proselint"
-password = os.environ['gmail_password']
+password = os.environ["gmail_password"]
 
 tagline = "Proselint, a linter for prose."
 url = "http://proselint.com"
@@ -34,7 +34,7 @@ def quoted(string, every=64):
     return "> " + re.sub("\r\n(?=[^\r\n])", "\r\n> ", string)
 
 
-@scheduler.scheduled_job('interval', minutes=0.25)
+@scheduler.scheduled_job("interval", minutes=0.25)
 def check_email():
     """Check the mail account and lint new mail."""
     server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -52,17 +52,15 @@ def check_email():
     # resulting job_ids somewhere (in Redis, I suppose), keyed by a hash of the
     # email.
     for u in unread:
-
         u.fetch()
 
-        signature = (u.fr.decode('utf-8') +
-                     u.subject.decode('utf-8') +
-                     u.body.decode('utf-8'))
+        signature = (
+            u.fr.decode("utf-8") + u.subject.decode("utf-8") + u.body.decode("utf-8")
+        )
 
-        _hash = hashlib.sha256(signature.encode('utf-8')).hexdigest()
+        _hash = hashlib.sha256(signature.encode("utf-8")).hexdigest()
 
-        if user_to in u.to or user_to in u.headers.get('Cc', []):
-
+        if user_to in u.to or user_to in u.headers.get("Cc", []):
             job_id = conn.get(_hash)
 
             if not job_id:
@@ -77,9 +75,8 @@ def check_email():
                 r = requests.get(api_url, params={"job_id": job_id})
 
                 if r.json()["status"] == "success":
-
                     reply = quoted(u.body)
-                    errors = r.json()['data']['errors']
+                    errors = r.json()["data"]["errors"]
                     reply += "\r\n\r\n".join([json.dumps(e) for e in errors])
 
                     msg = MIMEMultipart()
@@ -87,9 +84,9 @@ def check_email():
                     msg["To"] = u.fr
                     msg["Subject"] = "Re: " + u.subject
 
-                    if u.headers.get('Message-ID'):
-                        msg.add_header("In-Reply-To", u.headers['Message-ID'])
-                        msg.add_header("References", u.headers['Message-ID'])
+                    if u.headers.get("Message-ID"):
+                        msg.add_header("In-Reply-To", u.headers["Message-ID"])
+                        msg.add_header("References", u.headers["Message-ID"])
 
                     body = reply + "\r\n\r\n--\r\n" + tagline + "\r\n" + url
                     msg.attach(MIMEText(body, "plain"))

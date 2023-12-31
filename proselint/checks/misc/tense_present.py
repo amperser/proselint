@@ -41,13 +41,8 @@ def check(text: str) -> list[ResultCheck]:
 
     results = []
     for i in illogics:
-        for m in re.finditer(fr"\s{i}\s", text, flags=re.U | re.I):
+        for m in re.finditer(rf"\s{i}\s", text, flags=re.U | re.I):
             txt = m.group(0).strip()
-            results.append((
-                m.start() + 1,
-                m.end(),
-                err,
-                msg.format(txt),
-                None))
+            results.append((m.start() + 1, m.end(), err, msg.format(txt), None))
 
     return results

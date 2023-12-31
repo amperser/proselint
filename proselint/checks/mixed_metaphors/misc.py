@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, max_errors, memoize, preferred_forms_check
+from proselint.tools import (
+    ResultCheck,
+    existence_check,
+    max_errors,
+    memoize,
+    preferred_forms_check,
+)
 
 
 @max_errors(1)
@@ -39,12 +45,11 @@ def check_misc(text: str) -> list[ResultCheck]:
     msg = "Mixed metaphor. Try '{}'."
 
     preferences = [
-
-        ["cream rises to the top",    ["cream rises to the crop"]],
-        ["fasten your seatbelts",     ["button your seatbelts"]],
-        ["a minute to decompress",    ["a minute to decompose"]],
+        ["cream rises to the top", ["cream rises to the crop"]],
+        ["fasten your seatbelts", ["button your seatbelts"]],
+        ["a minute to decompress", ["a minute to decompose"]],
         ["sharpest tool in the shed", ["sharpest marble in the (shed|box)"]],
-        ["not rocket science",        ["not rocket surgery"]],
+        ["not rocket science", ["not rocket surgery"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

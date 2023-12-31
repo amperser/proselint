@@ -24,7 +24,7 @@ def check(text: str) -> list[ResultCheck]:
     msg = "Back-formation. '{}' is the preferred form."
 
     items = [
-        ["improper",       ["improprietous"]],
+        ["improper", ["improprietous"]],
     ]
 
     return preferred_forms_check(text, items, err, msg)

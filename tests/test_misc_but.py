@@ -19,5 +19,7 @@ class TestCheck(Check):
         """Basic smoke test for misc.but."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes("""But I never start with the word "but".""")
-        assert self.passes("""I never start with the word "but",
-but might use it after a linebreak.""")
+        assert self.passes(
+            """I never start with the word "but",
+but might use it after a linebreak.""",
+        )

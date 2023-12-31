@@ -12,23 +12,25 @@ class Test__delete_compiled_python_files(unittest.TestCase):
 
     def setUp(self):
         """init common data."""
-        self.base_dir = '.'
-        self.python_file = 'a.py'
-        self.pyc_file = 'a.pyc'
-        self.dot_pyc = '.pyc'
+        self.base_dir = "."
+        self.python_file = "a.py"
+        self.pyc_file = "a.pyc"
+        self.dot_pyc = ".pyc"
 
         self.files = [
-            (self.base_dir, ('dummy',), (self.pyc_file,
-                                         self.python_file,
-                                         self.dot_pyc)),
+            (
+                self.base_dir,
+                ("dummy",),
+                (self.pyc_file, self.python_file, self.dot_pyc),
+            ),
         ]
 
         self.pyc_file_path = os.path.join(self.base_dir, self.pyc_file)
         self.python_file_path = os.path.join(self.base_dir, self.python_file)
         self.dot_pyc_path = os.path.join(self.base_dir, self.python_file)
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove')
+    @mock.patch("os.walk")
+    @mock.patch("os.remove")
     def test_delete_pyc_file(self, mock_remove, mock_walk):
         """Ensure 'pyc' files are removed."""
         mock_walk.return_value = self.files
@@ -36,8 +38,8 @@ class Test__delete_compiled_python_files(unittest.TestCase):
         cli._delete_compiled_python_files()
         mock_remove.assert_called_with(self.pyc_file_path)
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove')
+    @mock.patch("os.walk")
+    @mock.patch("os.remove")
     def test_files_not_deleted(self, mock_remove, mock_walk):
         """Ensure non 'pyc' files are not removed."""
         mock_walk.return_value = self.files
@@ -49,29 +51,29 @@ class Test__delete_compiled_python_files(unittest.TestCase):
         with self.assertRaises(AssertionError):
             mock_remove.assert_called_with(self.dot_pyc_path)
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove', side_effect=PermissionError)
+    @mock.patch("os.walk")
+    @mock.patch("os.remove", side_effect=PermissionError)
     def test_no_permission(self, mock_remove, mock_walk):
         """Ignore if unable to delete files."""
         mock_walk.return_value = self.files
         cli._delete_compiled_python_files()
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove', side_effect=OSError)
+    @mock.patch("os.walk")
+    @mock.patch("os.remove", side_effect=OSError)
     def test_on_oserror(self, mock_remove, mock_walk):
         """Ignore if OSError."""
         mock_walk.return_value = self.files
         cli._delete_compiled_python_files()
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove', side_effect=FileNotFoundError)
+    @mock.patch("os.walk")
+    @mock.patch("os.remove", side_effect=FileNotFoundError)
     def test_files_not_found(self, mock_remove, mock_walk):
         """Ignore if file not found."""
         mock_walk.return_value = self.files
         cli._delete_compiled_python_files()
 
-    @mock.patch('os.walk')
-    @mock.patch('os.remove', side_effect=IsADirectoryError)
+    @mock.patch("os.walk")
+    @mock.patch("os.remove", side_effect=IsADirectoryError)
     def test__remove_dir(self, mock_remove, mock_walk):
         """Ignore if attempt to delete a directory."""
         mock_walk.return_value = self.files
@@ -85,18 +87,18 @@ class Test__delete_cache(unittest.TestCase):
         """Init common data."""
         self.cache_path = os.path.join("proselint", "cache")
 
-    @mock.patch('shutil.rmtree')
+    @mock.patch("shutil.rmtree")
     def test_rm_cache(self, mock_rmtree):
         """Correct directory is removed."""
         cli._delete_cache()
         mock_rmtree.assert_called_with(self.cache_path)
 
-    @mock.patch('shutil.rmtree', side_effect=PermissionError)
+    @mock.patch("shutil.rmtree", side_effect=PermissionError)
     def test_no_permission(self, mock_rmtree):
         """Ignore if unable to delete."""
         cli._delete_cache()
 
-    @mock.patch('shutil.rmtree', side_effect=OSError)
+    @mock.patch("shutil.rmtree", side_effect=OSError)
     def test_on_oserror(self, mock_rmtree):
         """Ignore if general OSError."""
         cli._delete_cache()

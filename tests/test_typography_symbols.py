@@ -36,18 +36,15 @@ class TestCheck(Check):
 
     def test_sentence_spacing(self):
         """Find a sentence followed by three or more spaces."""
-        assert chk.check_sentence_spacing(
-            """This is a sentence.   This is another.""")
+        assert chk.check_sentence_spacing("""This is a sentence.   This is another.""")
 
     def test_multiplication(self):
         """Find an x between two digits."""
-        assert chk.check_multiplication_symbol(
-            """It is obvious that 2 x 2 = 4.""")
+        assert chk.check_multiplication_symbol("""It is obvious that 2 x 2 = 4.""")
 
     def test_curly_quotes(self):  # FIXME
         """Find "" quotes in a string."""
-        assert chk.check_curly_quotes(
-            "\"This should produce an error\", he said.")
+        assert chk.check_curly_quotes('"This should produce an error", he said.')
         assert not chk.check_curly_quotes("But this should not.")
-        assert chk.check_curly_quotes("Alas, \"it should here too\".")
-        assert not chk.check_curly_quotes("\"A singular should not, though.")
+        assert chk.check_curly_quotes('Alas, "it should here too".')
+        assert not chk.check_curly_quotes('"A singular should not, though.')

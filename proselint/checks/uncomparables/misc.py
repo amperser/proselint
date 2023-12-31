@@ -115,7 +115,10 @@ def check(text: str) -> list[ResultCheck]:
         ("more", "possible"),  # FIXME
     ]
 
-    uncomparables = [fr"{i[0]}\s{i[1]}" for i in itertools.product(
-        comparators, uncomparables) if i not in exceptions]
+    uncomparables = [
+        rf"{i[0]}\s{i[1]}"
+        for i in itertools.product(comparators, uncomparables)
+        if i not in exceptions
+    ]
 
     return existence_check(text, uncomparables, err, msg, require_padding=True)

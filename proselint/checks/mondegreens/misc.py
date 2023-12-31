@@ -25,13 +25,13 @@ def check(text: str) -> list[ResultCheck]:
 
     items = [
         ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
-        ["a partridge in a pear tree",    ["a part-red gingerbread tree"]],
-        ["attorney and notary public",    ["attorney and not a republic"]],
-        ["beck and call",                 ["beckon call"]],
-        ["for all intents and purposes",  ["for all intensive purposes"]],
-        ["laid him on the green",         ["Lady Mondegreen"]],
-        ["all of the other reindeer",     ["Olive, the other reindeer"]],
-        ["to the manner born",            ["to the manor born"]],
+        ["a partridge in a pear tree", ["a part-red gingerbread tree"]],
+        ["attorney and notary public", ["attorney and not a republic"]],
+        ["beck and call", ["beckon call"]],
+        ["for all intents and purposes", ["for all intensive purposes"]],
+        ["laid him on the green", ["Lady Mondegreen"]],
+        ["all of the other reindeer", ["Olive, the other reindeer"]],
+        ["to the manner born", ["to the manor born"]],
     ]
 
     return preferred_forms_check(text, items, err, msg)

@@ -24,9 +24,9 @@ def check(text: str) -> list[ResultCheck]:
     msg = "'many a' requires a singular verb."
 
     preferences = [
-        ["is many a",          ["are many a"]],
-        ["has been many a",    ["have been many a"]],
-        ["was many a",         ["were many a"]],
+        ["is many a", ["are many a"]],
+        ["has been many a", ["have been many a"]],
+        ["was many a", ["were many a"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

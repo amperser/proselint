@@ -12,11 +12,10 @@ def check(text: str) -> list[ResultCheck]:
     msg = "in- vs. un-. '{}' is the preferred spelling."
 
     preferences = [
-
-        ["inadvisable",         ["unadvisable"]],
-        ["inalienable",         ["unalienable"]],
-        ["inexpressive",        ["unexpressive"]],
-        ["infeasible",          ["unfeasible"]],
+        ["inadvisable", ["unadvisable"]],
+        ["inalienable", ["unalienable"]],
+        ["inexpressive", ["unexpressive"]],
+        ["infeasible", ["unfeasible"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

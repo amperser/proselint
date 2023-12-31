@@ -18,5 +18,4 @@ class TestCheck(Check):
     def test_smoke(self):
         """Basic smoke test for misc.inferior_superior."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes(
-            """It was more inferior than the alternative.""")
+        assert not self.passes("""It was more inferior than the alternative.""")

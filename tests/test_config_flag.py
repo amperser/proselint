@@ -18,9 +18,9 @@ FLAG = ["--config", str(CONFIG_FILE)]
 
 def test_deepmerge_dicts():
     """Test deepmerge_dicts"""
-    d1 = {'a': 1, 'b': {'c': 2, 'd': 3}}
-    d2 = {'a': 2, 'b': {'c': 3, 'e': 4}}
-    assert deepmerge_dicts(d1, d2) == {'a': 2, 'b': {'c': 3, 'd': 3, 'e': 4}}
+    d1 = {"a": 1, "b": {"c": 2, "d": 3}}
+    d2 = {"a": 2, "b": {"c": 3, "e": 4}}
+    assert deepmerge_dicts(d1, d2) == {"a": 2, "b": {"c": 3, "d": 3, "e": 4}}
 
 
 @patch("os.path.isfile")
@@ -44,7 +44,6 @@ def test_config_flag_demo():
 
 def test_config_flag_config():
     output = runner.invoke(proselint, ["--demo"] + FLAG)
-
     assert "uncomparables.misc" not in output.stdout
     assert "FileNotFoundError" != output.exc_info[0].__name__
 
@@ -69,3 +68,4 @@ def test_dump_config_default():
 def test_dump_config():
     output = runner.invoke(proselint, ["--dump-config"] + FLAG)
     assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())
+

@@ -12,7 +12,6 @@ def check(text: str) -> list[ResultCheck]:
     msg = "-ely vs. -ly. '{}' is the correct spelling."
 
     preferences = [
-
         ["completely", ["completly"]],
         ["immediately", ["immediatly"]],
         ["unfortunately", ["unfortunatly"]],
