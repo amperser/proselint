@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import copy
 import dbm
 import functools
@@ -9,8 +10,10 @@ import hashlib
 import importlib
 import inspect
 import json
+import os
 import re
 import shelve
+import shutil
 import sys
 import traceback
 from pathlib import Path
@@ -20,11 +23,12 @@ from warnings import showwarning as warn
 from . import config
 from .logger import logger
 from .paths import (
+    cwd_path,
     proselint_path,
     user_cache_path,
     user_config_paths,
+    user_path,
 )
-
 
 type ResultCheck = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
@@ -35,6 +39,9 @@ type ResultLint = tuple[str, str, int, int, int, int, int, str, str]
 ###############################################################################
 ############################# Caching #########################################
 ###############################################################################
+
+_cache_shelves = {}
+
 
 def initialize_cache() -> None:
     cache_legacy_path = user_path / ".proselint"
@@ -47,7 +54,29 @@ def initialize_cache() -> None:
             user_cache_path.mkdir(parents=True)
 
 
-_cache_shelves = {}
+def clear_cache() -> None:
+    """Delete the contents of the cache."""
+    logger.debug("Deleting the cache...")
+
+    # see issue #624
+    _delete_compiled_python_files()
+    _delete_cache()
+
+
+def _delete_compiled_python_files() -> None:
+    """Remove files with a 'pyc' extension."""
+    # TODO: these are in cwd? usually in a module-subdir and handled by build-system
+    for root, _, files in os.walk(cwd_path):
+        for file in [f for f in files if Path(f).suffix == ".pyc"]:
+            with contextlib.suppress(OSError):
+                (Path(root) / file).unlink()
+
+
+def _delete_cache() -> None:
+    """Remove the proselint cache."""
+    with contextlib.suppress(OSError):
+        shutil.rmtree(user_cache_path)
+
 
 def close_cache_shelves() -> None:
     """Close previously opened cache shelves."""
@@ -56,7 +85,7 @@ def close_cache_shelves() -> None:
     _cache_shelves.clear()
 
 
-def close_cache_shelves_after(fn: Callable) -> Callable:
+def close_cache_on_exit(fn: Callable) -> Callable:
     """Decorate a function to ensure cache shelves are closed after call."""
 
     @functools.wraps(fn)
@@ -67,22 +96,22 @@ def close_cache_shelves_after(fn: Callable) -> Callable:
     return wrapped
 
 
-def _get_cache(cachepath: Path):
-    if cachepath in _cache_shelves:
-        return _cache_shelves[cachepath]
+def _get_cache(cache_path: Path):
+    if cache_path in _cache_shelves:
+        return _cache_shelves[cache_path]
 
     try:
-        cache = shelve.open(cachepath.as_posix(), protocol=2)
+        cache = shelve.open(cache_path.as_posix(), protocol=2)
     except dbm.error:
         # dbm error on open - delete and retry
         logger.error(
             "Error (%s) opening %s - will attempt to delete and re-open.",
             sys.exc_info()[1],
-            cachepath,
+            cache_path,
         )
         try:
-            cachepath.unlink()
-            cache = shelve.open(cachepath.as_posix(), protocol=2)
+            cache_path.unlink()
+            cache = shelve.open(cache_path.as_posix(), protocol=2)
         except Exception:
             logger.error("Error on re-open: %s", sys.exc_info()[1])
             cache = None
@@ -90,17 +119,17 @@ def _get_cache(cachepath: Path):
         # unknown error
         logger.error(
             "Could not open cache file %s, maybe name collision. " "Error: %s",
-            cachepath,
+            cache_path,
             traceback.format_exc(),
         )
         cache = None
 
     # Don't fail on bad caches
     if cache is None:
-        logger.debug("Using in-memory shelf for cache file %s", cachepath)
+        logger.debug("Using in-memory shelf for cache file %s", cache_path)
         cache = shelve.Shelf({})
 
-    _cache_shelves[cachepath] = cache
+    _cache_shelves[cache_path] = cache
     return cache
 
 
@@ -150,23 +179,8 @@ def memoize(
 
 
 ###############################################################################
-############################# Checks ##########################################
+############################# Config ##########################################
 ###############################################################################
-# TODO: refactor further, this includes config, linting, ...
-
-def get_checks(options: dict) -> list[Callable[[str], list[ResultCheck]]]:
-    """Extract the checks."""
-    sys.path.append(proselint_path.as_posix())
-    checks = []
-    check_names = [key for (key, val) in options["checks"].items() if val]
-
-    for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
-
-    return checks
 
 
 def deepmerge_dicts(
@@ -218,6 +232,26 @@ def load_options(
             break
 
     return deepmerge_dicts(conf_default, user_options)
+
+
+###############################################################################
+############################# Linting #########################################
+###############################################################################
+
+
+def get_checks(options: dict) -> list[Callable[[str], list[ResultCheck]]]:
+    """Extract the checks."""
+    sys.path.append(proselint_path.as_posix())
+    checks = []
+    check_names = [key for (key, val) in options["checks"].items() if val]
+
+    for check_name in check_names:
+        module = importlib.import_module("checks." + check_name)
+        for d in dir(module):
+            if re.match("check", d):
+                checks.append(getattr(module, d))
+
+    return checks
 
 
 def errors_to_json(items: list[ResultLint]) -> str:
@@ -305,6 +339,11 @@ def assert_error(text: str, check, n=1):
     """Assert that text has n errors of type check."""
     assert_error.description = f"No {check} error for '{text}'"
     assert len([error[0] for error in lint(text) if error[0] == check]) == n
+
+###############################################################################
+############################# Checks ##########################################
+###############################################################################
+
 
 def consistency_check(
     text: str,
@@ -432,10 +471,10 @@ def existence_check(
 def max_errors(limit: int):  # TODO: should be called limit_returned_items()
     """Decorate a check to truncate error output to a specified limit."""
 
-    def wrapper(f):
-        @functools.wraps(f)
+    def wrapper(fn):
+        @functools.wraps(fn)
         def wrapped(*args, **kwargs):
-            return truncate_errors(f(*args, **kwargs), limit)
+            return truncate_errors(fn(*args, **kwargs), limit)
 
         return wrapped
 
@@ -466,10 +505,10 @@ def truncate_errors(
 def ppm_threshold(threshold: float):
     """Decorate a check to error if the PPM threshold is surpassed."""
 
-    def wrapped(f):
-        @functools.wraps(f)
+    def wrapped(fn):
+        @functools.wraps(fn)
         def wrapper(*args, **kwargs):
-            return threshold_check(f(*args, **kwargs), threshold, len(args[0]))
+            return threshold_check(fn(*args, **kwargs), threshold, len(args[0]))
 
         return wrapper
 

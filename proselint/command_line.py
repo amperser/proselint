@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import contextlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import traceback
@@ -19,8 +17,9 @@ from .logger import logger, set_verbosity
 from .paths import demo_file, proselint_path
 from .tools import (
     ResultLint,
+    clear_cache,
+    close_cache_on_exit,
     close_cache_shelves,
-    close_cache_shelves_after,
     errors_to_json,
     lint,
     load_options,
@@ -46,31 +45,6 @@ def timing_test(corpus: str = "0.1.0") -> float:
     duration = time.time() - start
     logger.info("Linting corpus took %.3f.", duration)
     return duration
-
-
-def clear_cache() -> None:
-    """Delete the contents of the cache."""
-    logger.debug("Deleting the cache...")
-
-    # see issue #624
-    _delete_compiled_python_files()
-    _delete_cache()
-
-
-def _delete_compiled_python_files() -> None:
-    """Remove files with a 'pyc' extension."""
-    # TODO: these are in cwd? this is probably part of memoize() cache
-    for path, _, files in os.walk(Path.cwd()):
-        for file in [f for f in files if Path(f).suffix == ".pyc"]:
-            with contextlib.suppress(OSError):
-                (Path(path) / file).unlink()
-
-
-def _delete_cache() -> None:
-    """Remove the proselint cache."""
-    proselint_cache = os.path.join("proselint", "cache")  # TODO: where is this?
-    with contextlib.suppress(OSError):
-        shutil.rmtree(proselint_cache)
 
 
 def print_errors(
@@ -132,7 +106,7 @@ def print_errors(
 @click.option("--dump-config", is_flag=True, help="Prints current config.")
 @click.option("--dump-default-config", is_flag=True, help="Prints default config.")
 @click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
-@close_cache_shelves_after
+@close_cache_on_exit
 def proselint(
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,
