@@ -4,21 +4,21 @@ from __future__ import annotations
 
 import contextlib
 import copy
-import dbm
 import functools
 import hashlib
 import importlib
-import inspect
 import json
-import os
+import pickle
 import re
-import shelve
 import shutil
 import sys
 import traceback
+from datetime import datetime
 from pathlib import Path
-from typing import IO, Callable, Optional, Union
+from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
+
+from typing_extensions import Self
 
 from . import config
 from .logger import log
@@ -26,167 +26,106 @@ from .paths import (
     cache_user_path,
     config_global_path,
     config_user_paths,
-    cwd_path,
     proselint_path,
-    user_path,
 )
 
-type ResultCheck = tuple[int, int, str, str, Optional[str]]
+ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
-type ResultLint = tuple[str, str, int, int, int, int, int, str, str]
+ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
 # content: check_name, message, line, column, start, end, length, type, replacement
-# note: NewType() is too strict here
+# note1: NewType() is too strict here
+# note2: py312 can use -> type ResultCheck = tuple[int, int, str, str, Optional[str]]
 
 ###############################################################################
 ############################# Caching #########################################
 ###############################################################################
 
-_cache_shelves = {}
 
+class Cache:
+    save_path = cache_user_path / "cache.pickle"
 
-def initialize_cache() -> None:
-    cache_legacy_path = user_path / ".proselint"
-    if not cache_user_path.is_dir():
-        # Migrate the cache from the legacy path to XDG compliant location.
-        if cache_legacy_path.is_dir():
-            cache_legacy_path.rename(cache_user_path)
-        else:
-            # Create the cache if it does not already exist.
+    def __init__(self) -> None:
+        self.data: dict[str, list[ResultCheck]] = {}
+        self.age: dict[str, datetime] = {}
+        self.ts_now: datetime = datetime.now()
+
+    def __exit__(self) -> None:
+        """Close previously opened cache shelves."""
+        self.to_file()
+        self.data.clear()
+
+    def __del__(self):
+        self.to_file()
+
+    def to_file(self) -> None:
+        if len(self.data) < 1:
+            return
+        if not cache_user_path.is_dir():
             cache_user_path.mkdir(parents=True)
+        # TODO: sort out aged entries
+        with self.save_path.open("wb", buffering=-1) as fd:
+            pickle.dump(
+                [self.data, self.age],
+                fd,
+                fix_imports=False,
+                protocol=pickle.HIGHEST_PROTOCOL,
+            )
+        log.debug(" -> stored cache")
+
+    @classmethod
+    def from_file(cls) -> Self:
+        # TODO: this should catch exceptions and switch to a fresh instance on fail
+        instance = cls()
+        if cls.save_path.exists():
+            with cls.save_path.open("rb", buffering=-1) as fd:
+                data = pickle.load(fd, fix_imports=False)  # noqa: S301
+            instance.data = data[0]
+            instance.age = data[1]
+            log.debug(" -> found & restored cache")
+        return instance
+
+    def clear(self) -> None:
+        """Delete the contents of the cache."""
+        log.debug("Deleting the cache...")
+        with contextlib.suppress(OSError):
+            shutil.rmtree(cache_user_path)
+        self.data.clear()
+        self.age.clear()
 
 
-def clear_cache() -> None:
-    """Delete the contents of the cache."""
-    log.debug("Deleting the cache...")
-
-    # see issue #624
-    _delete_compiled_python_files()
-    _delete_cache()
+cache = Cache.from_file()
 
 
-def _delete_compiled_python_files() -> None:
-    """Remove files with a 'pyc' extension."""
-    # TODO: these are in cwd? usually in a module-subdir and handled by build-system
-    for root, _, files in os.walk(cwd_path):
-        for file in [f for f in files if Path(f).suffix == ".pyc"]:
-            with contextlib.suppress(OSError):
-                (Path(root) / file).unlink()
-
-
-def _delete_cache() -> None:
-    """Remove the proselint cache."""
-    with contextlib.suppress(OSError):
-        shutil.rmtree(cache_user_path)
-
-
-def close_cache_shelves() -> None:
-    """Close previously opened cache shelves."""
-    for cache in _cache_shelves.values():
-        cache.close()
-    _cache_shelves.clear()
-
-
-def close_cache_on_exit(fn: Callable) -> Callable:
-    """Decorate a function to ensure cache shelves are closed after call."""
-
-    @functools.wraps(fn)
-    def wrapped(*args, **kwargs):
-        initialize_cache()
-        fn(*args, **kwargs)
-        close_cache_shelves()
-
-    return wrapped
-
-
-def _get_cache(cache_path: Path):
-    # TODO: there is protocol-version 4 and 5 (4 is default)
-    if cache_path in _cache_shelves:
-        return _cache_shelves[cache_path]
-
-    try:
-        cache = shelve.open(cache_path.as_posix(), protocol=2)
-    except dbm.error:
-        # dbm error on open - delete and retry
-        log.error(
-            "Error (%s) opening %s - will attempt to delete and re-open.",
-            sys.exc_info()[1],
-            cache_path,
-        )
-        try:
-            cache_path.unlink()
-            cache = shelve.open(cache_path.as_posix(), protocol=2)
-        except Exception:
-            log.error("Error on re-open: %s", sys.exc_info()[1])
-            cache = None
-    except Exception:
-        # unknown error
-        log.error(
-            "Could not open cache file %s, maybe name collision. " "Error: %s",
-            cache_path,
-            traceback.format_exc(),
-        )
-        cache = None
-
-    # Don't fail on bad caches
-    if cache is None:
-        log.debug("Using in-memory shelf for cache file %s", cache_path)
-        cache = shelve.Shelf({})
-
-    _cache_shelves[cache_path] = cache
-    return cache
-
-
-def memoize_null(fn: Callable) -> Callable:
-    """Decorate a function to ensure cache shelves are closed after call."""
-
-    @functools.wraps(fn)
-    def wrapped(*args, **kwargs):
-        fn(*args, **kwargs)
-
-    return wrapped
-
-
-def memoize(
+def memoize(  # new
     fn: Callable,
 ) -> Callable:
-    """Cache results of computations on disk."""
-    # Determine the location of the cache.
-    cache_filename = f"{fn.__module__}.{fn.__name__}"
-    cache_path = cache_user_path / cache_filename
+    """Cache results of computations on disk.
+    Note: fn-signature gets changed! bad design, but good speed-improvement
+        -> wrapped_fn(text: str) -> list[Results]
+        -> called_fn(text: str, text_hash: str) -> list[Results]
+    TODO: decide what to do: extend args of wrapped fn, feed dict into fn?
+    """
+    _filename = f"{fn.__module__}.{fn.__name__}"
 
     @functools.wraps(fn)
-    def wrapped(*args, **kwargs):
-        # handle instance methods
-        if hasattr(fn, "__self__"):
-            args = args[1:]
-
-        signature = cache_filename.encode("utf-8")
-
-        tempargdict = inspect.getcallargs(fn, *args, **kwargs)
-
-        for item in list(tempargdict.items()):
-            if item[0] == "text":
-                signature += item[1].encode("utf-8")
-
-        key = hashlib.sha256(signature).hexdigest()
-        cache = _get_cache(cache_path)
+    def wrapped(text: str, hash_text: str):
+        key = _filename + hash_text
 
         try:
-            return cache[key]
+            return cache.data[key]
         except KeyError:
-            value = fn(*args, **kwargs)
-            cache[key] = value
-            cache.sync()
+            value = fn(text)
+            cache.data[key] = value
+            # cache.age[key] = cache.
             return value
         except TypeError:
-            call_to = fn.__module__ + "." + fn.__name__
             log.error(
                 "Warning: could not disk cache call to %s;"
                 "it probably has unhashable args. Error: %s",
-                call_to,
+                _filename,
                 traceback.format_exc(),
             )
-            return fn(*args, **kwargs)
+            return fn(text)
 
     return wrapped
 
@@ -253,14 +192,14 @@ def load_options(
 ###############################################################################
 
 
-def get_checks(options: dict) -> list[Callable[[str], list[ResultCheck]]]:
+def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     """Extract the checks."""
     sys.path.append(proselint_path.as_posix())
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
+        module = importlib.import_module("." + check_name, "proselint.checks")
         for d in dir(module):
             if re.match("check", d):
                 checks.append(getattr(module, d))
@@ -308,26 +247,28 @@ def lint(
 ) -> list[ResultLint]:
     """Run the linter on the input file."""
     if isinstance(content, str):
-        text = content
+        _text = content
     else:
-        text = content.read()
+        _text = content.read()
 
     if not isinstance(cfg, dict):
         cfg = config.default
 
     # Get the checks.
     checks = get_checks(cfg)
+    _hash = hashlib.md5(_text.encode("utf-8")).hexdigest()
+    # _args = {"hash_text": _hash, "text": text}
 
     # Apply all the checks.
     errors = []
     for check in checks:
         # TODO: can be run this in parallel
-        results = check(text)
+        results = check(_text, _hash)
 
         for result in results:
             (start, end, check_name, message, replacements) = result
-            (line, column) = get_line_and_column(text, start)
-            if not is_quoted(start, text):
+            (line, column) = get_line_and_column(_text, start)
+            if not is_quoted(start, _text):
                 errors += [
                     (
                         check_name,
@@ -405,6 +346,7 @@ def preferred_forms_check(
     offset: int = 0,
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form."""
+    # TODO: optimize, as it is top1 time-waster (of user-functions)
     if ignore_case:
         flags = re.IGNORECASE
     else:
@@ -446,18 +388,16 @@ def existence_check(
     join: bool = False,
 ) -> list[ResultCheck]:
     """Build a checker that prohibits certain words or phrases."""
-    flags = 0
-
+    # TODO: optimize, as it is top2 time-waster (of user-functions)
     msg = " ".join(msg.split())
 
+    flags = 0
     if ignore_case:
-        flags = flags | re.IGNORECASE
-
+        flags |= re.IGNORECASE
     if string:
-        flags = flags | re.UNICODE
-
+        flags |= re.UNICODE
     if dotall:
-        flags = flags | re.DOTALL
+        flags |= re.DOTALL
 
     if require_padding:
         regex = r"(?:^|\W){}[\W$]"
@@ -556,6 +496,8 @@ def is_quoted(position: int, text: str) -> bool:
             return False
 
     def find_ranges(_text: str) -> list[tuple[int, int]]:
+        # TODO: optimize, as it is top3 time-waster (of user-functions)
+        #       this could be a 1d array / LUT
         s = 0
         q = pc = ""
         start = None
