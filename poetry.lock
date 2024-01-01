@@ -1551,4 +1551,4 @@ color = ["chromalog"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1"
-content-hash = "ae1c91f2a6e7932881e6c20aa5f2f791c98ad08f0ac41eb53bc062f60fa9a79e"
+content-hash = "c7ef9d28c63ca510d723a94d2bcfc5a824165d831920d49a2e832943692b5678"
