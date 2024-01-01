@@ -50,6 +50,7 @@ def check_dash_and_from(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg)
 
 
+@memoize
 def check_month_year_comma(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.dates"

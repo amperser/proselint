@@ -77,33 +77,25 @@ def print_errors(
                 message,
                 line,
                 column,
-                start,
-                end,
-                extent,
-                severity,
-                replacements,
+                _,  # start,
+                _,  # end,
+                _,  # extent,
+                _,  # severity,
+                _,  # replacements,
             ) = error
 
-            if compact:
-                # TODO: is this useful?
-                filename = "-"
             if isinstance(filename, Path):
-                filename = (
-                    filename.name
-                )  # TODO: just for now, should be relative path (@cwd)
+                if compact:
+                    filename = filename.name
+                else:
+                    filename = filename.absolute().as_uri()
+                    # TODO: would be nice to supress "file:///"
+                    # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+            elif compact:
+                filename = ""
 
-            log.info(  # TODO: fname+line to link (see ruff code)
-                filename
-                + ":"
-                + str(1 + line)
-                + ":"
-                + str(1 + column)
-                + ": "
-                + check
-                + " "
-                + message,
-            )
-        log.info("Found %d lint-results", len(errors))
+            log.info("%s:%d:%d: %s %s", filename, 1 + line, 1 + column, check, message)
+        log.info("Found %d lint-warnings", len(errors))
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -196,21 +188,19 @@ def proselint(
     # Use stdin if no paths were specified
     if len(paths) == 0:
         log.info("No path specified -> will read from <stdin>")
-        fp = "<stdin>"
-        f = sys.stdin
-        errors = lint(f, debug, config)
+        errors = lint(sys.stdin, debug, config)
         num_errors += len(errors)
-        print_errors(fp, errors, output_json, compact)
+        print_errors("<stdin>", errors, output_json, compact)
     else:
         for fp in filepaths:
             log.debug("Opening file '%s'", fp.name)
             try:
                 # TODO: is errors-replace the best? can we detect coding?
-                f = fp.open(encoding="utf-8", errors="replace")
+                content = fp.open(encoding="utf-8", errors="replace")
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-            errors = lint(f, debug, config)
+            errors = lint(content, debug, config)
             num_errors += len(errors)
 
             print_errors(fp, errors, output_json, compact)
