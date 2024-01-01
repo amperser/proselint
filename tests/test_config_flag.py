@@ -1,8 +1,6 @@
 """Test user option overrides using --config and load_options"""
 import json
-import os
 from pathlib import Path
-from unittest.mock import patch
 
 from click.testing import CliRunner
 
@@ -20,21 +18,15 @@ def test_deepmerge_dicts():
     assert deepmerge_dicts(d1, d2) == {"a": 2, "b": {"c": 3, "d": 3, "e": 4}}
 
 
-@patch("os.path.isfile")
-def test_load_options_function(isfile):
+def test_load_options_function_default():
+    assert load_options()["checks"]["uncomparables.misc"]
+
+
+def test_load_options_function():
     """Test load_options by specifying a user options path"""
-
-    isfile.side_effect = "tests/test_config_flag_proselintrc.json".__eq__
-
     config_file = Path(__file__).parent / "test_config_flag_proselintrc.json"
     overrides = load_options(config_file)
-    assert load_options()["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
-
-    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
-
-    # TestCase().assertRaises(FileNotFoundError, load_options)
-    # TODO: why does this test exist? messed up testing
 
 
 def test_config_flag_demo():

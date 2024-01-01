@@ -5,6 +5,14 @@ from pathlib import Path
 from typing import Union
 from unittest import TestCase
 
+from proselint.tools import lint
+
+
+def assert_error(text: str, check, n=1):
+    """Assert that text has n errors of type check."""
+    assert_error.description = f"No {check} error for '{text}'"
+    assert check in [error[0] for error in lint(text)]
+
 
 class Check(TestCase):
     """All tests inherit from Check."""

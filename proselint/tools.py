@@ -64,10 +64,10 @@ class Cache:
             cache_user_path.mkdir(parents=True)
         age_max: int = self.ts_now - round(timedelta(days=1).total_seconds())
         for _key in self.data:
+            # TODO: could be speed up with dict_base - dict_entries_to_remove
             if self.age[_key] < age_max:
                 self.age.pop(_key)
                 self.data.pop(_key)
-            # TODO: could be speed up with dict_base - dict_entries_to_remove
         with self.save_path.open("wb", buffering=-1) as fd:
             pickle.dump(
                 [self.data, self.age],
@@ -79,12 +79,12 @@ class Cache:
 
     @classmethod
     def from_file(cls) -> Self:
-        # TODO: this should catch exceptions and switch to a fresh instance on fail
         instance = cls()
         if cls.save_path.exists():
             with contextlib.suppress(EOFError):
                 with cls.save_path.open("rb", buffering=-1) as fd:
                     data = pickle.load(fd, fix_imports=False)  # noqa: S301
+                    # TODO: consider replacing pickle with something faster
                 instance.data = data[0]
                 instance.age = data[1]
                 log.debug(" -> found & restored cache")
@@ -102,7 +102,7 @@ class Cache:
 cache = Cache.from_file()
 
 
-def memoize(  # new
+def memoize(
     fn: Callable,
 ) -> Callable:
     """Cache results of computations on disk.
@@ -262,13 +262,12 @@ def lint(
 
     # Get the checks.
     checks = get_checks(cfg)
-    _hash = hashlib.md5(_text.encode("utf-8")).hexdigest()
-    # _args = {"hash_text": _hash, "text": text}
+    _hash = hashlib.sha224(_text.encode("utf-8")).hexdigest()
 
     # Apply all the checks.
     errors = []
     for check in checks:
-        # TODO: can be run this in parallel
+        # TODO: can be run in parallel
         results = check(_text, _hash)
 
         for result in results:
@@ -296,12 +295,6 @@ def lint(
     return sorted(errors[: cfg["max_errors"]], key=lambda e: (e[2], e[3]))
 
 
-def assert_error(text: str, check, n=1):
-    """Assert that text has n errors of type check."""
-    assert_error.description = f"No {check} error for '{text}'"
-    assert check in [error[0] for error in lint(text)]
-
-
 ###############################################################################
 ############################# Checks ##########################################
 ###############################################################################
@@ -318,8 +311,6 @@ def consistency_check(
     """Build a consistency checker for the given word_pairs."""
     results = []
 
-    msg = " ".join(msg.split())
-
     for w in word_pairs:
         matches = [
             list(re.finditer(w[0], text)),
@@ -329,16 +320,16 @@ def consistency_check(
         if len(matches[0]) > 0 and len(matches[1]) > 0:
             idx_minority = len(matches[0]) > len(matches[1])
 
-            for m in matches[idx_minority]:
-                results.append(
-                    (
-                        m.start() + offset,
-                        m.end() + offset,
-                        err,
-                        msg.format(w[not idx_minority], m.group(0)),
-                        w[not idx_minority],
-                    ),
+            results += [
+                (
+                    m.start() + offset,
+                    m.end() + offset,
+                    err,
+                    msg.format(w[not idx_minority], m.group(0)),
+                    w[not idx_minority],
                 )
+                for m in matches[idx_minority]
+            ]
 
     return results
 
@@ -352,31 +343,21 @@ def preferred_forms_check(
     offset: int = 0,
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form."""
-    # TODO: optimize, as it is top1 time-waster (of user-functions)
-    if ignore_case:
-        flags = re.IGNORECASE
-    else:
-        flags = 0
-
-    msg = " ".join(msg.split())
-
-    results = []
+    flags = re.IGNORECASE if ignore_case else 0
     regex = r"[\W^]{}[\W$]"
-    for item in items:
-        for r in item[1]:
-            for m in re.finditer(regex.format(r), text, flags=flags):
-                txt = m.group(0).strip()
-                results.append(
-                    (
-                        m.start() + 1 + offset,
-                        m.end() + offset,
-                        err,
-                        msg.format(item[0], txt),
-                        item[0],
-                    ),
-                )
 
-    return results
+    return [
+        (
+            m.start() + 1 + offset,
+            m.end() + offset,
+            err,
+            msg.format(item[0], m.group(0).strip()),
+            item[0],
+        )
+        for item in items
+        for r in item[1]
+        for m in re.finditer(regex.format(r), text, flags=flags)
+    ]
 
 
 def existence_check(
@@ -391,12 +372,9 @@ def existence_check(
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
     exceptions=(),
-    join: bool = False,
+    join: bool = False,  # TODO: some checker use this, meaning unknown
 ) -> list[ResultCheck]:
     """Build a checker that prohibits certain words or phrases."""
-    # TODO: optimize, as it is top2 time-waster (of user-functions)
-    msg = " ".join(msg.split())
-
     flags = 0
     if ignore_case:
         flags |= re.IGNORECASE
@@ -405,23 +383,20 @@ def existence_check(
     if dotall:
         flags |= re.DOTALL
 
-    if require_padding:
-        regex = r"(?:^|\W){}[\W$]"
-    else:
-        regex = r"{}"
+    regex = r"(?:^|\W){}[\W$]" if require_padding else r"{}"
 
     errors: list[ResultCheck] = []
 
     # If the topic of the text is in the excluded list, return immediately.
     if excluded_topics:
         tps = topics(text)
-        if any([t in excluded_topics for t in tps]):
+        if any(t in excluded_topics for t in tps):
             return errors
 
-    rx = "|".join(regex.format(w) for w in items)
+    rx = "|".join(regex.format(_item) for _item in items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
-        if any([re.search(exception, txt) for exception in exceptions]):
+        if any(re.search(exception, txt) for exception in exceptions):
             continue
         errors.append(
             (m.start() + 1 + offset, m.end() + offset, err, msg.format(txt), None),
@@ -470,6 +445,8 @@ def ppm_threshold(threshold: float):
     def wrapped(fn):
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
+            # if "text" in kwargs
+            # text_len = kwargs
             return threshold_check(fn(*args, **kwargs), threshold, len(args[0]))
 
         return wrapper
@@ -494,12 +471,9 @@ def is_quoted(position: int, text: str) -> bool:
     def matching(quotemark1: str, quotemark2: str) -> bool:
         straight = "\"'"
         curly = "“”"
-        if quotemark1 in straight and quotemark2 in straight:
-            return True
-        if quotemark1 in curly and quotemark2 in curly:
-            return True
-        else:
-            return False
+        return (quotemark1 in straight and quotemark2 in straight) or (
+            quotemark1 in curly and quotemark2 in curly
+        )
 
     def find_ranges(_text: str) -> list[tuple[int, int]]:
         # TODO: optimize, as it is top3 time-waster (of user-functions)
@@ -561,10 +535,7 @@ def topics(text: str) -> list[str]:
     detectors = [
         detector_50_Cent,
     ]
-    ts = []
-    for detector in detectors:
-        ts.append(detector(text))
-
+    ts = [detector(text) for detector in detectors]
     return [t[0] for t in ts if t[1] > 0.95]
 
 

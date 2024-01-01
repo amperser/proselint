@@ -2,9 +2,7 @@
 
 """Test GMEU entry 'a', part B."""
 
-
-from proselint.tools import assert_error
-from tests.check import Check
+from tests.check import Check, assert_error
 
 
 class Chk:

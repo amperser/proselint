@@ -1,5 +1,7 @@
 """Proselint config - replacement for default .proselintrc since #1212."""
 
+# TODO: add multiprocessing, compact output, ...
+
 default: dict = {
     "max_errors": 1000,
     "checks": {
