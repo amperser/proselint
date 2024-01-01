@@ -47,7 +47,8 @@ structure.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, memoize, preferred_forms_check
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, preferred_forms_check
 
 
 @memoize

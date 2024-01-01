@@ -47,7 +47,8 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.tools import ResultCheck, existence_check, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check
 
 
 @memoize

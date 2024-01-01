@@ -31,7 +31,7 @@ will require nltk & syntactic parsing)
 grammatical subject.
 """
 
-# from proselint.tools import memoize
+# from ...lint_checks import memoize
 # from __future__ import annotations
 # import re
 

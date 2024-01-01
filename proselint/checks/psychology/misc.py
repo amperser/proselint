@@ -14,7 +14,8 @@ Psychological and psychiatric terms to avoid.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, memoize, preferred_forms_check
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check, preferred_forms_check
 
 
 @memoize

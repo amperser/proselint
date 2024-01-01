@@ -17,7 +17,9 @@ World War Ii should have correct capitalization.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, blacklist, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck
+from ...tools import blacklist
 
 
 @memoize

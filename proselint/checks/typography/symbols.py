@@ -6,10 +6,11 @@ source_url: http://practicaltypography.com/
 
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, max_errors, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_ellipsis(text: str) -> list[ResultCheck]:
     """Use an ellipsis instead of three dots."""
@@ -20,7 +21,7 @@ def check_ellipsis(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False, offset=0)
 
 
-@max_errors(1)
+@limit_results(1)
 @memoize
 def check_copyright_symbol(text: str) -> list[ResultCheck]:
     """Use the copyright symbol instead of (c)."""
@@ -31,7 +32,7 @@ def check_copyright_symbol(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the trademark symbol instead of (TM)."""
@@ -42,7 +43,7 @@ def check_trademark_symbol(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_registered_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the registered trademark symbol instead of (R)."""
@@ -53,7 +54,7 @@ def check_registered_trademark_symbol(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_sentence_spacing(text: str) -> list[ResultCheck]:
     """Use no more than two spaces after a period."""
@@ -64,7 +65,7 @@ def check_sentence_spacing(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_multiplication_symbol(text: str) -> list[ResultCheck]:
     """Use the multiplication symbol ×, not the lowercase letter x."""
@@ -75,7 +76,7 @@ def check_multiplication_symbol(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check_curly_quotes(text: str) -> list[ResultCheck]:
     """Use curly quotes, not straight quotes."""

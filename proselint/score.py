@@ -6,8 +6,8 @@ import re
 import subprocess
 from pathlib import Path
 
+from .config_paths import proselint_path
 from .logger import log
-from .paths import proselint_path
 
 
 def score(check=None):  # TODO: can be combined with cli.timing_test()

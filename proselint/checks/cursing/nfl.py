@@ -14,7 +14,8 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check
 
 
 @memoize

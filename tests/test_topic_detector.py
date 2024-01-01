@@ -1,6 +1,6 @@
 """Test the topic detector tool."""
 
-from proselint.tools import topics
+from proselint.lint_checks import topics
 
 
 def test_50_Cent_detector_on_topic():

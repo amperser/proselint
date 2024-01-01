@@ -14,16 +14,11 @@ Too much yelling.
 """
 from __future__ import annotations
 
-from proselint.tools import (
-    ResultCheck,
-    existence_check,
-    max_errors,
-    memoize,
-    ppm_threshold,
-)
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check, limit_results, ppm_threshold
 
 
-@max_errors(1)
+@limit_results(1)
 @memoize
 def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
@@ -43,7 +38,7 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     )
 
 
-@ppm_threshold(30)
+@ppm_threshold(30)  # TODO: isn't that way to low?
 @memoize
 def check_exclamations_ppm(text: str) -> list[ResultCheck]:
     """Make sure that the exclamation ppm is under 30."""

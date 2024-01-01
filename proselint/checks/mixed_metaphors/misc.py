@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-from proselint.tools import (
+from ...lint_cache import memoize
+from ...lint_checks import (
     ResultCheck,
     existence_check,
-    max_errors,
-    memoize,
+    limit_results,
     preferred_forms_check,
 )
 
 
-@max_errors(1)
+@limit_results(1)
 @memoize
 def check_bottleneck(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors about bottles and their necks.

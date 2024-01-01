@@ -24,7 +24,8 @@ Not guilty beyond a reasonable doubt
 
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check
 
 
 @memoize

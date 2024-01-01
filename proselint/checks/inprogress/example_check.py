@@ -14,7 +14,8 @@ The first line always is always wrong.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, reverse
+from ...lint_checks import ResultCheck
+from ...tools import reverse
 
 
 def check(text: str) -> list[ResultCheck]:
