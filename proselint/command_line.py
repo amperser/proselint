@@ -6,38 +6,27 @@ import json
 import os
 import subprocess
 import sys
+import time
 import traceback
 from pathlib import Path
 from typing import Optional, Union
 
 import click
 
+from . import tools
 from .config import default
 from .logger import log, set_verbosity
 from .paths import demo_file
-from .tools import (
-    ResultLint,
-    clear_cache,
-    close_cache_on_exit,
-    close_cache_shelves,
-    errors_to_json,
-    initialize_cache,
-    lint,
-    load_options,
-)
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
 
 
-def timing_test(corpus: str = "0.1.0") -> float:
+def run_benchmark(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
-    import time
-
     # force a clean slate
-    clear_cache()
-    initialize_cache()
+    tools.cache.clear()
     # corpus was removed in https://github.com/amperser/proselint/pull/186
     log.error(
         "Benchmarking the corpus does not work for the time being -> will use demo",
@@ -49,7 +38,8 @@ def timing_test(corpus: str = "0.1.0") -> float:
             filepath = corpus_path / file
             if filepath.suffix == ".md":
                 subprocess.call(
-                    ["proselint", filepath.as_posix()],
+                    ["proselint", "--demo", "--compact"],
+                    # filepath.as_posix()
                     timeout=4,
                     shell=False,
                     stdout=subprocess.DEVNULL,
@@ -62,13 +52,13 @@ def timing_test(corpus: str = "0.1.0") -> float:
 
 def print_errors(
     filename: Union[Path, str],
-    errors: list[ResultLint],
+    errors: list[tools.ResultLint],
     output_json: bool = False,
     compact: bool = False,
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
-        log.info(errors_to_json(errors))
+        log.info(tools.errors_to_json(errors))
 
     else:
         for error in errors:
@@ -95,11 +85,9 @@ def print_errors(
                 filename = ""
 
             log.info("%s:%d:%d: %s %s", filename, 1 + line, 1 + column, check, message)
-        log.info("Found %d lint-warnings", len(errors))
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.version_option(__version__, "--version", "-v", message="%(version)s")
 @click.option(
     "--config",
     is_flag=False,
@@ -107,44 +95,46 @@ def print_errors(
     help="Path to configuration file.",
 )
 @click.option(
-    "--debug",
-    "-d",
+    "--verbose",
+    "-v",
     is_flag=True,
-    help="Give verbose output (also clears cache at start).",
+    help="Give verbose output.",
 )
 @click.option("--clean", "-c", is_flag=True, help="Clear the cache and exit.")
 @click.option("--json", "-j", "output_json", is_flag=True, help="Output as JSON.")
-@click.option("--time", "-t", is_flag=True, help="Time on a corpus.")
+@click.option("--benchmark", "-b", is_flag=True, help="Time on a corpus.")
 @click.option("--demo", is_flag=True, help="Run over demo file.")
 @click.option("--compact", is_flag=True, help="Shorten output.")
 @click.option("--dump-config", is_flag=True, help="Prints current config.")
 @click.option("--dump-default-config", is_flag=True, help="Prints default config.")
+@click.option("--version", is_flag=True)
 @click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
-@close_cache_on_exit
 def proselint(
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,
-    version=None,  # TODO: verbose/debug should also print proselint-, py- & click-version
     clean: bool = False,  # TODO: this should be a subcommand
-    debug: bool = False,  # TODO: verbose is a better name
+    verbose: bool = False,
     output_json: bool = False,
-    time: bool = False,  # TODO: this should be a subcommand benchmark
+    benchmark: bool = False,
     demo: bool = False,
     compact: bool = False,
     dump_config: bool = False,  # TODO: this should be a subcommand
     dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
+    version: bool = False,
 ):
     """Create the CLI for proselint, a linter for prose."""
     # In debug or clean mode, delete cache & *.pyc files before running.
-    if debug or clean:
+    if verbose:
         set_verbosity(True)
-        log.info("Debug-mode activated -> will clean cache now")
-        clear_cache()
+
+    if version:
+        log.info("Proselint v%s", __version__)
+        log.debug("Python    v%s", sys.version)
+        log.debug("Click     v%s", click.__version__)
 
     if clean:
+        tools.cache.clear()
         sys.exit(0)
-    else:
-        initialize_cache()
 
     if dump_default_config:
         _json = json.dumps(default, sort_keys=True, indent=4)
@@ -153,14 +143,14 @@ def proselint(
 
     if isinstance(config, str):
         config = Path(config)
-    config = load_options(config)
+    config = tools.load_options(config)
 
     if dump_config:
         log.info(json.dumps(config, sort_keys=True, indent=4))
         sys.exit(0)
 
-    if time:
-        timing_test()
+    if benchmark:
+        run_benchmark()
         sys.exit(0)
 
     # Use the demo file by default.
@@ -188,29 +178,28 @@ def proselint(
     # Use stdin if no paths were specified
     if len(paths) == 0:
         log.info("No path specified -> will read from <stdin>")
-        errors = lint(sys.stdin, debug, config)
+        errors = tools.lint(sys.stdin, verbose, config)
         num_errors += len(errors)
         print_errors("<stdin>", errors, output_json, compact)
     else:
+        ts_start = time.time()
         for fp in filepaths:
-            log.debug("Opening file '%s'", fp.name)
+            log.debug("Processing '%s'", fp.name)
             try:
                 # TODO: is errors-replace the best? can we detect coding?
                 content = fp.open(encoding="utf-8", errors="replace")
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-            errors = lint(content, debug, config)
+            errors = tools.lint(content, verbose, config)
             num_errors += len(errors)
 
             print_errors(fp, errors, output_json, compact)
+        duration = time.time() - ts_start
+        log.info("Found %d lint-warnings in %.3f s", num_errors, duration)
 
     # Return an exit code
-    close_cache_shelves()
-    if num_errors > 0:
-        sys.exit(1)
-    else:
-        sys.exit(0)
+    sys.exit(num_errors > 0)
 
 
 def extract_files(files: list[Path]) -> list[Path]:
