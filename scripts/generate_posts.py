@@ -1,8 +1,8 @@
 """Generate blog posts from check docstrings."""
 
 import ast
-import datetime
 import os
+from datetime import datetime
 from pathlib import Path
 
 project_path = Path(__file__).parent.parent
@@ -36,13 +36,12 @@ for root, _, files in listing:
 
             post_filename = (
                 project_path
-                / f"site/_posts/{datetime.date.today()}-{docstring[0:6]}.md"
+                / f"site/_posts/{datetime.now().date()}-{docstring[0:6]}.md"
             )
 
             # Chop off the first two lines
-            for _ in range(2):
-                docstring = "\n".join(docstring.split("\n")[1:])
+            docstring = "\n".join(docstring.split("\n")[2:])
 
             # Create a new post in the blog.
-            with post_filename.open("xb") as f:  # TODO: maybe add b, so xb
+            with post_filename.open("xb") as f:  # TODO: added b, so test
                 f.write(docstring.encode("utf8"))

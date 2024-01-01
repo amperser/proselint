@@ -26,7 +26,6 @@ def test_deepmerge_dicts():
 @patch("os.path.isfile")
 def test_load_options_function(isfile):
     """Test load_options by specifying a user options path"""
-
     isfile.side_effect = CONFIG_FILE.__eq__
 
     overrides = load_options(CONFIG_FILE)
