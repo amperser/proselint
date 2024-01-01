@@ -26,10 +26,11 @@ shift in emotional calibration.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, max_errors, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
-@max_errors(3)
+@limit_results(3)
 @memoize
 def check(text: str) -> list[ResultCheck]:
     """Advice on sudden vs suddenly."""

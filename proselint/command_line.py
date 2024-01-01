@@ -14,9 +14,10 @@ from typing import Optional, Union
 import click
 
 from . import tools
-from .config import default
+from .config_default import proselint_base
+from .config_paths import demo_file
+from .lint_cache import cache
 from .logger import log, set_verbosity
-from .paths import demo_file
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
@@ -26,7 +27,7 @@ base_url = "proselint.com/"
 def run_benchmark(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     # force a clean slate
-    tools.cache.clear()
+    cache.clear()
     # corpus was removed in https://github.com/amperser/proselint/pull/186
     log.error(
         "Benchmarking the corpus does not work for the time being -> will use demo",
@@ -48,43 +49,6 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
         duration = time.time() - start
         log.info("Linting corpus %s took %.3f s.", _type, duration)
     return duration
-
-
-def print_errors(
-    filename: Union[Path, str],
-    errors: list[tools.ResultLint],
-    output_json: bool = False,
-    compact: bool = False,
-) -> None:
-    """Print the errors, resulting from lint, for filename."""
-    if output_json:
-        log.info(tools.errors_to_json(errors))
-
-    else:
-        for error in errors:
-            (
-                check,
-                message,
-                line,
-                column,
-                _,  # start,
-                _,  # end,
-                _,  # extent,
-                _,  # severity,
-                _,  # replacements,
-            ) = error
-
-            if isinstance(filename, Path):
-                if compact:
-                    filename = filename.name
-                else:
-                    filename = filename.absolute().as_uri()
-                    # TODO: would be nice to supress "file:///"
-                    # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-            elif compact:
-                filename = ""
-
-            log.info("%s:%d:%d: %s %s", filename, 1 + line, 1 + column, check, message)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -133,11 +97,11 @@ def proselint(
         log.debug("Click     v%s", click.__version__)
 
     if clean:
-        tools.cache.clear()
+        cache.clear()
         sys.exit(0)
 
     if dump_default_config:
-        _json = json.dumps(default, sort_keys=True, indent=4)
+        _json = json.dumps(proselint_base, sort_keys=True, indent=4)
         log.info(_json)
         return _json  # TODO: here dump is returned, below None is returned?
 
@@ -170,7 +134,7 @@ def proselint(
     log.debug("Paths to lint: %s", paths)
 
     # Expand the list of directories and files.
-    filepaths = extract_files(paths)
+    filepaths = tools.extract_files(paths)
 
     # Lint the files
     num_errors = 0
@@ -180,7 +144,7 @@ def proselint(
         log.info("No path specified -> will read from <stdin>")
         errors = tools.lint(sys.stdin, verbose, config)
         num_errors += len(errors)
-        print_errors("<stdin>", errors, output_json, compact)
+        tools.print_errors("<stdin>", errors, output_json, compact)
     else:
         ts_start = time.time()
         for fp in filepaths:
@@ -194,34 +158,12 @@ def proselint(
             errors = tools.lint(content, verbose, config)
             num_errors += len(errors)
 
-            print_errors(fp, errors, output_json, compact)
+            tools.print_errors(fp, errors, output_json, compact)
         duration = time.time() - ts_start
         log.info("Found %d lint-warnings in %.3f s", num_errors, duration)
 
     # Return an exit code
     sys.exit(num_errors > 0)
-
-
-def extract_files(files: list[Path]) -> list[Path]:
-    """Expand list of paths to include all text files matching the pattern."""
-    expanded_files = []
-    legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
-
-    for file in files:
-        # If it's a directory, recursively walk through it and find the files.
-        if file.is_dir():
-            for _dir, _, _filenames in os.walk(file):
-                _path = Path(_dir)
-                for filename in _filenames:
-                    _file_path = _path / filename
-                    if _file_path.suffix.lower() in legal_extensions:
-                        expanded_files.append(_file_path)
-
-        # Otherwise add the file directly.
-        else:
-            expanded_files.append(file)
-
-    return expanded_files
 
 
 if __name__ == "__main__":

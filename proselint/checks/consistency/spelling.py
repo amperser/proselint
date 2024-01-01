@@ -21,7 +21,8 @@ spellings in the same document.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, consistency_check, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, consistency_check
 
 
 @memoize

@@ -2,7 +2,7 @@
 
 # TODO: add multiprocessing, compact output, ...
 
-default: dict = {
+proselint_base: dict = {
     "max_errors": 1000,
     "checks": {
         "airlinese.misc": True,

@@ -12,7 +12,8 @@ categories: writing
 Point out misuse of scare quotes.
 
 """
-# from proselint.tools import memoize, existence_check
+# from ...lint_cache import memoize
+# from ...lint_checks import existence_check
 # from __future__ import annotations
 
 # @memoize

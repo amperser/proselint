@@ -3,8 +3,8 @@
 import unittest
 from unittest import mock
 
-from proselint import tools
-from proselint.paths import cache_user_path
+import proselint.lint_cache
+from proselint.config_paths import cache_user_path
 
 
 class Test__delete_cache(unittest.TestCase):
@@ -17,15 +17,15 @@ class Test__delete_cache(unittest.TestCase):
     @mock.patch("shutil.rmtree")
     def test_rm_cache(self, mock_rmtree):
         """Correct directory is removed."""
-        tools.cache.clear()
+        proselint.lint_cache.cache.clear()
         mock_rmtree.assert_called_with(self.cache_path)
 
     @mock.patch("shutil.rmtree", side_effect=PermissionError)
     def test_no_permission(self, mock_rmtree):
         """Ignore if unable to delete."""
-        tools.cache.clear()
+        proselint.lint_cache.cache.clear()
 
     @mock.patch("shutil.rmtree", side_effect=OSError)
     def test_on_oserror(self, mock_rmtree):
         """Ignore if general OSError."""
-        tools.cache.clear()
+        proselint.lint_cache.cache.clear()

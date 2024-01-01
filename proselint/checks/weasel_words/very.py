@@ -15,10 +15,11 @@ delete it and the writing will be just as it should be.
 """
 from __future__ import annotations
 
-from proselint.tools import ResultCheck, existence_check, max_errors, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
-@max_errors(1)
+@limit_results(1)
 @memoize
 def check(text: str) -> list[ResultCheck]:
     """Avoid 'very'."""

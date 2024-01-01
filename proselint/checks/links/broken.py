@@ -17,7 +17,8 @@ from __future__ import annotations
 import re
 import urllib.request as urllib_request  # for Python 3
 
-from proselint.tools import ResultCheck, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck
 
 
 @memoize

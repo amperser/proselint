@@ -16,7 +16,8 @@ from __future__ import annotations
 
 import re
 
-from proselint.tools import ResultCheck, memoize
+from ...lint_cache import memoize
+from ...lint_checks import ResultCheck
 
 
 @memoize

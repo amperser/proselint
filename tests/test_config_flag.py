@@ -5,8 +5,8 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
-from proselint.config import default
-from proselint.tools import deepmerge_dicts, load_options
+from proselint.config_default import default
+from proselint.tools import _deepmerge_dicts, load_options
 
 runner = CliRunner()
 
@@ -15,7 +15,7 @@ def test_deepmerge_dicts():
     """Test deepmerge_dicts"""
     d1 = {"a": 1, "b": {"c": 2, "d": 3}}
     d2 = {"a": 2, "b": {"c": 3, "e": 4}}
-    assert deepmerge_dicts(d1, d2) == {"a": 2, "b": {"c": 3, "d": 3, "e": 4}}
+    assert _deepmerge_dicts(d1, d2) == {"a": 2, "b": {"c": 3, "d": 3, "e": 4}}
 
 
 def test_load_options_function_default():
