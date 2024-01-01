@@ -13,7 +13,7 @@ import re
 import shutil
 import sys
 import traceback
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
@@ -46,8 +46,8 @@ class Cache:
 
     def __init__(self) -> None:
         self.data: dict[str, list[ResultCheck]] = {}
-        self.age: dict[str, datetime] = {}
-        self.ts_now: datetime = datetime.now()
+        self.age: dict[str, int] = {}
+        self.ts_now: int = round(datetime.now().timestamp())
 
     def __exit__(self) -> None:
         """Close previously opened cache shelves."""
@@ -62,7 +62,12 @@ class Cache:
             return
         if not cache_user_path.is_dir():
             cache_user_path.mkdir(parents=True)
-        # TODO: sort out aged entries
+        age_max: int = self.ts_now - round(timedelta(days=1).total_seconds())
+        for _key in self.data:
+            if self.age[_key] < age_max:
+                self.age.pop(_key)
+                self.data.pop(_key)
+            # TODO: could be speed up with dict_base - dict_entries_to_remove
         with self.save_path.open("wb", buffering=-1) as fd:
             pickle.dump(
                 [self.data, self.age],
@@ -77,11 +82,12 @@ class Cache:
         # TODO: this should catch exceptions and switch to a fresh instance on fail
         instance = cls()
         if cls.save_path.exists():
-            with cls.save_path.open("rb", buffering=-1) as fd:
-                data = pickle.load(fd, fix_imports=False)  # noqa: S301
-            instance.data = data[0]
-            instance.age = data[1]
-            log.debug(" -> found & restored cache")
+            with contextlib.suppress(EOFError):
+                with cls.save_path.open("rb", buffering=-1) as fd:
+                    data = pickle.load(fd, fix_imports=False)  # noqa: S301
+                instance.data = data[0]
+                instance.age = data[1]
+                log.debug(" -> found & restored cache")
         return instance
 
     def clear(self) -> None:
@@ -116,7 +122,7 @@ def memoize(  # new
         except KeyError:
             value = fn(text)
             cache.data[key] = value
-            # cache.age[key] = cache.
+            cache.age[key] = cache.ts_now
             return value
         except TypeError:
             log.error(
