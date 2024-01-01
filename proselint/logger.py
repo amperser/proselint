@@ -1,12 +1,12 @@
 import logging
 import logging.handlers
 
-# try:
-#    import chromalog#
+try:
+    import chromalog  # todo: maybe switch to rich to allow links
 
-#    chromalog.basicConfig(format="%(message)s")
-# except ImportError:
-chromalog = None
+    chromalog.basicConfig(format="%(message)s")
+except ImportError:
+    chromalog = None
 
 log = logging.getLogger("proselint")
 log.addHandler(logging.NullHandler())
