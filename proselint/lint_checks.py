@@ -4,7 +4,7 @@ import functools
 import importlib
 import re
 import sys
-from typing import Optional, Callable, TypeAlias
+from typing import Callable, Optional, TypeAlias
 
 from proselint.config_paths import proselint_path
 
@@ -165,11 +165,10 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
 
     for check_name in check_names:
         module = importlib.import_module("." + check_name, "proselint.checks")
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
+        checks += [getattr(module, d) for d in dir(module) if re.match("check", d)]
 
     return checks
+
 
 ###############################################################################
 # Wrapper #####################################################################
@@ -185,6 +184,7 @@ def limit_results(value: int):
             return _truncate_errors(fn(*args, **kwargs), value)
 
         return wrapped
+
     return wrapper
 
 
@@ -211,6 +211,7 @@ def _truncate_errors(
 
 def ppm_threshold(threshold: float):
     """Decorate a check to error if the PPM threshold is surpassed."""
+
     # TODO: might be a good idea to add a min text length
     def wrapped(fn):
         @functools.wraps(fn)
@@ -223,6 +224,7 @@ def ppm_threshold(threshold: float):
             return _threshold_check(fn(*args, **kwargs), threshold, len(args[0]))
 
         return wrapper
+
     return wrapped
 
 

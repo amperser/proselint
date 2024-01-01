@@ -201,31 +201,27 @@ def is_quoted(position: int, text: str) -> bool:
         return ranges
 
     def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
-        for start, end in ranges:
-            if start <= _position < end:
-                return True
-        return False
+        return any(start <= _position < end for start, end in ranges)
 
     return position_in_ranges(find_ranges(text), position)
 
 
 def errors_to_json(items: list[ResultLint]) -> str:
     """Convert the errors to JSON."""
-    out = []
-    for item in items:
-        out.append(
-            {
-                "check": item[0],
-                "message": item[1],
-                "line": 1 + item[2],
-                "column": 1 + item[3],
-                "start": 1 + item[4],
-                "end": 1 + item[5],
-                "extent": item[6],
-                "severity": item[7],
-                "replacements": item[8],
-            },
-        )
+    out = [
+        {
+            "check": item[0],
+            "message": item[1],
+            "line": 1 + item[2],
+            "column": 1 + item[3],
+            "start": 1 + item[4],
+            "end": 1 + item[5],
+            "extent": item[6],
+            "severity": item[7],
+            "replacements": item[8],
+        }
+        for item in items
+    ]
 
     return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
 

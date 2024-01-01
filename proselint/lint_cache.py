@@ -10,9 +10,9 @@ from typing import Callable
 
 from typing_extensions import Self
 
-from .logger import log
 from .config_paths import cache_user_path
 from .lint_checks import ResultCheck
+from .logger import log
 
 
 class Cache:
@@ -79,6 +79,7 @@ cache = Cache.from_file()
 ###############################################################################
 # Wrapper #####################################################################
 ###############################################################################
+
 
 def memoize(
     fn: Callable,
