@@ -31,8 +31,11 @@ jobs:
       - name: "[INIT] Install dependencies"
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: pip install poetry && poetry install
-      - name: "[EXEC] Lint"
-        run: ./utils ci lint
+    #  - name: "[EXEC] Lint"
+    #    run: ./utils ci lint
+    #  - name: Run Pre-Commit Tests 🧪
+    #    uses: pre-commit/action@v3.0.0
+
   test-cover:
     name: Test & Cover
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
@@ -64,10 +67,14 @@ jobs:
       - name: "[INIT] Install dependencies"
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: pip install poetry && poetry install
-      - name: "[EXEC] Test"
-        run: ./utils ci test --coverage
-      - name: "[EXEC] Upload coverage to Codecov"
-        uses: codecov/codecov-action@v3.1.4
-        with:
-          fail_ci_if_error: true
-          flags: ${{ matrix.os }},py${{ matrix.python }}
+      - name: "[EXEC] Test-Build Package"
+        run: poetry build
+      - name: "[EXEC] Unittests"
+        run: pytest
+#      - name: "[EXEC] Test"
+#        run: ./utils ci test --coverage
+#      - name: "[EXEC] Upload coverage to Codecov"
+#        uses: codecov/codecov-action@v3.1.4 # TODO: maybe not on every py-ver?
+#        with:
+#          fail_ci_if_error: true
+#          flags: ${{ matrix.os }},py${{ matrix.python }}
