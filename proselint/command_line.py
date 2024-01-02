@@ -48,6 +48,9 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
                 )
         duration = time.time() - start
         log.info("Linting corpus %s took %.3f s.", _type, duration)
+    log.info(
+        "Note: this has full CLI-Overhead, to compare linting-performance run 'proselint --demo'",
+    )
     return duration
 
 
