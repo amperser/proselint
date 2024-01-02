@@ -2,18 +2,18 @@
 
 from proselint.checks.mixed_metaphors import misc
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke_bottleneck():
+def test_bottleneck():
     """Basic smoke test for check_bottleneck."""
     check = misc.check_bottleneck
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "The project produced a huge bottleneck.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "The project produced a huge bottleneck.")
 
 
-def test_smoke_misc():
+def test_misc():
     """Basic smoke test for check_misc."""
     check = misc.check_misc
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "Writing tests is not rocket surgery.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "Writing tests is not rocket surgery.")

@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.latin import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.latin."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "And ceteris paribus, it was good.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "And ceteris paribus, it was good.")

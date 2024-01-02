@@ -2,21 +2,21 @@
 
 from proselint.checks.lgbtq.terms import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for lgbtq.terms."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _pass(check, "They were a gay couple.")
-    assert _fail(check, "He was a homosexual man.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_pass(check, "They were a gay couple.")
+    assert_fail(check, "He was a homosexual man.")
 
 
 def test_homosexual_term():
     """Check that the term homosexual does not get caught."""
-    assert _pass(check, "Homosexual.")
+    assert_pass(check, "Homosexual.")
 
 
 def test_sexual_prefence():
     """Check that sexual preference is flagged."""
-    assert _fail(check, "My sexual preference is for women.")
+    assert_fail(check, "My sexual preference is for women.")

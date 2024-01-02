@@ -1,10 +1,10 @@
 """Tests for misc.waxed check."""
 
 from proselint.checks.misc.waxed import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.waxed."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "They really could wax poetically.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "They really could wax poetically.")

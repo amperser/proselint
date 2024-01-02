@@ -2,18 +2,18 @@
 
 from proselint.checks.misc import false_plurals
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test_misc():
     """Basic smoke test for misc.false_plurals."""
     check = false_plurals.check
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "There were several phenomenons.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "There were several phenomenons.")
 
 
-def test_smoke_kudos():
+def test_kudos():
     """Basic smoke test for misc.false_plurals.kudos."""
     check = false_plurals.check_kudos
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "I give you many kudos.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "I give you many kudos.")

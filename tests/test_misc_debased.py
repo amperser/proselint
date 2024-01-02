@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.debased import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.debased."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "This leaves much to be desired.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "This leaves much to be desired.")

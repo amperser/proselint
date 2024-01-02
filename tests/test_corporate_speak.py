@@ -2,11 +2,11 @@
 
 from proselint.checks.corporate_speak.misc import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for corporate_speak.misc."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _pass(check, "We will discuss it later.")
-    assert _fail(check, "We will circle back around to it.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_pass(check, "We will discuss it later.")
+    assert_fail(check, "We will circle back around to it.")

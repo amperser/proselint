@@ -1,10 +1,10 @@
 """Tests for skunked_terms.misc check."""
 
 from proselint.checks.skunked_terms.misc import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for skunked_terms.misc."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "I gave an impassionate defence of the situation.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "I gave an impassionate defence of the situation.")

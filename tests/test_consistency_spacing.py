@@ -1,11 +1,11 @@
 """Tests for consistency.spacing check."""
 
 from proselint.checks.consistency.spacing import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for consistency.spacing."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _pass(check, "This is good. Only one space each time. Every time.")
-    assert _fail(check, "This is bad.  Not consistent. At all.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_pass(check, "This is good. Only one space each time. Every time.")
+    assert_fail(check, "This is bad.  Not consistent. At all.")

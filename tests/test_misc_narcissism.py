@@ -2,13 +2,13 @@
 
 from proselint.checks.misc.narcissism import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.narcissism."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(
         check,
         """In recent years, an increasing number of scientists have studied
          the problem in detail.""",
