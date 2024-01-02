@@ -30,3 +30,14 @@ def check_in_lint_result(check: str, text: str, n: int = 1):
     """Assert that text has n errors of type check."""
     assert check in [error[0] for error in lint(text)]
     # todo: n not checked, should not assert
+
+
+def print_invoke_return(result) -> None:
+    print(f"result::{result}")
+
+    print(f"exit::{result.exit_code}")
+    print(f"retvalt::{result.return_value}")
+
+    print(f"output::{result.output}")
+    print(f"stdout::{result.stdout}")
+    print(f" _bytes::{result.stdout_bytes}")

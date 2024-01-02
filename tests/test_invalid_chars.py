@@ -16,5 +16,6 @@ def test_invalid_characters():
     result = runner.invoke(proselint, CHAR_FILE)
 
     assert len(result.stdout) > 0
+    assert result.exit_code == 0
     assert "UnicodeDecodeError" not in result.stdout
     assert "FileNotFoundError" not in result.stdout
