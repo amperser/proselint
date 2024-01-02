@@ -37,12 +37,13 @@ proselint_base: dict = {
         "misc.currency": True,
         "misc.debased": True,
         "misc.false_plurals": True,
+        "misc.greylist": True,
         "misc.illogic": True,
         "misc.inferior_superior": True,
         "misc.institution_name": True,
         "misc.latin": True,
         "misc.many_a": True,
-        "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
+        # "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
         "misc.metadiscourse": True,
         "misc.narcissism": True,
         "misc.not_guilty": True,
