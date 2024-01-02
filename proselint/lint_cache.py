@@ -95,8 +95,9 @@ def memoize(
 
     @functools.wraps(fn)
     def wrapped(text: str, hash_text: Optional[str] = None):
-        if not hash_text:
-            hash_text = hashlib.sha224(text.encode("utf-8")).hexdigest()
+        if hash_text is None:
+            # disable cache when used without hash
+            return fn(text)
         key = _filename + hash_text
 
         try:
