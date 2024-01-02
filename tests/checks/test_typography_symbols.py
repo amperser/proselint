@@ -53,8 +53,9 @@ def test_curly_quotes():
     """Find "" quotes in a string."""
     check = symbols.check_curly_quotes
     assert_pass(check, "Smoke phrase with nothing flagged.")
-    assert_fail(check, """This is “a sentence”. Look at it.""")
-    assert_fail(check, """“This should produce an error”, he said.""")
-    assert_pass(check, "But this should not.")
+    assert_pass(check, """This is “a sentence”. Look at it.""")
+    assert_fail(check, """This is "another sentence". How faulty.""")
+    assert_fail(check, """"This should produce an error", he said.""")
+    assert_pass(check, """“This should produce no error”, he said.""")
     assert_fail(check, """Alas, "it should here too".""")
-    assert_pass(check, '"A singular should not, though.')
+    assert_pass(check, """A 'singular' should not, though.""")

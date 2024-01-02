@@ -8,7 +8,7 @@ def test_50s_hyphenation():
 
     text = """The 50's were swell."""
     check = dates.check_decade_apostrophes_short
-    assert_pass(check, text)
+    assert_fail(check, text)
 
 
 def test_50_cent_hyphenation():

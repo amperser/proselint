@@ -15,7 +15,7 @@ def test_lowercase_periods():
     assert_pass(check, "Basic smoke phrase without issues.")
     assert_pass(check, "It happened at 7 a.m.")
     assert_fail(check, "It happened at 7 am.")
-    assert_fail(check, "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:")
+    assert_pass(check, "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:")
 
 
 def test_spacing():
@@ -54,4 +54,4 @@ def test_redundancy():
     check = am_pm.check_redundancy
     assert_pass(check, "Basic smoke phrase without issues.")
     assert_pass(check, "It happened at 7 a.m.")
-    assert_pass(check, "It happened at 7a.m. in the morning.")
+    assert_fail(check, "It happened at 7a.m. in the morning.")
