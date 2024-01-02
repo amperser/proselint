@@ -1,10 +1,10 @@
 """Tests for misc.chatspeak check."""
 
 from proselint.checks.misc.chatspeak import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.chatspeak."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "BRB getting coffee.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "BRB getting coffee.")

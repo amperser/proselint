@@ -1,10 +1,10 @@
 """Tests for redundancy.ras_syndrome check."""
 
 from proselint.checks.redundancy.ras_syndrome import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for redundancy.ras_syndrome."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "Please enter your PIN number.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "Please enter your PIN number.")

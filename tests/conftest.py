@@ -7,15 +7,23 @@ def check_pass(check: Callable, texts: Union[list, str]) -> bool:
     """Check if the test runs cleanly on the given text."""
     if isinstance(texts, str):
         texts = [texts]
-    return not any(check.__wrapped__(text) for text in texts)
+    return not any(len(check(text)) > 0 for text in texts)
 
 
-def _pass(check: Callable, texts: Union[list, str]):
-    return check_pass(check, texts)
+def assert_pass(check: Callable, texts: Union[list, str]) -> None:
+    """Check if the test runs cleanly on the given text."""
+    if isinstance(texts, str):
+        texts = [texts]
+    for _text in texts:
+        assert check(_text) == []
 
 
-def _fail(check: Callable, texts: Union[list, str]):
-    return _fail(check, texts)
+def assert_fail(check: Callable, texts: Union[list, str]) -> None:
+    """Check if the test runs triggers on the given text."""
+    if isinstance(texts, str):
+        texts = [texts]
+    for _text in texts:
+        assert check(_text) != []
 
 
 def check_in_lint_result(check: str, text: str, n: int = 1):

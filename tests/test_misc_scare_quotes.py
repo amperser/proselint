@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.scare_quotes import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.scare_quotes."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "What was the 'take-home message'?")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "What was the 'take-home message'?")

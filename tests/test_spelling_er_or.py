@@ -1,10 +1,10 @@
 """Tests for spelling.er_or check."""
 
 from proselint.checks.spelling.er_or import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for spelling.er_or."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "She met with the invester.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "She met with the invester.")

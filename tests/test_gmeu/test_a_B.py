@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
 """Test GMEU entry 'a', part B."""
-
+from proselint.lint_checks import ResultCheck
 from tests.check import assert_error
-from tests.conftest import _fail
+from tests.conftest import assert_fail, assert_pass
 
 
-class Chk:
-    def check(self, text):
-        return assert_error, text, "misc.a_distributive"
+def check(text: str) -> list[ResultCheck]:
+    return assert_error, text, "misc.a_distributive"
 
 
-def test_smoke():
+def test_misc_a_vs_an_p2():
     sentences = [
         "An apple per day keeps the doctor away.",
         "I sleep eight hours per night.",
@@ -21,4 +20,6 @@ def test_smoke():
         "The $50-a-parent fee seems unreasonably high.",
     ]
     for sentence in sentences:
-        assert _fail(check, sentence)  # fixme
+        assert_fail(check, sentence)  # fixme
+
+    # assert_pass(check, "Smoke phrase with nothing flagged.")

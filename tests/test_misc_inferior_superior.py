@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.inferior_superior import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.inferior_superior."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "It was more inferior than the alternative.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "It was more inferior than the alternative.")

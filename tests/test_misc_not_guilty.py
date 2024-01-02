@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.not_guilty import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.not_guilty."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "She is not guilty beyond a reasonable doubt.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "She is not guilty beyond a reasonable doubt.")

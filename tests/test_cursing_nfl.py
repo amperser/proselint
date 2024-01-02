@@ -1,10 +1,10 @@
 """Tests for cursing.nfl check."""
 
 from proselint.checks.cursing.nfl import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for cursing.nfl."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "The QB is named ball licker.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "The QB is named ball licker.")

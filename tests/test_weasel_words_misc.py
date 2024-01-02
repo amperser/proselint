@@ -2,10 +2,10 @@
 
 from proselint.checks.weasel_words.misc import check
 
-from .conftest import _pass
+from .conftest import assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for weasel_words.misc."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
     # TODO: add test when check is implemented

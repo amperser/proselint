@@ -1,18 +1,18 @@
 """Tests for lexical_illusions.misc check."""
 
 from proselint.checks.lexical_illusions.misc import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for lexical_illusions.misc."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "Paris in the the springtime.")
-    assert _pass(check, "And he's gone, gone with the breeze")
-    assert _pass(check, "You should know that that sentence wasn't wrong.")
-    assert _pass(check, "She had had dessert on the balcony.")
-    assert _fail(check, "You should know that that that was wrong.")
-    assert _pass(check, "The practitioner's side")
-    assert _pass(check, "An antimatter particle")
-    assert _pass(check, "The theory")
-    assert _pass(check, "She had coffee at the Foo-bar bar.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "Paris in the the springtime.")
+    assert_pass(check, "And he's gone, gone with the breeze")
+    assert_pass(check, "You should know that that sentence wasn't wrong.")
+    assert_pass(check, "She had had dessert on the balcony.")
+    assert_fail(check, "You should know that that that was wrong.")
+    assert_pass(check, "The practitioner's side")
+    assert_pass(check, "An antimatter particle")
+    assert_pass(check, "The theory")
+    assert_pass(check, "She had coffee at the Foo-bar bar.")

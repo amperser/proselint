@@ -1,10 +1,10 @@
 """Tests for spelling.ve_of check."""
 
 from proselint.checks.spelling.ve_of import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for spelling.ve_of."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "This could of been the third test.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "This could of been the third test.")

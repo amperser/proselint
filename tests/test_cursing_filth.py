@@ -1,10 +1,10 @@
 """Tests for cursing.filth check."""
 
 from proselint.checks.cursing.filth import check
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for cursing.filth."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "Bad shit in this phrase.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "Bad shit in this phrase.")

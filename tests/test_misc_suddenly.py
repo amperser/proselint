@@ -2,10 +2,10 @@
 
 from proselint.checks.misc.suddenly import check
 
-from .conftest import _fail, _pass
+from .conftest import assert_fail, assert_pass
 
 
-def test_smoke():
+def test():
     """Basic smoke test for misc.suddenly."""
-    assert _pass(check, "Smoke phrase with nothing flagged.")
-    assert _fail(check, "Suddenly, it all made sense.")
+    assert_pass(check, "Smoke phrase with nothing flagged.")
+    assert_fail(check, "Suddenly, it all made sense.")

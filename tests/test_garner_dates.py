@@ -1,6 +1,6 @@
 """Test garner.dates."""
 from proselint.checks.dates_times import dates
-from tests.conftest import _fail, _pass
+from tests.conftest import assert_fail, assert_pass
 
 
 def test_50s_hyphenation():
@@ -8,7 +8,7 @@ def test_50s_hyphenation():
 
     text = """The 50's were swell."""
     check = dates.check_decade_apostrophes_short
-    assert _pass(check, text)
+    assert_pass(check, text)
 
 
 def test_50_cent_hyphenation():
@@ -18,11 +18,11 @@ def test_50_cent_hyphenation():
         Eminem to the G-Unit record label.
     """
     check = dates.check_decade_apostrophes_short
-    assert _pass(check, text)
+    assert_pass(check, text)
 
 
 def test_dash_and_from():
     """Test garner.check_dash_and_from."""
     text = """From 1999-2002, Sally served as chair of the committee."""
     check = dates.check_dash_and_from
-    assert _fail(check, text)
+    assert_fail(check, text)
