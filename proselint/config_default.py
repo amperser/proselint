@@ -42,7 +42,7 @@ proselint_base: dict = {
         "misc.institution_name": True,
         "misc.latin": True,
         "misc.many_a": True,
-        "misc.metaconcepts": True,
+        "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
         "misc.metadiscourse": True,
         "misc.narcissism": True,
         "misc.not_guilty": True,
