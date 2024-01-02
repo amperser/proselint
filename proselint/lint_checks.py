@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 import importlib
+import logging
 import re
 from typing import Callable, Optional, TypeAlias
 
@@ -160,7 +161,13 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
-        module = importlib.import_module("." + check_name, "proselint.checks")
+        try:
+            module = importlib.import_module("." + check_name, "proselint.checks")
+        except ModuleNotFoundError:
+            logging.exception(
+                "requested config-flag '%s' not found in proselint.checks", check_name,
+            )
+            continue
         checks += [getattr(module, d) for d in dir(module) if re.match("check", d)]
 
     return checks
@@ -208,7 +215,6 @@ def _truncate_errors(
 def ppm_threshold(threshold: float):
     """Decorate a check to error if the PPM threshold is surpassed."""
 
-    # TODO: might be a good idea to add a min text length
     def wrapped(fn):
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
@@ -217,7 +223,7 @@ def ppm_threshold(threshold: float):
                 _len = len(kwargs["text"])
             elif len(args) > 0:
                 _len = len(args[0])
-            return _threshold_check(fn(*args, **kwargs), threshold, len(args[0]))
+            return _threshold_check(fn(*args, **kwargs), threshold, _len)
 
         return wrapper
 
@@ -228,8 +234,12 @@ def _threshold_check(errors: list, threshold: float, length: int):
     """Check that returns an error if the PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)
-        ppm = (errcount / length) * 1e6
+        # statistics only work with big numbers, so add some workarounds
+        if errcount < 2:
+            return []
+        length = max(length, 1000)
 
-        if ppm >= threshold and errcount >= 1:
+        ppm = (errcount / length) * 1e6
+        if ppm > threshold:
             return [errors[0]]
     return []
