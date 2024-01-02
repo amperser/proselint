@@ -10,11 +10,9 @@ from proselint.command_line import proselint
 def test_invalid_characters():  # todo: probably broken
     """Ensure that a file with illegal characters does not break us."""
     test_path = Path(__file__).parent
-    test_file = test_path / "test_illegal_chars.txt"
-    runner = CliRunner()
+    test_file = test_path / "illegal_chars.txt"
+    result = CliRunner().invoke(proselint, test_file.as_posix())
 
-    result = runner.invoke(proselint, test_file.as_posix())
-
-    assert len(result.stdout) > 0
+    assert result.exit_code == 0
     assert "UnicodeDecodeError" not in result.stdout
     assert "FileNotFoundError" not in result.stdout
