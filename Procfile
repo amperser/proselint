@@ -1,3 +1,3 @@
 web: gunicorn app:app --log-file=-
-worker: python worker.py
-clock: python clock.py
+worker: python scripts/worker.py
+clock: python scripts/clock.py
