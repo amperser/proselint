@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
 import traceback
 from pathlib import Path
+from types import FrameType
 from typing import Optional, Union
 
 import click
@@ -22,6 +24,11 @@ from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
+
+
+def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
+    log.warning("Aborted!")
+    sys.exit(0)
 
 
 def run_benchmark(corpus: str = "0.1.0") -> float:
@@ -90,13 +97,17 @@ def proselint(
     version: bool = False,
 ):
     """Create the CLI for proselint, a linter for prose."""
+    signal.signal(signal.SIGTERM, exit_gracefully)
+    signal.signal(signal.SIGINT, exit_gracefully)
+
     if verbose:
         set_verbosity(True)
 
     if version:
-        log.info("Proselint v%s", __version__)
+        click.echo("Proselint v%s" % __version__)
         log.debug("Python    v%s", sys.version)
         log.debug("Click     v%s", click.__version__)
+        sys.exit(0)
 
     if clean:
         cache.clear()
@@ -164,7 +175,7 @@ def proselint(
         log.info("Found %d lint-warnings in %.3f s", num_errors, duration)
 
     # Return an exit code
-    sys.exit(num_errors > 0)
+    sys.exit(num_errors)
 
 
 if __name__ == "__main__":
