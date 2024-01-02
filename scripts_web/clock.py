@@ -12,9 +12,9 @@ from email.mime.text import MIMEText
 import gmail
 import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
+from worker import conn
 
 from proselint import log
-from worker import conn
 
 logging.basicConfig()
 scheduler = BlockingScheduler()

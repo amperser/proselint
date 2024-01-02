@@ -1,5 +1,4 @@
 import cProfile
-import hashlib
 from pathlib import Path
 from timeit import timeit
 
@@ -20,7 +19,7 @@ lint_cache.cache.clear()
 sort_by = "tottime"  # tottime or cumtime, see readme
 
 cProfile.run("errors = proselint.tools.lint(f)", sort=sort_by)
-cProfile.run('errors = proselint.tools.lint(f)', sort=sort_by)
+cProfile.run("errors = proselint.tools.lint(f)", sort=sort_by)
 # cProfile.run(f'proselint --compact {file_path.absolute()}', sort=sort_by)
 
 errors = proselint.tools.lint(f)
@@ -54,5 +53,3 @@ for _key, _val in contenders.items():
     _dur = timeit(_val, globals=globals(), number=1000)
     _hash = eval(_val)
     print(f"{_key} took {_dur * 1000:.2f} ms, result= {_hash}")
-
-
