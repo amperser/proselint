@@ -5,5 +5,6 @@ from . import tools
 from .version import __version__
 from .logger import log
 from . import checks
+from .config_paths import proselint_path as path
 
-__all__ = ["tools", "log", "checks"]
+__all__ = ["tools", "log", "checks", "path"]
