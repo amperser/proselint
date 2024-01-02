@@ -2,7 +2,7 @@
 
 from proselint.checks.mixed_metaphors import misc
 
-from .conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail, assert_pass
 
 
 def test_bottleneck():

@@ -2,7 +2,7 @@
 
 from proselint.checks.misc.scare_quotes import check
 
-from .conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail, assert_pass
 
 
 def test():

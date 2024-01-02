@@ -2,7 +2,7 @@
 
 from proselint.checks.misc import phrasal_adjectives
 
-from .conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail, assert_pass
 
 
 def test_misc():

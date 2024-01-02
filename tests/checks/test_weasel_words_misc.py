@@ -2,7 +2,7 @@
 
 from proselint.checks.weasel_words.misc import check
 
-from .conftest import assert_pass
+from tests.conftest import assert_pass
 
 
 def test():
