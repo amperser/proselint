@@ -1,7 +1,7 @@
 """Tests for misc.tense_present check."""
 
 from proselint.checks.misc.tense_present import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

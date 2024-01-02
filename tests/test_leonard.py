@@ -1,6 +1,6 @@
 """Test garner.dates."""
 from proselint.checks.typography import exclamation
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_capitalization_and_no_exclamation():

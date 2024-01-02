@@ -18,7 +18,6 @@ from proselint.lint_checks import ResultCheck
 
 @memoize
 def check(text: str) -> list[ResultCheck]:
-
     error_code = "weasel_words.misc"
     msg = "Weasel words present."
 

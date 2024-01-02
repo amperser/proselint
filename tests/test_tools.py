@@ -1,6 +1,7 @@
 """Test the tools module."""
 
 from __future__ import annotations
+
 from proselint.tools import lint
 
 

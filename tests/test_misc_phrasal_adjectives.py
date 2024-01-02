@@ -2,8 +2,7 @@
 
 from proselint.checks.misc import phrasal_adjectives
 
-from .check import Check
-from .conftest import _pass, _fail
+from .conftest import _fail, _pass
 
 
 def test_smoke():
@@ -11,6 +10,7 @@ def test_smoke():
     check = phrasal_adjectives.check
     assert _pass(check, "Smoke phrase with nothing flagged.")
     assert _fail(check, "There were across the board discounts.")
+
 
 def test_smoke_ly():
     """Basic smoke test for misc.phrasal_adjectives.check_ly."""

@@ -1,7 +1,7 @@
 """Tests for consistency.spelling check."""
 
 from proselint.checks.consistency.spelling import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

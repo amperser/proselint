@@ -21,4 +21,4 @@ def test_smoke():
         "The $50-a-parent fee seems unreasonably high.",
     ]
     for sentence in sentences:
-        assert _fail(check, sentence)  #fixme
+        assert _fail(check, sentence)  # fixme

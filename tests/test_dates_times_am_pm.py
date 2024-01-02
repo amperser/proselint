@@ -1,7 +1,7 @@
 """Tests for dates_times.am_pm check."""
 
 from proselint.checks.dates_times import am_pm
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke_check_lowercase_periods():

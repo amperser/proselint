@@ -1,6 +1,6 @@
 """Test garner.dates."""
 from proselint.checks.dates_times import dates
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_50s_hyphenation():

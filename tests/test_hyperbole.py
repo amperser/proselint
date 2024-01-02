@@ -1,7 +1,7 @@
 """Tests for hyperbole.misc check."""
 
 from proselint.checks.hyperbole.misc import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

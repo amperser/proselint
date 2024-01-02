@@ -1,13 +1,13 @@
 """Tests for misc.greylist check."""
 
 from proselint.checks.misc.greylist import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():
-        """Basic smoke test for misc.greylist."""
-        assert _pass(check, "Smoke phrase with nothing flagged.")
-        assert _fail(check, "She should utilize her knowledge.")
+    """Basic smoke test for misc.greylist."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "She should utilize her knowledge.")
 
 
 def test_with_utilized():

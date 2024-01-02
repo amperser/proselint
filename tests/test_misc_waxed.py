@@ -1,7 +1,7 @@
 """Tests for misc.waxed check."""
 
 from proselint.checks.misc.waxed import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

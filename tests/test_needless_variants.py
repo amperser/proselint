@@ -1,7 +1,7 @@
 """Tests for needless_variants.misc check."""
 
 from proselint.checks.needless_variants.misc import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

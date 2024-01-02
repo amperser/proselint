@@ -1,7 +1,7 @@
 """Tests for security.password check."""
 
 from proselint.checks.security.password import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_security_password():

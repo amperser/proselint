@@ -1,6 +1,6 @@
-from typing import Union, Callable
+from typing import Callable, Union
+
 from proselint.tools import lint
-import pytest
 
 
 def check_pass(check: Callable, texts: Union[list, str]) -> bool:

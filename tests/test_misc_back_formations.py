@@ -1,7 +1,7 @@
 """Tests for misc.back_formations check."""
 
 from proselint.checks.misc.back_formations import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

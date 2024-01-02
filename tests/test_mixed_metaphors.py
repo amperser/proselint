@@ -2,7 +2,6 @@
 
 from proselint.checks.mixed_metaphors import misc
 
-from .check import Check
 from .conftest import _fail, _pass
 
 

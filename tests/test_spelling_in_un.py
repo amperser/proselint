@@ -1,7 +1,7 @@
 """Tests for spelling.in_un check."""
 
 from proselint.checks.spelling.in_un import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

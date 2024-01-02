@@ -2,8 +2,7 @@
 
 from proselint.checks.spelling.ance_ence import check
 
-from .check import Check
-from .conftest import _pass, _fail
+from .conftest import _fail, _pass
 
 
 def test_smoke():
