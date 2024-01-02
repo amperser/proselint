@@ -13,7 +13,7 @@ from rq import Queue
 
 import proselint
 from proselint.tools import ResultLint
-from worker import conn
+from .worker import conn
 
 app = Flask(__name__)
 cors = CORS(app)
