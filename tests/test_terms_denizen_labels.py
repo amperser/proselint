@@ -1,21 +1,10 @@
 """Tests for terms.denizen_labels check."""
 
-from proselint.checks.terms import denizen_labels as chk
+from proselint.checks.terms.denizen_labels import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for terms.denizen_labels."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for terms.denizen_labels."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""He was definitely a Hong Kongite.""")
+def test_smoke():
+    """Basic smoke test for terms.denizen_labels."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "He was definitely a Hong Kongite.")

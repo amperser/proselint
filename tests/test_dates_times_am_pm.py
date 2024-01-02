@@ -1,66 +1,57 @@
 """Tests for dates_times.am_pm check."""
 
-from proselint.checks.dates_times import am_pm as chk
+from proselint.checks.dates_times import am_pm
+from tests.conftest import _pass, _fail
 
-from .check import Check
+
+def test_smoke_check_lowercase_periods():
+    """Basic smoke test.
+
+    This is for the function
+    dates_times.am_pm.check_lowercase_periods.
+
+    """
+    check = am_pm.check_lowercase_periods
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened at 7 a.m.")
+    assert _fail(check, "It happened at 7 am.")
+    assert _fail(check, "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:")
 
 
-class TestCheck(Check):
-    """The test class for dates_times.am_pm."""
+def test_smoke_check_spacing():
+    """Basic smoke test.
 
-    __test__ = True
+    This is for the function
+    dates_times.am_pm.check_spacing.
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
+    """
+    check = am_pm.check_spacing
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened at 7 a.m.")
+    assert _fail(check, "It happened at 7a.m.")
 
-    def test_smoke_check_lowercase_periods(self):
-        """Basic smoke test.
 
-        This is for the function
-        dates_times.am_pm.check_lowercase_periods.
+def test_smoke_check_midnight_noon():
+    """Basic smoke test.
 
-        """
-        assert chk.check_lowercase_periods("Basic smoke phrase without issues.") == []
-        assert chk.check_lowercase_periods("It happened at 7 a.m.") == []
-        assert chk.check_lowercase_periods("It happened at 7 am.") != []
-        assert (
-            chk.check_lowercase_periods(
-                "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:",
-            )
-            == []
-        )
+    This for the function
+    dates_times.am_pm.midnight_noon.
 
-    def test_smoke_check_spacing(self):
-        """Basic smoke test.
+    """
+    check = am_pm.check_midnight_noon
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened at noon.")
+    assert _fail(check, "It happened at 12 a.m.")
 
-        This is for the function
-        dates_times.am_pm.check_spacing.
 
-        """
-        assert chk.check_spacing("Basic smoke phrase without issues.") == []
-        assert chk.check_spacing("It happened at 7 a.m.") == []
-        assert chk.check_spacing("It happened at 7a.m.") != []
+def test_smoke_check_redundancy():
+    """Basic smoke test.
 
-    def test_smoke_check_midnight_noon(self):
-        """Basic smoke test.
+    This for the function
+    dates_times.am_pm.check_redundancy.
 
-        This for the function
-        dates_times.am_pm.midnight_noon.
-
-        """
-        assert chk.check_midnight_noon("Basic smoke phrase without issues.") == []
-        assert chk.check_midnight_noon("It happened at noon.") == []
-        assert chk.check_midnight_noon("It happened at 12 a.m.") != []
-
-    def test_smoke_check_redundancy(self):
-        """Basic smoke test.
-
-        This for the function
-        dates_times.am_pm.check_redundancy.
-
-        """
-        assert len(chk.check_redundancy("Basic smoke phrase without issues.")) == 0
-        assert len(chk.check_redundancy("It happened at 7 a.m.")) == 0
-        assert len(chk.check_redundancy("It happened at 7a.m. in the morning.")) == 1
+    """
+    check = am_pm.check_redundancy
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened at 7 a.m.")
+    assert _pass(check, "It happened at 7a.m. in the morning.")

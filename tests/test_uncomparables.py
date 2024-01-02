@@ -1,35 +1,27 @@
 """Test uncomparables.misc"""
 
-from proselint.checks.uncomparables import misc as chk
+from proselint.checks.uncomparables.misc import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
+
+def test_smoke():
+    """Basic smoke test for uncomparables.misc."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "The item was more unique.")
 
 
-class TestCheck(Check):
-    """The test class for uncomparables.misc."""
+def test_sample_phrases():
+    """Find 'very unique'."""
+    assert _fail(check, "This sentence is very unique.")
 
-    __test__ = True
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
+def test_spaces():
+    """Handle spacing correctly."""
+    assert _fail(check, "This sentence is very\nunique.")
+    assert _fail(check, "Kind of complete.")
+    assert _pass(check, "Every perfect instance.")
 
-    def test_smoke(self):
-        """Basic smoke test for uncomparables.misc."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""The item was more unique.""")
 
-    def test_sample_phrases(self):
-        """Find 'very unique'."""
-        assert not self.passes("""This sentence is very unique.""")
-
-    def test_spaces(self):
-        """Handle spacing correctly."""
-        assert not self.passes("""This sentence is very\nunique.""")
-        assert not self.passes("""Kind of complete.""")
-        assert self.passes("""Every perfect instance.""")
-
-    def test_constitutional(self):
-        """Don't flag exceptions."""
-        assert self.passes("""A more perfect union.""")
+def test_constitutional():
+    """Don't flag exceptions."""
+    assert _pass(check, "A more perfect union.")

@@ -87,7 +87,6 @@ def proselint(
     version: bool = False,
 ):
     """Create the CLI for proselint, a linter for prose."""
-    # In debug or clean mode, delete cache & *.pyc files before running.
     if verbose:
         set_verbosity(True)
 
@@ -101,16 +100,15 @@ def proselint(
         sys.exit(0)
 
     if dump_default_config:
-        _json = json.dumps(proselint_base, sort_keys=True, indent=4)
-        log.info(_json)
-        return _json  # TODO: here dump is returned, below None is returned?
+        click.echo(json.dumps(proselint_base, sort_keys=True, indent=4))
+        sys.exit(0)
 
     if isinstance(config, str):
         config = Path(config)
     config = tools.load_options(config)
 
     if dump_config:
-        log.info(json.dumps(config, sort_keys=True, indent=4))
+        click.echo(json.dumps(config, sort_keys=True, indent=4))
         sys.exit(0)
 
     if benchmark:

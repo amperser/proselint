@@ -1,21 +1,10 @@
 """Tests for misc.chatspeak check."""
 
-from proselint.checks.misc import chatspeak as chk
+from proselint.checks.misc.chatspeak import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for misc.chatspeak."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.chatspeak."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""BRB getting coffee.""")
+def test_smoke():
+    """Basic smoke test for misc.chatspeak."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "BRB getting coffee.")

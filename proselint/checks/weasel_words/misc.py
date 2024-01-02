@@ -12,11 +12,14 @@ categories: writing
 Weasel words clearly weaken various aspects of a number of your sentences.
 
 """
+from proselint.lint_cache import memoize
+from proselint.lint_checks import ResultCheck
 
 
-# def check(text: str) -> list[ResultCheck]:
+@memoize
+def check(text: str) -> list[ResultCheck]:
 
-#     error_code = "weasel_words.misc"
-#     msg = "Weasel words present."
+    error_code = "weasel_words.misc"
+    msg = "Weasel words present."
 
-#     return [(1, 1, error_code, msg, None)]
+    return []  # TODO

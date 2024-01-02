@@ -1,22 +1,11 @@
 """Tests for annotations.misc check."""
 
-from proselint.checks.annotations import misc as chk
+from proselint.checks.annotations.misc import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for annotations.misc."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for annotations.misc."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes("""Add it to the to do list.""")
-        assert not self.passes("""Add it to the TODO list.""")
+def test_smoke():
+    """Basic smoke test for annotations.misc."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _pass(check, "Add it to the to do list.")
+    assert _fail(check, "Add it to the TODO list.")

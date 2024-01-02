@@ -1,23 +1,12 @@
 """Tests for consistency.spelling check."""
 
-from proselint.checks.consistency import spelling as chk
+from proselint.checks.consistency.spelling import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for consistency.spelling."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for consistency.spelling."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes("""The centre for the arts is the art centre.""")
-        assert self.passes("""The center for the arts is the art center.""")
-        assert not self.passes("""The centre of the arts is the art center.""")
+def test_smoke():
+    """Basic smoke test for consistency.spelling."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _pass(check, "The centre for the arts is the art centre.")
+    assert _pass(check, "The center for the arts is the art center.")
+    assert _fail(check, "The centre of the arts is the art center.")

@@ -1,30 +1,21 @@
 """Tests for lgbtq.offensive_terms check."""
 
-from proselint.checks.lgbtq import terms as chk
+from proselint.checks.lgbtq.terms import check
 
 from .check import Check
+from .conftest import _pass, _fail
 
 
-class TestCheck(Check):
-    """The test class for lgbtq.terms."""
+def test_smoke():
+    """Basic smoke test for lgbtq.terms."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _pass(check, "They were a gay couple.")
+    assert _fail(check, "He was a homosexual man.")
 
-    __test__ = True
+def test_homosexual_term():
+    """Check that the term homosexual does not get caught."""
+    assert _pass(check, "Homosexual.")
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for lgbtq.terms."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes("""They were a gay couple.""")
-        assert not self.passes("""He was a homosexual man.""")
-
-    def test_homosexual_term(self):
-        """Check that the term homosexual does not get caught."""
-        assert self.passes("""Homosexual.""")
-
-    def test_sexual_prefence(self):
-        """Check that sexual preference is flagged."""
-        assert not self.passes("""My sexual preference is for women.""")
+def test_sexual_prefence():
+    """Check that sexual preference is flagged."""
+    assert _fail(check, "My sexual preference is for women.")

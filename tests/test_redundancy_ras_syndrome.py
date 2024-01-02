@@ -1,21 +1,10 @@
 """Tests for redundancy.ras_syndrome check."""
 
-from proselint.checks.redundancy import ras_syndrome as chk
+from proselint.checks.redundancy.ras_syndrome import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for redundancy.ras_syndrome."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for redundancy.ras_syndrome."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""Please enter your PIN number.""")
+def test_smoke():
+    """Basic smoke test for redundancy.ras_syndrome."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "Please enter your PIN number.")

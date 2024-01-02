@@ -1,21 +1,10 @@
 """Tests for spelling.ely_ly check."""
 
-from proselint.checks.spelling import ely_ly as chk
+from proselint.checks.spelling.ely_ly import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for spelling.ely_ly."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for spelling.ely_ly."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""She was completly unprepared.""")
+def test_smoke():
+    """Basic smoke test for spelling.ely_ly."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "She was completly unprepared.")

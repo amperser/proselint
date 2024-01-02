@@ -1,33 +1,28 @@
 """Test garner.dates."""
-from proselint import log
 from proselint.checks.dates_times import dates
+from tests.conftest import _pass, _fail
 
-from .check import Check
+
+def test_50s_hyphenation():
+    """Find unneeded hyphen in 50's."""
+
+    text = """The 50's were swell."""
+    check = dates.check_decade_apostrophes_short
+    assert _pass(check, text)
 
 
-class TestCheck(Check):
-    """Test class for garner.dates."""
+def test_50_cent_hyphenation():
+    """Don't flag 50's when it refers to 50 Cent's manager."""
+    text = """
+        Dr. Dre suggested to 50's manager that he look into signing
+        Eminem to the G-Unit record label.
+    """
+    check = dates.check_decade_apostrophes_short
+    assert _pass(check, text)
 
-    __test__ = True
 
-    def test_50s_hyphenation(self):
-        """Find unneeded hyphen in 50's."""
-        text = """The 50's were swell."""
-        results = dates.check_decade_apostrophes_short(text)
-        assert len(results) == 1
-
-    def test_50_Cent_hyphenation(self):
-        """Don't flag 50's when it refers to 50 Cent's manager."""
-        text = """
-            Dr. Dre suggested to 50's manager that he look into signing
-            Eminem to the G-Unit record label.
-        """
-        results = dates.check_decade_apostrophes_short(text)
-        assert len(results) == 0
-
-    def test_dash_and_from(self):
-        """Test garner.check_dash_and_from."""
-        text = """From 1999-2002, Sally served as chair of the committee."""
-        results = dates.check_dash_and_from(text)
-        log.info(results)
-        assert len(results) == 1
+def test_dash_and_from():
+    """Test garner.check_dash_and_from."""
+    text = """From 1999-2002, Sally served as chair of the committee."""
+    check = dates.check_dash_and_from
+    assert _fail(check, text)

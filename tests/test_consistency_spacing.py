@@ -1,22 +1,11 @@
 """Tests for consistency.spacing check."""
 
-from proselint.checks.consistency import spacing as chk
+from proselint.checks.consistency.spacing import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for consistency.spacing."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for consistency.spacing."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes("""This is good. Only one space each time. Every time.""")
-        assert not self.passes("""This is bad.  Not consistent. At all.""")
+def test_smoke():
+    """Basic smoke test for consistency.spacing."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _pass(check, "This is good. Only one space each time. Every time.")
+    assert _fail(check, "This is bad.  Not consistent. At all.")

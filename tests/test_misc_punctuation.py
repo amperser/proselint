@@ -1,21 +1,10 @@
 """Tests for misc.punctuation check."""
 
-from proselint.checks.misc import punctuation as chk
+from proselint.checks.misc.punctuation import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for misc.punctuation."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.punctuation."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""See Smith et. al.""")
+def test_smoke():
+    """Basic smoke test for misc.punctuation."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "See Smith et. al.")

@@ -1,21 +1,12 @@
 """Tests for misc.debased check."""
 
-from proselint.checks.misc import debased as chk
+from proselint.checks.misc.debased import check
 
 from .check import Check
+from .conftest import _pass, _fail
 
 
-class TestCheck(Check):
-    """The test class for misc.debased."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.debased."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""This leaves much to be desired.""")
+def test_smoke():
+    """Basic smoke test for misc.debased."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "This leaves much to be desired.")

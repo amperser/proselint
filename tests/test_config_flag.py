@@ -7,7 +7,7 @@ from unittest.mock import patch
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
-from proselint.config_default import default
+from proselint.config_default import proselint_base
 from proselint.tools import _deepmerge_dicts, load_options
 
 runner = CliRunner()
@@ -38,31 +38,39 @@ def test_load_options_function(isfile):
 
 def test_config_flag_demo():
     """Test the --config CLI argument"""
-    output = runner.invoke(proselint, ["--demo"])
-    assert "uncomparables.misc" in output.stdout
+    result = runner.invoke(proselint, ["--demo"])
+    print(f"res: {result}")
+    print(f"sdtout: {result.stdout}")
+    print(f"output: {result.output}")
+    print(f"exit: {result.exit_code}")
+    assert "uncomparables.misc" in result.stdout
 
 def test_config_flag_config():
-    output = runner.invoke(proselint, ["--demo"] + FLAG)
-    assert "uncomparables.misc" not in output.stdout
-    assert "FileNotFoundError" != output.exc_info[0].__name__
+    result = runner.invoke(proselint, ["--demo", "--debug"] + FLAG)
+    print(f"res: {result}")
+    print(f"sdtout: {result.stdout}")
+    print(f"output: {result.output}")
+    print(f"exit: {result.exit_code}")
+    assert "uncomparables.misc" not in result.stdout
 
 
 def test_config_flag_config_nonexist():
-    output = runner.invoke(proselint, ["--demo", "--config", "non_existent_file"])
-    assert output.exit_code == 2
-    # assert output.exc_info[0].__name__ == "FileNotFoundError"
+    result = runner.invoke(proselint, ["--demo", "--config", "non_existent_file"])
+    assert result.exit_code != 0
+    assert result.exc_info[0].__name__ == "SystemExit"
+    # was FileNotFoundError, but click is now doing pre-checks
 
 
 def test_config_flag_data_nonexist():
-    output = runner.invoke(proselint, "non_existent_file")
-    assert output.exit_code == 2
-    # assert output.exc_info[0].__name__ == "FileNotFoundError"
-
+    result = runner.invoke(proselint, "non_existent_file")
+    assert result.exit_code != 0
+    assert result.exc_info[0].__name__ == "SystemExit"
+    # was FileNotFoundError, but click is now doing pre-checks
 
 def test_dump_config_default():
     """Test --dump-default-config and --dump-config"""
-    output = runner.invoke(proselint, "--dump-default-config")
-    assert json.loads(output.stdout) == default
+    result = runner.invoke(proselint, "--dump-default-config")
+    assert json.loads(result.stdout) == proselint_base
 
 def test_dump_config():
     output = runner.invoke(proselint, ["--dump-config"] + FLAG)

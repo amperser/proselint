@@ -1,77 +1,67 @@
 """Tests for dates_times.dates check."""
 
-from proselint.checks.dates_times import dates as chk
+from proselint.checks.dates_times import dates
+from tests.conftest import _pass, _fail
 
-from .check import Check
+
+def test_smoke_check_decade_apostrophes_short():
+    """Basic smoke test.
+
+    This for the function
+    dates_times.dates.check_decade_apostrophes_short.
+
+    """
+    check = dates.check_decade_apostrophes_short
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened in the 90s.")
+    assert _fail(check, "It happened in the 90's.")
 
 
-class TestCheck(Check):
-    """The test class for dates_times.dates."""
+def test_smoke_check_decade_apostrophes_long():
+    """Basic smoke test.
 
-    __test__ = True
+    This is for the function
+    dates_times.dates.decade_apostrophes_long.
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
+    """
+    check = dates.check_decade_apostrophes_long
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened in the 1980s.")
+    assert _fail(check, "It happened in the 1980's.")
 
-    def test_smoke_check_decade_apostrophes_short(self):
-        """Basic smoke test.
+def test_smoke_check_dash_and_from():
+    """Basic smoke test.
 
-        This for the function
-        dates_times.dates.check_decade_apostrophes_short.
+    This for the function
+    dates_times.dates.dash_and_from.
 
-        """
-        assert (
-            chk.check_decade_apostrophes_short("Basic smoke phrase without issues.")
-            == []
-        )
-        assert chk.check_decade_apostrophes_short("It happened in the 90s.") == []
-        assert chk.check_decade_apostrophes_short("It happened in the 90's.") != []
+    """
+    check = dates.check_dash_and_from
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened from 2000 to 2005.")
+    assert _fail(check, "It happened from 2000-2005.")
 
-    def test_smoke_check_decade_apostrophes_long(self):
-        """Basic smoke test.
+def test_smoke_check_month_year_comma():
+    """Basic smoke test.
 
-        This is for the function
-        dates_times.dates.decade_apostrophes_long.
+    This is for the function
+    dates_times.dates.check_month_year_comma.
 
-        """
-        assert (
-            chk.check_decade_apostrophes_long("Basic smoke phrase without issues.")
-            == []
-        )
-        assert chk.check_decade_apostrophes_long("It happened in the 1980s.") == []
-        assert chk.check_decade_apostrophes_long("It happened in the 1980's.") != []
+    """
+    check = dates.check_month_year_comma
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened in August 2008.")
+    assert _fail(check, "It happened in August, 2008.")
 
-    def test_smoke_check_dash_and_from(self):
-        """Basic smoke test.
 
-        This for the function
-        dates_times.dates.dash_and_from.
+def test_smoke_check_month_of_year():
+    """Basic smoke test.
 
-        """
-        assert chk.check_dash_and_from("Basic smoke phrase without issues.") == []
-        assert chk.check_dash_and_from("It happened from 2000 to 2005.") == []
-        assert chk.check_dash_and_from("It happened from 2000-2005.") != []
+    This is for the function
+    dates_times.dates.check_month_of_year.
 
-    def test_smoke_check_month_year_comma(self):
-        """Basic smoke test.
-
-        This is for the function
-        dates_times.dates.check_month_year_comma.
-
-        """
-        assert chk.check_month_year_comma("Basic smoke phrase without issues.") == []
-        assert chk.check_month_year_comma("It happened in August 2008.") == []
-        assert chk.check_month_year_comma("It happened in August, 2008.") != []
-
-    def test_smoke_check_month_of_year(self):
-        """Basic smoke test.
-
-        This is for the function
-        dates_times.dates.check_month_of_year.
-
-        """
-        assert chk.check_month_of_year("Basic smoke phrase without issues.") == []
-        assert chk.check_month_of_year("It happened in August 2008.") == []
-        assert chk.check_month_of_year("It happened in August of 2008.") != []
+    """
+    check = dates.check_month_of_year
+    assert _pass(check, "Basic smoke phrase without issues.")
+    assert _pass(check, "It happened in August 2008.")
+    assert _fail(check, "It happened in August of 2008.")
