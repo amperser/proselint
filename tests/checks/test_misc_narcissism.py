@@ -1,7 +1,6 @@
 """Tests for misc.narcissism check."""
 
 from proselint.checks.misc.narcissism import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

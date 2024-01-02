@@ -3,8 +3,7 @@
 """Test GMEU entry 'a', part A."""
 from proselint.lint_checks import ResultCheck
 from tests.check import assert_error
-from tests.conftest import assert_fail, assert_pass
-
+from tests.conftest import assert_fail
 
 
 def check(text: str) -> list[ResultCheck]:

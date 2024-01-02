@@ -1,7 +1,6 @@
 """Tests for misc.professions check."""
 
 from proselint.checks.misc.professions import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

@@ -10,7 +10,7 @@ from proselint.command_line import proselint
 def test_invalid_characters():  # todo: probably broken
     """Ensure that a file with illegal characters does not break us."""
     test_path = Path(__file__).parent
-    test_file = test_path / "test_illegal-chars.txt"
+    test_file = test_path / "test_illegal_chars.txt"
     runner = CliRunner()
 
     result = runner.invoke(proselint, test_file.as_posix())

@@ -4,7 +4,7 @@ from proselint.checks.misc.greylist import check
 from tests.conftest import assert_fail, assert_pass
 
 
-def test():
+def test_misc():
     """Basic smoke test for misc.greylist."""
     assert_pass(check, "Smoke phrase with nothing flagged.")
     assert_fail(check, "She should utilize her knowledge.")

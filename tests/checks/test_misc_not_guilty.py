@@ -1,7 +1,6 @@
 """Tests for misc.not_guilty check."""
 
 from proselint.checks.misc.not_guilty import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

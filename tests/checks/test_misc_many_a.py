@@ -1,7 +1,6 @@
 """Tests for misc.many_a check."""
 
 from proselint.checks.misc.many_a import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

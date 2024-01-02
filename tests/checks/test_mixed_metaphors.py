@@ -1,7 +1,6 @@
 """Tests for mixed_metaphors.misc check."""
 
 from proselint.checks.mixed_metaphors import misc
-
 from tests.conftest import assert_fail, assert_pass
 
 

@@ -1,7 +1,6 @@
 """Tests for misc.latin check."""
 
 from proselint.checks.misc.latin import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

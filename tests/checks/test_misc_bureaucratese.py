@@ -1,7 +1,6 @@
 """Tests for misc.bureaucratese check."""
 
 from proselint.checks.misc.bureaucratese import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

@@ -1,7 +1,6 @@
 """Tests for weasel_words.misc check."""
 
 from proselint.checks.weasel_words.misc import check
-
 from tests.conftest import assert_pass
 
 
