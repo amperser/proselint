@@ -1,21 +1,10 @@
 """Tests for oxymorons.misc check."""
 
-from proselint.checks.oxymorons import misc as chk
+from proselint.checks.oxymorons.misc import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for oxymorons.misc."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for oxymorons.misc."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""He needed an exact estimate.""")
+def test_smoke():
+    """Basic smoke test for oxymorons.misc."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "He needed an exact estimate.")

@@ -1,25 +1,15 @@
 """Tests for misc.but check."""
 
-from proselint.checks.misc import but as chk
+from proselint.checks.misc.but import check
 
 from .check import Check
+from .conftest import _pass, _fail
 
 
-class TestCheck(Check):
-    """The test class for misc.but."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.but."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""But I never start with the word "but".""")
-        assert self.passes(
-            """I never start with the word "but",
-but might use it after a linebreak.""",
-        )
+def test_smoke():
+    """Basic smoke test for misc.but."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, """But I never start with the word "but".""")
+    assert _pass(check,
+        """I never start with the word "but", but might use it after a linebreak.""",
+    )

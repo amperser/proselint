@@ -24,8 +24,8 @@ def check(text: str) -> list[ResultCheck]:
     err = "pinker.scare_quotes"
     msg = "Misuse of 'scare quotes'. Delete them."
 
-    narcissism = [
+    items = [
         "the 'take-home message'",
     ]
 
-    return existence_check(text, narcissism, err, msg)
+    return existence_check(text, items, err, msg)

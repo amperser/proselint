@@ -1,21 +1,10 @@
 """Tests for hyperbole.misc check."""
 
-from proselint.checks.hyperbole import misc as chk
+from proselint.checks.hyperbole.misc import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for hyperbole.misc."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for hyperbole.misc."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""So exaggerated!!!""")
+def test_smoke():
+    """Basic smoke test for hyperbole.misc."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "So exaggerated!!!")

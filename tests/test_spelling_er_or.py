@@ -1,21 +1,10 @@
 """Tests for spelling.er_or check."""
 
-from proselint.checks.spelling import er_or as chk
+from proselint.checks.spelling.er_or import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for spelling.er_or."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for spelling.er_or."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""She met with the invester.""")
+def test_smoke():
+    """Basic smoke test for spelling.er_or."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "She met with the invester.")

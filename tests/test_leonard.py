@@ -1,26 +1,17 @@
 """Test garner.dates."""
-from proselint import log
 from proselint.checks.typography import exclamation
+from tests.conftest import _pass, _fail
 
-from .check import Check
+
+def test_capitalization_and_no_exclamation():
+    """Don't throw error when phrase has capitalization."""
+    text = "The QUICK BROWN fox juMPED over the lazy cat."
+    check = exclamation.check_repeated_exclamations
+    assert _pass(check, text)
 
 
-class TestCheck(Check):
-    """Test class for leonard.exclamation."""
-
-    __test__ = True
-
-    def test_capitalization_and_no_exclamation(self):
-        """Don't throw error when phrase has capitalization."""
-        text = """
-             The QUICK BROWN fox juMPED over the lazy cat.
-        """
-        results = exclamation.check_repeated_exclamations(text)
-        assert len(results) == 0
-
-    def test_exclamation(self):
-        """Test leonard.exclamation. with exclamation marks."""
-        text = """Sally sells seashells and they were too expensive!!!!"""
-        results = exclamation.check_repeated_exclamations(text)
-        log.info(results)
-        assert len(results) == 1
+def test_exclamation():
+    """Test leonard.exclamation. with exclamation marks."""
+    text = "Sally sells seashells and they were too expensive!!!!"
+    check = exclamation.check_repeated_exclamations
+    assert _fail(check, text)

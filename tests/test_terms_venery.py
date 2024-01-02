@@ -1,21 +1,10 @@
 """Tests for terms.venery check."""
 
-from proselint.checks.terms import venery as chk
+from proselint.checks.terms.venery import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for terms.venery."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for terms.venery."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""There was a group of alligators.""")
+def test_smoke():
+    """Basic smoke test for terms.venery."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "There was a group of alligators.")

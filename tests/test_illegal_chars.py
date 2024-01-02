@@ -6,21 +6,15 @@ from click.testing import CliRunner
 
 from proselint.command_line import proselint
 
-from .check import Check
 
+def test_invalid_characters():  # todo: probably broken
+    """Ensure that a file with illegal characters does not break us."""
+    test_path = Path(__file__).parent
+    test_file = test_path / "illegal-chars.txt"
+    runner = CliRunner()
 
-class TestInvalidCharacters(Check):
-    """Test class for testing invalid characters on the CLI"""
+    result = runner.invoke(proselint, test_file.as_posix())
 
-    __test__ = True
-
-    def test_invalid_characters(self):
-        """Ensure that a file with illegal characters does not break us."""
-        test_path = Path(__file__).parent
-        test_file = test_path / "illegal-chars.txt"
-        runner = CliRunner()
-
-        output = runner.invoke(proselint, test_file)
-
-        assert "UnicodeDecodeError" not in output.stdout
-        assert "FileNotFoundError" not in output.stdout
+    assert len(result.stdout) > 0
+    assert "UnicodeDecodeError" not in result.stdout
+    assert "FileNotFoundError" not in result.stdout

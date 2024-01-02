@@ -1,21 +1,10 @@
 """Tests for weasel_words.very check."""
 
-from proselint.checks.weasel_words import very as chk
+from proselint.checks.weasel_words.very import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for weasel_words.very."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for weasel_words.very."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""The book was very interesting.""")
+def test_smoke():
+    """Basic smoke test for weasel_words.very."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "The book was very interesting.")

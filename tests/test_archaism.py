@@ -1,22 +1,11 @@
 """Tests for archaism.misc check."""
 
-from proselint.checks.archaism import misc as chk
+from proselint.checks.archaism.misc import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for archaism.misc."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for archaism.misc."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert self.passes("""I want to sleep, and maybe dream.""")
-        assert not self.passes("""I want to sleep, perchance to dream.""")
+def test_smoke():
+    """Basic smoke test for archaism.misc."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _pass(check, "I want to sleep, and maybe dream.")
+    assert _fail(check, "I want to sleep, perchance to dream.")

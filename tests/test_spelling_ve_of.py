@@ -1,21 +1,10 @@
 """Tests for spelling.ve_of check."""
 
-from proselint.checks.spelling import ve_of as chk
+from proselint.checks.spelling.ve_of import check
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
-
-class TestCheck(Check):
-    """The test class for spelling.ve_of."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for spelling.ve_of."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""This could of been the third test.""")
+def test_smoke():
+    """Basic smoke test for spelling.ve_of."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "This could of been the third test.")

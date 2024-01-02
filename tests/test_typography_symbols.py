@@ -1,50 +1,57 @@
 """Test Butterick's symbols."""
 
-from proselint.checks.typography import symbols as chk
+from proselint.checks.typography import symbols
+from tests.conftest import _fail, _pass
 
-from .check import Check
+
+def test_ellipsis():
+    """Find ... in a string."""
+    check = symbols.check_ellipsis
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "The long and winding road...")
+
+def test_copyright():
+    """Find a (c) or (C) in a string."""
+    check = symbols.check_copyright_symbol
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "Show me the money! (C)")
+    assert _fail(check, "Show me the money! (c)")
+
+def test_trademark():
+    """Find a (TM) or (tm) in a string."""
+    check = symbols.check_trademark_symbol
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "The Fresh Maker (TM)")
+    assert _fail(check, "The Fresh Maker (tm)")
+
+def test_registered_trademark():
+    """Find a (r) or (R) in a string."""
+    check = symbols.check_registered_trademark_symbol
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "Just Do It (R)")
+    assert _fail(check, "Just Do It (r)")
 
 
-class TestCheck(Check):
-    """The test class for typography.symbols."""
+def test_sentence_spacing():
+    """Find a sentence followed by three or more spaces."""
+    check = symbols.check_sentence_spacing
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "This is a sentence.   This is another.")
 
-    __test__ = True
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
+def test_multiplication():
+    """Find an x between two digits."""
+    check = symbols.check_multiplication_symbol
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "It is obvious that 2 x 2 = 4.")
 
-    def test_ellipsis(self):
-        """Find ... in a string."""
-        assert chk.check_ellipsis("""The long and winding road...""")
 
-    def test_copyright(self):
-        """Find a (c) or (C) in a string."""
-        assert chk.check_copyright_symbol("""Show me the money! (C)""")
-        assert chk.check_copyright_symbol("""Show me the money! (c)""")
-
-    def test_trademark(self):
-        """Find a (TM) or (tm) in a string."""
-        assert chk.check_trademark_symbol("""The Fresh Maker (TM)""")
-        assert chk.check_trademark_symbol("""The Fresh Maker (tm)""")
-
-    def test_registered_trademark(self):
-        """Find a (r) or (R) in a string."""
-        assert chk.check_registered_trademark_symbol("""Just Do It (R)""")
-        assert chk.check_registered_trademark_symbol("""Just Do It (r)""")
-
-    def test_sentence_spacing(self):
-        """Find a sentence followed by three or more spaces."""
-        assert chk.check_sentence_spacing("""This is a sentence.   This is another.""")
-
-    def test_multiplication(self):
-        """Find an x between two digits."""
-        assert chk.check_multiplication_symbol("""It is obvious that 2 x 2 = 4.""")
-
-    def test_curly_quotes(self):  # FIXME
-        """Find "" quotes in a string."""
-        assert chk.check_curly_quotes('"This should produce an error", he said.')
-        assert not chk.check_curly_quotes("But this should not.")
-        assert chk.check_curly_quotes('Alas, "it should here too".')
-        assert not chk.check_curly_quotes('"A singular should not, though.')
+def test_curly_quotes():
+    """Find "" quotes in a string."""
+    check = symbols.check_curly_quotes
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, """This is “a sentence”. Look at it.""")
+    assert _fail(check, """“This should produce an error”, he said.""")
+    assert _pass(check, "But this should not.")
+    assert _fail(check, """Alas, "it should here too".""")
+    assert _pass(check, '"A singular should not, though.')

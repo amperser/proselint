@@ -1,26 +1,20 @@
 """Tests for misc.false_plurals check."""
 
-from proselint.checks.misc import false_plurals as chk
+from proselint.checks.misc import false_plurals
 
 from .check import Check
+from .conftest import _pass, _fail
 
 
-class TestCheck(Check):
-    """The test class for misc.false_plurals."""
+def test_smoke():
+    """Basic smoke test for misc.false_plurals."""
+    check = false_plurals.check
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "There were several phenomenons.")
 
-    __test__ = True
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.false_plurals."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""There were several phenomenons.""")
-
-    def test_smoke_kudos(self):
-        """Basic smoke test for misc.false_plurals.kudos."""
-        assert chk.check_kudos("""Smoke phrase with nothing flagged.""") == []
-        assert chk.check_kudos("""I give you many kudos.""") != []
+def test_smoke_kudos():
+    """Basic smoke test for misc.false_plurals.kudos."""
+    check = false_plurals.check_kudos
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "I give you many kudos.")

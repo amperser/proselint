@@ -1,48 +1,31 @@
 """Test the Cliches.misc module."""
 
-from proselint.checks.cliches import misc as chk
+from proselint.checks.cliches import misc
+from tests.conftest import _fail, _pass
 
-from .check import Check
+
+def test_cliches_garner_basic():
+    """Basic checks on check_cliches_garner."""
+    text = "Worse than a fate worse than death."
+    check = misc.check_cliches_garner
+    assert _pass(check, "No cliches here.")
+    assert _fail(check, text)
+    assert "cliches.garner" in check(text)[0]
 
 
-class TestCheck(Check):
-    """The test class for cliches.misc."""
+def test_cliches_write_good_basic():
+    """Basic checks on check_cliches_write_good."""
+    text = "He's a chip off the old block."
+    check = misc.check_cliches_write_good
+    assert _pass(check, "No cliches here.")
+    assert _fail(check, text)
+    assert "cliches.write_good" in check(text)[0]
 
-    __test__ = True
 
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def setUp(self):
-        """Create test sentences."""
-        self.l_garner = """Worse than a fate worse than death."""
-        self.l_write_good = """He's a chip off the old block."""
-        self.l_gnu_diction = """It's a matter of concern."""
-
-    def test_cliches_garner_basic(self):
-        """Basic checks on check_cliches_garner."""
-        assert chk.check_cliches_garner("""No cliches here.""") == []
-        # use one of the example cliches to verify basic functionality
-        assert chk.check_cliches_garner(self.l_garner) != []
-        assert "cliches.garner" in chk.check_cliches_garner(self.l_garner)[0]
-
-    def test_cliches_write_good_basic(self):
-        """Basic checks on check_cliches_write_good."""
-        assert chk.check_cliches_write_good("""No cliches here.""") == []
-        # use one of the example cliches to verify basic functionality
-        assert chk.check_cliches_write_good(self.l_write_good) != []
-        assert (
-            "cliches.write_good" in chk.check_cliches_write_good(self.l_write_good)[0]
-        )
-
-    def test_cliches_gnu_diction_basic(self):
-        """Basic check on check_cliches_gnu_diction."""
-        assert chk.check_cliches_gnu_diction("""No cliches here.""") == []
-        # use one of the example cliches to verify basic functionality
-        assert chk.check_cliches_gnu_diction(self.l_gnu_diction) != []
-        assert (
-            "cliches.gnu_diction"
-            in chk.check_cliches_gnu_diction(self.l_gnu_diction)[0]
-        )
+def test_cliches_gnu_diction_basic():
+    """Basic check on check_cliches_gnu_diction."""
+    text = "It's a matter of concern."
+    check = misc.check_cliches_gnu_diction
+    assert _pass(check, "No cliches here.")
+    assert _fail(check, text)
+    assert "cliches.gnu_diction" in check(text)[0]

@@ -1,21 +1,12 @@
 """Tests for misc.latin check."""
 
-from proselint.checks.misc import latin as chk
+from proselint.checks.misc.latin import check
 
 from .check import Check
+from .conftest import _pass, _fail
 
 
-class TestCheck(Check):
-    """The test class for misc.latin."""
-
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.latin."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""And ceteris paribus, it was good.""")
+def test_smoke():
+    """Basic smoke test for misc.latin."""
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "And ceteris paribus, it was good.")

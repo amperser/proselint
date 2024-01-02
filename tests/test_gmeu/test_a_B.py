@@ -2,7 +2,8 @@
 
 """Test GMEU entry 'a', part B."""
 
-from tests.check import Check, assert_error
+from tests.check import assert_error
+from tests.conftest import _fail
 
 
 class Chk:
@@ -10,23 +11,14 @@ class Chk:
         return assert_error, text, "misc.a_distributive"
 
 
-class TestCheck(Check):
-    """The test class for GMEU entry A - using a over per in the distributive
-    sense.
-    """
-
-    @property
-    def this_check(self):
-        return Chk
-
-    def test_smoke(self):
-        sentences = [
-            "An apple per day keeps the doctor away.",
-            "I sleep eight hours per night.",
-            "Their policy allows one golf cart a couple.",
-            "The company donated five books a student.",
-            "Our a-unit cost is less than $1000.",
-            "The $50-a-parent fee seems unreasonably high.",
-        ]
-        for sentence in sentences:
-            assert not self.passes(sentence)
+def test_smoke():
+    sentences = [
+        "An apple per day keeps the doctor away.",
+        "I sleep eight hours per night.",
+        "Their policy allows one golf cart a couple.",
+        "The company donated five books a student.",
+        "Our a-unit cost is less than $1000.",
+        "The $50-a-parent fee seems unreasonably high.",
+    ]
+    for sentence in sentences:
+        assert _fail(check, sentence)  #fixme

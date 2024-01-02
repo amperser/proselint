@@ -1,31 +1,23 @@
 """Tests for misc.capitalization check."""
 
-from proselint.checks.misc import capitalization as chk
+from proselint.checks.misc import capitalization
+from tests.conftest import _pass, _fail
 
-from .check import Check
 
+def test_smoke():
+    """Basic smoke test for misc.capitalization.check."""
+    check = capitalization.check
+    assert _pass(check, "Smoke phrase with nothing flagged.")
+    assert _fail(check, "It goes back to the stone age.")
 
-class TestCheck(Check):
-    """The test class for misc.capitalization."""
+def test_smoke_check_months():
+    """Basic smoke test for misc.capitalization.check_months."""
+    check = capitalization.check_months
+    assert _pass(check, "Smoke phrase with nothing flagged")
+    assert _fail(check, "A nice day in june.")
 
-    __test__ = True
-
-    @property
-    def this_check(self):
-        """Boilerplate."""
-        return chk
-
-    def test_smoke(self):
-        """Basic smoke test for misc.capitalization.check."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""It goes back to the stone age.""")
-
-    def test_smoke_check_months(self):
-        """Basic smoke test for misc.capitalization.check_months."""
-        assert chk.check_months("""Smoke phrase with nothing flagged""") == []
-        assert chk.check_months("""A nice day in june.""") != []
-
-    def test_smoke_check_days(self):
-        """Basic smoke test for misc.capitalization.check_days."""
-        assert chk.check_days("""Smoke phrase with nothing flagged""") == []
-        assert chk.check_days("""It happened on friday.""") != []
+def test_smoke_check_days():
+    """Basic smoke test for misc.capitalization.check_days."""
+    check = capitalization.check_days
+    assert _pass(check, "Smoke phrase with nothing flagged")
+    assert _fail(check, "It happened on friday.")

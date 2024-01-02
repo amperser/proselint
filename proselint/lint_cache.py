@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import contextlib
 import functools
+import hashlib
 import pickle
 import shutil
 import traceback
 from datetime import datetime, timedelta
-from typing import Callable
+from typing import Callable, Optional
 
 from typing_extensions import Self
 
@@ -49,7 +50,7 @@ class Cache:
                 fix_imports=False,
                 protocol=pickle.HIGHEST_PROTOCOL,
             )
-        log.debug(" -> stored cache")
+        # log.debug(" -> stored cache")  # too late when exiting
 
     @classmethod
     def from_file(cls) -> Self:
@@ -93,7 +94,9 @@ def memoize(
     _filename = f"{fn.__module__}.{fn.__name__}"
 
     @functools.wraps(fn)
-    def wrapped(text: str, hash_text: str):
+    def wrapped(text: str, hash_text: Optional[str] = None):
+        if not hash_text:
+            hash_text = hashlib.sha224(text.encode("utf-8")).hexdigest()
         key = _filename + hash_text
 
         try:
