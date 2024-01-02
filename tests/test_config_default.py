@@ -15,7 +15,10 @@ def test_config_flag_ignore_unavailable():
 
 
 def test_config_default_flag_for_check_missing():
-    """test default-config for completeness"""
+    """test default-config for completeness
+    Note: if triggered the default config has a flag that points to a missing check
+          -> remove it!
+    """
     checks = []
     check_names = load_options()["checks"].keys()
 
@@ -30,13 +33,16 @@ def is_check(file_path: Path) -> bool:
         return False
     if file_path.name == "__init__.py":
         return False
-    if "inprogress" in file_path.name:
+    if "inprogress" in file_path.as_posix():
         return False
     return True
 
 
 def test_config_default_check_for_flag_missing():
-    """test default-config for completeness"""
+    """test default-config for completeness
+    Note: if triggered the flag / key is missing in default config
+          -> add it!
+    """
     cfg = load_options()
     checks_path = (proselint.path / "checks").absolute()
     listing = os.walk(checks_path)
@@ -50,7 +56,12 @@ def test_config_default_check_for_flag_missing():
                 if not (file_path.parent / "__init__.py").exists():
                     raise FileNotFoundError("Check-Directory is missing '__init__.py'")
 
-                flag_name = str(
-                    file_path.absolute().with_suffix("").relative_to(checks_path),
+                flag_name = (
+                    str(
+                        file_path.absolute().with_suffix("").relative_to(checks_path),
+                    )
+                    .replace("\\", ".")
+                    .replace("/", ".")
                 )
+
                 assert flag_name in cfg["checks"]
