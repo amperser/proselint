@@ -16,5 +16,6 @@ def test_exclamation_ppm():
     assert_pass(check, "Smoke phrase with nothing flagged.")
     assert_pass(check, "Sally sells seashells and they were too expensive!")
     assert_fail(
-        check, "Sally sells seashells and they were too expensive! They were not!",
+        check,
+        "Sally sells seashells and they were too expensive! They were not!",
     )
