@@ -3,10 +3,7 @@ from __future__ import annotations
 import functools
 import importlib
 import re
-import sys
 from typing import Callable, Optional, TypeAlias
-
-from proselint.config_paths import proselint_path
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
@@ -159,7 +156,6 @@ def context(text, position, level="paragraph"):
 
 def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     """Extract the checks."""
-    sys.path.append(proselint_path.as_posix())
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
