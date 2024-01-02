@@ -10,7 +10,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        ruby: [3.0.0]
+        ruby: ["3.0.0"]
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v4
