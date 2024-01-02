@@ -1,7 +1,6 @@
 """Tests for corporate_speak.misc check."""
 
 from proselint.checks.corporate_speak.misc import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

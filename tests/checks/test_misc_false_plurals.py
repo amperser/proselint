@@ -1,7 +1,6 @@
 """Tests for misc.false_plurals check."""
 
 from proselint.checks.misc import false_plurals
-
 from tests.conftest import assert_fail, assert_pass
 
 

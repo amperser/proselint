@@ -1,7 +1,6 @@
 """Tests for misc.illogic check."""
 
 from proselint.checks.misc import illogic
-
 from tests.conftest import assert_fail, assert_pass
 
 

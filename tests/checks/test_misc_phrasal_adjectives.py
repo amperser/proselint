@@ -1,7 +1,6 @@
 """Tests for misc.phrasal_adjectives check."""
 
 from proselint.checks.misc import phrasal_adjectives
-
 from tests.conftest import assert_fail, assert_pass
 
 

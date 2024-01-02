@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import contextlib
 import functools
-import hashlib
 import pickle
 import shutil
 import traceback

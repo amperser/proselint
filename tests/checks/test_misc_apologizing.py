@@ -1,7 +1,6 @@
 """Tests for misc.apologizing check."""
 
 from proselint.checks.misc.apologizing import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

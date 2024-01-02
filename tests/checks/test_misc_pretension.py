@@ -1,7 +1,6 @@
 """Tests for misc.pretension check."""
 
 from proselint.checks.misc.pretension import check
-
 from tests.conftest import assert_fail, assert_pass
 
 

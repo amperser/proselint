@@ -1,7 +1,6 @@
 """Tests for misc.currency check."""
 
 from proselint.checks.misc.currency import check
-
 from tests.conftest import assert_fail, assert_pass
 
 
