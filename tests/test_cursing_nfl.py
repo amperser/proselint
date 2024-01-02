@@ -1,7 +1,7 @@
 """Tests for cursing.nfl check."""
 
 from proselint.checks.cursing.nfl import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

@@ -2,8 +2,6 @@
 
 from proselint.lint_checks import consistency_check
 
-from .check import Check
-
 
 def test_consistency_check():
     """Basic smoke test for consistency_check."""

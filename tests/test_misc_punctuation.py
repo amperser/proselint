@@ -1,7 +1,7 @@
 """Tests for misc.punctuation check."""
 
 from proselint.checks.misc.punctuation import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

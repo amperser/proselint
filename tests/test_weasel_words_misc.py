@@ -2,7 +2,6 @@
 
 from proselint.checks.weasel_words.misc import check
 
-from .check import Check
 from .conftest import _pass
 
 

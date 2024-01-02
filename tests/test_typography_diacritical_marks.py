@@ -1,7 +1,7 @@
 """Tests for typography.diacritical_marks check."""
 
 from proselint.checks.typography.diacritical_marks import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

@@ -1,7 +1,7 @@
 """Tests for nonwords.misc check."""
 
 from proselint.checks.nonwords.misc import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

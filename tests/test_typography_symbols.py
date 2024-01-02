@@ -10,6 +10,7 @@ def test_ellipsis():
     assert _pass(check, "Smoke phrase with nothing flagged.")
     assert _fail(check, "The long and winding road...")
 
+
 def test_copyright():
     """Find a (c) or (C) in a string."""
     check = symbols.check_copyright_symbol
@@ -17,12 +18,14 @@ def test_copyright():
     assert _fail(check, "Show me the money! (C)")
     assert _fail(check, "Show me the money! (c)")
 
+
 def test_trademark():
     """Find a (TM) or (tm) in a string."""
     check = symbols.check_trademark_symbol
     assert _pass(check, "Smoke phrase with nothing flagged.")
     assert _fail(check, "The Fresh Maker (TM)")
     assert _fail(check, "The Fresh Maker (tm)")
+
 
 def test_registered_trademark():
     """Find a (r) or (R) in a string."""

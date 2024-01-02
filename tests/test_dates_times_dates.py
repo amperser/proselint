@@ -1,7 +1,7 @@
 """Tests for dates_times.dates check."""
 
 from proselint.checks.dates_times import dates
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke_check_decade_apostrophes_short():
@@ -29,6 +29,7 @@ def test_smoke_check_decade_apostrophes_long():
     assert _pass(check, "It happened in the 1980s.")
     assert _fail(check, "It happened in the 1980's.")
 
+
 def test_smoke_check_dash_and_from():
     """Basic smoke test.
 
@@ -40,6 +41,7 @@ def test_smoke_check_dash_and_from():
     assert _pass(check, "Basic smoke phrase without issues.")
     assert _pass(check, "It happened from 2000 to 2005.")
     assert _fail(check, "It happened from 2000-2005.")
+
 
 def test_smoke_check_month_year_comma():
     """Basic smoke test.

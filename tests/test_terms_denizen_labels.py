@@ -1,7 +1,7 @@
 """Tests for terms.denizen_labels check."""
 
 from proselint.checks.terms.denizen_labels import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

@@ -1,7 +1,7 @@
 """Tests for jargon.misc check."""
 
 from proselint.checks.jargon.misc import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

@@ -2,9 +2,6 @@
 
 import os
 from pathlib import Path
-from typing import Union, Callable
-from typing_extensions import deprecated
-from unittest import TestCase
 
 from proselint.tools import lint
 
@@ -19,7 +16,7 @@ def assert_error(check: str, text: str, n: int = 1):
 class Check:
     """All tests inherit from Check."""
 
-    def wpe_too_high(check) -> None: # todo is this salvagable?
+    def wpe_too_high(check) -> None:  # todo is this salvagable?
         """Check whether the check is too noisy."""
         min_wpe = 50
 

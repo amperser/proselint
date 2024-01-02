@@ -3,7 +3,7 @@
 """Test GMEU entry 'a', part A."""
 
 
-from tests.check import Check, assert_error
+from tests.check import assert_error
 from tests.conftest import _fail
 
 
@@ -45,4 +45,4 @@ def test_smoke():
     ]
 
     for sentence in sentences_with_errors:
-        assert _fail(check, sentence)  #fixme - there is no check for that yet
+        assert _fail(check, sentence)  # fixme - there is no check for that yet

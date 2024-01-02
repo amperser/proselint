@@ -1,7 +1,7 @@
 """Tests for terms.eponymous_adjectives check."""
 
 from proselint.checks.terms.eponymous_adjectives import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

@@ -1,7 +1,7 @@
 """Tests for security.credit_card check."""
 
 from proselint.checks.security.credit_card import check
-from tests.conftest import _pass, _fail
+from tests.conftest import _fail, _pass
 
 
 def test_smoke():

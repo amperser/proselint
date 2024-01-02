@@ -9,12 +9,8 @@ def test_existence_check():
     msg = "it exists"
     assert existence_check("abc is as easy as 123", items, err, msg) != []
     assert existence_check("easy breezy", items, err, msg) == []
-    assert (
-        err in existence_check("abc is as easy as 123", items, err, msg)[0]
-    )
-    assert (
-        msg in existence_check("abc is as easy as 123", items, err, msg)[0]
-    )
+    assert err in existence_check("abc is as easy as 123", items, err, msg)[0]
+    assert msg in existence_check("abc is as easy as 123", items, err, msg)[0]
 
 
 def test_existence_check_multiple_matches():
@@ -22,10 +18,7 @@ def test_existence_check_multiple_matches():
     items = ["abc"]
     err = "error message"
     msg = "it exists"
-    assert (
-        len(existence_check("abc and abc are as easy as 123", items, err, msg))
-        == 2
-    )
+    assert len(existence_check("abc and abc are as easy as 123", items, err, msg)) == 2
     assert (
         len(
             existence_check(
@@ -57,7 +50,13 @@ def test_existence_check_exceptions():
     """Test that existence_check does not report excluded phrases"""
     regex = [r"\b(\w+)\b\s\1"]
     no = ["should should"]
-    errs = existence_check("should should flag flag.", regex, "", "", require_padding=False)
+    errs = existence_check(
+        "should should flag flag.",
+        regex,
+        "",
+        "",
+        require_padding=False,
+    )
     assert len(errs) == 2
     errs = existence_check(
         "should should flag flag.",

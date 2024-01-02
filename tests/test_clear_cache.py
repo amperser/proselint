@@ -1,6 +1,5 @@
 """Tests for the clear cache operation from proselint.command_line."""
 
-import unittest
 from unittest import mock
 
 import proselint.lint_cache
