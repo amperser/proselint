@@ -14,11 +14,9 @@ Archaism.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.illogic"
@@ -39,7 +37,6 @@ def check(text: str) -> list[ResultCheck]:
     return existence_check(text, illogics, err, msg, offset=1)
 
 
-@memoize
 def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.illogic.coin"
@@ -50,7 +47,6 @@ def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, offset=1)
 
 
-@memoize
 def check_without_your_collusion(text: str) -> list[ResultCheck]:
     """Check the textself."""
     err = "misc.illogic.collusion"

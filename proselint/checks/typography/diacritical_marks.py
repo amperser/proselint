@@ -4,11 +4,9 @@ Use of diacritical marks where common.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "typography.diacritical_marks"

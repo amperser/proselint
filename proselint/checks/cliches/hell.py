@@ -14,12 +14,10 @@ Never use the phrase 'all hell broke loose'.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
 @limit_results(1)
-@memoize
 def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "leonard.hell"

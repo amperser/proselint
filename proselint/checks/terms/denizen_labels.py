@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 
@@ -58,7 +56,6 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, preferences, err, msg)
 
 
-@memoize
 def check_denizen_labels_norris(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 

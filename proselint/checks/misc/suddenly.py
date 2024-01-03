@@ -26,12 +26,10 @@ shift in emotional calibration.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
 @limit_results(3)
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"

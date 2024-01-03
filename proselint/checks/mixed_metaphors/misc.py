@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import (
     ResultCheck,
     existence_check,
@@ -12,7 +11,6 @@ from ...lint_checks import (
 
 
 @limit_results(1)
-@memoize
 def check_bottleneck(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors about bottles and their necks.
 
@@ -34,7 +32,6 @@ def check_bottleneck(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-@memoize
 def check_misc(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors.
 

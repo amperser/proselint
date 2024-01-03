@@ -14,11 +14,9 @@ Filthy words.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "cursing.filth"
