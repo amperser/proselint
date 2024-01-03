@@ -34,13 +34,9 @@ grammatical subject.
 """
 from __future__ import annotations
 
-import re
-
-from ...lint_cache import memoize
-from ...lint_checks import ResultCheck
+from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "strunk_white.greylist"
@@ -51,8 +47,11 @@ def check(text: str) -> list[ResultCheck]:
         "utilize": r"Do you know anyone who *needs* to utilize the word utilize?",
     }
 
-    return [
-        (occ.start(), occ.end(), err, msg.format(word, bad_words[word]), None)
-        for word in bad_words
-        for occ in list(re.finditer(word, text.lower()))
-    ]
+    results = []
+    for word, expl in bad_words.items():
+        results.extend(
+            existence_check(
+                text, [word], err, msg.format(word, expl), require_padding=False,
+            ),
+        )
+    return results

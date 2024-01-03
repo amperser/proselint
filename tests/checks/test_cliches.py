@@ -16,10 +16,60 @@ def test_garner():
 def test_write_good():
     """Basic checks on check_cliches_write_good."""
     text = "He's a chip off the old block."
-    check = misc.check_cliches_write_good
+    check = misc.check_cliches_write_good_cdef
     assert_pass(check, "No cliches here.")
     assert_fail(check, text)
     assert "cliches.write_good" in check(text)[0]
+
+
+def test_write_good_a():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_ab
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You sound like a broken record.")
+
+
+def test_write_good_c():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_cdef
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You gave me a crash course in xyz.")
+
+
+def test_write_good_g():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_ghij
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You always had a green thumb.")
+
+
+def test_write_good_k():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_klmn
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You know the score.")
+
+
+def test_write_good_o():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_opqr
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You payed out of pocket for years.")
+
+
+def test_write_good_s():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_opqr
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "I feel sick like a dog since yesterday.")
+    assert_fail(check, "I feel sick like a dog.")
+
+
+def test_write_good_u():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_uvwxyz
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "You, me and that uphill battle.")
 
 
 def test_gnu_diction():

@@ -47,16 +47,12 @@ from __future__ import annotations
 
 import itertools
 
-from ...lint_cache import memoize
+from ...lint_cache import memoize_const
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
-def check(text: str) -> list[ResultCheck]:
-    """Check the text."""
-    err = "uncomparables.misc"
-    msg = "Comparison of an uncomparable: '{}' is not comparable."
-
+@memoize_const
+def uncomparables() -> list:
     comparators = [
         "most",
         "more",
@@ -71,7 +67,7 @@ def check(text: str) -> list[ResultCheck]:
         "mildly",
     ]
 
-    uncomparables = [
+    _uncomparables = [
         "absolute",
         "adequate",
         "chief",
@@ -115,11 +111,16 @@ def check(text: str) -> list[ResultCheck]:
         ("more", "perfect"),
         ("more", "possible"),  # FIXME
     ]
-
-    uncomparables = [
+    return [
         rf"{i[0]}\s{i[1]}"
-        for i in itertools.product(comparators, uncomparables)
+        for i in itertools.product(comparators, _uncomparables)
         if i not in exceptions
     ]
 
-    return existence_check(text, uncomparables, err, msg, require_padding=True)
+
+def check(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "uncomparables.misc"
+    msg = "Comparison of an uncomparable: '{}' is not comparable."
+
+    return existence_check(text, uncomparables(), err, msg, require_padding=True)

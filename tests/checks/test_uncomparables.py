@@ -25,3 +25,5 @@ def test_spaces():
 def test_constitutional():
     """Don't flag exceptions."""
     assert_pass(check, "A more perfect union.")
+    assert_pass(check, "A more possible future.")
+    assert_fail(check, "An increasingly possible future.")

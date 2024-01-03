@@ -41,17 +41,13 @@ def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
-
-    regex = "to coin a phrase from"
-
-    return existence_check(text, [regex], err, msg, offset=1)
+    items = ["to coin a phrase from"]
+    return existence_check(text, items, err, msg, offset=1)
 
 
 def check_without_your_collusion(text: str) -> list[ResultCheck]:
     """Check the textself."""
     err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
-
-    regex = "without your collusion"
-
-    return existence_check(text, [regex], err, msg, require_padding=False, offset=-1)
+    items = ["without your collusion"]
+    return existence_check(text, items, err, msg, require_padding=False, offset=-1)
