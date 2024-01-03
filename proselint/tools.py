@@ -6,12 +6,16 @@ import copy
 import hashlib
 import json
 import os
+import sys
+import time
+import traceback
 from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import freeze_support
 from pathlib import Path
 from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
 
-from . import config_default
+from . import config_base
 from .config_paths import config_global_path, config_user_paths
 from .lint_cache import memoize_lint
 from .lint_checks import get_checks
@@ -46,7 +50,7 @@ def load_options(
     config_file_path: Optional[Path] = None,
 ) -> dict:
     """Read various proselintrc files, allowing user overrides."""
-    cfg_default = config_default.proselint_base
+    cfg_default = config_base.proselint_base
 
     if config_global_path.is_file():
         log.debug("Config read from global '%s' (as base)", config_global_path)
@@ -157,7 +161,7 @@ def lint(
         _text = content.read()
 
     if not isinstance(config, dict):
-        config = config_default.proselint_base
+        config = config_base.proselint_base
 
     if checks is None:
         checks = get_checks(config)
@@ -167,17 +171,77 @@ def lint(
 
     # Apply all the checks.
     if config["parallelize_checks"]:
+        # freeze_support() todo
         with ProcessPoolExecutor() as exe:
             # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
             # note2: .map() is build on .submit(), harder to use here, same speed
             futures = [exe.submit(_lint_loop, check, _text, hash_) for check in checks]
+            #exe.shutdown(wait=True)  # precaution todo
         errors = [_e for _ft in futures for _e in _ft.result()]
+        # errors.extend([_ft.result for _ft in futures]), try it
     else:
         results = [_lint_loop(check, _text, hash_) for check in checks]
         errors = [_e for _res in results for _e in _res]
 
     # Sort the errors by line and column number.
     return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
+
+
+def _lint_path_loop(path: Path, config: dict, checks: list[Callable]) -> list[ResultLint]:
+    log.debug("Processing '%s'", path.name)
+    try:
+        with path.open(encoding="utf-8", errors="replace") as _fh:
+            content = _fh.read()
+    except Exception:
+        traceback.print_exc()
+        return []
+    return lint(content, config=config, checks=checks)
+
+
+def lint_path(
+    paths: Union[Path, list[Path]],
+    config: Optional[dict] = None,
+) -> dict[str, list[ResultLint]]:
+    # Expand the list of directories and files.
+    filepaths = extract_files(paths)
+
+    if not isinstance(config, dict):
+        config = config_base.proselint_base
+    checks = get_checks(config)
+    output_json = False # TODO, derive from config
+    compact = False  # TODO: feed config into printer()
+
+    if len(filepaths) < 2:
+        config["parallelize_lints"] = False
+        log.info("Disabled parallelize_lints (only single file)")
+
+    results = {}
+    ts_start = time.time()
+    if len(paths) == 0:
+        # Use stdin if no paths were specified
+        log.info("No path specified -> will read from <stdin>")
+        results["<stdin>"] = lint(sys.stdin, config=config, checks=checks)
+    elif config["parallelize_lints"]:
+        _workers = max(min(os.cpu_count(), len(filepaths)), 1)
+        with ProcessPoolExecutor(_workers) as exe:
+            # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
+            # note2: .map() is build on .submit(), harder to use here, same speed
+            futures = {file: exe.submit(_lint_path_loop, file, config, checks) for file in filepaths}
+            #exe.shutdown(wait=True)  # precaution
+            # TODO: should probably disable check-paralleling or use same executor?
+        results = {_file: _ft.result() for _file, _ft in futures.items()}
+    else:
+        results = {file: _lint_path_loop(file, config, checks) for file in filepaths}
+
+    error_num = 0
+    for _file, _errors in results.items():
+        # todo: include filename in ResultLint?
+        print_errors(_file, _errors, output_json, compact)
+        error_num += len(_errors)
+
+    duration = time.time() - ts_start
+    log.info("Found %d lint-warnings in %.3f s", error_num, duration)
+    return results
 
 
 def is_quoted(position: int, text: str) -> bool:

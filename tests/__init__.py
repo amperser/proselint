@@ -1,1 +1,6 @@
 """Tests for proselint."""
+
+# todo:
+#   - switch to "assert check("text") == []" or .__len__() == 0
+#   - for multi-checks put check into test-fn with pytest-wrapper
+#   -
