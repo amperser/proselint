@@ -35,9 +35,7 @@ def check(text: str) -> list[ResultCheck]:
         # "and so",
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
-    # illogics = [rf"\s{i}\s" for i in illogics]
-    # todo: check function of this custom padding
 
     return existence_check(
-        text, illogics, err, msg, ignore_case=True, string=True, require_padding=False,
+        text, illogics, err, msg, ignore_case=True, string=True,
     )

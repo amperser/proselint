@@ -31,4 +31,4 @@ def check(text: str) -> list[ResultCheck]:
         "disincentivize",
     ]
 
-    return existence_check(text, jargon, err, msg, join=True)
+    return existence_check(text, jargon, err, msg)

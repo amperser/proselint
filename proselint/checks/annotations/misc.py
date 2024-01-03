@@ -31,4 +31,4 @@ def check(text: str) -> list[ResultCheck]:
         "FIX THIS",
     ]
 
-    return existence_check(text, items, err, msg, ignore_case=False, join=True)
+    return existence_check(text, items, err, msg, ignore_case=False)

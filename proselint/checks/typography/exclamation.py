@@ -14,7 +14,7 @@ Too much yelling.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check, limit_results, ppm_threshold
+from ...lint_checks import ResultCheck, existence_check, limit_results, ppm_threshold, Pd
 
 
 @limit_results(1)
@@ -30,7 +30,7 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
         items,
         err,
         msg,
-        require_padding=False,
+        padding=Pd.disabled,
         ignore_case=False,
         dotall=True,
     )
@@ -44,4 +44,4 @@ def check_exclamations_ppm(text: str) -> list[ResultCheck]:
 
     items = [r"\w!"]
 
-    return existence_check(text, items, err, msg, require_padding=False)
+    return existence_check(text, items, err, msg, padding=Pd.disabled)

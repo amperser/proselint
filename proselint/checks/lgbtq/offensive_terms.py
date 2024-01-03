@@ -38,4 +38,4 @@ def check(text: str) -> list[ResultCheck]:
         # FIXME use topic detector to decide whether "homo" is offensive
     ]
 
-    return existence_check(text, items, err, msg, join=True, ignore_case=False)
+    return existence_check(text, items, err, msg, ignore_case=False)

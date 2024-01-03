@@ -51,4 +51,4 @@ def check_redundancy(text: str) -> list[ResultCheck]:
         r"\d{1,2} ?p\.?m\.? in the afternoon",
     ]
 
-    return existence_check(text, items, err, msg, join=True)
+    return existence_check(text, items, err, msg)

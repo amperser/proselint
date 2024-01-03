@@ -4,6 +4,7 @@ import functools
 import importlib
 import logging
 import re
+from enum import Enum
 from typing import Callable, Optional, TypeAlias
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
@@ -72,19 +73,31 @@ def preferred_forms_check(
     # TODO: can we speed up str.format() ?
 
 
+# PADDINGS:
+class Pd(str, Enum):
+    disabled = r"{}"
+    whitespace = r"\s{}\s"
+    # -> req whitespace around (no punctuation!)
+    sep_in_txt = r"(?:^|\W){}[\W$]"
+    # req non-text character around
+    # -> finds item as long it is surrounded by any non-word character:
+    #       - whitespace
+    #       - punctuation
+    #       - newline ...
+
+
 def existence_check(
     text: str,
-    items: list,
+    re_items: list,
     err: str,
     msg: str,
     ignore_case: bool = True,
-    string: bool = False,
-    offset: int = 0,
-    require_padding: bool = True,
+    string: bool = False,  # todo: why not default on?
+    offset: int = 0,  # todo: some checks set this strangely
+    padding: Pd = Pd.sep_in_txt,
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
     exceptions=(),
-    join: bool = False,  # TODO: some checker use this, meaning unknown
 ) -> list[ResultCheck]:
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
@@ -95,8 +108,6 @@ def existence_check(
     if dotall:
         flags |= re.DOTALL
 
-    regex = r"(?:^|\W){}[\W$]" if require_padding else r"{}"
-
     errors: list[ResultCheck] = []
 
     # If the topic of the text is in the excluded list, return immediately.
@@ -105,7 +116,7 @@ def existence_check(
         if any(t in excluded_topics for t in tps):
             return errors
 
-    rx = "|".join(regex.format(_item) for _item in items)
+    rx = "|".join(padding.format(_item) for _item in re_items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         if any(re.search(exception, txt) for exception in exceptions):

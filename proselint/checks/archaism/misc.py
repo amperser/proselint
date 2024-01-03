@@ -80,4 +80,4 @@ def check(text: str) -> list[ResultCheck]:
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(text, archaisms, err, msg, join=True)
+    return existence_check(text, archaisms, err, msg)

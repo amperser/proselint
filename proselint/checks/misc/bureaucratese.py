@@ -27,4 +27,4 @@ def check(text: str) -> list[ResultCheck]:
         "meets with your approval",
     ]
 
-    return existence_check(text, bureaucratese, err, msg, join=True)
+    return existence_check(text, bureaucratese, err, msg)

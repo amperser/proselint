@@ -123,4 +123,4 @@ def check(text: str) -> list[ResultCheck]:
     err = "uncomparables.misc"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
 
-    return existence_check(text, uncomparables(), err, msg, require_padding=True)
+    return existence_check(text, uncomparables(), err, msg)

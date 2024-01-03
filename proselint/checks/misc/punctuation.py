@@ -26,4 +26,4 @@ def check(text: str) -> list[ResultCheck]:
         "et. al",
         "et. al.",
     ]
-    return existence_check(text, items, err, msg, join=True)
+    return existence_check(text, items, err, msg)

@@ -41,7 +41,7 @@ def check_p_equals_zero(text: str) -> list[ResultCheck]:
         "p = 0.0000",
     ]
 
-    return existence_check(text, items, err, msg, join=True)
+    return existence_check(text, items, err, msg)
 
 
 def check_mental_telepathy(text: str) -> list[ResultCheck]:

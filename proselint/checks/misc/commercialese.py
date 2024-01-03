@@ -30,25 +30,25 @@ def check(text: str) -> list[ResultCheck]:
         "further to yours of",
         "further to your letter",
         "in regard to",
-        r"inst\.",  # todo: add replacement
+        r"inst\.",  # todo: add preferred form
         "in the amount of",
         "of even date",
         "pending receipt of",
         "please be advised that",
         "please return same",
         "pleasure of a reply",
-        r"prox\.",  # todo: add replacement
+        r"prox\.",  # todo: add preferred form
         "pursuant to your request",
         "regarding the matter",
         "regret to inform",
         "thanking you in advance",
         "the undersigned",
         "this acknowledges your letter",
-        r"ult\.",  # todo: add replacement -> ultimo
+        r"ult\.",  # todo: add preferred form -> ultimo
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",
         "yours of even date",
     ]
 
-    return existence_check(text, commercialese, err, msg, join=True)
+    return existence_check(text, commercialese, err, msg)

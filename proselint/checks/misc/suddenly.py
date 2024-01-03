@@ -26,7 +26,7 @@ shift in emotional calibration.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check, limit_results
+from ...lint_checks import ResultCheck, existence_check, limit_results, Pd
 
 
 @limit_results(3)
@@ -41,7 +41,7 @@ def check(text: str) -> list[ResultCheck]:
         [regex],
         err,
         msg,
-        require_padding=False,
+        padding=Pd.disabled,
         offset=-1,
         ignore_case=False,
     )
