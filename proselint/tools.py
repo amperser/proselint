@@ -6,12 +6,14 @@ import copy
 import hashlib
 import json
 import os
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-from typing import IO, Optional, TypeAlias, Union
+from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
 
 from . import config_default
 from .config_paths import config_global_path, config_user_paths
+from .lint_cache import memoize_lint
 from .lint_checks import get_checks
 from .logger import log
 
@@ -115,53 +117,67 @@ def get_line_and_column(text, position):
     return line_no, position - position_counter
 
 
+def _lint_loop(_check: Callable, _text: str, _hash: str) -> list[ResultLint]:
+    # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
+    errors = []
+    results = _check(_text, _hash)
+    for result in results:
+        (start, end, check_name, message, replacements) = result
+        (line, column) = get_line_and_column(_text, start)
+        if not is_quoted(start, _text):
+            errors += [
+                (
+                    check_name,
+                    message,
+                    line,
+                    column,
+                    start,
+                    end,
+                    end - start,
+                    "warning",
+                    replacements,
+                ),
+            ]
+    return errors
+
+
+@memoize_lint
 def lint(
     content: Union[str, IO],
-    debug: bool = False,
-    cfg: Optional[dict] = None,
+    config: Optional[dict] = None,
+    checks: Optional[list[Callable]] = None,
+    hash_: Optional[str] = None,
 ) -> list[ResultLint]:
     """Run the linter on the input file."""
+    # TODO: better candidate for the memoizer (on matching content + cfg)
+    # TODO: this seems now also just like a wrapper
     if isinstance(content, str):
         _text = content
     else:
         _text = content.read()
 
-    if not isinstance(cfg, dict):
-        cfg = config_default.proselint_base
+    if not isinstance(config, dict):
+        config = config_default.proselint_base
 
-    # Get the checks.
-    checks = get_checks(cfg)
-    _hash = hashlib.sha224(_text.encode("utf-8")).hexdigest()
+    if checks is None:
+        checks = get_checks(config)
+
+    if hash_ is None:
+        hash_ = hashlib.sha224(_text.encode("utf-8")).hexdigest()
 
     # Apply all the checks.
-    errors = []
-    for check in checks:
-        # TODO: can be run in parallel
-        results = check(_text, _hash)
-
-        for result in results:
-            (start, end, check_name, message, replacements) = result
-            (line, column) = get_line_and_column(_text, start)
-            if not is_quoted(start, _text):
-                errors += [
-                    (
-                        check_name,
-                        message,
-                        line,
-                        column,
-                        start,
-                        end,
-                        end - start,
-                        "warning",
-                        replacements,
-                    ),
-                ]
-
-        if len(errors) > cfg["max_errors"]:
-            break
+    if config["parallelize_checks"]:
+        with ProcessPoolExecutor() as exe:
+            # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
+            # note2: .map() is build on .submit(), harder to use here, same speed
+            futures = [exe.submit(_lint_loop, check, _text, hash_) for check in checks]
+        errors = [_e for _ft in futures for _e in _ft.result()]
+    else:
+        results = [_lint_loop(check, _text, hash_) for check in checks]
+        errors = [_e for _res in results for _e in _res]
 
     # Sort the errors by line and column number.
-    return sorted(errors[: cfg["max_errors"]], key=lambda e: (e[2], e[3]))
+    return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
 
 
 def is_quoted(position: int, text: str) -> bool:

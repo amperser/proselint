@@ -15,6 +15,8 @@ from typing import Optional, Union
 
 import click
 
+from proselint.lint_checks import get_checks
+
 from . import tools
 from .config_default import proselint_base
 from .config_paths import demo_file
@@ -111,7 +113,7 @@ def proselint(
 
     if clean:
         cache.clear()
-        sys.exit(0)
+        # sys.exit(0)  # TODO: temporary for dev
 
     if dump_default_config:
         click.echo(json.dumps(proselint_base, sort_keys=True, indent=4))
@@ -147,6 +149,7 @@ def proselint(
 
     # Expand the list of directories and files.
     filepaths = tools.extract_files(paths)
+    checks = get_checks(config)
 
     # Lint the files
     num_errors = 0
@@ -154,23 +157,23 @@ def proselint(
     # Use stdin if no paths were specified
     if len(paths) == 0:
         log.info("No path specified -> will read from <stdin>")
-        errors = tools.lint(sys.stdin, verbose, config)
+        errors = tools.lint(sys.stdin, config=config, checks=checks)
         num_errors += len(errors)
         tools.print_errors("<stdin>", errors, output_json, compact)
     else:
         ts_start = time.time()
-        for fp in filepaths:
-            log.debug("Processing '%s'", fp.name)
+        for fpath in filepaths:
+            log.debug("Processing '%s'", fpath.name)
             try:
-                # TODO: is errors-replace the best? can we detect coding?
-                content = fp.open(encoding="utf-8", errors="replace")
+                with fpath.open(encoding="utf-8", errors="replace") as _fh:
+                    content = _fh.read()
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-            errors = tools.lint(content, verbose, config)
+            errors = tools.lint(content, config=config, checks=checks)
             num_errors += len(errors)
 
-            tools.print_errors(fp, errors, output_json, compact)
+            tools.print_errors(fpath, errors, output_json, compact)
         duration = time.time() - ts_start
         log.info("Found %d lint-warnings in %.3f s", num_errors, duration)
 

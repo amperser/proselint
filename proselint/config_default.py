@@ -1,9 +1,10 @@
 """Proselint config - replacement for default .proselintrc since #1212."""
 
-# TODO: add multiprocessing, compact output, ...
-
 proselint_base: dict = {
     "max_errors": 1000,
+    "parallelize_lints": True,  # note: has an overhead, noticeable for single files
+    "parallelize_checks": True,  # note: has an overhead, noticeable for small content
+    "output_format": None,  # todo: add enum - default, json, compact
     "checks": {
         "airlinese.misc": True,
         "annotations.misc": True,

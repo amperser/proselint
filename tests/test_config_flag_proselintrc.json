@@ -1,5 +1,8 @@
 {
     "max_errors": 1000,
+    "parallelize_lints": true,
+    "parallelize_checks": true,
+    "output_format": null,
     "checks": {
         "airlinese.misc"                : true,
         "annotations.misc"              : true,
