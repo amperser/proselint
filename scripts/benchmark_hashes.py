@@ -1,4 +1,3 @@
-from pathlib import Path
 from timeit import timeit
 
 import proselint
