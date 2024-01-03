@@ -14,12 +14,10 @@ Points out sexist language.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
-def check(text: str) -> list[ResultCheck]:
+def check_sexism(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "sexism.misc"
     msg = "Gender bias. Use '{}' instead of '{}'."
@@ -55,8 +53,11 @@ def check(text: str) -> list[ResultCheck]:
         # ["hero",             ["heroine"]]
     ]
 
-    results = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
 
+
+def check_preferred_form(text: str) -> list[ResultCheck]:
+    err = "sexism.misc"
     msg = "Not a preferred form. Use '{}' instead of '{}'."
     pref = [
         ["anchor", ["anchorperson"]],
@@ -68,7 +69,4 @@ def check(text: str) -> list[ResultCheck]:
         ["firefighter", ["fireperson"]],
         ["mail carrier", ["mailperson"]],
     ]
-    for x in preferred_forms_check(text, pref, err, msg, ignore_case=False):
-        results.append(x)
-
-    return results
+    return preferred_forms_check(text, pref, err, msg, ignore_case=False)
