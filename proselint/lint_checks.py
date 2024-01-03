@@ -157,6 +157,8 @@ def context(text, position, level="paragraph"):
 
 def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     """Extract the checks."""
+    # TODO: benchmark consecutive runs of this
+    # TODO: config should only translate once to check-list
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
@@ -165,7 +167,8 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
             module = importlib.import_module("." + check_name, "proselint.checks")
         except ModuleNotFoundError:
             logging.exception(
-                "requested config-flag '%s' not found in proselint.checks", check_name,
+                "requested config-flag '%s' not found in proselint.checks",
+                check_name,
             )
             continue
         checks += [getattr(module, d) for d in dir(module) if re.match("check", d)]

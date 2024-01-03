@@ -11,7 +11,7 @@ def test_config_flag_ignore_unavailable():
     """program should not crash with faulty config -> just inform"""
     cfg = load_options()
     cfg["checks"]["misc.santa_clause_is_real"] = True
-    lint("Smoke phrase with nothing flagged.", cfg=cfg)
+    lint("Smoke phrase with nothing flagged.", config=cfg)
 
 
 def test_config_default_flag_for_check_missing():
