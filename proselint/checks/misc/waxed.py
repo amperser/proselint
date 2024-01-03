@@ -17,16 +17,14 @@ adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
+import re
+
+from ...lint_cache import memoize_const
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
-def check(text: str) -> list[ResultCheck]:
-    """Suggest the preferred forms."""
-    err = "misc.waxed"
-    msg = "The modifier following 'waxed' must be an adj.: '{}' is correct"
-
+@memoize_const
+def preferred_forms() -> list:
     waxes = ["wax", "waxes", "waxed", "waxing"]
     modifiers = [
         ("ebullient", "ebulliently"),
@@ -47,11 +45,19 @@ def check(text: str) -> list[ResultCheck]:
         ("sentimental", "sentimentally"),
     ]
 
-    def pairs(word: str) -> list:
-        return [[word + " " + pair[0], [word + " " + pair[1]]] for pair in modifiers]
+    return [
+        [word + " " + pair[0], [word + " " + pair[1]]]
+        for pair in modifiers
+        for word in waxes
+    ]
 
-    preferred = []
-    for _word in waxes:
-        preferred += pairs(_word)
 
-    return preferred_forms_check(text, preferred, err, msg)
+def check(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms."""
+    if not any(re.finditer("wax", text, re.IGNORECASE)):
+        # early exit for a niche and costly check
+        return []
+
+    err = "misc.waxed"
+    msg = "The modifier following 'waxed' must be an adj.: '{}' is correct"
+    return preferred_forms_check(text, preferred_forms(), err, msg)

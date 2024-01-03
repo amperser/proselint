@@ -14,11 +14,9 @@ Incorrect capitalization.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.capitalization"
@@ -34,23 +32,20 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-# @memoize
-# def check_seasons(text: str) -> list[Result]:
-#     """Suggest the preferred forms."""
-#     err = "MAU102"
-#     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
+def check_seasons(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms."""
+    err = "MAU102"
+    msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
+    items = [
+        ["winter", ["Winter"]],
+        # ["fall",          ["Fall"]],
+        ["summer", ["Summer"]],
+        ["spring", ["Spring"]],
+    ]
 
-#     list = [
-#         # ["winter",        ["Winter"]],
-#         # ["fall",          ["Fall"]],
-#         # ["summer",        ["Summer"]],
-#         # ["spring",        ["Spring"]],
-#     ]
-
-#     return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-@memoize
 def check_months(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"
@@ -59,7 +54,7 @@ def check_months(text: str) -> list[ResultCheck]:
     items = [
         ["January", ["january"]],
         ["February", ["february"]],
-        # ["March",           ["march"]],
+        # ["March",           ["march"]],  # TODO: deal better with collisions / false positives
         ["April", ["april"]],
         # ["May",             ["may"]],
         ["June", ["june"]],
@@ -74,7 +69,6 @@ def check_months(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-@memoize
 def check_days(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"

@@ -14,13 +14,9 @@ Archaism.
 """
 from __future__ import annotations
 
-import re
-
-from ...lint_cache import memoize
-from ...lint_checks import ResultCheck
+from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.tense_present"
@@ -39,11 +35,9 @@ def check(text: str) -> list[ResultCheck]:
         # "and so",
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
+    # illogics = [rf"\s{i}\s" for i in illogics]
+    # todo: check function of this custom padding
 
-    results = []
-    for i in illogics:
-        for m in re.finditer(rf"\s{i}\s", text, flags=re.U | re.I):
-            txt = m.group(0).strip()
-            results.append((m.start() + 1, m.end(), err, msg.format(txt), None))
-
-    return results
+    return existence_check(
+        text, illogics, err, msg, ignore_case=True, string=True, require_padding=False,
+    )

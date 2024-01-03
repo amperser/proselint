@@ -23,11 +23,11 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     err = "leonard.exclamation.multiple"
     msg = "Stop yelling. Keep your exclamation points under control."
 
-    regex = r"[\!]\s*?[\!]{1,}"
+    items = [r"[\!]\s*?[\!]{1,}"]
 
     return existence_check(
         text,
-        [regex],
+        items,
         err,
         msg,
         require_padding=False,
@@ -42,6 +42,6 @@ def check_exclamations_ppm(text: str) -> list[ResultCheck]:
     err = "leonard.exclamation.30ppm"
     msg = "More than 30 ppm of exclamations. Keep them under control."
 
-    regex = r"\w!"
+    items = [r"\w!"]
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
+    return existence_check(text, items, err, msg, require_padding=False)

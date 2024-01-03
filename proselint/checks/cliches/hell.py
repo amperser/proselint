@@ -23,6 +23,6 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     err = "leonard.hell"
     msg = "Never use the words 'all hell broke loose'."
 
-    regex = r"all hell broke loose"
+    items = [r"all hell broke loose"]
 
-    return existence_check(text, [regex], err, msg)
+    return existence_check(text, items, err, msg)

@@ -24,9 +24,9 @@ def check_ly(text: str) -> list[ResultCheck]:
               ending in -ly, unless the -ly adverb is part of a longer
               phrase"""
 
-    regex = r"\s[^\s-]+ly-"
+    items = [r"\s[^\s-]+ly-"]
 
-    return existence_check(text, [regex], err, msg, require_padding=False, offset=-1)
+    return existence_check(text, items, err, msg, require_padding=False, offset=-1)
 
 
 def check(text: str) -> list[ResultCheck]:

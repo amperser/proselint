@@ -17,13 +17,10 @@ World War Ii should have correct capitalization.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
-from ...lint_checks import ResultCheck
-from ...tools import blacklist
+from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[ResultCheck]:  # todo: activate
     """Check the text."""
     err = "MSC104"
     msg = "Don't fail to capitalize roman numeral abbreviations."
@@ -34,10 +31,4 @@ def check(text: str) -> list[ResultCheck]:
         f"World War{numerals_regex}",
     ]
 
-    return blacklist(
-        text,
-        items,
-        err,
-        msg,
-    )
-    # TODO: fn missing, probably now existence_check()
+    return existence_check(text, items, err, msg, ignore_case=False)

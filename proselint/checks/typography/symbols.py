@@ -6,12 +6,10 @@ source_url: http://practicaltypography.com/
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
 @limit_results(3)
-@memoize
 def check_ellipsis(text: str) -> list[ResultCheck]:
     """Use an ellipsis instead of three dots."""
     err = "typography.symbols.ellipsis"
@@ -22,7 +20,6 @@ def check_ellipsis(text: str) -> list[ResultCheck]:
 
 
 @limit_results(1)
-@memoize
 def check_copyright_symbol(text: str) -> list[ResultCheck]:
     """Use the copyright symbol instead of (c)."""
     err = "typography.symbols.copyright"
@@ -33,7 +30,6 @@ def check_copyright_symbol(text: str) -> list[ResultCheck]:
 
 
 @limit_results(3)
-@memoize
 def check_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the trademark symbol instead of (TM)."""
     err = "typography.symbols.trademark"
@@ -44,7 +40,6 @@ def check_trademark_symbol(text: str) -> list[ResultCheck]:
 
 
 @limit_results(3)
-@memoize
 def check_registered_trademark_symbol(text: str) -> list[ResultCheck]:
     """Use the registered trademark symbol instead of (R)."""
     err = "typography.symbols.trademark"
@@ -55,7 +50,6 @@ def check_registered_trademark_symbol(text: str) -> list[ResultCheck]:
 
 
 @limit_results(3)
-@memoize
 def check_sentence_spacing(text: str) -> list[ResultCheck]:
     """Use no more than two spaces after a period."""
     err = "typography.symbols.sentence_spacing"
@@ -66,7 +60,6 @@ def check_sentence_spacing(text: str) -> list[ResultCheck]:
 
 
 @limit_results(3)
-@memoize
 def check_multiplication_symbol(text: str) -> list[ResultCheck]:
     """Use the multiplication symbol ×, not the lowercase letter x."""
     err = "typography.symbols.multiplication_symbol"
@@ -77,7 +70,6 @@ def check_multiplication_symbol(text: str) -> list[ResultCheck]:
 
 
 @limit_results(3)
-@memoize
 def check_curly_quotes(text: str) -> list[ResultCheck]:
     """Use curly quotes, not straight quotes."""
     err = "typography.symbols.curly_quotes"
@@ -87,8 +79,8 @@ def check_curly_quotes(text: str) -> list[ResultCheck]:
     return existence_check(text, [regex], err, msg, require_padding=False)
 
 
-# @memoize
-# def check_en_dash_separated_names(text: str) -> list[ResultCheck]:
-#     """Use an en-dash to separate names."""
-#     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
-#     #     u"Use an en dash (–) to separate names."],
+def check_en_dash_separated_names(text: str) -> list[ResultCheck]:
+    """Use an en-dash to separate names."""
+    # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
+    #     u"Use an en dash (–) to separate names."],
+    return []  # TODO
