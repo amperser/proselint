@@ -17,11 +17,9 @@ from __future__ import annotations
 import re
 import urllib.request as urllib_request  # for Python 3
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "links.valid"
@@ -48,7 +46,6 @@ def check(text: str) -> list[ResultCheck]:
     return results
 
 
-@memoize
 def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:

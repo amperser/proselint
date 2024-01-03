@@ -15,12 +15,10 @@ delete it and the writing will be just as it should be.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, limit_results
 
 
 @limit_results(1)
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Avoid 'very'."""
     err = "weasel_words.very"

@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "redundancy.wallace"
@@ -19,7 +17,6 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_garner(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 
@@ -123,7 +120,6 @@ def check_garner(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_nordquist(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.
 
@@ -142,7 +138,6 @@ def check_nordquist(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_atd(text: str) -> list[ResultCheck]:
     """Check for redundancies from After the Deadline."""
     err = "after_the_deadline.redundancy"

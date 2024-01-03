@@ -14,11 +14,9 @@ Paragraphs should not start with certain bad words.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"

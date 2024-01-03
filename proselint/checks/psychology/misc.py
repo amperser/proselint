@@ -14,11 +14,9 @@ Psychological and psychiatric terms to avoid.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, preferred_forms_check
 
 
-@memoize
 def check_lie_detector_test(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "psychology.lie_detector"
@@ -32,7 +30,6 @@ def check_lie_detector_test(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, items, err, msg)
 
 
-@memoize
 def check_p_equals_zero(text: str) -> list[ResultCheck]:
     """Check for p = 0.000."""
     err = "psychology.p_equals_zero"
@@ -47,7 +44,6 @@ def check_p_equals_zero(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, join=True)
 
 
-@memoize
 def check_mental_telepathy(text: str) -> list[ResultCheck]:
     """Check for 'mental telepathy'."""
     err = "psychology.mental_telepathy"

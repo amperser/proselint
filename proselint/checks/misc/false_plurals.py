@@ -14,11 +14,9 @@ Using the incorrect form of the plural.
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.false_plurals.examples"
@@ -32,7 +30,6 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, preferences, err, msg)
 
 
-@memoize
 def check_kudos(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.false_plurals.kudos"

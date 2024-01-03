@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize
 def check(text: str) -> list[ResultCheck]:
     """in- vs un-."""
     err = "spelling.in_un"

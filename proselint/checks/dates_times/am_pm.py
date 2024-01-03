@@ -12,11 +12,9 @@ categories: writing
 """
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check_lowercase_periods(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.lowercase_periods"
@@ -25,7 +23,6 @@ def check_lowercase_periods(text: str) -> list[ResultCheck]:
     return existence_check(text, [r"\d{1,2} ?[ap]m"], err, msg, ignore_case=False)
 
 
-@memoize
 def check_spacing(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.spacing"
@@ -34,7 +31,6 @@ def check_spacing(text: str) -> list[ResultCheck]:
     return existence_check(text, [r"\d{1,2}[ap]\.?m\.?"], err, msg)
 
 
-@memoize
 def check_midnight_noon(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
@@ -43,7 +39,6 @@ def check_midnight_noon(text: str) -> list[ResultCheck]:
     return existence_check(text, [r"12 ?[ap]\.?m\.?"], err, msg)
 
 
-@memoize
 def check_redundancy(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"

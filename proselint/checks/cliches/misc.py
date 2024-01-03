@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from ...lint_cache import memoize
 from ...lint_checks import ResultCheck, existence_check
 
 
-@memoize
 def check_cliches_garner(text: str) -> list[ResultCheck]:
     """Check the text.
 
@@ -100,7 +98,6 @@ def check_cliches_garner(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, join=True)
 
 
-@memoize
 def check_cliches_write_good(text: str) -> list[ResultCheck]:
     """Check the text.
 
@@ -813,7 +810,6 @@ def check_cliches_write_good(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, join=True)
 
 
-@memoize
 def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
     """Check the text.
 
