@@ -1,5 +1,4 @@
 import cProfile
-from pathlib import Path
 
 import proselint
 from proselint import lint_cache
