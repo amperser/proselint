@@ -69,6 +69,7 @@ def preferred_forms_check(
         for r in item[1]
         for m in re.finditer(regex.format(r), text, flags=flags)
     ]
+    # TODO: can we speed up str.format() ?
 
 
 def existence_check(

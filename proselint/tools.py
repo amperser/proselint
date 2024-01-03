@@ -10,7 +10,6 @@ import sys
 import time
 import traceback
 from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import freeze_support
 from pathlib import Path
 from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
@@ -124,7 +123,7 @@ def get_line_and_column(text, position):
 def _lint_loop(_check: Callable, _text: str, _hash: str) -> list[ResultLint]:
     # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
     errors = []
-    results = _check(_text, _hash)
+    results = _check(_text)
     for result in results:
         (start, end, check_name, message, replacements) = result
         (line, column) = get_line_and_column(_text, start)
@@ -176,7 +175,7 @@ def lint(
             # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
             # note2: .map() is build on .submit(), harder to use here, same speed
             futures = [exe.submit(_lint_loop, check, _text, hash_) for check in checks]
-            #exe.shutdown(wait=True)  # precaution todo
+            # exe.shutdown(wait=True)  # precaution todo
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
     else:
@@ -187,7 +186,11 @@ def lint(
     return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
 
 
-def _lint_path_loop(path: Path, config: dict, checks: list[Callable]) -> list[ResultLint]:
+def _lint_path_loop(
+    path: Path,
+    config: dict,
+    checks: list[Callable],
+) -> list[ResultLint]:
     log.debug("Processing '%s'", path.name)
     try:
         with path.open(encoding="utf-8", errors="replace") as _fh:
@@ -208,7 +211,7 @@ def lint_path(
     if not isinstance(config, dict):
         config = config_base.proselint_base
     checks = get_checks(config)
-    output_json = False # TODO, derive from config
+    output_json = False  # TODO, derive from config
     compact = False  # TODO: feed config into printer()
 
     if len(filepaths) < 2:
@@ -226,8 +229,11 @@ def lint_path(
         with ProcessPoolExecutor(_workers) as exe:
             # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
             # note2: .map() is build on .submit(), harder to use here, same speed
-            futures = {file: exe.submit(_lint_path_loop, file, config, checks) for file in filepaths}
-            #exe.shutdown(wait=True)  # precaution
+            futures = {
+                file: exe.submit(_lint_path_loop, file, config, checks)
+                for file in filepaths
+            }
+            # exe.shutdown(wait=True)  # precaution
             # TODO: should probably disable check-paralleling or use same executor?
         results = {_file: _ft.result() for _file, _ft in futures.items()}
     else:

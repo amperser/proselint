@@ -12,7 +12,6 @@ from typing import IO, Callable, Optional, Union
 from typing_extensions import Self
 
 from .config_paths import cache_user_path
-from .lint_checks import ResultCheck
 from .logger import log
 
 
@@ -20,34 +19,33 @@ class Cache:
     save_path = cache_user_path / "cache.pickle"
 
     def __init__(self) -> None:
-        self.data_check: dict[str, list[ResultCheck]] = {}
-        self.data_lint: dict[str, list] = {}
+        self.data: dict[str, list] = {}
         self.age: dict[str, int] = {}
         self.ts_now: int = round(datetime.now().timestamp())
 
     def __exit__(self) -> None:
         """Close previously opened cache shelves."""
         self.to_file()
-        self.data_check.clear()
+        self.data.clear()
 
     def __del__(self):
         self.to_file()
 
     def to_file(self) -> None:
-        if len(self.data_check) + len(self.data_lint) < 1:
+        if len(self.data) < 1:
             return
         if not cache_user_path.is_dir():
             cache_user_path.mkdir(parents=True)
         age_max: int = self.ts_now - round(timedelta(days=1).total_seconds())
-        for _key in self.data_check:
+        for _key in self.data:
             # TODO: could be speed up with dict_base - dict_entries_to_remove
             if self.age[_key] < age_max:
                 self.age.pop(_key)
-                self.data_check.pop(_key)
+                self.data.pop(_key)
 
         with self.save_path.open("wb", buffering=-1) as fd:
             pickle.dump(
-                [self.data_check, self.data_lint, self.age],
+                [self.data, self.age],
                 fd,
                 fix_imports=False,
                 protocol=pickle.HIGHEST_PROTOCOL,
@@ -56,26 +54,25 @@ class Cache:
 
     @classmethod
     def from_file(cls) -> Self:
-        instance = cls()
+        _inst = cls()
         if cls.save_path.exists():
             with contextlib.suppress(EOFError):
                 with cls.save_path.open("rb", buffering=-1) as fd:
                     data = pickle.load(fd, fix_imports=False)  # noqa: S301
                     # TODO: consider replacing pickle with something faster
-            if isinstance(data, list) and len(data) > 2:
-                instance.data_check = data[0]
-                instance.data_lint = data[1]
-                instance.age = data[2]
+                    # todo: compare version or similar and delete if different
+            if isinstance(data, list) and len(data) >= 2:
+                _inst.data = data[0]
+                _inst.age = data[1]
                 log.debug(" -> found & restored cache")
-        return instance
+        return _inst
 
     def clear(self) -> None:
         """Delete the contents of the cache."""
         log.debug("Deleting the cache...")
         with contextlib.suppress(OSError):
             shutil.rmtree(cache_user_path)
-        self.data_check.clear()
-        self.data_lint.clear()
+        self.data.clear()
         self.age.clear()
 
 
@@ -87,51 +84,21 @@ cache = Cache.from_file()
 ###############################################################################
 
 
-def memoize_o(
+def memoize_const(
     fn: Callable,
 ) -> Callable:
-    """Cache results of check-computations on disk.
-    Note: fn-signature gets changed! bad design, but good speed-improvement
-        -> wrapped_fn(text: str) -> list[Results]
-        -> called_fn(text: str, text_hash: str) -> list[Results]
-    TODO: decide what to do: extend args of wrapped fn, feed dict into fn?
-    """
-    _filename = f"{fn.__module__}.{fn.__name__}"
+    """wrapped FNs should work like constants after first execution, almost zero cost"""
+    _key = f"{fn.__module__}.{fn.__name__}.c"
 
     @functools.wraps(fn)
-    def wrapped(text: str, hash_text: Optional[str] = None):
-        if hash_text is None:
-            # disable cache when used without hash
-            return fn(text)
-        key = _filename + hash_text
-
+    def wrapped() -> list:
         try:
-            return cache.data_check[key]
+            return cache.data[_key]
         except KeyError:
-            value = fn(text)
-            cache.data_check[key] = value
-            cache.age[key] = cache.ts_now
+            value = fn()
+            cache.data[_key] = value
+            cache.age[_key] = cache.ts_now
             return value
-        except TypeError:
-            log.error(
-                "Warning: could not disk cache call to %s;"
-                "it probably has unhashable args. Error: %s",
-                _filename,
-                traceback.format_exc(),
-            )
-            return fn(text)
-
-    return wrapped
-
-
-def memoize(
-    fn: Callable,
-) -> Callable:
-    """null, neutral"""
-
-    @functools.wraps(fn)
-    def wrapped(text: str, hash_text: Optional[str] = None):
-        return fn(text)
 
     return wrapped
 
@@ -158,22 +125,17 @@ def memoize_lint(
             hash_content = hashlib.sha224(content.encode("utf-8")).hexdigest()
 
         # TODO: assume for now that config & checks don't change between runs -> WRONG!
-        # if not isinstance(config, dict):
-        #    config = config_base.proselint_base
-
-        # if checks is None:
-        #    checks = get_checks(config)
 
         key = _filename + hash_content
 
         try:
-            return cache.data_lint[key]
+            return cache.data[key]
         except KeyError:
             value = fn(content, config, checks, hash_content)
-            cache.data_lint[key] = value
-            # cache.age[key] = cache.ts_now
+            cache.data[key] = value
+            cache.age[key] = cache.ts_now
             return value
-        except TypeError:
+        except TypeError:  # TODO: can be removed?
             log.error(
                 "Warning: could not disk cache call to %s;"
                 "it probably has unhashable args. Error: %s",

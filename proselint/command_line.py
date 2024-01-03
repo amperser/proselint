@@ -8,15 +8,12 @@ import signal
 import subprocess
 import sys
 import time
-import traceback
 from multiprocessing import freeze_support
 from pathlib import Path
 from types import FrameType
 from typing import Optional, Union
 
 import click
-
-from proselint.lint_checks import get_checks
 
 from . import tools
 from .config_base import proselint_base
