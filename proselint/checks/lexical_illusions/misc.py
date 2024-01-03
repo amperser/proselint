@@ -15,7 +15,7 @@ and this happens most often between line breaks.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check
+from ...lint_checks import ResultCheck, existence_check, Pd
 
 
 def check(text: str) -> list[ResultCheck]:
@@ -31,5 +31,5 @@ def check(text: str) -> list[ResultCheck]:
         err,
         msg,
         exceptions=exceptions,
-        require_padding=False,
+        padding=Pd.disabled,
     )

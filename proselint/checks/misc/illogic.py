@@ -50,4 +50,4 @@ def check_without_your_collusion(text: str) -> list[ResultCheck]:
     err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
     items = ["without your collusion"]
-    return existence_check(text, items, err, msg, require_padding=False, offset=-1)
+    return existence_check(text, items, err, msg, offset=-1)

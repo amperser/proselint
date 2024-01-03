@@ -14,7 +14,7 @@ Phrasal adjectives.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check, preferred_forms_check
+from ...lint_checks import ResultCheck, existence_check, preferred_forms_check, Pd
 
 
 def check_ly(text: str) -> list[ResultCheck]:
@@ -26,7 +26,7 @@ def check_ly(text: str) -> list[ResultCheck]:
 
     items = [r"\s[^\s-]+ly-"]
 
-    return existence_check(text, items, err, msg, require_padding=False, offset=-1)
+    return existence_check(text, items, err, msg, padding=Pd.disabled, offset=-1)
 
 
 def check(text: str) -> list[ResultCheck]:

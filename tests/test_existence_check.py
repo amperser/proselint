@@ -1,5 +1,5 @@
 """Test the existence_check function from the tools.py module."""
-from proselint.lint_checks import existence_check
+from proselint.lint_checks import existence_check, Pd
 
 
 def test_existence_check():
@@ -55,7 +55,7 @@ def test_existence_check_exceptions():
         regex,
         "",
         "",
-        require_padding=False,
+        padding=Pd.disabled,
     )
     assert len(errs) == 2
     errs = existence_check(
@@ -64,6 +64,6 @@ def test_existence_check_exceptions():
         "",
         "",
         exceptions=no,
-        require_padding=False,
+        padding=Pd.disabled,
     )
     assert len(errs) == 1

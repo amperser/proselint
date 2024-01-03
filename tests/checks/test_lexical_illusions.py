@@ -16,3 +16,5 @@ def test():
     assert_pass(check, "An antimatter particle")
     assert_pass(check, "The theory")
     assert_pass(check, "She had coffee at the Foo-bar bar.")
+    assert_fail(check, "She had coffee at the Foo bar bar.")
+    assert_fail(check, "She she coffee at the Foo-bar.")
