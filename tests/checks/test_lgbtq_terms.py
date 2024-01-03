@@ -16,6 +16,6 @@ def test_homosexual_term():
     assert_pass(check, "Homosexual.")
 
 
-def test_sexual_prefence():
+def test_sexual_preference():
     """Check that sexual preference is flagged."""
     assert_fail(check, "My sexual preference is for women.")
