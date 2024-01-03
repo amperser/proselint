@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import traceback
+from multiprocessing import freeze_support
 from pathlib import Path
 from types import FrameType
 from typing import Optional, Union
@@ -18,7 +19,7 @@ import click
 from proselint.lint_checks import get_checks
 
 from . import tools
-from .config_default import proselint_base
+from .config_base import proselint_base
 from .config_paths import demo_file
 from .lint_cache import cache
 from .logger import log, set_verbosity
@@ -147,39 +148,11 @@ def proselint(
         paths = [Path(path) for path in paths]
     log.debug("Paths to lint: %s", paths)
 
-    # Expand the list of directories and files.
-    filepaths = tools.extract_files(paths)
-    checks = get_checks(config)
-
-    # Lint the files
-    num_errors = 0
-
-    # Use stdin if no paths were specified
-    if len(paths) == 0:
-        log.info("No path specified -> will read from <stdin>")
-        errors = tools.lint(sys.stdin, config=config, checks=checks)
-        num_errors += len(errors)
-        tools.print_errors("<stdin>", errors, output_json, compact)
-    else:
-        ts_start = time.time()
-        for fpath in filepaths:
-            log.debug("Processing '%s'", fpath.name)
-            try:
-                with fpath.open(encoding="utf-8", errors="replace") as _fh:
-                    content = _fh.read()
-            except Exception:
-                traceback.print_exc()
-                sys.exit(2)
-            errors = tools.lint(content, config=config, checks=checks)
-            num_errors += len(errors)
-
-            tools.print_errors(fpath, errors, output_json, compact)
-        duration = time.time() - ts_start
-        log.info("Found %d lint-warnings in %.3f s", num_errors, duration)
-
-    # Return an exit code
-    sys.exit(num_errors)
+    results = tools.lint_path(paths, config)
+    error_num = sum([len(_errs) for _errs in results.values()])
+    sys.exit(error_num)  # Return an exit code
 
 
 if __name__ == "__main__":
+    freeze_support()  # todo
     proselint()

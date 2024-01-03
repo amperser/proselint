@@ -159,7 +159,7 @@ def memoize_lint(
 
         # TODO: assume for now that config & checks don't change between runs -> WRONG!
         # if not isinstance(config, dict):
-        #    config = config_default.proselint_base
+        #    config = config_base.proselint_base
 
         # if checks is None:
         #    checks = get_checks(config)

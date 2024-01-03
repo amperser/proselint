@@ -5,7 +5,7 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
-from proselint.config_default import proselint_base
+from proselint.config_base import proselint_base
 from proselint.tools import _deepmerge_dicts, load_options
 from tests.conftest import print_invoke_return
 
