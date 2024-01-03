@@ -1,41 +1,35 @@
 import logging
 import logging.handlers
 
-try:
-    import chromalog  # todo: maybe switch to rich to allow links
-
-    chromalog.basicConfig(format="%(message)s")
-except ImportError:
-    chromalog = None
+# todo: maybe add to rich to allow links
 
 log = logging.getLogger("proselint")
-log.addHandler(logging.NullHandler())
+log.setLevel(logging.INFO)
+# log.propagate = 0
+
+logging.basicConfig(format="%(message)s")
+
+# console_handler = logging.StreamHandler(sys.stderr)
+# console_handler.setLevel(logging.INFO)
+# log.addHandler(console_handler)
 
 
 def set_verbosity(debug: bool = False) -> None:
     if debug:
         log.setLevel(logging.DEBUG)
-        if chromalog:
-            chromalog.basicConfig(format="%(name)s %(levelname)s: %(message)s")
-        else:
-            logging.basicConfig(format="%(name)s %(levelname)s: %(message)s")
+        logging.basicConfig(format="%(name)s %(levelname)s: %(message)s")
     else:
         log.setLevel(logging.INFO)
-        if chromalog:
-            chromalog.basicConfig(format="%(message)s")
-        else:
-            logging.basicConfig(format="%(message)s")
+        logging.basicConfig(format="%(message)s", force=True)
         # only needed in debug mode:
-        logging._srcfile = None  # noqa: SLF001
-        logging.logThreads = 0
-        logging.logProcesses = 0
+        # logging._srcfile = None
+        # logging.logThreads = 0
+        # logging.logProcesses = 0
 
 
 def get_verbosity() -> bool:
     return log.level == logging.DEBUG
 
-
-set_verbosity(debug=False)
 
 # short reminder for format-strings:
 # %s    string
