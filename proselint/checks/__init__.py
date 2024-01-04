@@ -149,7 +149,7 @@ def consistency_check(
     return results
 
 
-def preferred_forms_check(
+def preferred_forms_check(  # noqa: PLR0913, PLR0917
     text: str,
     items: list,
     err: str,
@@ -189,7 +189,7 @@ class Pd(str, Enum):
     #       - newline ...
 
 
-def existence_check(
+def existence_check(  # noqa: PLR0913, PLR0917
     text: str,
     re_items: list,
     err: str,

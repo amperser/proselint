@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 """Test GMEU entry 'a', part A."""
-from proselint.checks import ResultCheck
+
 from tests.check import assert_error
 from tests.conftest import assert_fail
 
 
-def check(text: str) -> list[ResultCheck]:
-    return assert_error, text, "misc.a_vs_an"
+def check(text: str) -> list:
+    return [assert_error, text, "misc.a_vs_an"]
 
 
 def test_misc_a_vs_an():

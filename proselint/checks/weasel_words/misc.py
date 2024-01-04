@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def disabled_check(text: str) -> list[ResultCheck]:
-    error_code = "weasel_words.misc"
-    msg = "Weasel words present."
+    error_code = "weasel_words.misc"  # noqa: F841
+    msg = "Weasel words present."  # noqa: F841
 
     return []  # TODO

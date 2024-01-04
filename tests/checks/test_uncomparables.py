@@ -1,13 +1,13 @@
 """Test uncomparables.misc"""
+from __future__ import annotations
 
-from proselint.checks import ResultCheck
 from proselint.checks.uncomparables.misc import check_1
 from proselint.checks.uncomparables.misc import check_2
 from tests.conftest import assert_fail
 from tests.conftest import assert_pass
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list:
     # combined test,
     result = []
     result.extend(check_1(text))

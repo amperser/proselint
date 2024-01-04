@@ -40,7 +40,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
 
             # Run the linter.
             log.debug("Linting %s", file_md)
-            out = subprocess.check_output(["proselint", fullpath])
+            out = subprocess.check_output(["proselint", fullpath])  # noqa: S603, S607
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
@@ -48,7 +48,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
             log.debug(" -> found %d errors.", num_errors)
 
             # Open the document.
-            subprocess.call(["open", fullpath])
+            subprocess.call(["open", fullpath])  # noqa: S603, S607
 
             # Ask the scorer how many of the errors were false alarms?
             # TODO: this should not be manual - data can be stored in corpus
@@ -61,7 +61,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
                     input_val = int(input_val)
                     fp += input_val
                     tp += num_errors - input_val
-                except ValueError:
+                except ValueError:  # noqa: PERF203
                     pass
 
             log.debug(" -> currently %d hits and %d false alarms", tp, fp)

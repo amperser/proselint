@@ -153,7 +153,7 @@ def lint(
 ) -> list[ResultLint]:
     """Run the linter on the input file."""
 
-    if isinstance(content, str):
+    if isinstance(content, str):  # noqa: SIM108
         _text = content
     else:
         _text = content.read()
@@ -223,11 +223,9 @@ def lint_path(
             results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
             chars += len(content)
 
-
     error_num = 0
     for _file, _errors in results.items():
         if len(_errors) > 0 and isinstance(_errors[0], Future):
-            #
             _errors = [_e for _ft in _errors for _e in _ft.result()]
             _errors = sorted(
                 _errors[: config["max_errors"]],
@@ -297,7 +295,7 @@ def print_errors(
             ) = error
 
             if isinstance(filename, Path):
-                if compact:
+                if compact:  # noqa: SIM108
                     filename = filename.name
                 else:
                     filename = filename.absolute().as_uri()
