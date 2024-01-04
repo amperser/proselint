@@ -6,6 +6,8 @@ import hashlib
 import pickle
 import shutil
 import traceback
+from concurrent.futures import Executor
+from concurrent.futures import Future
 from datetime import datetime
 from datetime import timedelta
 from typing import IO
@@ -41,8 +43,10 @@ class Cache:
         self.data: dict[str, list] = {}
         self.age: dict[str, int] = {}
         self.ts_now: int = round(datetime.now().timestamp())
+        self.fname2key: dict[str, str] = {}
         # TODO: from_file can also just be done here
 
+    # TODO: add dict-access-fn and add timestamp there
     def __exit__(
         self,
         typ: Optional[type[BaseException]] = None,
@@ -114,47 +118,60 @@ cache = Cache.from_file()
 ###############################################################################
 
 
+def calculate_key(text: str, checks: list[Callable]) -> str:
+    """For accessing Cache"""
+
+    text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
+    chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
+    chck_hash = hashlib.sha224(" ".join(chck_list).encode("utf-8")).hexdigest()[:10]
+    # NOTE: Skip hashing config!
+    #   -> Valid assumption that (current) config has
+    #      no influence on result below this level
+    # WARNING: frozenset(checks).__hash__() varies between runs
+
+    return text_hash + chck_hash
+
+
 def memoize_lint(
     fn: Callable,
 ) -> Callable:
     """Cache results of lint() on disk."""
-    _filename = f"{fn.__module__}.{fn.__name__}"
 
     @functools.wraps(fn)
     def wrapped(
         content: Union[str, IO],
         config: Optional[dict] = None,
         checks: Optional[list[Callable]] = None,
-        hash_content: Optional[str] = None,
+        file_name: Optional[str] = None,
+        *,
+        _exe: Optional[Executor] = None,
     ) -> list:
         if not isinstance(content, str):
-            return fn(content, config, checks, hash_content)
-            # TODO: also allowing IO would enable 2d-dict
+            return fn(content, config, checks, file_name, _exe=_exe)
+            # TODO: also adding filename would enable 2d-dict
             #       d[funcSig,fileSig] = (input_hash,result)
             #                        -> smaller dicts
 
-        if hash_content is None:
-            hash_content = hashlib.sha224(content.encode("utf-8")).hexdigest()
-
-        # TODO: assume for now that config & checks don't change between runs -> WRONG!
-        #   hash at least frozenset of checks-list
-
-        key = _filename + hash_content
+        key = calculate_key(content, checks)
 
         try:
             return cache.data[key]
         except KeyError:
-            value = fn(content, config, checks, hash_content)
-            cache.data[key] = value
-            cache.age[key] = cache.ts_now
-            return value
+            _res = fn(content, config, checks, file_name, _exe=_exe)
+            # only store finished results
+            if len(_res) == 0 or not isinstance(_res[0], Future):
+                log.debug("[Memoizer] Store %s", key)
+                cache.data[key] = _res
+                cache.age[key] = cache.ts_now
+            cache.fname2key[file_name] = key
+            return _res
         except TypeError:  # TODO: can be removed?
             log.error(
                 "Warning: could not disk cache call to %s;"
                 "it probably has unhashable args. Error: %s",
-                _filename,
+                f"{fn.__module__}.{fn.__name__}",
                 traceback.format_exc(),
             )
-            return fn(content, config, checks, hash_content)
+            return fn(content, config, checks, file_name, _exe=_exe)
 
     return wrapped

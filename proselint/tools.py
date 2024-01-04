@@ -9,6 +9,8 @@ import os
 import re
 import sys
 import time
+from concurrent.futures import Executor
+from concurrent.futures import Future
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import IO
@@ -24,6 +26,7 @@ from .checks import run_checks
 from .config_paths import config_global_path
 from .config_paths import config_user_paths
 from .logger import log
+from .memoizer import cache
 from .memoizer import memoize_lint
 
 ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
@@ -144,7 +147,9 @@ def lint(
     content: Union[str, IO],
     config: Optional[dict] = None,
     checks: Optional[list[Callable]] = None,
-    hash_: Optional[str] = None,
+    file_name: Optional[str] = None,
+    *,
+    _exe: Optional[Executor] = None,
 ) -> list[ResultLint]:
     """Run the linter on the input file."""
 
@@ -159,20 +164,27 @@ def lint(
     if checks is None:
         checks = get_checks(config)
 
+    ret_future = _exe is not None
+
     # Apply all the checks.
-    if config["parallelize"]:  # and __name__ == '__main__':
-        exe = ProcessPoolExecutor()
+    if config["parallelize"]:
+        if not ret_future:
+            log.debug("[Lint] created inner Executor for parallelization")
+            _exe = ProcessPoolExecutor()
+        else:
+            log.debug("[Lint] used outer Executor for parallelization")
         # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu
         # NOTE: .map() is build on .submit(), harder to use here, same speed
-        futures = [exe.submit(run_checks, check, _text) for check in checks]
+        futures = [_exe.submit(run_checks, check, _text) for check in checks]
+        if ret_future:
+            # this will skip the memoizer
+            return futures
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
     else:  # single process
         results = [run_checks(check, _text) for check in checks]
         errors = [_e for _res in results for _e in _res]
 
-    # TODO: might still possible to optimize by handing out futures
-    #       and adding to cache later
     # Sort the errors by line and column number.
     return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
 
@@ -198,21 +210,33 @@ def lint_path(
         log.info("No path specified -> will read from <stdin>")
         results["<stdin>"] = lint(sys.stdin, config=config, checks=checks)
     else:
+        # offer "outer" executor, to make multiprocessing more effective
+        exe = ProcessPoolExecutor() if config["parallelize"] else None
         for file in filepaths:
             log.debug("Analyzing '%s'", file.name)
             try:
                 with file.open(encoding="utf-8", errors="replace") as _fh:
                     content = _fh.read()
             except Exception:
-                # traceback.print_exc()
-                log.exception("Error while opening '%s'", file.name)
+                log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
                 continue
-            results[file] = lint(content, config=config, checks=checks)
+            results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
             chars += len(content)
-        # results = {file: _lint_path_loop(file, config, checks) for file in filepaths}
+
 
     error_num = 0
     for _file, _errors in results.items():
+        if len(_errors) > 0 and isinstance(_errors[0], Future):
+            #
+            _errors = [_e for _ft in _errors for _e in _ft.result()]
+            _errors = sorted(
+                _errors[: config["max_errors"]],
+                key=lambda e: (e[2], e[3]),
+            )
+            key = cache.fname2key.get(_file.as_posix())
+            log.debug("[Memoizer] LateStore %s", key)
+            cache.data[key] = _errors
+            cache.age[key] = cache.ts_now
         # todo: include filename in ResultLint?
         print_errors(_file, _errors, output_json, compact)
         error_num += len(_errors)
