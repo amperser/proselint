@@ -6,7 +6,7 @@ source_url: http://practicaltypography.com/
 
 from __future__ import annotations
 
-from ...lint_checks import Pd, ResultCheck, existence_check, limit_results
+from proselint.checks import Pd, ResultCheck, existence_check, limit_results
 
 
 def check(text: str) -> list[ResultCheck]:

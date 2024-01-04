@@ -17,7 +17,7 @@ World War Ii should have correct capitalization.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck, existence_check
 
 
 def check(text: str) -> list[ResultCheck]:  # todo: activate

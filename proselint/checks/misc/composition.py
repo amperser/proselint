@@ -47,7 +47,7 @@ structure.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, preferred_forms_check
+from proselint.checks import ResultCheck, preferred_forms_check
 
 
 def check(text: str) -> list[ResultCheck]:

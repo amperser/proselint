@@ -14,7 +14,7 @@ Too much yelling.
 """
 from __future__ import annotations
 
-from ...lint_checks import (
+from proselint.checks import (
     Pd,
     ResultCheck,
     existence_check,

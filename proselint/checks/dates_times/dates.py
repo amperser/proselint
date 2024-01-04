@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import calendar
 
-from ...lint_checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck, existence_check
 
 
 def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:

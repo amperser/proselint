@@ -14,7 +14,7 @@ Take responsibility with the shitty words you wanna say.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck, existence_check
 
 
 def check(text: str) -> list[ResultCheck]:

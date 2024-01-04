@@ -14,7 +14,7 @@ Institution names.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, preferred_forms_check
+from proselint.checks import ResultCheck, preferred_forms_check
 
 
 def check_vtech(text: str) -> list[ResultCheck]:
