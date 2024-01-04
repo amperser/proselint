@@ -39,7 +39,7 @@ def test_write_good_g():
 
 def test_write_good_k():
     """Basic checks on check_cliches_write_good."""
-    check = misc.check_cliches_write_good_k_to_r
+    check = misc.check_cliches_write_good_k_to_o
     assert_pass(check, "No cliches here.")
     assert_fail(check, "You know the score.")
     assert_fail(check, "You payed out of pocket for years.")
@@ -47,10 +47,16 @@ def test_write_good_k():
 
 def test_write_good_s():
     """Basic checks on check_cliches_write_good."""
-    check = misc.check_cliches_write_good_s_to_z
+    check = misc.check_cliches_write_good_p_to_s
     assert_pass(check, "No cliches here.")
     assert_fail(check, "I feel sick as a dog since yesterday.")
     assert_fail(check, "I feel sick as a dog.")
+
+
+def test_write_good_t():
+    """Basic checks on check_cliches_write_good."""
+    check = misc.check_cliches_write_good_t_to_z
+    assert_pass(check, "No cliches here.")
     assert_fail(check, "You, me and that uphill battle.")
     assert_fail(check, "You, me and that uphill battle with him.")
 

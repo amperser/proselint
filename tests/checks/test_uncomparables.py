@@ -1,7 +1,16 @@
 """Test uncomparables.misc"""
 
-from proselint.checks.uncomparables.misc import check
+from proselint.checks.uncomparables.misc import check_1, check_2
+from proselint.lint_checks import ResultCheck
 from tests.conftest import assert_fail, assert_pass
+
+
+def check(text: str) -> list[ResultCheck]:
+    # combined test,
+    result = []
+    result.extend(check_1(text))
+    result.extend(check_2(text))
+    return result
 
 
 def test_misc():
