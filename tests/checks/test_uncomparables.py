@@ -1,7 +1,7 @@
 """Test uncomparables.misc"""
 
 from proselint.checks.uncomparables.misc import check_1, check_2
-from proselint.lint_checks import ResultCheck
+from proselint.checks import ResultCheck
 from tests.conftest import assert_fail, assert_pass
 
 

@@ -1,6 +1,6 @@
 """Test the consistency_check function from the tools.py module."""
 
-from proselint.lint_checks import consistency_check
+from proselint.checks import consistency_check
 
 
 def test_consistency_check():

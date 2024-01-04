@@ -1,6 +1,6 @@
 """Test the preferred_forms_check function from the tools.py module."""
 
-from proselint.lint_checks import preferred_forms_check
+from proselint.checks import preferred_forms_check
 
 
 def test_preferred_forms_check():

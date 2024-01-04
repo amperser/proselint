@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """Test GMEU entry 'a', part B."""
-from proselint.lint_checks import ResultCheck
+from proselint.checks import ResultCheck
 from tests.check import assert_error
 from tests.conftest import assert_fail
 
