@@ -51,7 +51,10 @@ def check(text: str) -> list[ResultCheck]:
     for word, expl in bad_words.items():
         results.extend(
             existence_check(
-                text, [word], err, msg.format(word, expl),
+                text,
+                [word],
+                err,
+                msg.format(word, expl),
             ),
         )
     return results

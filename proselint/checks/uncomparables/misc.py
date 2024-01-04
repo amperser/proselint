@@ -118,9 +118,29 @@ def uncomparables() -> list:
     ]
 
 
-def check(text: str) -> list[ResultCheck]:
-    """Check the text."""
+def check_1(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+    """
     err = "uncomparables.misc"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
+    items = uncomparables()
+    items = items[: round(len(items) / 2)]
 
-    return existence_check(text, uncomparables(), err, msg)
+    return existence_check(text, items, err, msg)
+
+
+def check_2(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+    """
+    err = "uncomparables.misc"
+    msg = "Comparison of an uncomparable: '{}' is not comparable."
+    items = uncomparables()
+    items = items[round(len(items) / 2) :]
+
+    return existence_check(text, items, err, msg)

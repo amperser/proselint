@@ -381,7 +381,7 @@ def check_a_to_e(text: str) -> list[ResultCheck]:
         "erection",
         "evl",
         "excrement",
-        ]
+    ]
     return existence_check(text, items, err, msg)
 
 
@@ -608,7 +608,7 @@ def check_f_to_h(text: str) -> list[ResultCheck]:
         "hottotrot",
         "hussy",
         "hustler",
-        ]
+    ]
     return existence_check(text, items, err, msg)
 
 
@@ -888,7 +888,7 @@ def check_i_to_p(text: str) -> list[ResultCheck]:
         "pussypounder",
         "putt pirate",
         "pwt",
-        ]
+    ]
     return existence_check(text, items, err, msg)
 
 

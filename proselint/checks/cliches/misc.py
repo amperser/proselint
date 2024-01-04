@@ -99,7 +99,10 @@ def check_cliches_garner(text: str) -> list[ResultCheck]:
 
 
 def check_cliches_write_good_a_to_c(text: str) -> list[ResultCheck]:
-    """Check the text. Function is segmented to improve parallelization.
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
 
     source:     write-good
     source_url: https://github.com/btford/write-good
@@ -265,7 +268,10 @@ def check_cliches_write_good_a_to_c(text: str) -> list[ResultCheck]:
 
 
 def check_cliches_write_good_d_to_j(text: str) -> list[ResultCheck]:
-    """Check the text. Function is segmented to improve parallelization.
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
 
     source:     write-good
     source_url: https://github.com/btford/write-good
@@ -447,8 +453,11 @@ def check_cliches_write_good_d_to_j(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_k_to_r(text: str) -> list[ResultCheck]:
-    """Check the text. Function is segmented to improve parallelization.
+def check_cliches_write_good_k_to_o(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
 
     source:     write-good
     source_url: https://github.com/btford/write-good
@@ -609,6 +618,23 @@ def check_cliches_write_good_k_to_r(text: str) -> list[ResultCheck]:
         "out on a limb",
         "over a barrel",
         "over the hump",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_p_to_s(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "pain and suffering",
         "pain in the",
         "panic button",
@@ -672,20 +698,6 @@ def check_cliches_write_good_k_to_r(text: str) -> list[ResultCheck]:
         "rub the wrong way",
         "ruled the roost",
         "running in circles",
-    ]
-    return existence_check(text, items, err, msg)
-
-
-def check_cliches_write_good_s_to_z(text: str) -> list[ResultCheck]:
-    """Check the text. Function is segmented to improve parallelization.
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
         "sad but true",
         "sadder but wiser",
         "salt of the earth",
@@ -742,6 +754,23 @@ def check_cliches_write_good_s_to_z(text: str) -> list[ResultCheck]:
         "stuffed shirt",
         "sweating blood",
         "sweating bullets",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "take a load off",
         "take one for the team",
         "take the bait",

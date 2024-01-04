@@ -7,6 +7,8 @@ import re
 from enum import Enum
 from typing import Callable, Optional, TypeAlias
 
+from .logger import log
+
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
 # note1: NewType() is too strict here
@@ -124,6 +126,7 @@ def existence_check(
         errors.append(
             (m.start() + 1 + offset, m.end() + offset, err, msg.format(txt), None),
         )
+        # TODO: doesn't the padding alter the start+end?
 
     return errors
 
@@ -168,7 +171,9 @@ def context(text, position, level="paragraph"):
 
 
 def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
-    """Extract the checks."""
+    """Extract the checks.
+    Rule: fn-name must begin with "check", so check_xyz() is ok
+    """
     # TODO: benchmark consecutive runs of this
     # TODO: config should only translate once to check-list
     checks = []
@@ -183,8 +188,10 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
                 check_name,
             )
             continue
-        checks += [getattr(module, d) for d in dir(module) if re.match("check", d)]
+        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
+        # todo: name should start with check
 
+    log.debug("Collected %d checks to run", len(checks))
     return checks
 
 
