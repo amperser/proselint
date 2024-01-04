@@ -17,7 +17,7 @@ from warnings import showwarning as warn
 from . import config_base
 from .checks import ResultCheck, run_checks
 from .config_paths import config_global_path, config_user_paths
-from .lint_cache import memoize_lint
+from .memoizer import memoize_lint
 from .logger import log
 
 ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]

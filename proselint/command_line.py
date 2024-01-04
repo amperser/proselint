@@ -16,7 +16,7 @@ import click
 from . import tools
 from .config_base import proselint_base
 from .config_paths import demo_file
-from .lint_cache import cache
+from .memoizer import cache
 from .logger import log, set_verbosity
 from .version import __version__
 
