@@ -138,8 +138,12 @@ def check_nordquist(text: str) -> list[ResultCheck]:
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-def check_atd(text: str) -> list[ResultCheck]:
-    """Check for redundancies from After the Deadline."""
+def check_atd_1(text: str) -> list[ResultCheck]:
+    """Check for redundancies from After the Deadline.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+    """
     err = "after_the_deadline.redundancy"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
@@ -328,6 +332,20 @@ def check_atd(text: str) -> list[ResultCheck]:
         ["hoist", ["hoist up"]],
         ["hole", ["empty hole"]],
         ["honcho", ["head honcho"]],
+    ]
+    return preferred_forms_check(text, redundancies, err, msg)
+
+
+def check_atd_2(text: str) -> list[ResultCheck]:
+    """Check for redundancies from After the Deadline.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+    """
+    err = "after_the_deadline.redundancy"
+    msg = "Redundancy. Use '{}' instead of '{}'."
+
+    redundancies = [
         ["ice", ["frozen ice"]],
         ["ideal", ["perfect ideal"]],
         ["identical", ["same identical"]],

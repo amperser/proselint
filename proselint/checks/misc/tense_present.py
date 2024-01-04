@@ -37,5 +37,10 @@ def check(text: str) -> list[ResultCheck]:
     ]
 
     return existence_check(
-        text, illogics, err, msg, ignore_case=True, string=True,
+        text,
+        illogics,
+        err,
+        msg,
+        ignore_case=True,
+        string=True,
     )

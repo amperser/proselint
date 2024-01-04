@@ -15,7 +15,7 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 from proselint.lint_checks import ResultCheck
 
 
-def check(text: str) -> list[ResultCheck]:
+def disabled_check(text: str) -> list[ResultCheck]:
     error_code = "weasel_words.misc"
     msg = "Weasel words present."
 

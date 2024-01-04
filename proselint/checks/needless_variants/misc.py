@@ -17,8 +17,12 @@ from __future__ import annotations
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-def check(text: str) -> list[ResultCheck]:
-    """Suggest the preferred forms."""
+def check_1(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+    """
     err = "needless_variants.misc"
     msg = "Needless variant. '{}' is the preferred form."
 
@@ -193,6 +197,20 @@ def check(text: str) -> list[ResultCheck]:
         ["honoree", ["honorand"]],
         ["hypostatize", ["hypostasize"]],
         ["hysterical", ["hysteric"]],
+    ]
+    return preferred_forms_check(text, preferences, err, msg)
+
+
+def check_2(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+    """
+    err = "needless_variants.misc"
+    msg = "Needless variant. '{}' is the preferred form."
+
+    preferences = [
         ["idolize", ["idolatrize"]],
         ["impersonation", ["personation"]],
         ["impervious", ["imperviable"]],
