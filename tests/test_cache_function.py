@@ -1,7 +1,7 @@
 from timeit import timeit
 
 import proselint
-from proselint import lint_cache
+from proselint import memoizer
 
 
 def test_speed():
@@ -15,14 +15,14 @@ def test_speed():
         _text = demo_fh.read()
 
     # make sure it works
-    lint_cache.cache.clear()
+    memoizer.cache.clear()
     errors = proselint.tools.lint(_text)
     assert len(errors) > 0
 
     # without cache
     _dur1 = 0.0
     for _ in range(repetitions):
-        lint_cache.cache.clear()
+        memoizer.cache.clear()
         _dur1 += timeit(_code, globals=locals(), number=1)
 
     # with cache
@@ -33,7 +33,7 @@ def test_speed():
     # without cache, confirmation
     _dur3 = 0.0
     for _ in range(repetitions):
-        lint_cache.cache.clear()
+        memoizer.cache.clear()
         _dur3 += timeit(_code, globals=locals(), number=1)
 
     assert _dur2 < 0.7 * _dur1
@@ -45,7 +45,7 @@ def test_consistency():
     demo_path = proselint.path / "demo.md"
     demo_fh = demo_path.open(encoding="utf-8", errors="replace")
     demo_str = demo_fh.read()
-    lint_cache.cache.clear()
+    memoizer.cache.clear()
     errors_a = proselint.tools.lint(demo_str)
     errors_b = proselint.tools.lint(demo_str)
 

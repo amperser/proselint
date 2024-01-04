@@ -1,7 +1,7 @@
 import cProfile
 
 import proselint
-from proselint import lint_cache
+from proselint import memoizer
 
 ##################################################################
 # Profile Linter & Cache
@@ -12,7 +12,7 @@ from proselint import lint_cache
 file_path = proselint.path / "demo.md"
 f = file_path.open(encoding="utf-8", errors="replace")
 
-lint_cache.cache.clear()
+memoizer.cache.clear()
 
 sort_by = "tottime"  # tottime or cumtime, see readme
 

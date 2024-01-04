@@ -3,8 +3,8 @@ from __future__ import annotations
 from functools import cached_property, lru_cache
 from timeit import timeit
 
-from proselint import lint_cache
-from proselint.lint_cache import memoize_const
+from proselint import memoizer
+from proselint.memoizer import memoize_const
 
 # LEARNING:
 #   - results of fns are not automatically cached
@@ -73,7 +73,7 @@ def costly_const() -> list[int]:
 _t = timeit("_e = costly_const()", globals=globals(), number=1)
 print(f"1nd memoized-call took {_t * 1e3:4.3f} ms -> unknown cache state")
 
-lint_cache.cache.clear()
+memoizer.cache.clear()
 
 _t = timeit("_e = costly_const()", globals=globals(), number=1)
 print(f"1st fresh memoized-call took {_t * 1e3:4.3f} ms -> freshly uncached")

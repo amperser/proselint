@@ -2,7 +2,7 @@ import hashlib
 from timeit import timeit
 
 import proselint
-from proselint import lint_cache
+from proselint import memoizer
 from proselint.tools import get_checks
 
 ##################################################################
@@ -26,18 +26,17 @@ if __name__ == "__main__":
     _checks = get_checks(_cfg)
     _hash = hashlib.sha224(_text.encode("utf-8")).hexdigest()
     # TODO: experiment with overhead of these
-    lint_cache.cache = lint_cache.Cache.from_file()
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val  # TODO: interface changed
-        lint_cache.cache.clear()
+        memoizer.cache.clear()
         t1 = timeit(
             "e1 = proselint.tools.lint(_text, _cfg, _checks, _hash)",
             globals=locals(),
             number=1,
         )
         print(f"Lint with cfg={_name} took {t1 * 1e3:4.3f} ms uncached")
-        lint_cache.cache.clear()
+        memoizer.cache.clear()
         t2 = timeit(
             "e1 = proselint.tools.lint(_text, _cfg, _checks, _hash)",
             globals=locals(),
