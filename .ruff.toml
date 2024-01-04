@@ -1,0 +1,75 @@
+
+#line-length = 90
+target-version = "py38"
+
+[lint]
+select = [
+    "A",    # flake8-builtins
+#    "ANN", # flake8-annotations TODO activate
+#    "ARG",  # flake8-unused-arguments
+    "B",    # Bugbear
+    "C",
+    "COM", # flake8-commas
+#    "CPY",  # flake8-copyright
+    "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez
+#    "D",    # pydocstyle, TODO: activate
+    "E",    # pycodestyle errors
+#    "ERA",  # eradicate commented out code
+    "F",    # pyflakes
+    "FA",   # flake8-future-annotations
+#    "FBT",  # boolean traps
+    "FLY",  # flynt
+    "FURB", # refurb
+    "G",    # flake8-logging-format
+    "I",    # incomplete isort
+    "INP",  # flake8-no-pep420
+    "LOG",  # flake8-logging
+#    "N",    # naming
+    "NPY",  # NumPy-specific rules
+    "PD",   # pandas-vet
+    "PERF", # Perflint
+    "PL",   # Pylint
+    "PTH",  # flake8-use-pathlib
+    "PYI",  # flake8-pyi
+    "RET",  # flake8-return
+    "RUF",  # Ruff-specific rules
+    "S",    # bandit, security
+    "SLF",  # flake8-self
+    "SIM",  # flake8-simplify
+    "TID",  # flake8-tidy-imports
+    "TCH",  # flake8-type-checking
+    "T10",  # flake8-print
+    "UP",   # pyupgrade
+    "W",    # pycodestyle warnings
+    "YTT",  # flake8-2020
+]
+ignore = [
+    "PLR2004",  # magic values
+    "COM812",  # trailing comma -> done by formatter
+    # TODO: below is temporary
+
+]
+preview = true
+
+[lint.per-file-ignores]
+"tests/**" = ["S", "N8", "SLF001", "PLR2004"]
+"proselint/checks/**" = ["RUF001", "RUF002", "RUF003", "TID252"]
+"scripts/**" = ["E501"]
+
+"plugins/**" = ["INP001", "RUF012"]
+"scripts_web/**" = ["S1", "SIM", "RET", "TCH"]
+
+[lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 11
+
+[lint.isort]
+force-single-line = true
+
+[lint.pyupgrade]
+keep-runtime-typing = true
+
+[format]
+# per default like Black
+#preview = true
