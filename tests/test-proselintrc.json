@@ -1,7 +1,6 @@
 {
     "max_errors": 1000,
-    "parallelize_lints": true,
-    "parallelize_checks": true,
+    "parallelize": true,
     "output_format": null,
     "checks": {
         "airlinese.misc"                : true,
