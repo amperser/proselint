@@ -3,21 +3,21 @@
 from __future__ import annotations
 
 import copy
-import hashlib
+import importlib
 import json
 import os
+import re
 import sys
 import time
-import traceback
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import IO, Callable, Optional, TypeAlias, Union
 from warnings import showwarning as warn
 
 from . import config_base
+from .checks import ResultCheck, run_checks
 from .config_paths import config_global_path, config_user_paths
 from .lint_cache import memoize_lint
-from .lint_checks import get_checks
 from .logger import log
 
 ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
@@ -81,6 +81,31 @@ def load_options(
     return _deepmerge_dicts(cfg_default, user_options)
 
 
+def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
+    """Extract the checks.
+    Rule: fn-name must begin with "check", so check_xyz() is ok
+    """
+    # TODO: benchmark consecutive runs of this
+    # TODO: config should only translate once to check-list
+    checks = []
+    check_names = [key for (key, val) in options["checks"].items() if val]
+
+    for check_name in check_names:
+        try:
+            module = importlib.import_module("." + check_name, "proselint.checks")
+        except ModuleNotFoundError:
+            log.exception(
+                "requested config-flag '%s' not found in proselint.checks",
+                check_name,
+            )
+            continue
+        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
+        # todo: name should start with check
+
+    log.debug("Collected %d checks to run", len(checks))
+    return checks
+
+
 ###############################################################################
 # Linting #####################################################################
 ###############################################################################
@@ -108,42 +133,6 @@ def extract_files(paths: list[Path]) -> list[Path]:
     return expanded_files
 
 
-def get_line_and_column(text, position):
-    """Return the line number and column of a position in a string."""
-    position_counter = 0
-    line_no = 0
-    for line in text.splitlines(True):
-        if (position_counter + len(line.rstrip())) >= position:
-            break
-        position_counter += len(line)
-        line_no += 1
-    return line_no, position - position_counter
-
-
-def _lint_loop(_check: Callable, _text: str, _hash: str) -> list[ResultLint]:
-    # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
-    errors = []
-    results = _check(_text)
-    for result in results:
-        (start, end, check_name, message, replacements) = result
-        (line, column) = get_line_and_column(_text, start)
-        if not is_quoted(start, _text):
-            errors += [
-                (
-                    check_name,
-                    message,
-                    line,
-                    column,
-                    start,
-                    end,
-                    end - start,
-                    "warning",
-                    replacements,
-                ),
-            ]
-    return errors
-
-
 @memoize_lint
 def lint(
     content: Union[str, IO],
@@ -152,8 +141,7 @@ def lint(
     hash_: Optional[str] = None,
 ) -> list[ResultLint]:
     """Run the linter on the input file."""
-    # TODO: better candidate for the memoizer (on matching content + cfg)
-    # TODO: this seems now also just like a wrapper
+
     if isinstance(content, str):
         _text = content
     else:
@@ -165,40 +153,22 @@ def lint(
     if checks is None:
         checks = get_checks(config)
 
-    if hash_ is None:
-        hash_ = hashlib.sha224(_text.encode("utf-8")).hexdigest()
-
     # Apply all the checks.
-    if config["parallelize_checks"]:
-        # freeze_support() todo
-        with ProcessPoolExecutor() as exe:
-            # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
-            # note2: .map() is build on .submit(), harder to use here, same speed
-            futures = [exe.submit(_lint_loop, check, _text, hash_) for check in checks]
-            # exe.shutdown(wait=True)  # precaution todo
+    if config["parallelize"]:  # and __name__ == '__main__':
+        exe = ProcessPoolExecutor()
+        # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu
+        # NOTE: .map() is build on .submit(), harder to use here, same speed
+        futures = [exe.submit(run_checks, check, _text) for check in checks]
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
-    else:
-        results = [_lint_loop(check, _text, hash_) for check in checks]
+    else:  # single process
+        results = [run_checks(check, _text) for check in checks]
         errors = [_e for _res in results for _e in _res]
 
+    # TODO: might still possible to optimize by handing out futures
+    #       and adding to cache later
     # Sort the errors by line and column number.
     return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
-
-
-def _lint_path_loop(
-    path: Path,
-    config: dict,
-    checks: list[Callable],
-) -> list[ResultLint]:
-    log.debug("Processing '%s'", path.name)
-    try:
-        with path.open(encoding="utf-8", errors="replace") as _fh:
-            content = _fh.read()
-    except Exception:
-        traceback.print_exc()
-        return []
-    return lint(content, config=config, checks=checks)
 
 
 def lint_path(
@@ -214,30 +184,26 @@ def lint_path(
     output_json = False  # TODO, derive from config
     compact = False  # TODO: feed config into printer()
 
-    if len(filepaths) < 2:
-        config["parallelize_lints"] = False
-        log.info("Disabled parallelize_lints (only single file)")
-
     results = {}
+    chars = 0
     ts_start = time.time()
     if len(paths) == 0:
         # Use stdin if no paths were specified
         log.info("No path specified -> will read from <stdin>")
         results["<stdin>"] = lint(sys.stdin, config=config, checks=checks)
-    elif config["parallelize_lints"]:
-        _workers = max(min(os.cpu_count(), len(filepaths)), 1)
-        with ProcessPoolExecutor(_workers) as exe:
-            # note1: ThreadPoolExecutor is only concurrent, but not multi-cpu
-            # note2: .map() is build on .submit(), harder to use here, same speed
-            futures = {
-                file: exe.submit(_lint_path_loop, file, config, checks)
-                for file in filepaths
-            }
-            # exe.shutdown(wait=True)  # precaution
-            # TODO: should probably disable check-paralleling or use same executor?
-        results = {_file: _ft.result() for _file, _ft in futures.items()}
     else:
-        results = {file: _lint_path_loop(file, config, checks) for file in filepaths}
+        for file in filepaths:
+            log.debug("Analyzing '%s'", file.name)
+            try:
+                with file.open(encoding="utf-8", errors="replace") as _fh:
+                    content = _fh.read()
+            except Exception:
+                # traceback.print_exc()
+                log.exception("Error while opening '%s'", file.name)
+                continue
+            results[file] = lint(content, config=config, checks=checks)
+            chars += len(content)
+        # results = {file: _lint_path_loop(file, config, checks) for file in filepaths}
 
     error_num = 0
     for _file, _errors in results.items():
@@ -246,50 +212,14 @@ def lint_path(
         error_num += len(_errors)
 
     duration = time.time() - ts_start
-    log.info("Found %d lint-warnings in %.3f s", error_num, duration)
+    log.info(
+        "Found %d lint-warnings in %.3f s (%d files, %.2f kiByte)",
+        error_num,
+        duration,
+        len(filepaths),
+        chars / 1024,
+    )
     return results
-
-
-def is_quoted(position: int, text: str) -> bool:
-    """Determine if the position in the text falls within a quote."""
-
-    def matching(quotemark1: str, quotemark2: str) -> bool:
-        straight = "\"'"
-        curly = "“”"
-        return (quotemark1 in straight and quotemark2 in straight) or (
-            quotemark1 in curly and quotemark2 in curly
-        )
-
-    def find_ranges(_text: str) -> list[tuple[int, int]]:
-        # TODO: optimize, as it is top3 time-waster (of user-functions)
-        #       this could be a 1d array / LUT
-        s = 0
-        q = pc = ""
-        start = None
-        ranges = []
-        seps = " .,:;-\r\n"
-        quotes = ['"', "“", "”", "'"]
-        for i, c in enumerate(_text + "\n"):
-            if s == 0 and c in quotes and pc in seps:
-                start = i
-                s = 1
-                q = c
-            elif s == 1 and matching(c, q):
-                s = 2
-            elif s == 2:
-                if c in seps:
-                    ranges.append((start + 1, i - 1))
-                    start = None
-                    s = 0
-                else:
-                    s = 1
-            pc = c
-        return ranges
-
-    def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
-        return any(start <= _position < end for start, end in ranges)
-
-    return position_in_ranges(find_ranges(text), position)
 
 
 def errors_to_json(items: list[ResultLint]) -> str:
