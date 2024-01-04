@@ -16,12 +16,17 @@ from __future__ import annotations
 
 import re
 
-from ...lint_cache import memoize_const
 from ...lint_checks import ResultCheck, preferred_forms_check
 
 
-@memoize_const
-def animal_groups() -> list:
+def check(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    if not any(re.finditer("group|bunch", text, flags=re.IGNORECASE)):
+        return []
+
+    err = "oxford.venery_terms"
+    msg = "The venery term is '{}'."
+
     term_list = [
         ["alligators", "congregation"],
         ["antelopes", "herd"],
@@ -79,20 +84,14 @@ def animal_groups() -> list:
         "bunch",
     ]
 
+    # NOTE: python automatically caches this calculation for reruns
+    #       check with benchmark_checks.py
+
     items = []
     for term_pair in term_list:
         for generic in generic_terms:
             wrong = f"a {generic} of {term_pair[0]}"
             right = f"a {term_pair[1]} of {term_pair[0]}"
             items += [[right, [wrong]]]
-    return items
 
-
-def check(text: str) -> list[ResultCheck]:
-    """Check the text."""
-    if not any(re.finditer("group|bunch", text, flags=re.IGNORECASE)):
-        return []
-
-    err = "oxford.venery_terms"
-    msg = "The venery term is '{}'."
-    return preferred_forms_check(text, animal_groups(), err, msg)
+    return preferred_forms_check(text, items, err, msg)
