@@ -14,13 +14,11 @@ Too much yelling.
 """
 from __future__ import annotations
 
-from proselint.checks import (
-    Pd,
-    ResultCheck,
-    existence_check,
-    limit_results,
-    ppm_threshold,
-)
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
+from proselint.checks import ppm_threshold
 
 
 @limit_results(1)

@@ -1,7 +1,8 @@
 """Tests for misc.inferior_superior check."""
 
 from proselint.checks.misc.inferior_superior import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

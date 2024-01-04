@@ -1,7 +1,8 @@
 """Tests for terms.venery check."""
 
 from proselint.checks.terms.venery import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

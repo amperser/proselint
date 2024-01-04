@@ -6,8 +6,13 @@ import hashlib
 from functools import wraps
 from urllib.parse import unquote
 
-from flask import Flask, Response, jsonify, make_response, request
-from flask_cors import CORS, cross_origin
+from flask import Flask
+from flask import Response
+from flask import jsonify
+from flask import make_response
+from flask import request
+from flask_cors import CORS
+from flask_cors import cross_origin
 from flask_limiter import Limiter
 from rq import Queue
 

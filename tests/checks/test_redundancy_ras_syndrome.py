@@ -1,7 +1,8 @@
 """Tests for redundancy.ras_syndrome check."""
 
 from proselint.checks.redundancy.ras_syndrome import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

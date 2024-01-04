@@ -14,7 +14,8 @@ From whence it came.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
 def check(text: str) -> list[ResultCheck]:

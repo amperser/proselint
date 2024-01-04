@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from proselint.checks import (
-    ResultCheck,
-    existence_check,
-    limit_results,
-    preferred_forms_check,
-)
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
+from proselint.checks import preferred_forms_check
 
 
 @limit_results(1)

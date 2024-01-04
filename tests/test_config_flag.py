@@ -8,7 +8,8 @@ from click.testing import CliRunner
 
 from proselint.command_line import proselint
 from proselint.config_base import proselint_base
-from proselint.tools import _deepmerge_dicts, load_options
+from proselint.tools import _deepmerge_dicts
+from proselint.tools import load_options
 from tests.conftest import print_invoke_return
 
 CONFIG_FILE = Path(__file__, "../test-proselintrc.json").resolve()

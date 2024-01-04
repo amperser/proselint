@@ -1,7 +1,8 @@
 """Test Butterick's symbols."""
 
 from proselint.checks.typography.symbols import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_ellipsis():

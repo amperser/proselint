@@ -14,7 +14,8 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
 def check_a_to_e(text: str) -> list[ResultCheck]:

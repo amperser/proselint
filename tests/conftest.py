@@ -1,4 +1,5 @@
-from typing import Callable, Union
+from typing import Callable
+from typing import Union
 
 from proselint.tools import lint
 

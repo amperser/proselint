@@ -1,7 +1,8 @@
 """Tests for dates_times.am_pm check."""
 
 from proselint.checks.dates_times import am_pm
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_lowercase_periods():

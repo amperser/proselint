@@ -14,7 +14,9 @@ Psychological and psychiatric terms to avoid.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, existence_check, preferred_forms_check
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import preferred_forms_check
 
 
 def check_lie_detector_test(text: str) -> list[ResultCheck]:

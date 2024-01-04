@@ -15,7 +15,9 @@ delete it and the writing will be just as it should be.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, existence_check, limit_results
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
 
 
 @limit_results(1)

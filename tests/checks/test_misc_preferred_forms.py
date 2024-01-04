@@ -1,7 +1,8 @@
 """Tests for misc.preferred_forms check."""
 
 from proselint.checks.misc.preferred_forms import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

@@ -11,14 +11,20 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-from typing import IO, Callable, Optional, TypeAlias, Union
+from typing import IO
+from typing import Callable
+from typing import Optional
+from typing import TypeAlias
+from typing import Union
 from warnings import showwarning as warn
 
 from . import config_base
-from .checks import ResultCheck, run_checks
-from .config_paths import config_global_path, config_user_paths
-from .memoizer import memoize_lint
+from .checks import ResultCheck
+from .checks import run_checks
+from .config_paths import config_global_path
+from .config_paths import config_user_paths
 from .logger import log
+from .memoizer import memoize_lint
 
 ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
 # content: check_name, message, line, column, start, end, length, type, replacement

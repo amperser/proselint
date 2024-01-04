@@ -14,7 +14,9 @@ from __future__ import annotations
 import functools
 import re
 from enum import Enum
-from typing import Callable, Optional, TypeAlias
+from typing import Callable
+from typing import Optional
+from typing import TypeAlias
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)

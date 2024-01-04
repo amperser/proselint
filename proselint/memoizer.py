@@ -6,10 +6,17 @@ import hashlib
 import pickle
 import shutil
 import traceback
-from datetime import datetime, timedelta
-from typing import IO, TYPE_CHECKING, Callable, Optional, TypedDict, Union
+from datetime import datetime
+from datetime import timedelta
+from typing import IO
+from typing import TYPE_CHECKING
+from typing import Callable
+from typing import Optional
+from typing import TypedDict
+from typing import Union
 
-from typing_extensions import Self, Unpack
+from typing_extensions import Self
+from typing_extensions import Unpack
 
 from .config_paths import cache_user_path
 from .logger import log

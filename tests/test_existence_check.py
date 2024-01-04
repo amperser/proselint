@@ -1,5 +1,6 @@
 """Test the existence_check function from the tools.py module."""
-from proselint.checks import Pd, existence_check
+from proselint.checks import Pd
+from proselint.checks import existence_check
 
 
 def test_existence_check():

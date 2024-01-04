@@ -1,6 +1,7 @@
 """Test garner.dates."""
 from proselint.checks.typography import exclamation
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_repeated_exclamations():

@@ -1,7 +1,8 @@
 """Tests for lgbtq.offensive_terms check."""
 
 from proselint.checks.lgbtq.terms import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_misc():

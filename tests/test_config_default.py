@@ -4,7 +4,8 @@ import re
 from pathlib import Path
 
 import proselint
-from proselint.tools import lint, load_options
+from proselint.tools import lint
+from proselint.tools import load_options
 
 
 def test_config_flag_ignore_unavailable():

@@ -1,7 +1,8 @@
 """Tests for psychology.misc check."""
 
 from proselint.checks.psychology import misc
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_lie_detector_test():

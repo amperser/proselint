@@ -26,7 +26,10 @@ shift in emotional calibration.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd, ResultCheck, existence_check, limit_results
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
 
 
 @limit_results(3)
