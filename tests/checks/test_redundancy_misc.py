@@ -1,6 +1,7 @@
 """Tests for redundancy.misc check."""
 
 from proselint.checks.redundancy import misc
+from proselint.lint_checks import ResultCheck
 from tests.conftest import assert_fail, assert_pass
 
 
@@ -27,6 +28,13 @@ def test_nordquist():
 
 def test_atd():
     """Basic smoke test for redundancy.misc.check_norquist."""
-    check = misc.check_atd
+
+    def check(text: str) -> list[ResultCheck]:
+        # combined test
+        result = []
+        result.extend(misc.check_atd_1(text))
+        result.extend(misc.check_atd_2(text))
+        return result
+
     assert_pass(check, "Smoke phrase with nothing flagged.")
     assert_fail(check, "He often repeated the old adage.")

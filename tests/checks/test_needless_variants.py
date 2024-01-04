@@ -1,7 +1,16 @@
 """Tests for needless_variants.misc check."""
 
-from proselint.checks.needless_variants.misc import check
+from proselint.checks.needless_variants import misc
+from proselint.lint_checks import ResultCheck
 from tests.conftest import assert_fail, assert_pass
+
+
+def check(text: str) -> list[ResultCheck]:
+    # combined test
+    result = []
+    result.extend(misc.check_1(text))
+    result.extend(misc.check_2(text))
+    return result
 
 
 def test():
