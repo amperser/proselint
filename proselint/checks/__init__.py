@@ -14,16 +14,10 @@ from __future__ import annotations
 import functools
 import re
 from enum import Enum
-from multiprocessing import freeze_support
 from typing import Callable, Optional, TypeAlias
-
-freeze_support()
-
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
-ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
-# content: check_name, message, line, column, start, end, length, type, replacement
 # NOTE1: NewType() is too strict here
 # NOTE2: py312 can use -> type ResultCheck = tuple[int, int, str, str, Optional[str]]
 
@@ -33,7 +27,7 @@ ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
 ###############################################################################
 
 
-def run_checks(_check: Callable, _text: str) -> list[ResultLint]:
+def run_checks(_check: Callable, _text: str) -> list:
     # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
     errors = []
     results = _check(_text)
