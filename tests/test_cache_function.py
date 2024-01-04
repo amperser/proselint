@@ -8,35 +8,33 @@ def test_speed():
     """compare uncached vs cached reads"""
     import proselint
 
-    demo_path = proselint.path / "demo.md"
-    _code = "errors = proselint.tools.lint(demo_fh)"
     repetitions = 2
+    demo_path = proselint.path / "demo.md"
+    _code = "errors = proselint.tools.lint(_text)"
+    with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
+        _text = demo_fh.read()
 
     # make sure it works
     lint_cache.cache.clear()
-    with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
-        errors = proselint.tools.lint(demo_fh)
+    errors = proselint.tools.lint(_text)
     assert len(errors) > 0
 
     # without cache
     _dur1 = 0.0
     for _ in range(repetitions):
-        with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
-            lint_cache.cache.clear()
-            _dur1 += timeit(_code, globals=locals(), number=1)
+        lint_cache.cache.clear()
+        _dur1 += timeit(_code, globals=locals(), number=1)
 
     # with cache
     _dur2 = 0.0
     for _ in range(repetitions):
-        with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
-            _dur2 += timeit(_code, globals=locals(), number=1)
+        _dur2 += timeit(_code, globals=locals(), number=1)
 
     # without cache, confirmation
     _dur3 = 0.0
     for _ in range(repetitions):
-        with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
-            lint_cache.cache.clear()
-            _dur3 += timeit(_code, globals=locals(), number=1)
+        lint_cache.cache.clear()
+        _dur3 += timeit(_code, globals=locals(), number=1)
 
     assert _dur2 < 0.7 * _dur1
     assert _dur2 < 0.7 * _dur3
