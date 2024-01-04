@@ -7,29 +7,50 @@ import pickle
 import shutil
 import traceback
 from datetime import datetime, timedelta
-from typing import IO, Callable, Optional, Union
+from typing import IO, TYPE_CHECKING, Callable, Optional, TypedDict, Union
 
-from typing_extensions import Self
+from typing_extensions import Self, Unpack
 
 from .config_paths import cache_user_path
 from .logger import log
 
+if TYPE_CHECKING:
+    from types import TracebackType
+
 
 class Cache:
     save_path = cache_user_path / "cache.pickle"
+    _instance: Optional[Self] = None
+
+    @classmethod
+    def __new__(cls, *_args: tuple, **_kwargs: Unpack[TypedDict]) -> Self:
+        """Implements singleton class."""
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+            return cls._instance
+        return cls._instance
 
     def __init__(self) -> None:
         self.data: dict[str, list] = {}
         self.age: dict[str, int] = {}
         self.ts_now: int = round(datetime.now().timestamp())
+        # TODO: from_file can also just be done here
 
-    def __exit__(self) -> None:
+    def __exit__(
+        self,
+        typ: Optional[type[BaseException]] = None,
+        exc: Optional[BaseException] = None,
+        tb: Optional[TracebackType] = None,
+        extra_arg: int = 0,
+    ) -> None:
         """Close previously opened cache shelves."""
         self.to_file()
         self.data.clear()
+        Cache._instance = None
 
     def __del__(self):
         self.to_file()
+        Cache._instance = None
 
     def to_file(self) -> None:
         if len(self.data) < 1:
@@ -56,11 +77,13 @@ class Cache:
     def from_file(cls) -> Self:
         _inst = cls()
         if cls.save_path.exists():
-            with contextlib.suppress(EOFError):
-                with cls.save_path.open("rb", buffering=-1) as fd:
-                    data = pickle.load(fd, fix_imports=False)  # noqa: S301
-                    # TODO: consider replacing pickle with something faster
-                    # todo: compare version or similar and delete if different
+            with (
+                contextlib.suppress(EOFError),
+                cls.save_path.open("rb", buffering=-1) as fd,
+            ):
+                data = pickle.load(fd, fix_imports=False)  # noqa: S301
+                # TODO: consider replacing pickle with something faster
+                # todo: compare version or similar and delete if different
             if isinstance(data, list) and len(data) >= 2:
                 _inst.data = data[0]
                 _inst.age = data[1]
@@ -99,7 +122,8 @@ def memoize_lint(
     ) -> list:
         if not isinstance(content, str):
             return fn(content, config, checks, hash_content)
-            # TODO: also allowing IO would enable 2d-dict d[funcSig,fileSig] = (input_hash,result)
+            # TODO: also allowing IO would enable 2d-dict
+            #       d[funcSig,fileSig] = (input_hash,result)
             #                        -> smaller dicts
 
         if hash_content is None:
