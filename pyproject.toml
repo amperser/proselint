@@ -30,6 +30,7 @@ mock = ">=2.0.0"
 pydocstyle = "^6.1.1"
 pytest = ">=7.0.0"
 pytest-click = ">=1.1.0"
+pytest-cov = ">=4.0.0"
 twine = ">=4.0.0"
 pre-commit = ">=3.0.0"
 # web-stuff
