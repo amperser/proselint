@@ -84,25 +84,6 @@ cache = Cache.from_file()
 ###############################################################################
 
 
-def memoize_const(
-    fn: Callable,
-) -> Callable:
-    """wrapped FNs should work like constants after first execution, almost zero cost"""
-    _key = f"{fn.__module__}.{fn.__name__}.c"
-
-    @functools.wraps(fn)
-    def wrapped() -> list:
-        try:
-            return cache.data[_key]
-        except KeyError:
-            value = fn()
-            cache.data[_key] = value
-            cache.age[_key] = cache.ts_now
-            return value
-
-    return wrapped
-
-
 def memoize_lint(
     fn: Callable,
 ) -> Callable:
@@ -125,6 +106,7 @@ def memoize_lint(
             hash_content = hashlib.sha224(content.encode("utf-8")).hexdigest()
 
         # TODO: assume for now that config & checks don't change between runs -> WRONG!
+        #   hash at least frozenset of checks-list
 
         key = _filename + hash_content
 
