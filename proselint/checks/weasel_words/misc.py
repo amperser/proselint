@@ -14,7 +14,10 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from proselint.checks import ResultCheck
 
 
 def disabled_check(text: str) -> list[ResultCheck]:

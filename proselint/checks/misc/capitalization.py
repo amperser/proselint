@@ -54,7 +54,7 @@ def check_months(text: str) -> list[ResultCheck]:
     items = [
         ["January", ["january"]],
         ["February", ["february"]],
-        # ["March",           ["march"]],  # TODO: deal better with collisions / false positives
+        # ["March",           ["march"]],
         ["April", ["april"]],
         # ["May",             ["may"]],
         ["June", ["june"]],
@@ -64,7 +64,7 @@ def check_months(text: str) -> list[ResultCheck]:
         ["October", ["october"]],
         ["November", ["november"]],
         ["December", ["december"]],
-    ]
+    ]  # TODO: deal better with collisions / false positives
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
