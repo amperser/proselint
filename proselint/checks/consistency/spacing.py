@@ -15,7 +15,7 @@ a period, in the same document.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, consistency_check
+from proselint.checks import ResultCheck, consistency_check
 
 
 def check(text: str) -> list[ResultCheck]:

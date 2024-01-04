@@ -14,7 +14,7 @@ Never use the phrase 'all hell broke loose'.
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check, limit_results
+from proselint.checks import ResultCheck, existence_check, limit_results
 
 
 @limit_results(1)

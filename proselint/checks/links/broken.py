@@ -16,8 +16,10 @@ from __future__ import annotations
 
 import re
 import urllib.request as urllib_request  # for Python 3
+from typing import TYPE_CHECKING
 
-from ...lint_checks import ResultCheck
+if TYPE_CHECKING:
+    from proselint.checks import ResultCheck
 
 
 def check(text: str) -> list[ResultCheck]:
@@ -42,6 +44,7 @@ def check(text: str) -> list[ResultCheck]:
 
         if is_broken_link(url):
             results.append((m.start(), m.end(), err, msg.format(url), None))
+        # TODO: this should probably be rate limited (10/s)?
 
     return results
 

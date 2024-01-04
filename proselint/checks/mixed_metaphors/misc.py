@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ...lint_checks import (
+from proselint.checks import (
     ResultCheck,
     existence_check,
     limit_results,

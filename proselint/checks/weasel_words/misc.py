@@ -12,7 +12,9 @@ categories: writing
 Weasel words clearly weaken various aspects of a number of your sentences.
 
 """
-from proselint.lint_checks import ResultCheck
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
 
 
 def disabled_check(text: str) -> list[ResultCheck]:

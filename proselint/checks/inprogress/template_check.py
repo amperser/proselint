@@ -12,13 +12,14 @@ categories: writing
 Note:
     - this is just a small example
     - there are more lint-checks available
-    - check-fn must at least begin with "check" to be found, so check() & check_xyz() are fine
+    - check-fn must at least begin with "check" to be found,
+      so check() & check_xyz() are fine
     - don't forget to add unittests and an entry in the base-config
 
 """
 from __future__ import annotations
 
-from ...lint_checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck, existence_check
 
 
 def check(text: str) -> list[ResultCheck]:
