@@ -1,7 +1,7 @@
 """Tests for redundancy.misc check."""
 
-from proselint.checks.redundancy import misc
 from proselint.checks import ResultCheck
+from proselint.checks.redundancy import misc
 from tests.conftest import assert_fail, assert_pass
 
 

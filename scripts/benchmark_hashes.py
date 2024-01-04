@@ -1,3 +1,4 @@
+import hashlib
 from timeit import timeit
 
 import proselint
@@ -12,6 +13,9 @@ import proselint
 file_path = proselint.path / "demo.md"
 f = file_path.open(encoding="utf-8", errors="replace")
 text = f.read()
+
+# trial
+_hash = hashlib.md5(text.encode("utf-8")).hexdigest()
 
 contenders = {
     "md5": "hashlib.md5(text.encode('utf-8')).hexdigest()",

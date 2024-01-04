@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import cached_property, lru_cache
 from timeit import timeit
 
@@ -49,7 +51,7 @@ print(f"1st prop-call with instantiation {_t * 1e3:4.3f} ms -> uncached")
 
 _t = timeit("_e = Costly().compute", globals=globals(), number=1)
 print(
-    f"2nd prop-call with instantiation {_t * 1e3:4.3f} ms -> newly created, so still uncached)",
+    f"2nd prop-call with instantiation {_t * 1e3:4.3f} ms -> newly created, uncached)",
 )
 
 _c = Costly()
