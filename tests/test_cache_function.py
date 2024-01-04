@@ -6,9 +6,8 @@ from proselint import memoizer
 
 def test_speed():
     """compare uncached vs cached reads"""
-    import proselint
-
     repetitions = 2
+
     demo_path = proselint.path / "demo.md"
     _code = "errors = proselint.tools.lint(_text)"
     with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:

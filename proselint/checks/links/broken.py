@@ -15,7 +15,7 @@ Check that links are not broken.
 from __future__ import annotations
 
 import re
-import urllib.request as urllib_request  # for Python 3
+import urllib.request as ulr
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -52,10 +52,10 @@ def check(text: str) -> list[ResultCheck]:
 def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
-        request = urllib_request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        urllib_request.urlopen(request).read()
+        request = ulr.Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
+        ulr.urlopen(request).read()  # noqa: S310
         return False
-    except urllib_request.URLError:
+    except ulr.URLError:
         return True
     except OSError:
         return True

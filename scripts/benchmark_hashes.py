@@ -15,7 +15,7 @@ f = file_path.open(encoding="utf-8", errors="replace")
 text = f.read()
 
 # trial
-_hash = hashlib.md5(text.encode("utf-8")).hexdigest()
+_hash = hashlib.sha512(text.encode("utf-8")).hexdigest()
 
 contenders = {
     "md5": "hashlib.md5(text.encode('utf-8')).hexdigest()",
@@ -30,5 +30,5 @@ contenders = {
 
 for _key, _val in contenders.items():
     _dur = timeit(_val, globals=globals(), number=1000)
-    _hash = eval(_val)
+    _hash = eval(_val)  # noqa: S307
     print(f"{_key} took {_dur * 1000:.2f} ms, result= {_hash}")
