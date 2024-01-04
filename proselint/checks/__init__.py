@@ -29,6 +29,10 @@ ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 
 def run_checks(_check: Callable, _text: str) -> list:
     # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
+    # padding
+    # -> some checks expect words in text and need something around it
+    # -> this prevents edge-cases
+    _text = f" \n{_text}\n "  # maybe not the fastest OP
     errors = []
     results = _check(_text)
     for result in results:
@@ -39,7 +43,7 @@ def run_checks(_check: Callable, _text: str) -> list:
                 (
                     check_name,
                     message,
-                    line,
+                    line - 1,
                     column,
                     start,
                     end,
