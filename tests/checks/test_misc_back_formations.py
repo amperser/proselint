@@ -1,7 +1,8 @@
 """Tests for misc.back_formations check."""
 
 from proselint.checks.misc.back_formations import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

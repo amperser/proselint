@@ -47,7 +47,8 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.checks import ResultCheck, existence_check
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
 def compile_uncomparables() -> list:

@@ -1,7 +1,8 @@
 """Tests for misc.tense_present check."""
 
 from proselint.checks.misc.tense_present import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

@@ -1,7 +1,8 @@
 """Tests for terms.eponymous_adjectives check."""
 
 from proselint.checks.terms.eponymous_adjectives import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():

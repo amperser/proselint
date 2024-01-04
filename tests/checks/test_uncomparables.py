@@ -1,8 +1,10 @@
 """Test uncomparables.misc"""
 
 from proselint.checks import ResultCheck
-from proselint.checks.uncomparables.misc import check_1, check_2
-from tests.conftest import assert_fail, assert_pass
+from proselint.checks.uncomparables.misc import check_1
+from proselint.checks.uncomparables.misc import check_2
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def check(text: str) -> list[ResultCheck]:

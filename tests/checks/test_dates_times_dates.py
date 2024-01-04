@@ -1,7 +1,8 @@
 """Tests for dates_times.dates check."""
 
 from proselint.checks.dates_times import dates
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_decade_apostrophes_short():

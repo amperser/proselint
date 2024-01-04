@@ -2,7 +2,8 @@
 
 from proselint.checks import ResultCheck
 from proselint.checks.needless_variants import misc
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def check(text: str) -> list[ResultCheck]:

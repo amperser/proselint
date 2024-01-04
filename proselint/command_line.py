@@ -9,15 +9,18 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
+from typing import Optional
+from typing import Union
 
 import click
 
 from . import tools
 from .config_base import proselint_base
 from .config_paths import demo_file
+from .logger import log
+from .logger import set_verbosity
 from .memoizer import cache
-from .logger import log, set_verbosity
 from .version import __version__
 
 if TYPE_CHECKING:

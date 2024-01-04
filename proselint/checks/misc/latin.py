@@ -14,7 +14,8 @@ Back-formations.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, preferred_forms_check
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
 def check(text: str) -> list[ResultCheck]:

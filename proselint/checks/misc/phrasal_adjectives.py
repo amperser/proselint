@@ -14,7 +14,10 @@ Phrasal adjectives.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd, ResultCheck, existence_check, preferred_forms_check
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import preferred_forms_check
 
 
 def check_ly(text: str) -> list[ResultCheck]:

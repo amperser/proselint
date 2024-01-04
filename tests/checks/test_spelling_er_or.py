@@ -1,7 +1,8 @@
 """Tests for spelling.er_or check."""
 
 from proselint.checks.spelling.er_or import check
-from tests.conftest import assert_fail, assert_pass
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test():
