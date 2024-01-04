@@ -22,7 +22,7 @@ learnings
 from timeit import timeit
 
 import proselint
-import proselint.lint_checks
+import proselint.lint_cache
 
 file_path = proselint.path / "demo.md"
 
@@ -32,10 +32,11 @@ _cfg = proselint.config_default
 with file_path.open(encoding="utf-8", errors="replace") as fh:
     _text = fh.read()
 
-_checks = proselint.lint_checks.get_checks(_cfg)
+_checks = proselint.tools.get_checks(_cfg)
 
 # #########################################################################
 print("\n############# Benchmark manually optimized Checks ###################")
+print("\n############# * or with calculations in check()   ###################")
 
 specials = [
     "proselint.checks.misc.waxed.check",
@@ -92,4 +93,3 @@ print(f"min:    {min(_val)}")
 print(f"max:    {max(_val)}")
 print(f"mean:   {sum(_val) / len(_val)}")
 print(f"median: {_val[round(len(_val)/2)]}")
-

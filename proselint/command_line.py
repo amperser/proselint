@@ -8,10 +8,8 @@ import signal
 import subprocess
 import sys
 import time
-from multiprocessing import freeze_support
 from pathlib import Path
-from types import FrameType
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import click
 
@@ -21,6 +19,9 @@ from .config_paths import demo_file
 from .lint_cache import cache
 from .logger import log, set_verbosity
 from .version import __version__
+
+if TYPE_CHECKING:
+    from types import FrameType
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
@@ -56,7 +57,8 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
         duration = time.time() - start
         log.info("Linting corpus %s took %.3f s.", _type, duration)
     log.info(
-        "Note: this has full CLI-Overhead, to compare linting-performance run 'proselint --demo'",
+        "Note: this has full CLI-Overhead, "
+        "to compare linting-performance run 'proselint --demo'",
     )
     return duration
 
@@ -91,7 +93,7 @@ def proselint(
     output_json: bool = False,
     benchmark: bool = False,
     demo: bool = False,
-    compact: bool = False,
+    compact: bool = False,  # TODO: influence active config
     dump_config: bool = False,  # TODO: this should be a subcommand
     dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
     version: bool = False,
@@ -151,5 +153,4 @@ def proselint(
 
 
 if __name__ == "__main__":
-    freeze_support()  # todo
     proselint()
