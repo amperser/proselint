@@ -1,4 +1,3 @@
-import hashlib
 from timeit import timeit
 
 import proselint
@@ -24,27 +23,26 @@ if __name__ == "__main__":
     with file_path.open(encoding="utf-8", errors="replace") as fh:
         _text = fh.read()
     _checks = get_checks(_cfg)
-    _hash = hashlib.sha224(_text.encode("utf-8")).hexdigest()
     # TODO: experiment with overhead of these
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val  # TODO: interface changed
         memoizer.cache.clear()
         t1 = timeit(
-            "e1 = proselint.tools.lint(_text, _cfg, _checks, _hash)",
+            "e1 = proselint.tools.lint(_text, _cfg, _checks)",
             globals=locals(),
             number=1,
         )
         print(f"Lint with cfg={_name} took {t1 * 1e3:4.3f} ms uncached")
         memoizer.cache.clear()
         t2 = timeit(
-            "e1 = proselint.tools.lint(_text, _cfg, _checks, _hash)",
+            "e1 = proselint.tools.lint(_text, _cfg, _checks)",
             globals=locals(),
             number=1,
         )
         print(f"Lint with cfg={_name} took {t2 * 1e3:4.3f} ms uncached rerun")
         t3 = timeit(
-            "e2 = proselint.tools.lint(_text, _cfg, _checks, _hash)",
+            "e2 = proselint.tools.lint(_text, _cfg, _checks)",
             globals=locals(),
             number=1,
         )
