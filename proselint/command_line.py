@@ -15,6 +15,8 @@ from typing import Union
 
 import click
 
+from proselint.tools import output_errors
+
 from . import tools
 from .config_base import Output
 from .config_base import proselint_base
@@ -158,9 +160,23 @@ def proselint(  # noqa: PLR0913, PLR0917, C901
         paths = [Path(path) for path in paths]
     log.debug("Paths to lint: %s", paths)
 
+    ts_start = time.time()
     results = tools.lint_path(paths, config)
-    error_num = sum([len(_errs) for _errs in results.values()])
-    sys.exit(error_num)  # Return an exit code
+    duration = time.time() - ts_start
+
+    error_sum = 0
+    for _file, _errors in results.items():
+        output_errors(_errors, config, _file)
+        error_sum += len(_errors)
+
+    log.info(
+        "Found %d lint-warnings in %.3f s (%d files, %.2f kiByte)",
+        error_sum,
+        duration,
+        len(results),
+        tools.last_char_count / 1024,
+    )
+    sys.exit(error_sum)  # Return an exit code
 
 
 if __name__ == "__main__":
