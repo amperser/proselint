@@ -1,4 +1,6 @@
-"""Compute the lintscore on the corpus."""
+"""Compute the lintscore on the corpus.
+NOTE: relic, probably broken
+"""
 
 
 import os
@@ -10,7 +12,7 @@ from .config_paths import proselint_path
 from .logger import log
 
 
-def score(check=None):  # TODO: can be combined with cli.timing_test()
+def score(check=None):
     """Compute the linter's score on the corpus.
 
     Proselint's score reflects the desire to have a linter that catches many
@@ -41,6 +43,7 @@ def score(check=None):  # TODO: can be combined with cli.timing_test()
             # Run the linter.
             log.debug("Linting %s", file_md)
             out = subprocess.check_output(["proselint", fullpath])  # noqa: S603, S607
+            # TODO: this can just call lint() ?!?
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
