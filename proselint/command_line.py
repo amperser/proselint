@@ -16,6 +16,7 @@ from typing import Union
 import click
 
 from . import tools
+from .config_base import Output
 from .config_base import proselint_base
 from .config_paths import demo_file
 from .logger import log
@@ -50,7 +51,7 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
             filepath = corpus_path / file
             if filepath.suffix == ".md":
                 subprocess.call(
-                    ["proselint", "--demo", "--compact"],  # noqa: S607
+                    ["proselint", "--demo", "-o", "compact"],  # noqa: S607
                     # filepath.as_posix()
                     timeout=4,
                     shell=False,  # noqa: S603
@@ -80,10 +81,15 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
     help="Give verbose output.",
 )
 @click.option("--clean", "-c", is_flag=True, help="Clear the cache and exit.")
-@click.option("--json", "-j", "output_json", is_flag=True, help="Output as JSON.")
 @click.option("--benchmark", "-b", is_flag=True, help="Time on a corpus.")
 @click.option("--demo", is_flag=True, help="Run over demo file.")
-@click.option("--compact", is_flag=True, help="Shorten output.")
+@click.option(
+    "--output-format",
+    "-o",
+    type=click.Choice(Output.names()),
+    default=None,
+    help="Override config to change format.",
+)
 @click.option("--dump-config", is_flag=True, help="Prints current config.")
 @click.option("--dump-default-config", is_flag=True, help="Prints default config.")
 @click.option("--version", is_flag=True)
@@ -93,10 +99,9 @@ def proselint(  # noqa: PLR0913, PLR0917, C901
     config: Optional[Path] = None,
     clean: bool = False,  # TODO: this should be a subcommand
     verbose: bool = False,
-    output_json: bool = False,
+    output_format: Optional[str] = None,
     benchmark: bool = False,
     demo: bool = False,
-    compact: bool = False,  # TODO: influence active config
     dump_config: bool = False,  # TODO: this should be a subcommand
     dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
     version: bool = False,
@@ -116,7 +121,7 @@ def proselint(  # noqa: PLR0913, PLR0917, C901
 
     if clean:
         cache.clear()
-        # sys.exit(0)  # TODO: temporary for dev
+        sys.exit(0)
 
     if dump_default_config:
         click.echo(json.dumps(proselint_base, sort_keys=True, indent=4))
@@ -129,6 +134,9 @@ def proselint(  # noqa: PLR0913, PLR0917, C901
     if dump_config:
         click.echo(json.dumps(config, sort_keys=True, indent=4))
         sys.exit(0)
+
+    if output_format in Output.names():
+        config["output_format"] = output_format
 
     if benchmark:
         run_benchmark()

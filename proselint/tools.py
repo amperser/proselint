@@ -23,6 +23,7 @@ from warnings import showwarning as warn
 from . import config_base
 from .checks import ResultCheck
 from .checks import run_checks
+from .config_base import Output
 from .config_paths import config_global_path
 from .config_paths import config_user_paths
 from .logger import log
@@ -41,8 +42,10 @@ ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
 def _deepmerge_dicts(
     base: dict,
     overrides: dict,
-) -> dict:  # TODO: this can be faster, we can just add dicts
-    """Deep merge dictionaries, second dict will take priority."""
+) -> dict:
+    """Deep merge dictionaries, second dict will take priority.
+    # Note: this could be faster, just sum dicts -> not relevant here
+    """
     result = copy.deepcopy(base)
 
     for key, value in overrides.items():
@@ -95,7 +98,7 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     Rule: fn-name must begin with "check", so check_xyz() is ok
     """
     # TODO: benchmark consecutive runs of this
-    # TODO: config should only translate once to check-list
+    #       config should only translate once to check-list
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
@@ -109,7 +112,6 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
             )
             continue
         checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
-        # todo: name should start with check
 
     log.debug("Collected %d checks to run", len(checks))
     return checks
@@ -199,8 +201,6 @@ def lint_path(
     if not isinstance(config, dict):
         config = config_base.proselint_base
     checks = get_checks(config)
-    output_json = False  # TODO, derive from config
-    compact = False  # TODO: feed config into printer()
 
     results = {}
     chars = 0
@@ -235,8 +235,8 @@ def lint_path(
             log.debug("[Memoizer] LateStore %s", key)
             cache.data[key] = _errors
             cache.age[key] = cache.ts_now
-        # todo: include filename in ResultLint?
-        print_errors(_file, _errors, output_json, compact)
+        # todo: include filename in ResultLint? allows to collect all errors
+        print_errors(_file, _errors, config)
         error_num += len(_errors)
 
     duration = time.time() - ts_start
@@ -256,6 +256,7 @@ def errors_to_json(items: list[ResultLint]) -> str:
         {
             "check": item[0],
             "message": item[1],
+            "file": "todo",
             "line": 1 + item[2],
             "column": 1 + item[3],
             "start": 1 + item[4],
@@ -273,13 +274,16 @@ def errors_to_json(items: list[ResultLint]) -> str:
 def print_errors(
     filename: Union[Path, str],
     errors: list[ResultLint],
-    output_json: bool = False,
-    compact: bool = False,
+    config: dict,
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
-    if output_json:
-        log.info(errors_to_json(errors))
+    try:
+        out_fmt = Output[config["output_format"]]
+    except KeyError:
+        out_fmt = Output[config_base.proselint_base["output_format"]]
 
+    if out_fmt == Output.json:
+        log.info(errors_to_json(errors))
     else:
         for error in errors:
             (
@@ -295,13 +299,18 @@ def print_errors(
             ) = error
 
             if isinstance(filename, Path):
-                if compact:  # noqa: SIM108
-                    filename = filename.name
+                if out_fmt == Output.compact:
+                    filename = filename.name + "debug-WHYNOTHERE"
                 else:
                     filename = filename.absolute().as_uri()
                     # TODO: would be nice to supress "file:///"
                     # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-            elif compact:
-                filename = ""
+            else:
+                if out_fmt == Output.compact:
+                    filename = "" # TODO: using cli+compact switches here?!?
+                else:
+                    filename = str(filename)
 
+            # note: adding +1 for switching to 1based counting
+            # todo: why not for json? move to creation
             log.info("%s:%d:%d: %s %s", filename, 1 + line, 1 + column, check, message)
