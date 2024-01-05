@@ -29,7 +29,7 @@ ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 ###############################################################################
 
 
-def run_checks(_check: Callable, _text: str) -> list:
+def run_checks(_check: Callable, _text: str, source: str = "") -> list:
     # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
     # padding
     # -> some checks expect words in text and need something around it
@@ -41,14 +41,18 @@ def run_checks(_check: Callable, _text: str) -> list:
         (start, end, check_name, message, replacements) = result
         (line, column) = get_line_and_column(_text, start)
         if not is_quoted(start, _text):
+            # note:
+            #    - switch to 1based counting by adding +1
+            #    - for line it cancels out with -1 from padding
             errors += [
                 (
                     check_name,
                     message,
-                    line - 1,
-                    column,
-                    start,
-                    end,
+                    source,  # can't be Path, unless pickle changes
+                    line,  # +1 -1, cancel out
+                    column + 1,
+                    start + 1,
+                    end + 1,
                     end - start,
                     "warning",
                     replacements,
