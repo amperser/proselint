@@ -6,7 +6,6 @@ import copy
 import json
 import os
 import sys
-import time
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from concurrent.futures import ProcessPoolExecutor
@@ -95,6 +94,8 @@ def load_options(
 # Linting #####################################################################
 ###############################################################################
 
+last_char_count: int = 0
+
 
 def extract_files(paths: list[Path]) -> list[Path]:
     """Expand list of paths to include all text files matching the pattern."""
@@ -169,7 +170,7 @@ def lint(
 def lint_path(
     paths: Union[Path, list[Path]],
     config: Optional[dict] = None,
-) -> dict[str, list[ResultLint]]:
+) -> dict[Path, list[ResultLint]]:
     """Lint path with files or point to specific file"""
     # Expand the list of directories and files.
     filepaths = extract_files(paths)
@@ -180,7 +181,7 @@ def lint_path(
 
     results = {}
     chars = 0
-    ts_start = time.time()
+
     if len(paths) == 0:
         # Use stdin if no paths were specified
         log.info("No path specified -> will read from <stdin>")
@@ -199,10 +200,8 @@ def lint_path(
             results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
             chars += len(content)
 
-    # todo: better fully decouple linting from printing errors - just return data
-    error_num = 0
-    for _file in results:
-        _errors = results[_file]
+    # fetch result from futures, if needed
+    for _file, _errors in results.items():
         if len(_errors) > 0 and isinstance(_errors[0], Future):
             _errors = [_e for _ft in _errors for _e in _ft.result()]
             _errors = sorted(
@@ -213,18 +212,10 @@ def lint_path(
             memoize_future(_errors, _file.as_posix())
             # write back data so no futures are returned
             results[_file] = _errors
-        # todo: include filename in ResultLint? allows to collect all errors
-        output_errors(_errors, config, _file)
-        error_num += len(_errors)
 
-    duration = time.time() - ts_start
-    log.info(
-        "Found %d lint-warnings in %.3f s (%d files, %.2f kiByte)",
-        error_num,
-        duration,
-        len(filepaths),
-        chars / 1024,
-    )
+    # bad style ... but
+    global last_char_count
+    last_char_count = chars
     return results
 
 
@@ -259,6 +250,10 @@ def output_errors(
         out_fmt = Output[config["output_format"]]
     except KeyError:
         out_fmt = Output[config_base.proselint_base["output_format"]]
+
+    if not isinstance(errors, list):
+        log.error("[OutputError] no list provided (guess: results of lint_path() need to be extracted first)")
+        return
 
     if out_fmt == Output.json:
         log.info(errors_to_json(errors))
