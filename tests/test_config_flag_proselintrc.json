@@ -60,6 +60,7 @@
         "nonwords.misc"                 : true,
         "oxymorons.misc"                : true,
         "psychology.misc"               : true,
+        "punctuation_spacing.misc"      : true,
         "redundancy.misc"               : true,
         "redundancy.ras_syndrome"       : true,
         "skunked_terms.misc"            : true,
