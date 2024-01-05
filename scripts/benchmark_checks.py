@@ -81,7 +81,7 @@ print("\n############# Benchmark all Checks ###################")
 result = {}
 for check in _checks:
     _name = f"{check.__module__}.{check.__name__}"
-    result[_name] = timeit("_e = check(_text)", globals=locals(), number=10)
+    result[_name] = timeit("_e = check(_text)", globals=locals(), number=5)
 
 result = dict(sorted(result.items(), key=lambda item: item[1]))
 for _key, _value in result.items():
@@ -90,6 +90,6 @@ for _key, _value in result.items():
 _val = list(result.values())
 print(f"count:  {len(_val)}")
 print(f"min:    {min(_val)}")
-print(f"max:    {max(_val)}")
-print(f"mean:   {sum(_val) / len(_val)}")
 print(f"median: {_val[round(len(_val) / 2)]}")
+print(f"mean:   {sum(_val) / len(_val)}")
+print(f"max:    {max(_val)}")

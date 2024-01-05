@@ -1,7 +1,6 @@
+import contextlib
 import logging
 from pathlib import Path
-
-from rich import print as printr
 
 log = logging.getLogger("proselint")
 log.setLevel(logging.DEBUG)
@@ -53,14 +52,17 @@ log.info("x1b link: %s", file_str)
 
 log.info("\n################ rich links and more")
 
-file_str = f"[link={file_path.absolute().as_uri()}]{file_path.name}[/link]"
-printr(f"rich link: {file_str}")
+with contextlib.suppress(ImportError):
+    from rich import print as printr
 
-file_str = f"[link=https://www.google.com]{file_path.name}[/link]"
-printr(f"rich web: {file_str}")
+    file_str = f"[link={file_path.absolute().as_uri()}]{file_path.name}[/link]"
+    printr(f"rich link: {file_str}")
 
-file_str = f"'./{file_path.as_posix()}:4:3'"
-printr(f"test link: {file_str}")
+    file_str = f"[link=https://www.google.com]{file_path.name}[/link]"
+    printr(f"rich web: {file_str}")
 
-file_str = f"'{file_path.absolute().as_posix()}:4:3'"
-printr(f"test link: {file_str}")
+    file_str = f"'./{file_path.as_posix()}:4:3'"
+    printr(f"test link: {file_str}")
+
+    file_str = f"'{file_path.absolute().as_posix()}:4:3'"
+    printr(f"test link: {file_str}")
