@@ -95,10 +95,10 @@ class Cache:
                 data = pickle.load(fd, fix_imports=False)  # noqa: S301
                 # TODO: consider replacing pickle with something faster
                 # todo: compare version or similar and delete if different
-            if isinstance(data, list) and len(data) >= 2:
-                _inst.data = data[0]
-                _inst.age = data[1]
-                log.debug(" -> found & restored cache")
+                if isinstance(data, list) and len(data) >= 2:
+                    _inst.data = data[0]
+                    _inst.age = data[1]
+                    log.debug(" -> found & restored cache")
         return _inst
 
     def clear(self) -> None:
