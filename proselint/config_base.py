@@ -8,7 +8,7 @@ class Output(IntEnum):
     full = default = 0
     json = 1
     compact = 2
-    # todo: implement printing to file?
+    # implement printing to file?
 
     @classmethod
     def names(cls) -> list[str]:
@@ -58,7 +58,6 @@ proselint_base: dict = {
         "misc.institution_name": True,
         "misc.latin": True,
         "misc.many_a": True,
-        # "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
         "misc.metadiscourse": True,
         "misc.narcissism": True,
         "misc.not_guilty": True,

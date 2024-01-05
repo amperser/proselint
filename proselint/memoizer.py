@@ -5,7 +5,6 @@ import functools
 import hashlib
 import pickle
 import shutil
-import traceback
 from concurrent.futures import Executor
 from concurrent.futures import Future
 from datetime import datetime
@@ -22,9 +21,12 @@ from typing_extensions import Unpack
 
 from .config_paths import cache_user_path
 from .logger import log
+from .version import __version__ as version
 
 if TYPE_CHECKING:
     from types import TracebackType
+
+    from .tools import ResultLint
 
 
 class Cache:
@@ -40,13 +42,11 @@ class Cache:
         return cls._instance
 
     def __init__(self) -> None:
-        self.data: dict[str, list] = {}
+        self.data: dict[str, list[ResultLint]] = {}
         self.age: dict[str, int] = {}
         self.ts_now: int = round(datetime.now().timestamp())
         self.fname2key: dict[str, str] = {}
-        # TODO: from_file can also just be done here
 
-    # TODO: add dict-access-fn and add timestamp there
     def __exit__(
         self,
         typ: Optional[type[BaseException]] = None,
@@ -63,6 +63,14 @@ class Cache:
         self.to_file()
         Cache._instance = None
 
+    def __getitem__(self, key: str) -> list[ResultLint]:
+        """Allows dict access -> instance["key"], in addition to instance.data["key"]"""
+        return self.data[key]
+
+    def __setitem__(self, key: str, value: list[ResultLint]):
+        self.data[key] = value
+        self.age[key] = self.ts_now
+
     def to_file(self) -> None:
         if len(self.data) < 1:
             return
@@ -77,7 +85,7 @@ class Cache:
 
         with self.save_path.open("wb", buffering=-1) as fd:
             pickle.dump(
-                [self.data, self.age],
+                [self.data, self.age, version],
                 fd,
                 fix_imports=False,
                 protocol=pickle.HIGHEST_PROTOCOL,
@@ -94,8 +102,8 @@ class Cache:
             ):
                 data = pickle.load(fd, fix_imports=False)  # noqa: S301
                 # TODO: consider replacing pickle with something faster
-                # todo: compare version or similar and delete if different
-                if isinstance(data, list) and len(data) >= 2:
+                # only restore if data fits and package-version matches
+                if isinstance(data, list) and len(data) >= 3 and data[2] == version:
                     _inst.data = data[0]
                     _inst.age = data[1]
                     log.debug(" -> found & restored cache")
@@ -109,27 +117,34 @@ class Cache:
         self.data.clear()
         self.age.clear()
 
+    @staticmethod
+    def calculate_key(text: str, checks: list[Callable]) -> str:
+        """For accessing Cache-entry"""
+
+        text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
+        chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
+        chck_hash = hashlib.sha224(" ".join(chck_list).encode("utf-8")).hexdigest()[:10]
+        # NOTE: Skip hashing config!
+        #   -> Valid assumption that (current) config has
+        #      no influence on result below this level
+        # WARNING: frozenset(checks).__hash__() varies between runs
+
+        return text_hash + chck_hash
+
 
 cache = Cache.from_file()
 
 
 ###############################################################################
-# Wrapper #####################################################################
+# Memoizer Access -> Wrapper ##################################################
 ###############################################################################
 
 
-def calculate_key(text: str, checks: list[Callable]) -> str:
-    """For accessing Cache"""
-
-    text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
-    chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
-    chck_hash = hashlib.sha224(" ".join(chck_list).encode("utf-8")).hexdigest()[:10]
-    # NOTE: Skip hashing config!
-    #   -> Valid assumption that (current) config has
-    #      no influence on result below this level
-    # WARNING: frozenset(checks).__hash__() varies between runs
-
-    return text_hash + chck_hash
+def memoize_future(result: list[ResultLint], file_name: str) -> None:
+    """used to later add result -> when working with multiprocessing"""
+    key = cache.fname2key.get(file_name)
+    log.debug("[Memoizer] LateStore %s", key)
+    cache[key] = result
 
 
 def memoize_lint(
@@ -148,30 +163,21 @@ def memoize_lint(
     ) -> list:
         if not isinstance(content, str):
             return fn(content, config, checks, file_name, _exe=_exe)
-            # TODO: also adding filename would enable 2d-dict
+            # TODO: filename enables 2d-dict
             #       d[funcSig,fileSig] = (input_hash,result)
             #                        -> smaller dicts
 
-        key = calculate_key(content, checks)
+        key = cache.calculate_key(content, checks)
 
         try:
-            return cache.data[key]
+            return cache[key]
         except KeyError:
             _res = fn(content, config, checks, file_name, _exe=_exe)
             # only store finished results
             if len(_res) == 0 or not isinstance(_res[0], Future):
                 log.debug("[Memoizer] Store %s", key)
-                cache.data[key] = _res
-                cache.age[key] = cache.ts_now
+                cache[key] = _res
             cache.fname2key[file_name] = key
             return _res
-        except TypeError:  # TODO: can be removed?
-            log.error(
-                "Warning: could not disk cache call to %s;"
-                "it probably has unhashable args. Error: %s",
-                f"{fn.__module__}.{fn.__name__}",
-                traceback.format_exc(),
-            )
-            return fn(content, config, checks, file_name, _exe=_exe)
 
     return wrapped
