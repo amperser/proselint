@@ -42,9 +42,10 @@ class Cache:
         return cls._instance
 
     def __init__(self) -> None:
-        self.data: dict[str, list[ResultLint]] = {}
-        self.age: dict[str, int] = {}
-        self.ts_now: int = round(datetime.now().timestamp())
+        self._data: dict[str, list[ResultLint]] = {}
+        self._age: dict[str, int] = {}
+        self._ts_now: int = round(datetime.now().timestamp())
+        self._modified: bool = False
         self.fname2key: dict[str, str] = {}
 
     def __exit__(
@@ -56,7 +57,7 @@ class Cache:
     ) -> None:
         """Close previously opened cache shelves."""
         self.to_file()
-        self.data.clear()
+        self._data.clear()
         Cache._instance = None
 
     def __del__(self):
@@ -65,27 +66,30 @@ class Cache:
 
     def __getitem__(self, key: str) -> list[ResultLint]:
         """Allows dict access -> instance["key"], in addition to instance.data["key"]"""
-        return self.data[key]
+        return self._data[key]
 
     def __setitem__(self, key: str, value: list[ResultLint]):
-        self.data[key] = value
-        self.age[key] = self.ts_now
+        self._data[key] = value
+        self._age[key] = self._ts_now
+        self._modified = True
 
     def to_file(self) -> None:
-        if len(self.data) < 1:
+        # only save when needed
+        if (not self._modified) or len(self._data) < 1:
             return
         if not cache_user_path.is_dir():
             cache_user_path.mkdir(parents=True)
-        age_max: int = self.ts_now - round(timedelta(days=1).total_seconds())
-        for _key in self.data:
+        age_max: int = self._ts_now - round(timedelta(days=1).total_seconds())
+        # todo: reread on file-change. parallel runs,
+        for _key in self._data:
             # TODO: could be speed up with dict_base - dict_entries_to_remove
-            if self.age[_key] < age_max:
-                self.age.pop(_key)
-                self.data.pop(_key)
+            if self._age[_key] < age_max:
+                self._age.pop(_key)
+                self._data.pop(_key)
 
         with self.save_path.open("wb", buffering=-1) as fd:
             pickle.dump(
-                [self.data, self.age, version],
+                [self._data, self._age, version],
                 fd,
                 fix_imports=False,
                 protocol=pickle.HIGHEST_PROTOCOL,
@@ -104,8 +108,8 @@ class Cache:
                 # TODO: consider replacing pickle with something faster
                 # only restore if data fits and package-version matches
                 if isinstance(data, list) and len(data) >= 3 and data[2] == version:
-                    _inst.data = data[0]
-                    _inst.age = data[1]
+                    _inst._data = data[0]
+                    _inst._age = data[1]
                     log.debug(" -> found & restored cache")
         return _inst
 
@@ -114,8 +118,8 @@ class Cache:
         log.debug("Deleting the cache...")
         with contextlib.suppress(OSError):
             shutil.rmtree(cache_user_path)
-        self.data.clear()
-        self.age.clear()
+        self._data.clear()
+        self._age.clear()
 
     @staticmethod
     def calculate_key(text: str, checks: list[Callable]) -> str:
