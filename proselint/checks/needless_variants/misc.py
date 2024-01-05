@@ -284,7 +284,7 @@ def check_2(text: str) -> list[ResultCheck]:
         ["participatory", ["participative"]],
         ["partner", ["copartner"]],
         ["partnership", ["copartnership"]],
-        # ["password",          ["passcode"]],  # FIXME
+        # ["password",          ["passcode"]],  # common term > 2020
         ["patina", ["patine"]],
         ["pederast", ["paederast"]],
         ["pediatrician", ["pediatrist"]],

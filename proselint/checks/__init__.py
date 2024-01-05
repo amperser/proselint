@@ -163,7 +163,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form."""
     flags = re.IGNORECASE if ignore_case else 0
-    regex = r"[\W^]{}[\W$]"
+    regex = r"[\W^]{}[\W$]"  # TODO: replace with enum below?
 
     return [
         (
@@ -178,11 +178,13 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
         for m in re.finditer(regex.format(r), text, flags=flags)
     ]
     # TODO: can we speed up str.format() ?
+    #       fast-string? or do padding already in checks
 
 
 # PADDINGS, add more if needed
 class Pd(str, Enum):
     disabled = r"{}"
+    # choose for checks with custom regex
     whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
     sep_in_txt = r"(?:^|\W){}[\W$]"

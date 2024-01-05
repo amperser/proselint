@@ -1,15 +1,14 @@
-"""Cliches.
+"""Jargon.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
-title:      a vs. an TODO: somehow this title is wrong, original missing
+title:      Jargon
 date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Cliches are cliché.
 
 """
 from __future__ import annotations

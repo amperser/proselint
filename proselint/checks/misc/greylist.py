@@ -45,7 +45,7 @@ def check(text: str) -> list[ResultCheck]:
 
     bad_words = {
         "obviously": "This is obviously an inadvisable word to use.",
-        "utilize": r"Do you know anyone who *needs* to utilize the word utilize?",
+        "utilize": "Do you know anyone who *needs* to utilize the word utilize?",
     }
 
     results = []

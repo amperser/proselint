@@ -21,7 +21,7 @@ from proselint.checks import existence_check
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.tense_present"
-    msg = r"'{}'."
+    msg = "'{}'."
 
     illogics = [
         r"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",

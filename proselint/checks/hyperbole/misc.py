@@ -14,6 +14,7 @@ Hyperbolic language.
 """
 from __future__ import annotations
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -28,4 +29,4 @@ def check(text: str) -> list[ResultCheck]:
         r"[a-z]*\?{2,}",
     ]
 
-    return existence_check(text, words, err, msg)
+    return existence_check(text, words, err, msg, padding=Pd.disabled)

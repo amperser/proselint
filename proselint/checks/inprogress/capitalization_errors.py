@@ -21,7 +21,7 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
 
-def check(text: str) -> list[ResultCheck]:  # todo: activate
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "MSC104"
     msg = "Don't fail to capitalize roman numeral abbreviations."
