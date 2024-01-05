@@ -1,9 +1,23 @@
 """Proselint config - replacement for default .proselintrc since #1212."""
+from __future__ import annotations
+
+from enum import IntEnum
+
+
+class Output(IntEnum):
+    full = default = 0
+    json = 1
+    compact = 2
+
+    @classmethod
+    def names(cls) -> list[str]:
+        return [_e.name for _e in cls]
+
 
 proselint_base: dict = {
     "max_errors": 1000,
     "parallelize": True,  # note: has an overhead, noticeable for small content
-    "output_format": None,  # todo: add enum - default, json, compact
+    "output_format": Output.full.name,
     "checks": {
         "airlinese.misc": True,
         "annotations.misc": True,
