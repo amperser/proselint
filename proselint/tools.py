@@ -30,8 +30,8 @@ from .logger import log
 from .memoizer import cache
 from .memoizer import memoize_lint
 
-ResultLint: TypeAlias = tuple[str, str, int, int, int, int, int, str, str]
-# content: check_name, message, line, column, start, end, length, type, replacement
+ResultLint: TypeAlias = tuple[str, str, str, int, int, int, int, int, str, str]
+# content: check_name, message, source, line, column, start, end, length, type, replacement
 
 
 ###############################################################################
@@ -149,7 +149,7 @@ def lint(
     content: Union[str, IO],
     config: Optional[dict] = None,
     checks: Optional[list[Callable]] = None,
-    file_name: Optional[str] = None,
+    source: str = "",
     *,
     _exe: Optional[Executor] = None,
 ) -> list[ResultLint]:
@@ -177,7 +177,7 @@ def lint(
             log.debug("[Lint] used outer Executor for parallelization")
         # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu
         # NOTE: .map() is build on .submit(), harder to use here, same speed
-        futures = [_exe.submit(run_checks, check, _text) for check in checks]
+        futures = [_exe.submit(run_checks, check, _text, source) for check in checks]
         if ret_future:
             # this will skip the memoizer
             return futures
@@ -236,7 +236,7 @@ def lint_path(
             cache.data[key] = _errors
             cache.age[key] = cache.ts_now
         # todo: include filename in ResultLint? allows to collect all errors
-        print_errors(_file, _errors, config)
+        output_errors(_errors, config, _file)
         error_num += len(_errors)
 
     duration = time.time() - ts_start
@@ -256,14 +256,14 @@ def errors_to_json(items: list[ResultLint]) -> str:
         {
             "check": item[0],
             "message": item[1],
-            "file": "todo",
-            "line": 1 + item[2],
-            "column": 1 + item[3],
-            "start": 1 + item[4],
-            "end": 1 + item[5],
-            "extent": item[6],
-            "severity": item[7],
-            "replacements": item[8],
+            "source": item[2],
+            "line": item[3],
+            "column": item[4],
+            "start": item[5],
+            "end": item[6],
+            "extent": item[7],
+            "severity": item[8],
+            "replacements": item[9],
         }
         for item in items
     ]
@@ -271,10 +271,10 @@ def errors_to_json(items: list[ResultLint]) -> str:
     return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
 
 
-def print_errors(
-    filename: Union[Path, str],
+def output_errors(
     errors: list[ResultLint],
     config: dict,
+    file_path: Optional[Path] = None,
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
     try:
@@ -289,6 +289,7 @@ def print_errors(
             (
                 check,
                 message,
+                source,
                 line,
                 column,
                 _,  # start,
@@ -298,19 +299,14 @@ def print_errors(
                 _,  # replacements,
             ) = error
 
-            if isinstance(filename, Path):
+            if isinstance(file_path, Path):
                 if out_fmt == Output.compact:
-                    filename = filename.name + "debug-WHYNOTHERE"
+                    source = file_path.name
                 else:
-                    filename = filename.absolute().as_uri()
+                    source = file_path.absolute().as_uri()
                     # TODO: would be nice to supress "file:///"
                     # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-            else:
-                if out_fmt == Output.compact:
-                    filename = "" # TODO: using cli+compact switches here?!?
-                else:
-                    filename = str(filename)
+            elif out_fmt == Output.compact:
+                source = ""
 
-            # note: adding +1 for switching to 1based counting
-            # todo: why not for json? move to creation
-            log.info("%s:%d:%d: %s %s", filename, 1 + line, 1 + column, check, message)
+            log.info("%s:%d:%d: %s %s", source, line, column, check, message)

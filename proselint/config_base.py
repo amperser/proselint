@@ -8,6 +8,7 @@ class Output(IntEnum):
     full = default = 0
     json = 1
     compact = 2
+    # todo: implement printing to file?
 
     @classmethod
     def names(cls) -> list[str]:
