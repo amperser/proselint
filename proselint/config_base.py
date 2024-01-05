@@ -18,6 +18,8 @@ class Output(IntEnum):
 proselint_base: dict = {
     "max_errors": 1000,
     "parallelize": True,  # note: has an overhead, noticeable for small content
+    # TODO: add disabled force-option for usage as module
+    #       can be trouble on windows if used wrong
     "output_format": Output.full.name,
     "checks": {
         "airlinese.misc": True,

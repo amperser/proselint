@@ -36,7 +36,8 @@ def check(text: str) -> list[ResultCheck]:
         "some people",
         "somewhat",
         # false authority
-        "it has been decided" "it is said",
+        "it has been decided",
+        "it is said",
         "it is thought",
         "mistakes were made",
         "researchers believe",

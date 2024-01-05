@@ -7,7 +7,7 @@ from proselint.tools import lint
 
 def extract_line_col(error):
     """Extract the line and column number from an error tuple."""
-    _, _, line, column, _, _, _, _, _ = error
+    _, _, _, line, column, _, _, _, _, _ = error
     return line, column
 
 

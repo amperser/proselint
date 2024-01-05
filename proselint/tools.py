@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 import copy
-import importlib
 import json
 import os
-import re
 import sys
 import time
 from concurrent.futures import Executor
@@ -21,7 +19,7 @@ from typing import Union
 from warnings import showwarning as warn
 
 from . import config_base
-from .checks import ResultCheck
+from .checks import get_checks
 from .checks import run_checks
 from .config_base import Output
 from .config_paths import config_global_path
@@ -93,30 +91,6 @@ def load_options(
     return _deepmerge_dicts(cfg_default, user_options)
 
 
-def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
-    """Extract the checks.
-    Rule: fn-name must begin with "check", so check_xyz() is ok
-    """
-    # TODO: benchmark consecutive runs of this
-    #       config should only translate once to check-list
-    checks = []
-    check_names = [key for (key, val) in options["checks"].items() if val]
-
-    for check_name in check_names:
-        try:
-            module = importlib.import_module("." + check_name, "proselint.checks")
-        except ModuleNotFoundError:
-            log.exception(
-                "requested config-flag '%s' not found in proselint.checks",
-                check_name,
-            )
-            continue
-        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
-
-    log.debug("Collected %d checks to run", len(checks))
-    return checks
-
-
 ###############################################################################
 # Linting #####################################################################
 ###############################################################################
@@ -160,9 +134,10 @@ def lint(
     else:
         _text = content.read()
 
+    # TODO: this is also done by the memoizer now
+    #       think about joining lint with wrapper
     if not isinstance(config, dict):
         config = config_base.proselint_base
-
     if checks is None:
         checks = get_checks(config)
 
@@ -195,6 +170,7 @@ def lint_path(
     paths: Union[Path, list[Path]],
     config: Optional[dict] = None,
 ) -> dict[str, list[ResultLint]]:
+    """Lint path with files or point to specific file"""
     # Expand the list of directories and files.
     filepaths = extract_files(paths)
 
@@ -223,8 +199,10 @@ def lint_path(
             results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
             chars += len(content)
 
+    # todo: better fully decouple linting from printing errors - just return data
     error_num = 0
-    for _file, _errors in results.items():
+    for _file in results:
+        _errors = results[_file]
         if len(_errors) > 0 and isinstance(_errors[0], Future):
             _errors = [_e for _ft in _errors for _e in _ft.result()]
             _errors = sorted(
@@ -233,6 +211,8 @@ def lint_path(
             )
             # memoizer could also iterate, fetch results and sort
             memoize_future(_errors, _file.as_posix())
+            # write back data so no futures are returned
+            results[_file] = _errors
         # todo: include filename in ResultLint? allows to collect all errors
         output_errors(_errors, config, _file)
         error_num += len(_errors)

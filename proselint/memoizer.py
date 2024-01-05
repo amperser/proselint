@@ -19,6 +19,8 @@ from typing import Union
 from typing_extensions import Self
 from typing_extensions import Unpack
 
+from . import config_base
+from .checks import get_checks
 from .config_paths import cache_user_path
 from .logger import log
 from .version import __version__ as version
@@ -108,8 +110,8 @@ class Cache:
                 # TODO: consider replacing pickle with something faster
                 # only restore if data fits and package-version matches
                 if isinstance(data, list) and len(data) >= 3 and data[2] == version:
-                    _inst._data = data[0]
-                    _inst._age = data[1]
+                    _inst._data = data[0]  # noqa: SLF001
+                    _inst._age = data[1]  # noqa: SLF001
                     log.debug(" -> found & restored cache")
         return _inst
 
@@ -171,6 +173,10 @@ def memoize_lint(
             #       d[funcSig,fileSig] = (input_hash,result)
             #                        -> smaller dicts
 
+        if not isinstance(config, dict):
+            config = config_base.proselint_base
+        if checks is None:
+            checks = get_checks(config)
         key = cache.calculate_key(content, checks)
 
         try:
