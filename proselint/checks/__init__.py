@@ -12,11 +12,14 @@ All custom code is contained in here.
 from __future__ import annotations
 
 import functools
+import importlib
 import re
 from enum import Enum
 from typing import Callable
 from typing import Optional
 from typing import TypeAlias
+
+from proselint.logger import log
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
@@ -27,6 +30,30 @@ ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 ###############################################################################
 # Check-Interface used by linter ##############################################
 ###############################################################################
+
+
+def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
+    """Extract the checks.
+    Rule: fn-name must begin with "check", so check_xyz() is ok
+    """
+    # TODO: benchmark consecutive runs of this
+    #       config should only translate once to check-list
+    checks = []
+    check_names = [key for (key, val) in options["checks"].items() if val]
+
+    for check_name in check_names:
+        try:
+            module = importlib.import_module("." + check_name, "proselint.checks")
+        except ModuleNotFoundError:
+            log.exception(
+                "requested config-flag '%s' not found in proselint.checks",
+                check_name,
+            )
+            continue
+        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
+
+    log.debug("Collected %d checks to run", len(checks))
+    return checks
 
 
 def run_checks(_check: Callable, _text: str, source: str = "") -> list:

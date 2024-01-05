@@ -10,6 +10,7 @@ def test_speed():
 
     demo_path = proselint.path / "demo.md"
     _code = "errors = proselint.tools.lint(_text)"
+    _setup = "import proselint"
     with demo_path.open(encoding="utf-8", errors="replace") as demo_fh:
         _text = demo_fh.read()
 
@@ -22,18 +23,18 @@ def test_speed():
     _dur1 = 0.0
     for _ in range(repetitions):
         memoizer.cache.clear()
-        _dur1 += timeit(_code, globals=locals(), number=1)
+        _dur1 += timeit(_code, setup=_setup, globals=locals(), number=1)
 
     # with cache
     _dur2 = 0.0
     for _ in range(repetitions):
-        _dur2 += timeit(_code, globals=locals(), number=1)
+        _dur2 += timeit(_code, setup=_setup, globals=locals(), number=1)
 
     # without cache, confirmation
     _dur3 = 0.0
     for _ in range(repetitions):
         memoizer.cache.clear()
-        _dur3 += timeit(_code, globals=locals(), number=1)
+        _dur3 += timeit(_code, setup=_setup, globals=locals(), number=1)
 
     assert _dur2 < 0.7 * _dur1
     assert _dur2 < 0.7 * _dur3

@@ -37,7 +37,7 @@ def print_invoke_return(result) -> None:
     print(f"result::{result}")
 
     print(f"exit::{result.exit_code}")
-    print(f"retvalt::{result.return_value}")
+    print(f"retval::{result.return_value}")
 
     print(f"output::{result.output}")
     print(f"stdout::{result.stdout}")

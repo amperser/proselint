@@ -18,7 +18,7 @@ scripts = [
     "benchmark_hashes.py",
     "benchmark_linter.py",
     "benchmark_list_alternatives.py",
-    "benchmark_test_hyperlinks_on_shell.py",
+    "test_hyperlinks_on_shell.py",
 ]
 
 

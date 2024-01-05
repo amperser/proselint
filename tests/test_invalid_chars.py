@@ -5,6 +5,7 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
+from tests.conftest import print_invoke_return
 
 
 CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
@@ -14,6 +15,7 @@ def test_invalid_characters():
     runner = CliRunner()
 
     result = runner.invoke(proselint, CHAR_FILE)
+    print_invoke_return(result)
 
     assert len(result.stdout) > 0
     assert result.exit_code == 0
