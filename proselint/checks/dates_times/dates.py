@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import calendar
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -49,7 +50,8 @@ def check_month_year_comma(text: str) -> list[ResultCheck]:
     err = "dates_times.dates"
     msg = "When specifying a month and year, no comma is needed."
     items = [r"(?:" + "|".join(calendar.month_name[1:]) + r"), \d{3,}"]
-    return existence_check(text, items, err, msg)
+    # note: strangely month_name[0] is ""
+    return existence_check(text, items, err, msg, padding=Pd.disabled)
 
 
 def check_month_of_year(text: str) -> list[ResultCheck]:
@@ -57,4 +59,5 @@ def check_month_of_year(text: str) -> list[ResultCheck]:
     err = "dates_times.dates"
     msg = "When specifying a month and year, 'of' is unnecessary."
     items = [r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"]
-    return existence_check(text, items, err, msg)
+    # note: strangely month_name[0] is ""
+    return existence_check(text, items, err, msg, padding=Pd.disabled)

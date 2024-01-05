@@ -108,7 +108,7 @@ def compile_uncomparables() -> list:
 
     exceptions = [
         ("more", "perfect"),
-        ("more", "possible"),  # FIXME
+        ("more", "possible"),
     ]
     return [
         rf"{i[0]}\s{i[1]}"

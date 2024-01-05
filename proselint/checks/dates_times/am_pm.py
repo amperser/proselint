@@ -12,6 +12,7 @@ categories: writing
 """
 from __future__ import annotations
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -52,4 +53,4 @@ def check_redundancy(text: str) -> list[ResultCheck]:
         r"\d{1,2} ?p\.?m\.? in the afternoon",
     ]
 
-    return existence_check(text, items, err, msg)
+    return existence_check(text, items, err, msg, padding=Pd.disabled)
