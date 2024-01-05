@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
+from proselint.checks import preferred_forms_check
 
 
 def check(text: str) -> list[ResultCheck]:
@@ -31,21 +32,18 @@ def check(text: str) -> list[ResultCheck]:
         "further to yours of",
         "further to your letter",
         "in regard to",
-        r"inst\.",  # todo: add preferred form
         "in the amount of",
         "of even date",
         "pending receipt of",
         "please be advised that",
         "please return same",
         "pleasure of a reply",
-        r"prox\.",  # todo: add preferred form
         "pursuant to your request",
         "regarding the matter",
         "regret to inform",
         "thanking you in advance",
         "the undersigned",
         "this acknowledges your letter",
-        r"ult\.",  # todo: add preferred form -> ultimo
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",
@@ -53,3 +51,21 @@ def check(text: str) -> list[ResultCheck]:
     ]
 
     return existence_check(text, commercialese, err, msg)
+
+
+def check_apprev(text: str) -> list[ResultCheck]:
+    """
+    source: https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm
+    """
+    err = "misc.commercialese.abbreviations"
+    msg = "'{}' is commercialese. Depending on audience switch to {}"
+
+    items = [
+        ["this month", [r"inst\."]],
+        ["next month", [r"prox\."]],
+        ["last month", [r"ult\."]],
+        ["cost, insurance, freight", [r"c\.i\.f\."]],
+        ["Free On Board", [r"f\.o\.b\."]],
+    ]
+
+    return preferred_forms_check(text, items, err, msg)
