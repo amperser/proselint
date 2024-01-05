@@ -69,3 +69,10 @@ def test_gnu_diction():
     assert_pass(check, "No cliches here.")
     assert_fail(check, text)
     assert "cliches.gnu_diction" in check(text)[0]
+
+
+def test_cliches_nigel_basic():
+    """Basic check on check_cliches_nigel."""
+    check = misc.check_cliches_nigel
+    assert_pass(check, "No cliches here.")
+    assert_fail(check, "He's sick and tired of it.")
