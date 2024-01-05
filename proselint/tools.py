@@ -252,7 +252,10 @@ def output_errors(
         out_fmt = Output[config_base.proselint_base["output_format"]]
 
     if not isinstance(errors, list):
-        log.error("[OutputError] no list provided (guess: results of lint_path() need to be extracted first)")
+        log.error(
+            "[OutputError] no list provided "
+            "(guess: results of lint_path() need to be extracted first)"
+        )
         return
 
     if out_fmt == Output.json:

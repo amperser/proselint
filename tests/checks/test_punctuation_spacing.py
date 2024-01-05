@@ -1,7 +1,8 @@
 """Tests for punctuation_spacing.misc check."""
 
 from proselint.checks.punctuation_spacing.misc import check
-from tests.conftest import assert_pass, assert_fail
+from tests.conftest import assert_fail
+from tests.conftest import assert_pass
 
 
 def test_end_punctuation():
@@ -10,7 +11,7 @@ def test_end_punctuation():
     assert_pass(check, "Smoke phrase with nothing flagged!")
     assert_fail(check, "flagged!    ")
     assert_pass(check, "flagged?  ")
-    assert_pass(check, "flagged?    ")
+    assert_fail(check, "flagged?    ")
 
 
 def test_general_punctuation():
@@ -20,4 +21,3 @@ def test_general_punctuation():
     assert_fail(check, "The quick brown fox jumps;  over the lazy dog!")
     assert_pass(check, "The quick brown fox jumps:over the lazy dog!")
     assert_pass(check, "The quick brown fox jumps  :over the lazy dog!")
-
