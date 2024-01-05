@@ -27,7 +27,7 @@ from .config_base import Output
 from .config_paths import config_global_path
 from .config_paths import config_user_paths
 from .logger import log
-from .memoizer import cache
+from .memoizer import memoize_future
 from .memoizer import memoize_lint
 
 ResultLint: TypeAlias = tuple[str, str, str, int, int, int, int, int, str, str]
@@ -231,10 +231,8 @@ def lint_path(
                 _errors[: config["max_errors"]],
                 key=lambda e: (e[2], e[3]),
             )
-            key = cache.fname2key.get(_file.as_posix())
-            log.debug("[Memoizer] LateStore %s", key)
-            cache.data[key] = _errors
-            cache.age[key] = cache.ts_now
+            # memoizer could also iterate, fetch results and sort
+            memoize_future(_errors, _file.as_posix())
         # todo: include filename in ResultLint? allows to collect all errors
         output_errors(_errors, config, _file)
         error_num += len(_errors)
