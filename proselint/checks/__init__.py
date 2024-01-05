@@ -265,6 +265,24 @@ def existence_check(  # noqa: PLR0913, PLR0917
     return errors
 
 
+def simple_existence_check(
+    text: str, pattern: str, err: str, msg: str, offset: int = 0
+):
+    """Build a checker for single patters.
+    in comparison to existence_check:
+        - does not work on lists
+        - no padding
+        - excluded topics or exceptions
+
+        TODO: maybe add ignorecase
+    """
+
+    return [
+        (inst.start() + offset, inst.end() + offset, err, msg, None)
+        for inst in re.finditer(pattern, text)
+    ]
+
+
 def detector_50_Cent(text: str) -> tuple[str, float]:
     """Determine whether 50 Cent is a topic."""
     keywords = [
