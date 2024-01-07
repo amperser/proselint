@@ -10,7 +10,7 @@ cwd_path = Path.cwd()
 
 def _get_xdg_path(variable_name: str, default_path: Path) -> Path:
     _value = os.environ.get(variable_name)
-    if _value is None or _value == "":
+    if _value is None or not _value:
         return default_path
     return Path(_value)
 
