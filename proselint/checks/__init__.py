@@ -226,11 +226,45 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
             item[0],
         )
         for item in items
-        for r in item[1]
-        for m in re.finditer(regex.format(r), text, flags=flags)
+        for m in re.finditer(
+            "|".join(regex.format(r) for r in item[1]), text, flags=flags
+        )
     ]
     # TODO: can we speed up str.format() ?
-    #       fast-string? or do padding already in checks
+    #       fast-string? or do padding already in checks -> see test below
+    #       just optimizing the slowest test improved performance by 5%
+
+
+def preferred_forms_check2_pre(items: list) -> list:
+    padding = Pd.sep_in_txt
+    return [
+        [item[0], "|".join(padding.format(_item) for _item in item[1])]
+        for item in items
+    ]
+
+
+def preferred_forms_check2_main(
+    text: str,
+    items: list,
+    err: str,
+    msg: str,
+    ignore_case: bool = True,
+) -> list[ResultCheck]:
+    """Build a checker that suggests the preferred form.
+    Note: offset-usage corrects for pre-added padding-chars
+    """
+    flags = re.IGNORECASE if ignore_case else 0
+    return [
+        (
+            m.start() + 1,
+            m.end() - 1,
+            err,
+            msg.format(item[0], m.group(0).strip()),
+            item[0],
+        )
+        for item in items
+        for m in re.finditer(item[1], text, flags=flags)
+    ]
 
 
 def existence_check(  # noqa: PLR0913, PLR0917
