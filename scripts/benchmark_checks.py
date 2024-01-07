@@ -22,7 +22,7 @@ learnings
 from timeit import timeit
 
 import proselint
-from proselint import memoizer
+from proselint.memoizer import cache
 
 file_path = proselint.path / "demo.md"
 
@@ -44,11 +44,11 @@ specials = [
     "proselint.checks.uncomparables.misc.check_1",
 ]
 
-memoizer.cache.clear()
+cache.clear()
 for check in _checks:
     _name = f"{check.__module__}.{check.__name__}"
     if _name in specials:
-        memoizer.cache.clear()
+        cache.clear()
         _dur = timeit("_e = check(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> uncached")
         _dur = timeit("_e = check(_text)", globals=locals(), number=1)
