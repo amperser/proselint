@@ -65,17 +65,17 @@ def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
         if not is_quoted(start, _text):
             # note:
             #    - switch to 1based counting -> +1 for line, column, start, end
-            #    - padding was added to text -> -1 for line
-            #    - for line it cancels out with -1 from padding
+            #    - padding was added to text -> -1 for all except column
+            #    - +1 -1 cancel out
             errors += [
                 {
                     "check": check_name,
                     "message": message,
                     "source": source,
-                    "line": line,  # +1 -1, cancel out
+                    "line": line,
                     "column": column + 1,
-                    "start": start + 1,
-                    "end": end + 1,
+                    "start": start,
+                    "end": end,
                     "extent": end - start,
                     "severity": "warning",
                     "replacements": replacements,
@@ -85,15 +85,24 @@ def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
 
 
 def get_line_and_column(text, position):
-    """Return the line number and column of a position in a string."""
-    position_counter = 0
+    """Return the line number and column of a position in a string.
+
+    # could also just:
+    _t=text[:pos].splitlines(True)
+    line_no=len(_t)
+    column=len(_t[-1])
+    # todo: test fn
+     TODO: like LUT in in_quoted(), it shows that the text should be pre-analyzed
+           just use a list with line-start-positions, store all in text_meta: dict
+    """
+    line_start_pos = 0
     line_no = 0
     for line in text.splitlines(True):
-        if (position_counter + len(line.rstrip())) >= position:
+        if (line_start_pos + len(line)) >= position:
             break
-        position_counter += len(line)
+        line_start_pos += len(line)
         line_no += 1
-    return line_no, position - position_counter
+    return line_no, position - line_start_pos
 
 
 def is_quoted(position: int, text: str) -> bool:
@@ -142,14 +151,15 @@ def is_quoted(position: int, text: str) -> bool:
 # The actual check-sub-functions used by the checks  ##########################
 ###############################################################################
 # TODO: review use of "offset" - when no external regex is used, it should be defaulted
-# TODO: just using offset is wrong - start is correct, but end & length are off
+# TODO: just using one offset is wrong - we have to L&R Side of padding
+
 
 def consistency_check(
     text: str,
     word_pairs: list,
     err: str,
     msg: str,
-    offset: int = 0,
+    offset: tuple[int] = (0,0),
 ) -> list[ResultCheck]:
     """Build a consistency checker for the given word_pairs."""
     results = []
@@ -165,8 +175,8 @@ def consistency_check(
 
             results += [
                 (
-                    m.start() + offset,
-                    m.end() + offset,
+                    m.start() + offset[0],
+                    m.end() + offset[1],
                     err,
                     msg.format(w[not idx_minority], m.group(0)),
                     w[not idx_minority],
@@ -183,7 +193,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    offset: int = 0,
+    offset: tuple[int] = (0,0),
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form."""
     flags = re.IGNORECASE if ignore_case else 0
@@ -191,8 +201,8 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 
     return [
         (
-            m.start() + 1 + offset,
-            m.end() + offset,
+            m.start() + 1 + offset[0],
+            m.end() + offset[1],
             err,
             msg.format(item[0], m.group(0).strip()),
             item[0],
@@ -228,7 +238,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     msg: str,
     ignore_case: bool = True,
     string: bool = False,  # todo: why not default on?
-    offset: int = 0,  # todo: some checks set this strangely
+    offset: tuple[int] = (0,0),
     padding: Pd = Pd.sep_in_txt,
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
@@ -251,13 +261,17 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(t in excluded_topics for t in tps):
             return errors
 
+    if padding != Pd.disabled:
+        # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
+        offset = (offset[0] + 1, offset[1] - 1)
+
     rx = "|".join(padding.format(_item) for _item in re_items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         if any(re.search(exception, txt) for exception in exceptions):
             continue
         errors.append(
-            (m.start() + 1 + offset, m.end() + offset, err, msg.format(txt), None),
+            (m.start() + offset[0], m.end() + offset[1], err, msg.format(txt), None),
         )
         # TODO: doesn't the padding alter the start+end?
 
@@ -265,7 +279,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
 
 
 def simple_existence_check(
-    text: str, pattern: str, err: str, msg: str, offset: int = 0
+    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0,0)
 ):
     """Build a checker for single patters.
     in comparison to existence_check:
@@ -277,7 +291,7 @@ def simple_existence_check(
     """
 
     return [
-        (inst.start() + offset, inst.end() + offset, err, msg, None)
+        (inst.start() + offset[0], inst.end() + offset[1], err, msg, None)
         for inst in re.finditer(pattern, text)
     ]
 

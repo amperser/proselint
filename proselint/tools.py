@@ -168,7 +168,7 @@ def lint(
     # -> some checks expect words in text and expect something around it
     # -> this prevents edge-cases
     # -> is considered in run_checks()
-    content = f" \n{content}\n "  # benchmarked the fastest OP
+    content = f"\n{content}\n "  # benchmarked the fastest OP
 
     # Apply all the checks.
     if config["parallelize"]:

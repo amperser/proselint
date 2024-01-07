@@ -5,7 +5,7 @@ Note: when combining multiprocessing (parallelize option) on windows
       the calling script must be encapsulated in 'if __name__ == '__main__''
       as long as python updates its processing-implementation.
       py312 is still unchanged.
-This sentence contains a clear as mud error without scarcely ..
+
 """
 from pathlib import Path
 
@@ -14,7 +14,7 @@ import proselint.tools as plt
 if __name__ == "__main__":
 
     # direct text input
-    results = plt.lint("This sentence contains a clear as mud error without scarcely ..")
+    results = plt.lint("This sentence contains a clear as mud error")
 
     # result is a list of ResultLint with all essential data included
     print("\n## Custom Error-Printing")
