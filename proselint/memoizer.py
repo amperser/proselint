@@ -21,8 +21,6 @@ from .version import __version__ as version
 if TYPE_CHECKING:
     from types import TracebackType
 
-    from .tools import ResultLint
-
 
 class Cache:
     save_path = cache_user_path / "cache.pickle"
@@ -37,7 +35,7 @@ class Cache:
         return cls._instance
 
     def __init__(self) -> None:
-        self._data: dict[str, list[ResultLint]] = {}
+        self._data: dict[str, list[dict]] = {}
         self._age: dict[str, int] = {}
         self._ts_now: int = round(datetime.now().timestamp())
         self._modified: bool = False
@@ -59,11 +57,11 @@ class Cache:
         self.to_file()
         Cache._instance = None
 
-    def __getitem__(self, key: str) -> list[ResultLint]:
+    def __getitem__(self, key: str) -> list[dict]:
         """Allows dict access -> instance["key"]"""
         return self._data[key]
 
-    def __setitem__(self, key: str, value: list[ResultLint]):
+    def __setitem__(self, key: str, value: list[dict]):
         log.debug("[Memoizer] Store %s", key)
         self._data[key] = value
         self._age[key] = self._ts_now

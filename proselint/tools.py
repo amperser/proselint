@@ -12,22 +12,34 @@ from concurrent.futures import Future
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Callable
+from typing import NamedTuple
 from typing import Optional
-from typing import TypeAlias
 from typing import Union
 from warnings import showwarning as warn
 
 from . import config_base
 from .checks import get_checks
-from .checks import run_checks
+from .checks import run_check
 from .config_base import Output
 from .config_paths import config_global_path
 from .config_paths import config_user_paths
 from .logger import log
 from .memoizer import cache
 
-ResultLint: TypeAlias = tuple[str, str, str, int, int, int, int, int, str, str]
-# content: check_name, message, source, line, column, start, end, length, type, replacement
+
+class ResultLint(NamedTuple):
+    # allows access by name and export ._asdict()
+    # note: const after instantiation & trouble with pickling
+    check: str
+    message: str
+    source: str
+    line: int
+    column: int
+    start: int
+    end: int
+    extent: int
+    severity: str
+    replacements: Optional[str]
 
 
 ###############################################################################
@@ -147,10 +159,18 @@ def lint(
 
     with contextlib.suppress(KeyError):
         # early exit if result is already cached
-        return cache[memoizer_key]
+        errors = cache[memoizer_key]
+        return [ResultLint(**_e) for _e in errors]
+
+    # padding
+    # -> some checks expect words in text and expect something around it
+    # -> this prevents edge-cases
+    # -> is considered in run_checks()
+    content = f" \n{content}\n "  # benchmarked the fastest OP
 
     # Apply all the checks.
     if config["parallelize"]:
+        # TODO: simplify always multi, thread, benchmark performance
         if _exe is None:
             _exe = ProcessPoolExecutor()
             log.debug("[Lint] created inner Executor for parallelization")
@@ -159,7 +179,7 @@ def lint(
         # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu processed
         # NOTE: .map() is build on .submit(), harder to use here, same speed
         futures = [
-            _exe.submit(run_checks, check, content, source_name) for check in _checks
+            _exe.submit(run_check, check, content, source_name) for check in _checks
         ]
         if allow_futures:
             cache.name2key[source_name] = memoizer_key
@@ -167,13 +187,16 @@ def lint(
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
     else:  # single process
-        results = [run_checks(check, content) for check in _checks]
+        results = [run_check(check, content) for check in _checks]
         errors = [_e for _res in results for _e in _res]
 
     # Sort the errors by line and column number.
-    errors = sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
+    errors = sorted(
+        errors[: config["max_errors"]], key=lambda e: (e["line"], e["column"])
+    )
     cache[memoizer_key] = errors
-    return errors
+    # return user-friendly format
+    return [ResultLint(**_e) for _e in errors]
 
 
 def fetch_results(
@@ -184,12 +207,12 @@ def fetch_results(
         _errors = [_e for _ft in futures for _e in _ft.result()]
         _errors = sorted(
             _errors[: config["max_errors"]],
-            key=lambda e: (e[2], e[3]),
+            key=lambda e: (e["line"], e["column"]),
         )
         # store results in cache
         key = cache.name2key.get(source_name)
         cache[key] = _errors
-        return _errors
+        return [ResultLint(**_e) for _e in _errors]
     return futures
 
 
@@ -225,7 +248,12 @@ def lint_path(
                 log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
                 continue
             results[file] = lint(
-                content, config, source_name=file.as_posix(), allow_futures=True, _checks=checks, _exe=exe
+                content,
+                config,
+                source_name=file.as_posix(),
+                allow_futures=True,
+                _checks=checks,
+                _exe=exe,
             )
             chars += len(content)
 
@@ -242,7 +270,10 @@ def lint_path(
 
 
 def errors_to_json(items: list[ResultLint]) -> str:
-    """Convert the errors to JSON."""
+    """Convert the errors to JSON.
+
+    Note: old items was just a list, now it's a named tuple with the names as below
+
     out = [
         {
             "check": item[0],
@@ -258,6 +289,8 @@ def errors_to_json(items: list[ResultLint]) -> str:
         }
         for item in items
     ]
+    """
+    out = [_rl._asdict() for _rl in items]
 
     return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
 
@@ -283,28 +316,18 @@ def output_errors(
     if out_fmt == Output.json:
         log.info(errors_to_json(errors))
     else:
-        for error in errors:
-            (
-                check,
-                message,
-                source,
-                line,
-                column,
-                _,  # start,
-                _,  # end,
-                _,  # extent,
-                _,  # severity,
-                _,  # replacements,
-            ) = error
-
+        for _e in errors:
+            _source = _e.source
             if isinstance(file_path, Path):
                 if out_fmt == Output.compact:
-                    source = file_path.name
+                    _source = file_path.name
                 else:
-                    source = file_path.absolute().as_uri()
+                    _source = file_path.absolute().as_uri()
                     # TODO: would be nice to supress "file:///"
                     # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
             elif out_fmt == Output.compact:
-                source = ""
+                _source = ""
 
-            log.info("%s:%d:%d: %s %s", source, line, column, check, message)
+            log.info(
+                "%s:%d:%d: %s %s", _source, _e.line, _e.column, _e.check, _e.message
+            )

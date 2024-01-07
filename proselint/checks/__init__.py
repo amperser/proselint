@@ -56,12 +56,7 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     return checks
 
 
-def run_checks(_check: Callable, _text: str, source: str = "") -> list:
-    # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
-    # padding
-    # -> some checks expect words in text and need something around it
-    # -> this prevents edge-cases
-    _text = f" \n{_text}\n "  # maybe not the fastest OP
+def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
     errors = []
     results = _check(_text)
     for result in results:
@@ -69,21 +64,22 @@ def run_checks(_check: Callable, _text: str, source: str = "") -> list:
         (line, column) = get_line_and_column(_text, start)
         if not is_quoted(start, _text):
             # note:
-            #    - switch to 1based counting by adding +1
+            #    - switch to 1based counting -> +1 for line, column, start, end
+            #    - padding was added to text -> -1 for line
             #    - for line it cancels out with -1 from padding
             errors += [
-                (
-                    check_name,
-                    message,
-                    source,  # can't be Path, unless pickle changes
-                    line,  # +1 -1, cancel out
-                    column + 1,
-                    start + 1,
-                    end + 1,
-                    end - start,
-                    "warning",
-                    replacements,
-                ),
+                {
+                    "check": check_name,
+                    "message": message,
+                    "source": source,
+                    "line": line,  # +1 -1, cancel out
+                    "column": column + 1,
+                    "start": start + 1,
+                    "end": end + 1,
+                    "extent": end - start,
+                    "severity": "warning",
+                    "replacements": replacements,
+                }
             ]
     return errors
 
@@ -145,6 +141,7 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 # The actual check-sub-functions used by the checks  ##########################
 ###############################################################################
+#  TODO: review use of "offset" - when no external regex is used, it should be defaulted
 
 
 def consistency_check(
