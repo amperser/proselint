@@ -1,3 +1,4 @@
+from pathlib import Path
 from timeit import timeit
 
 import proselint
@@ -13,37 +14,59 @@ if __name__ == "__main__":
     #  -> This script crashes when par=True
 
     file_path = proselint.path / "demo.md"
+    corp_path = Path(__file__).parent.parent / "corpora"
 
     _cfg = proselint.config_default
     options = {
-        "serial": False,
-        "PAR": True,
+        "serial": (False, True),
+        "serial-cached": (False, False),
+        "parallel": (True, True),
+        "parallel-cached": (True, False),
     }
 
-    with file_path.open(encoding="utf-8", errors="replace") as fh:
-        _text = fh.read()
-    _checks = get_checks(_cfg)
-    # TODO: experiment with overhead of these
+    print("\n############# lint(demo.md)")
 
     for _name, _val in options.items():
-        _cfg["parallelize"] = _val
-        memoizer.cache.clear()
-        t1 = timeit(
-            "e1 = proselint.tools.lint(_text, _cfg, _checks)",
-            globals=locals(),
-            number=1,
-        )
-        print(f"Lint with cfg={_name} took {t1 * 1e3:4.3f} ms uncached")
-        memoizer.cache.clear()
-        t2 = timeit(
-            "e1 = proselint.tools.lint(_text, _cfg, _checks)",
-            globals=locals(),
-            number=1,
-        )
-        print(f"Lint with cfg={_name} took {t2 * 1e3:4.3f} ms uncached rerun")
-        t3 = timeit(
-            "e2 = proselint.tools.lint(_text, _cfg, _checks)",
-            globals=locals(),
-            number=1,
-        )
-        print(f"Lint with cfg={_name} took {t3 * 1e3:4.3f} ms cached")
+        _cfg["parallelize"] = _val[0]
+        for _i in range(3):
+            _checks = get_checks(_cfg)
+            with file_path.open() as f_handler:
+                _text = f_handler.read()
+            if _val[1]:
+                memoizer.cache.clear()
+            t1 = timeit(
+                "e1 = proselint.tools.lint(_text, _cfg, _checks)",
+                globals=locals(),
+                number=1,
+            )
+            print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
+
+    print("\n############# lint_path(demo.md)")
+
+    for _name, _val in options.items():
+        _cfg["parallelize"] = _val[0]
+        for _i in range(3):
+            if _val[1]:
+                memoizer.cache.clear()
+            t1 = timeit(
+                "e1 = proselint.tools.lint_path(file_path, _cfg)",
+                globals=locals(),
+                number=1,
+            )
+            print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
+
+    print("\n############# lint_path(corpora)")
+
+    for _name, _val in options.items():
+        _cfg["parallelize"] = _val[0]
+        for _i in range(3):
+            if _val[1]:
+                memoizer.cache.clear()
+            t1 = timeit(
+                "e1 = proselint.tools.lint_path(corp_path, _cfg)",
+                globals=locals(),
+                number=1,
+            )
+            print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
+
+    print("\n############# proselint ./demo.md")

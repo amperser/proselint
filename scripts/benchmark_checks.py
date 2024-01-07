@@ -34,7 +34,6 @@ with file_path.open(encoding="utf-8", errors="replace") as fh:
 
 _checks = proselint.tools.get_checks(_cfg)
 
-# #########################################################################
 print("\n############# Benchmark manually optimized Checks ###################")
 print("\n############# * or with calculations in check()   ###################")
 
@@ -48,7 +47,6 @@ cache.clear()
 for check in _checks:
     _name = f"{check.__module__}.{check.__name__}"
     if _name in specials:
-        cache.clear()
         _dur = timeit("_e = check(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> uncached")
         _dur = timeit("_e = check(_text)", globals=locals(), number=1)
@@ -76,20 +74,36 @@ for check in _checks:
 # proselint.checks.uncomparables.misc.check_1 took 24.678 ms -> uncached
 # proselint.checks.uncomparables.misc.check_1 took 20.797 ms -> cached
 
+print("\n############# Benchmark reimpl. of slowest check ###################")
+
+specials = [
+    "proselint.checks.needless_variants.misc.check_1",
+    "proselint.checks.needless_variants.misc.check_2",
+]
+
+for check in _checks:
+    _name = f"{check.__module__}.{check.__name__}"
+    if _name in specials:
+        for _i in range(3):
+            _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+            print(f"{_name} took {_dur * 1000:.3f} ms -> run{_i}")
+
+
 print("\n############# Benchmark all Checks ###################")
 
 result = {}
 for check in _checks:
     _name = f"{check.__module__}.{check.__name__}"
-    result[_name] = timeit("_e = check(_text)", globals=locals(), number=5)
+    result[_name] = timeit("_e = check(_text)", globals=locals(), number=10)
 
 result = dict(sorted(result.items(), key=lambda item: item[1]))
 for _key, _value in result.items():
-    print(f"{_key}: {_value}")
+    print(f"{_key}: {_value * 1e3:.3f} ms")
 
 _val = list(result.values())
 print(f"count:  {len(_val)}")
-print(f"min:    {min(_val)}")
-print(f"median: {_val[round(len(_val) / 2)]}")
-print(f"mean:   {sum(_val) / len(_val)}")
-print(f"max:    {max(_val)}")
+print(f"min:    {min(_val)} s")
+print(f"median: {_val[round(len(_val) / 2)]} s")
+print(f"mean:   {sum(_val) / len(_val)} s")
+print(f"max:    {max(_val)} s")
+print(f"sum:    {sum(_val)} s")
