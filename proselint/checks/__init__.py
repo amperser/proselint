@@ -91,7 +91,7 @@ def get_line_and_column(text, position):
     _t=text[:pos].splitlines(True)
     line_no=len(_t)
     column=len(_t[-1])
-    # todo: test fn
+    # todo: test this fn
      TODO: like LUT in in_quoted(), it shows that the text should be pre-analyzed
            just use a list with line-start-positions, store all in text_meta: dict
     """
@@ -150,8 +150,22 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 # The actual check-sub-functions used by the checks  ##########################
 ###############################################################################
-# TODO: review use of "offset" - when no external regex is used, it should be defaulted
-# TODO: just using one offset is wrong - we have to L&R Side of padding
+
+
+# PADDINGS, add more if needed
+class Pd(str, Enum):
+    disabled = r"{}"
+    # choose for checks with custom regex
+
+    whitespace = r"\s{}\s"
+    # -> req whitespace around (no punctuation!)
+
+    sep_in_txt = r"[\W^]{}[\W$]" # prev. version r"(?:^|\W){}[\W$]"
+    # req non-text character around
+    # -> finds item as long it is surrounded by any non-word character:
+    #       - whitespace
+    #       - punctuation
+    #       - newline ...
 
 
 def consistency_check(
@@ -161,7 +175,9 @@ def consistency_check(
     msg: str,
     offset: tuple[int] = (0,0),
 ) -> list[ResultCheck]:
-    """Build a consistency checker for the given word_pairs."""
+    """Build a consistency checker for the given word_pairs.
+    Note: offset-usage corrects for pre-added padding-chars
+    """
     results = []
 
     for w in word_pairs:
@@ -195,14 +211,16 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     offset: tuple[int] = (0,0),
 ) -> list[ResultCheck]:
-    """Build a checker that suggests the preferred form."""
+    """Build a checker that suggests the preferred form.
+    Note: offset-usage corrects for pre-added padding-chars
+    """
     flags = re.IGNORECASE if ignore_case else 0
-    regex = r"[\W^]{}[\W$]"  # TODO: replace with enum below?
+    regex = Pd.sep_in_txt  # correct regex_offset=(1,-1) below
 
     return [
         (
             m.start() + 1 + offset[0],
-            m.end() + offset[1],
+            m.end() - 1 + offset[1],
             err,
             msg.format(item[0], m.group(0).strip()),
             item[0],
@@ -215,20 +233,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #       fast-string? or do padding already in checks
 
 
-# PADDINGS, add more if needed
-class Pd(str, Enum):
-    disabled = r"{}"
-    # choose for checks with custom regex
 
-    whitespace = r"\s{}\s"
-    # -> req whitespace around (no punctuation!)
-
-    sep_in_txt = r"(?:^|\W){}[\W$]"
-    # req non-text character around
-    # -> finds item as long it is surrounded by any non-word character:
-    #       - whitespace
-    #       - punctuation
-    #       - newline ...
 
 
 def existence_check(  # noqa: PLR0913, PLR0917
@@ -273,7 +278,6 @@ def existence_check(  # noqa: PLR0913, PLR0917
         errors.append(
             (m.start() + offset[0], m.end() + offset[1], err, msg.format(txt), None),
         )
-        # TODO: doesn't the padding alter the start+end?
 
     return errors
 
@@ -287,7 +291,7 @@ def simple_existence_check(
         - no padding
         - excluded topics or exceptions
 
-        TODO: maybe add ignorecase
+        TODO: maybe add re.IGNORECASE as option, or just take flags
     """
 
     return [
