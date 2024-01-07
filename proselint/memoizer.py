@@ -1,26 +1,19 @@
 from __future__ import annotations
 
 import contextlib
-import functools
 import hashlib
 import pickle
 import shutil
-from concurrent.futures import Executor
-from concurrent.futures import Future
 from datetime import datetime
 from datetime import timedelta
-from typing import IO
 from typing import TYPE_CHECKING
 from typing import Callable
 from typing import Optional
 from typing import TypedDict
-from typing import Union
 
 from typing_extensions import Self
 from typing_extensions import Unpack
 
-from . import config_base
-from .checks import get_checks
 from .config_paths import cache_user_path
 from .logger import log
 from .version import __version__ as version
@@ -48,7 +41,7 @@ class Cache:
         self._age: dict[str, int] = {}
         self._ts_now: int = round(datetime.now().timestamp())
         self._modified: bool = False
-        self.fname2key: dict[str, str] = {}
+        self.name2key: dict[str, str] = {}
 
     def __exit__(
         self,
@@ -67,10 +60,11 @@ class Cache:
         Cache._instance = None
 
     def __getitem__(self, key: str) -> list[ResultLint]:
-        """Allows dict access -> instance["key"], in addition to instance.data["key"]"""
+        """Allows dict access -> instance["key"]"""
         return self._data[key]
 
     def __setitem__(self, key: str, value: list[ResultLint]):
+        log.debug("[Memoizer] Store %s", key)
         self._data[key] = value
         self._age[key] = self._ts_now
         self._modified = True
@@ -144,50 +138,3 @@ cache = Cache.from_file()
 ###############################################################################
 # Memoizer Access -> Wrapper ##################################################
 ###############################################################################
-
-
-def memoize_future(result: list[ResultLint], file_name: str) -> None:
-    """used to later add result -> when working with multiprocessing"""
-    key = cache.fname2key.get(file_name)
-    log.debug("[Memoizer] LateStore %s", key)
-    cache[key] = result
-
-
-def memoize_lint(
-    fn: Callable,
-) -> Callable:
-    """Cache results of lint() on disk."""
-
-    @functools.wraps(fn)
-    def wrapped(
-        content: Union[str, IO],
-        config: Optional[dict] = None,
-        checks: Optional[list[Callable]] = None,
-        file_name: Optional[str] = None,
-        *,
-        _exe: Optional[Executor] = None,
-    ) -> list:
-        if not isinstance(content, str):
-            return fn(content, config, checks, file_name, _exe=_exe)
-            # TODO: filename enables 2d-dict
-            #       d[funcSig,fileSig] = (input_hash,result)
-            #                        -> smaller dicts
-
-        if not isinstance(config, dict):
-            config = config_base.proselint_base
-        if checks is None:
-            checks = get_checks(config)
-        key = cache.calculate_key(content, checks)
-
-        try:
-            return cache[key]
-        except KeyError:
-            _res = fn(content, config, checks, file_name, _exe=_exe)
-            # only store finished results
-            if len(_res) == 0 or not isinstance(_res[0], Future):
-                log.debug("[Memoizer] Store %s", key)
-                cache[key] = _res
-            cache.fname2key[file_name] = key
-            return _res
-
-    return wrapped

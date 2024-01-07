@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import copy
 import json
 import os
@@ -10,7 +11,6 @@ from concurrent.futures import Executor
 from concurrent.futures import Future
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-from typing import IO
 from typing import Callable
 from typing import Optional
 from typing import TypeAlias
@@ -24,8 +24,7 @@ from .config_base import Output
 from .config_paths import config_global_path
 from .config_paths import config_user_paths
 from .logger import log
-from .memoizer import memoize_future
-from .memoizer import memoize_lint
+from .memoizer import cache
 
 ResultLint: TypeAlias = tuple[str, str, str, int, int, int, int, int, str, str]
 # content: check_name, message, source, line, column, start, end, length, type, replacement
@@ -119,52 +118,79 @@ def extract_files(paths: list[Path]) -> list[Path]:
     return expanded_files
 
 
-@memoize_lint
 def lint(
-    content: Union[str, IO],
+    content: str,
     config: Optional[dict] = None,
-    checks: Optional[list[Callable]] = None,
-    source: str = "",
-    *,
+    source_name: str = "",
+    allow_futures: bool = False,
+    *,  # internals from here on, caution
+    _checks: Optional[list[Callable]] = None,
     _exe: Optional[Executor] = None,
 ) -> list[ResultLint]:
-    """Run the linter on the input file."""
+    """Run the linter on the input file.
 
-    if isinstance(content, str):  # noqa: SIM108
-        _text = content
-    else:
-        _text = content.read()
+    arguments:
+        allow_futures: skip the internal memoizer, has to be done later manually
+    """
+    if not isinstance(content, str):
+        raise ValueError("linter expects a string as content")
 
-    # TODO: this is also done by the memoizer now
-    #       think about joining lint with wrapper
     if not isinstance(config, dict):
         config = config_base.proselint_base
-    if checks is None:
-        checks = get_checks(config)
+    if _checks is None:
+        _checks = get_checks(config)
 
-    ret_future = _exe is not None
+    memoizer_key = cache.calculate_key(content, _checks)
+    # TODO: filename enables more elegant 2d-dict
+    #       d[funcSig,fileSig] = (input_hash,result)
+    #                        -> smaller, more efficient dicts
+
+    with contextlib.suppress(KeyError):
+        # early exit if result is already cached
+        return cache[memoizer_key]
 
     # Apply all the checks.
     if config["parallelize"]:
-        if not ret_future:
-            log.debug("[Lint] created inner Executor for parallelization")
+        if _exe is None:
             _exe = ProcessPoolExecutor()
+            log.debug("[Lint] created inner Executor for parallelization")
         else:
             log.debug("[Lint] used outer Executor for parallelization")
-        # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu
+        # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu processed
         # NOTE: .map() is build on .submit(), harder to use here, same speed
-        futures = [_exe.submit(run_checks, check, _text, source) for check in checks]
-        if ret_future:
-            # this will skip the memoizer
+        futures = [
+            _exe.submit(run_checks, check, content, source_name) for check in _checks
+        ]
+        if allow_futures:
+            cache.name2key[source_name] = memoizer_key
             return futures
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
     else:  # single process
-        results = [run_checks(check, _text) for check in checks]
+        results = [run_checks(check, content) for check in _checks]
         errors = [_e for _res in results for _e in _res]
 
     # Sort the errors by line and column number.
-    return sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
+    errors = sorted(errors[: config["max_errors"]], key=lambda e: (e[2], e[3]))
+    cache[memoizer_key] = errors
+    return errors
+
+
+def fetch_results(
+    futures: Union[list[Future], list[ResultLint]], config: dict, source_name: str
+) -> list[ResultLint]:
+    """fetch result from futures, needed when working with multiprocessing"""
+    if len(futures) > 0 and isinstance(futures[0], Future):
+        _errors = [_e for _ft in futures for _e in _ft.result()]
+        _errors = sorted(
+            _errors[: config["max_errors"]],
+            key=lambda e: (e[2], e[3]),
+        )
+        # store results in cache
+        key = cache.name2key.get(source_name)
+        cache[key] = _errors
+        return _errors
+    return futures
 
 
 def lint_path(
@@ -185,7 +211,8 @@ def lint_path(
     if len(paths) == 0:
         # Use stdin if no paths were specified
         log.info("No path specified -> will read from <stdin>")
-        results["<stdin>"] = lint(sys.stdin, config=config, checks=checks)
+        content = sys.stdin.read()
+        results["<stdin>"] = lint(content, config=config, _checks=checks)
     else:
         # offer "outer" executor, to make multiprocessing more effective
         exe = ProcessPoolExecutor() if config["parallelize"] else None
@@ -197,21 +224,16 @@ def lint_path(
             except Exception:
                 log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
                 continue
-            results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
+            results[file] = lint(
+                content, config, source_name=file.as_posix(), allow_futures=True, _checks=checks, _exe=exe
+            )
             chars += len(content)
 
     # fetch result from futures, if needed
-    for _file, _errors in results.items():
-        if len(_errors) > 0 and isinstance(_errors[0], Future):
-            _errors = [_e for _ft in _errors for _e in _ft.result()]
-            _errors = sorted(
-                _errors[: config["max_errors"]],
-                key=lambda e: (e[2], e[3]),
-            )
-            # memoizer could also iterate, fetch results and sort
-            memoize_future(_errors, _file.as_posix())
-            # write back data so no futures are returned
-            results[_file] = _errors
+    results = {
+        _file: fetch_results(_errors, config, _file.as_posix())
+        for _file, _errors in results.items()
+    }
 
     # bad style ... but
     global last_char_count
