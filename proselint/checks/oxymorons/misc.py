@@ -47,4 +47,4 @@ def check(text: str) -> list[ResultCheck]:
         # "executive secretary",
     ]
 
-    return existence_check(text, oxymorons, err, msg, offset=1)
+    return existence_check(text, oxymorons, err, msg)

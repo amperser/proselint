@@ -29,4 +29,4 @@ def check(text: str) -> list[ResultCheck]:
         "attack my voracity",
     ]
 
-    return existence_check(text, illogics, err, msg, offset=1)
+    return existence_check(text, illogics, err, msg)

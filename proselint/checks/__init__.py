@@ -141,8 +141,8 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 # The actual check-sub-functions used by the checks  ##########################
 ###############################################################################
-#  TODO: review use of "offset" - when no external regex is used, it should be defaulted
-
+# TODO: review use of "offset" - when no external regex is used, it should be defaulted
+# TODO: just using offset is wrong - start is correct, but end & length are off
 
 def consistency_check(
     text: str,
@@ -209,8 +209,10 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 class Pd(str, Enum):
     disabled = r"{}"
     # choose for checks with custom regex
+
     whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
+
     sep_in_txt = r"(?:^|\W){}[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:

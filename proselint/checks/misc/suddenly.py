@@ -45,6 +45,5 @@ def check(text: str) -> list[ResultCheck]:
         err,
         msg,
         padding=Pd.disabled,
-        offset=-1,
         ignore_case=False,
     )

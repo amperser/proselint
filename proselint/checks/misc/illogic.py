@@ -35,7 +35,7 @@ def check(text: str) -> list[ResultCheck]:
         "without scarcely",
     ]
 
-    return existence_check(text, illogics, err, msg, offset=1)
+    return existence_check(text, illogics, err, msg)
 
 
 def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
@@ -43,7 +43,7 @@ def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
     err = "misc.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
     items = ["to coin a phrase from"]
-    return existence_check(text, items, err, msg, offset=1)
+    return existence_check(text, items, err, msg)
 
 
 def check_without_your_collusion(text: str) -> list[ResultCheck]:
@@ -51,4 +51,4 @@ def check_without_your_collusion(text: str) -> list[ResultCheck]:
     err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
     items = ["without your collusion"]
-    return existence_check(text, items, err, msg, offset=-1)
+    return existence_check(text, items, err, msg)
