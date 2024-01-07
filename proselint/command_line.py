@@ -15,7 +15,7 @@ from typing import Union
 
 import click
 
-from proselint.tools import output_errors
+from proselint.tools import print_to_console
 
 from . import tools
 from .config_base import Output
@@ -166,7 +166,7 @@ def proselint(  # noqa: PLR0913, PLR0917, C901
 
     error_sum = 0
     for _file, _errors in results.items():
-        output_errors(_errors, config, _file)
+        print_to_console(_errors, config, _file)
         error_sum += len(_errors)
 
     log.info(

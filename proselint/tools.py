@@ -108,11 +108,14 @@ def load_options(
 last_char_count: int = 0
 
 
-def extract_files(paths: list[Path]) -> list[Path]:
+def extract_files(paths: Union[Path, list[Path]]) -> list[Path]:
     """Expand list of paths to include all text files matching the pattern."""
-    expanded_files = []
     legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
 
+    if isinstance(paths, Path):
+        paths = [paths]
+
+    expanded_files = []
     for _path in paths:
         # If it's a directory, recursively walk through it and find the files.
         if _path.is_dir():
@@ -122,7 +125,6 @@ def extract_files(paths: list[Path]) -> list[Path]:
                     _file_path = _path / filename
                     if _file_path.suffix.lower() in legal_extensions:
                         expanded_files.append(_file_path)
-
         # Otherwise add the file directly.
         else:
             expanded_files.append(_path)
@@ -231,7 +233,7 @@ def lint_path(
     results = {}
     chars = 0
 
-    if len(paths) == 0:
+    if len(filepaths) == 0:
         # Use stdin if no paths were specified
         log.info("No path specified -> will read from <stdin>")
         content = sys.stdin.read()
@@ -269,7 +271,9 @@ def lint_path(
     return results
 
 
-def errors_to_json(items: list[ResultLint]) -> str:
+def convert_to_json(
+    results: Union[dict[list[str, ResultLint]], list[ResultLint]],
+) -> str:
     """Convert the errors to JSON.
 
     Note: old items was just a list, now it's a named tuple with the names as below
@@ -290,44 +294,55 @@ def errors_to_json(items: list[ResultLint]) -> str:
         for item in items
     ]
     """
-    out = [_rl._asdict() for _rl in items]
+    if isinstance(results, dict):
+        out = [_rl.to_json() for _res in results.values() for _rl in _res]
+    else:
+        # assumed list
+        out = [_rl._asdict() for _rl in results]
 
     return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
 
 
-def output_errors(
-    errors: list[ResultLint],
-    config: dict,
+def print_to_console(  # noqa: PLR0912
+    results: Union[dict[str, list[ResultLint]], list[ResultLint]],
+    config: Optional[dict] = None,
     file_path: Optional[Path] = None,
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
+    if config is None:
+        config = config_base.proselint_base
+
     try:
         out_fmt = Output[config["output_format"]]
     except KeyError:
         out_fmt = Output[config_base.proselint_base["output_format"]]
 
-    if not isinstance(errors, list):
+    if not isinstance(results, (list, dict)):
         log.error(
-            "[OutputError] no list provided "
+            "[OutputError] no list or provided "
             "(guess: results of lint_path() need to be extracted first)"
         )
         return
+    # encapsulate output of lint() to match that of lint_path()
+    if isinstance(results, list):
+        results = {file_path: results}
 
-    if out_fmt == Output.json:
-        log.info(errors_to_json(errors))
-    else:
-        for _e in errors:
-            _source = _e.source
-            if isinstance(file_path, Path):
-                if out_fmt == Output.compact:
-                    _source = file_path.name
-                else:
-                    _source = file_path.absolute().as_uri()
-                    # TODO: would be nice to supress "file:///"
-                    # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-            elif out_fmt == Output.compact:
-                _source = ""
+    for _file, _results in results.items():
+        if out_fmt == Output.json:
+            log.info(convert_to_json(_results))
+        else:
+            for _e in _results:
+                _source = _e.source
+                if isinstance(_file, Path):
+                    if out_fmt == Output.compact:
+                        _source = _file.name
+                    else:
+                        _source = _file.absolute().as_uri()
+                        # TODO: would be nice to supress "file:///"
+                        # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+                elif out_fmt == Output.compact:
+                    _source = ""
 
-            log.info(
-                "%s:%d:%d: %s %s", _source, _e.line, _e.column, _e.check, _e.message
-            )
+                log.info(
+                    "%s:%d:%d: %s %s", _source, _e.line, _e.column, _e.check, _e.message
+                )
