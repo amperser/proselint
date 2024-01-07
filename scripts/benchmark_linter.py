@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
-        for _i in range(3):
+        for _i in range(2):
             if _val[1]:
                 memoizer.cache.clear()
             t1 = timeit(

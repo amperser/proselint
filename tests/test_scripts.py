@@ -6,22 +6,32 @@ import pytest
 
 
 @pytest.fixture
-def script_path() -> Path:
-    path = Path(__file__).resolve().parent.parent / "scripts"
+def project_path() -> Path:
+    path = Path(__file__).resolve().parent.parent
     os.chdir(path)
     return path
 
 
 scripts = [
-    "benchmark_checks.py",
-    "benchmark_constants.py",
-    "benchmark_hashes.py",
-    "benchmark_linter.py",
-    "benchmark_list_alternatives.py",
-    "test_hyperlinks_on_shell.py",
+    "scripts/benchmark_checks.py",
+    "scripts/benchmark_constants.py",
+    "scripts/benchmark_hashes.py",
+    "scripts/benchmark_linter.py",
+    "scripts/benchmark_list_alternatives.py",
+    "scripts/test_hyperlinks_on_shell.py",
 ]
 
 
 @pytest.mark.parametrize("file", scripts)
-def test_scripts(script_path: Path, file) -> None:
-    subprocess.check_call(f"python {script_path / file}", shell=True)
+def test_scripts(project_path: Path, file) -> None:
+    subprocess.check_call(f"python {project_path / file}", shell=True)
+
+
+
+examples = [
+    "examples/use_as_module.py",
+]
+
+@pytest.mark.parametrize("file", examples)
+def test_examples(project_path: Path, file) -> None:
+    subprocess.check_call(f"python {project_path / file}", shell=True)
