@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .config_paths import proselint_path
 from .logger import log
+from .tools import lint_path
 
 
 def score(check=None):
@@ -42,8 +43,7 @@ def score(check=None):
 
             # Run the linter.
             log.debug("Linting %s", file_md)
-            out = subprocess.check_output(["proselint", fullpath])  # noqa: S603, S607
-            # TODO: this can just call lint() ?!?
+            out = lint_path(file_md)
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"

@@ -30,7 +30,7 @@ def check_ly(text: str) -> list[ResultCheck]:
 
     items = [r"\s[^\s-]+ly-"]
 
-    return existence_check(text, items, err, msg, padding=Pd.disabled, offset=(1,0))
+    return existence_check(text, items, err, msg, padding=Pd.disabled, offset=(1, 0))
 
 
 def check(text: str) -> list[ResultCheck]:

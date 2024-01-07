@@ -160,7 +160,7 @@ class Pd(str, Enum):
     whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
 
-    sep_in_txt = r"[\W^]{}[\W$]" # prev. version r"(?:^|\W){}[\W$]"
+    sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
@@ -173,7 +173,7 @@ def consistency_check(
     word_pairs: list,
     err: str,
     msg: str,
-    offset: tuple[int] = (0,0),
+    offset: tuple[int] = (0, 0),
 ) -> list[ResultCheck]:
     """Build a consistency checker for the given word_pairs.
     Note: offset-usage corrects for pre-added padding-chars
@@ -209,7 +209,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    offset: tuple[int] = (0,0),
+    offset: tuple[int] = (0, 0),
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form.
     Note: offset-usage corrects for pre-added padding-chars
@@ -233,9 +233,6 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #       fast-string? or do padding already in checks
 
 
-
-
-
 def existence_check(  # noqa: PLR0913, PLR0917
     text: str,
     re_items: list,
@@ -243,7 +240,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     msg: str,
     ignore_case: bool = True,
     string: bool = False,  # todo: why not default on?
-    offset: tuple[int] = (0,0),
+    offset: tuple[int] = (0, 0),
     padding: Pd = Pd.sep_in_txt,
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
@@ -283,7 +280,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
 
 
 def simple_existence_check(
-    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0,0)
+    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0, 0)
 ):
     """Build a checker for single patters.
     in comparison to existence_check:

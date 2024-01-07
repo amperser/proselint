@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # TODO: experiment with overhead of these
 
     for _name, _val in options.items():
-        _cfg["parallelize"] = _val  # TODO: interface changed
+        _cfg["parallelize"] = _val
         memoizer.cache.clear()
         t1 = timeit(
             "e1 = proselint.tools.lint(_text, _cfg, _checks)",

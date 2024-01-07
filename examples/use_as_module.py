@@ -12,7 +12,6 @@ from pathlib import Path
 import proselint.tools as plt
 
 if __name__ == "__main__":
-
     # direct text input
     results = plt.lint("This sentence contains a clear as mud error")
 
