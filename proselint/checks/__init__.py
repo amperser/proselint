@@ -160,7 +160,8 @@ class Pd(str, Enum):
     whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
 
-    sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
+    #sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
+    sep_in_txt = r"(?:^|\W){}[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
