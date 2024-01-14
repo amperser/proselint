@@ -19,7 +19,7 @@ from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
 
-def disable_check(text: str) -> list[ResultCheck]:
+def disabled_check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "lexical_illusions.misc"
     msg = "There's a lexical illusion here: a word is repeated."
@@ -38,7 +38,7 @@ def disable_check(text: str) -> list[ResultCheck]:
 # TODO: test the checks below
 
 
-def check_tnt(text: str) -> list[ResultCheck]:
+def check_repetitions(text: str) -> list[ResultCheck]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
     err = "lexical_illusions.misc.tnt"

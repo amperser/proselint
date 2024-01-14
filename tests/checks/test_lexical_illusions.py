@@ -1,12 +1,13 @@
 """Tests for lexical_illusions.misc check."""
 
-from proselint.checks.lexical_illusions.misc import check
+from proselint.checks.lexical_illusions import misc
 from tests.conftest import assert_fail
 from tests.conftest import assert_pass
 
 
 def test():
     """Basic smoke test for lexical_illusions.misc."""
+    check = misc.check_repetitions
     assert_pass(check, "Smoke phrase with nothing flagged.")
     assert_fail(check, "Paris in the the springtime.")
     assert_pass(check, "And he's gone, gone with the breeze")

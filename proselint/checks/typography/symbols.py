@@ -103,5 +103,5 @@ def check_apostrophes(text: str) -> list[ResultCheck]:
     results = simple_existence_check(text, regex, err, msg)
 
     msg = "Use the same apostrophe consistently - {} vs {}"
-    results.extend(consistency_check(text, [r"\w+'s", r"\w+´s"], err, msg))
+    results.extend(consistency_check(text, [[r"\w+'s", r"\w+´s"]], err, msg))
     return results

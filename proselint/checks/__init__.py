@@ -164,14 +164,16 @@ def is_quoted(position: int, text: str) -> bool:
 # example new:  (?:^|\W)(w1|w2|w3)[\W$]
 # second one runs much more efficient
 class Pd(str, Enum):
-    disabled = r"({})"
+    disabled = r"{}"
     # choose for checks with custom regex
+    safe_join = r"({})"
+    # can be filled with w1|w2|w3|...
 
-    whitespace = r"\s({})\s"
+    whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
 
     # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
-    sep_in_txt = r"(?:^|\W)({})[\W$]"
+    sep_in_txt = r"(?:^|\W){}[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
@@ -226,7 +228,8 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    padding = Pd.sep_in_txt  # correct regex_offset=(1,-1) below
+    padding = Pd.sep_in_txt.value.format(Pd.safe_join.value)
+    # -> correct regex_offset=(1,-1) below
 
     return [
         (
@@ -247,7 +250,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 
 
 def preferred_forms_check2_pre(items: list) -> list:
-    padding = Pd.sep_in_txt
+    padding = Pd.sep_in_txt.value.format(Pd.safe_join.value)
     return [[item[0], padding.format("|".join(item[1]))] for item in items]
 
 
@@ -305,11 +308,15 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(t in excluded_topics for t in tps):
             return errors
 
-    if padding != Pd.disabled:
+    if padding not in (Pd.disabled, Pd.safe_join):
         # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
         offset = (offset[0] + 1, offset[1] - 1)
 
-    rx = padding.format("|".join(re_items))
+    if len(re_items) > 1:
+        re_items = Pd.safe_join.value.format("|".join(re_items))
+    else:
+        re_items = re_items[0]
+    rx = padding.format(re_items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         if any(re.search(exception, txt) for exception in exceptions):

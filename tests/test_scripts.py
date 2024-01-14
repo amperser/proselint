@@ -24,7 +24,7 @@ scripts = [
 
 @pytest.mark.parametrize("file", scripts)
 def test_scripts(project_path: Path, file) -> None:
-    subprocess.check_call(f"python {project_path / file}", shell=True)
+    subprocess.check_call(f"python3 {project_path / file}", shell=True)
 
 
 examples = [
@@ -34,4 +34,4 @@ examples = [
 
 @pytest.mark.parametrize("file", examples)
 def test_examples(project_path: Path, file) -> None:
-    subprocess.check_call(f"python {project_path / file}", shell=True)
+    subprocess.check_call(f"python3 {project_path / file}", shell=True)
