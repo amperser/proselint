@@ -92,6 +92,7 @@ proselint_base: dict = {
         "spelling.in_un": True,
         "spelling.misc": True,
         "spelling.ve_of": True,
+        "scientific.misc": True,
         "security.credit_card": True,
         "security.password": True,
         "sexism.misc": True,
