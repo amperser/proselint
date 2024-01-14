@@ -1,5 +1,131 @@
 # Change Log
 
+## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)
+
+### Biggest Changes
+
+- featureset of py38
+- cleaner and faster code
+- fixed bugs, undefined behavior, broken legacy code
+- some checks did not work as intended
+- multiprocessed parallelization and other optimizations
+
+### Benchmark-Comparison
+
+- custom set of files, same hardware
+
+#### Windows
+
+Proselint-main (uncached & cached)
+
+- Found 104 lint-warnings in 47.579 s
+- Found 104 lint-warnings in 0.878 s
+
+Proselint-modernized
+
+- Found 108 lint-warnings in 39.930 s (12 files, 617.45 kiByte) -> serialized
+- Found 108 lint-warnings in 13.164 s (12 files, 617.45 kiByte) -> serial files, parallel checks
+- Found 108 lint-warnings in 9.931 s (12 files, 617.45 kiByte)  -> global check-executor
+- Found 108 lint-warnings in 0.011 s (12 files, 617.45 kiByte)  -> cached
+
+#### Linux / WSL
+
+Proselint-main (uncached & cached)
+
+- Found 104 lint-warnings in 37.041 s
+- Found 104 lint-warnings in 0.771 s
+
+Proselint-modernized
+
+- Found 108 lint-warnings in 34.521 s (12 files, 617.45 kiByte)
+- Found 108 lint-warnings in 8.248 s (12 files, 617.45 kiByte)
+- Found 108 lint-warnings in 6.098 s (12 files, 617.45 kiByte)
+- Found 108 lint-warnings in 0.044 s (12 files, 617.45 kiByte)
+
+### Breaking changes
+
+- cli arg `--time` -> `--benchmark`, `-b`
+- cli arg `--debug` ->  `--verbose`, `-v`
+- exit code now returns number of errors
+- cli arg `--output-format` controls old flags json, compact
+- py >= 3.8
+- api-changes ->  web_scripts & plugins untested
+- config adjustments (1 test removed, 1 added)
+	- "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
+
+### Whats broken / untested
+
+- web_scripts 
+- plugins
+- Github action
+
+
+### Detailed Changelog
+
+- featureset of py38
+- use pathlib instead of string based paths
+- add type-hinting
+- replaced memoizer, short-comings:
+	- shelves have a good interface but are slow
+	- cache-init and -closing was a mess
+	- clearing cache resulted in broken states
+	- memoize-wrapper was wasting resources (hash of text recalc for every check, ..)
+	- age of cache-entries was not considered
+	- every cached fn had its own file-cache
+	- cache migration was done on every memoize-decoration
+- cache 
+	- hash test beforehand only once
+	- consider age of items
+	- memoize lint() instead of checks
+- fix bugs related to: 
+	- overshadowing builtin names (list, ...)
+	- string based path-traversal
+	- mix of relative and absolute paths (also relics that deleted file somewhere)
+	- varius small bugs (ie. missing comma in element lists)
+	- cache was not cleaned up by fn (as it should)
+- lots of modernization from old codebase
+	- latest python versions had trouble with proselint
+- update deps
+- reformat using black-style, done by ruff
+- linted codebase with ruff
+- add logger and refactor print-output
+	- linter informs about duration
+	- results include link to file
+	- inform about duration, files scanned and text-size
+- refactor unittest
+	- remove classes / boilerplate
+	- move tests for checks into separate dir
+	- more helpful error-messages
+	- remove duplicates
+	- repair broken tests
+	- lower complexity of tests (each test should only test for one thing)
+- add unittests
+    - detect missing check-flags in default-config
+	- find unavaible checks for default-config-flags
+	- don't fail on wrong config-flags
+	- check working cache, speed-test
+	- check working cache, same results
+- minimal changes to outer api
+- config
+	- correctness of default-config is tested
+	- don't fail on faulty config-flags
+- checks
+	- remove duplicates
+	- fix padding for checks using regex
+- existence_check() - join and padding -> cleared up
+	- join is always done
+	- padding can be selected py Enum, defaults to separate in text
+	- fix checks accordingly
+- put root-scripts into sep dir
+- exithandler for more graceful ctrl+c
+- ppm-wrapper is now more forgiving with small sample-sizes
+- add parallelization
+	- checks() are run multiprocessed
+	- one global executioner collects tasks for all files to analyze
+	- break up the slowest checks to balance the load
+- optimizations were done with profiling and benchmarking
+- overhaul controling output-format by cli
+
 ## [proselint@0.13.0](https://github.com/amperser/proselint/compare/0.12.0...0.13.0)
 
 ### Bug Fixes
