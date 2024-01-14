@@ -111,12 +111,10 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
     results_all = simple_existence_check(text, numerals_regex, err, msg, ignore_case=True)
     results_valid = []
     for (_start, _end, _err, _msg, _) in results_all:
+        # is it possible to bring that into the regex or check?
         _item: str = text[_start:_end].strip()
-        print(f"dissect {_item}")
-
         if len(_item) < 2 or _item.isupper(): # TODO: could be < 1
             continue
-        # or not _item.isalpha()
         if any(_letter in _item for _letter in "MDCLXVI"):
             results_valid.append((_start, _end, _err, _msg, _))
     return results_valid
