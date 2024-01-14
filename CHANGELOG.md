@@ -1,5 +1,32 @@
 # Change Log
 
+## [proselint@0.16.0](https://github.com/amperser/proselint/compare/0.15.0...0.16.0)
+
+- remove memoize-wrapper as it adds a level of complexity to a user-interface
+- lint() now only accepts string as input, lint_path() handles the previous options
+- fix broken offset-magic done in check_functions
+- further improve usability of result-processing functions
+- major speedup especially multicpu in windows x3.3, serial x2
+- new inside out regex-ing for less computational overhead
+  - example orig: `(?:^|\W)w1[\W$]|(?:^|\W)w2[\W$]|(?:^|\W)w3[\W$]`
+  - example new:  `(?:^|\W)(w1|w2|w3)[\W$]`
+
+```shell
+serial took 50196.394 ms -> run0
+serial took 53044.826 ms -> run1
+parallel took 15721.931 ms -> run0
+parallel took 15773.215 ms -> run1
+
+> lint_path(corpora)  	(NEW)
+serial took 31550.519 ms -> run0
+serial took 36539.587 ms -> run1
+parallel took 10411.408 ms -> run0
+parallel took 10132.006 ms -> run1
+```
+
+- add benchmark to compare lint(), lint_path() and proselint-executable
+
+
 ## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)
 
 ### Biggest Changes
@@ -55,7 +82,7 @@ Proselint-modernized
 
 ### Whats broken / untested
 
-- web_scripts 
+- web_scripts
 - plugins
 - Github action
 
@@ -73,11 +100,11 @@ Proselint-modernized
 	- age of cache-entries was not considered
 	- every cached fn had its own file-cache
 	- cache migration was done on every memoize-decoration
-- cache 
+- cache
 	- hash test beforehand only once
 	- consider age of items
 	- memoize lint() instead of checks
-- fix bugs related to: 
+- fix bugs related to:
 	- overshadowing builtin names (list, ...)
 	- string based path-traversal
 	- mix of relative and absolute paths (also relics that deleted file somewhere)
