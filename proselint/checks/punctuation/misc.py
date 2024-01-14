@@ -18,9 +18,9 @@ from proselint.checks import ResultCheck, simple_existence_check, Pd
 from proselint.checks import existence_check
 
 
-def check(text: str) -> list[ResultCheck]:
+def check_garner(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "misc.punctuation.garner"
+    err = "punctuation.misc.garner"
     msg = "Misplaced punctuation. It's 'et al.'"
 
     items = [
@@ -29,11 +29,12 @@ def check(text: str) -> list[ResultCheck]:
     ]
     return existence_check(text, items, err, msg)
 
+# TODO: test the checks below
 
 def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    err = "misc.punctuation.lower_case"
+    err = "punctuation.misc.lower_case"
     msg = "Is the lower case letter correct after the punctuation?"
     regex = "(\b[a-z]+[\.!\?]\s+[a-z]+\b)"
     exceptions = ["al.", "lat.", "vs."]  # en, TODO: add more
@@ -42,7 +43,7 @@ def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
 
 def check_comma_digits(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    err = "misc.punctuation.comma_digits"
+    err = "punctuation.misc.comma_digits"
     msg = "In English ',' is used as decimal separator."
     regex = Pd.sep_in_txt.value.format("(\d+,\d+)")
     return simple_existence_check(text, regex, err, msg)

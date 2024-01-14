@@ -1,6 +1,6 @@
-"""Tests for punctuation_spacing.misc check."""
+"""Tests for punctuation check."""
 
-from proselint.checks.punctuation_spacing.misc import check
+from proselint.checks.punctuation.spacing import check
 from tests.conftest import assert_fail
 from tests.conftest import assert_pass
 
