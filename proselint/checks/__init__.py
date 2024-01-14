@@ -153,15 +153,22 @@ def is_quoted(position: int, text: str) -> bool:
 
 
 # PADDINGS, add more if needed
+# Notes:
+# - () make it safe to put '|'.join(strings) inside (safe for str with whitespace)
+# NOTE: v0.16 turned join-format inside-out for less computation
+# example orig: (?:^|\W)wt[\W$]|(?:^|\W)wa[\W$]|(?:^|\W)dm[\W$]
+# example new:  (?:^|\W)(wt|wa|dm)[\W$]
+# second one runs much more efficient, BUT fails ATM
+# lexical illusion is the problem - but without that speed is doubled again
 class Pd(str, Enum):
-    disabled = r"{}"
+    disabled = r"({})"
     # choose for checks with custom regex
 
-    whitespace = r"\s{}\s"
+    whitespace = r"\s({})\s"
     # -> req whitespace around (no punctuation!)
 
-    #sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
-    sep_in_txt = r"(?:^|\W){}[\W$]"
+    # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
+    sep_in_txt = r"(?:^|\W)({})[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
@@ -216,7 +223,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    regex = Pd.sep_in_txt  # correct regex_offset=(1,-1) below
+    padding = Pd.sep_in_txt  # correct regex_offset=(1,-1) below
 
     return [
         (
@@ -228,18 +235,19 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
         )
         for item in items
         for m in re.finditer(
-            "|".join(regex.format(r) for r in item[1]), text, flags=flags
+            padding.format("|".join(item[1])), text, flags=flags
         )
     ]
     # TODO: can we speed up str.format() ?
     #       fast-string? or do padding already in checks -> see test below
     #       just optimizing the slowest test improved performance by 5%
+    #       alternative: checks just return config-data to use (can be pickled)
 
 
 def preferred_forms_check2_pre(items: list) -> list:
     padding = Pd.sep_in_txt
     return [
-        [item[0], "|".join(padding.format(_item) for _item in item[1])]
+        [item[0], padding.format("|".join(item[1]))]
         for item in items
     ]
 
@@ -302,7 +310,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
         # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
         offset = (offset[0] + 1, offset[1] - 1)
 
-    rx = "|".join(padding.format(_item) for _item in re_items)
+    rx = padding.format("|".join(re_items))
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
         if any(re.search(exception, txt) for exception in exceptions):
@@ -310,25 +318,26 @@ def existence_check(  # noqa: PLR0913, PLR0917
         errors.append(
             (m.start() + offset[0], m.end() + offset[1], err, msg.format(txt), None),
         )
-
+        # todo: group(1) offers word already without padding (when turned inside out)
     return errors
 
 
 def simple_existence_check(
-    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0, 0)
+    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0, 0), exceptions=(),
 ):
     """Build a checker for single patters.
     in comparison to existence_check:
         - does not work on lists
         - no padding
-        - excluded topics or exceptions
+        - excluded topics
 
         TODO: maybe add re.IGNORECASE as option, or just take flags
     """
 
     return [
-        (inst.start() + offset[0], inst.end() + offset[1], err, msg, None)
-        for inst in re.finditer(pattern, text)
+        (_m.start() + offset[0], _m.end() + offset[1], err, msg.format(_m.group(0)), None)
+        for _m in re.finditer(pattern, text)
+        if any(re.search(exception, _m.group(0)) for exception in exceptions)
     ]
 
 

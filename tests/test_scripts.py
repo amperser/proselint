@@ -27,10 +27,10 @@ def test_scripts(project_path: Path, file) -> None:
     subprocess.check_call(f"python {project_path / file}", shell=True)
 
 
-
 examples = [
     "examples/use_as_module.py",
 ]
+
 
 @pytest.mark.parametrize("file", examples)
 def test_examples(project_path: Path, file) -> None:

@@ -94,6 +94,7 @@ print("\n############# Benchmark all Checks ###################")
 result = {}
 for check in _checks:
     _name = f"{check.__module__}.{check.__name__}"
+    # print(f"Will now run: {_name}")
     result[_name] = timeit("_e = check(_text)", globals=locals(), number=10)
 
 result = dict(sorted(result.items(), key=lambda item: item[1]))
