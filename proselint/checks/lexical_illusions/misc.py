@@ -23,16 +23,17 @@ def disable_check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "lexical_illusions.misc"
     msg = "There's a lexical illusion here: a word is repeated."
-    item = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
+    regex = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
     exceptions = [r"^had had$", r"^that that$"]
     # TODO: could be removed, regex below finds more, except the unknown "\-" part
     return simple_existence_check(
         text,
-        item,
+        regex,
         err,
         msg,
         exceptions=exceptions,
     )
+
 
 # TODO: test the checks below
 
@@ -44,11 +45,11 @@ def check_tnt(text: str) -> list[ResultCheck]:
     msg = "There's a lexical illusion in '{}' - one or more words are repeated."
     # check for repetition of 1, 2, 3 or 4 words
     items = [
-        r"(((?<!\\)\b\w+)\s+\2\b)",  # ignores \EA EA
-        r"((\b\w+\s+\w+\b)\s+\2\b)",
-        r"((\b\w+\s+\w+\s+\w+\b)\s+\2\b)",
-        r"((\b\w+\s+\w+\s+\w+\s+\w+\b)\s+\2\b)",
-    ]
+        r"((?<!\\)\b\w+)\s+\1\b",  # ignores \EA EA
+        r"(\b\w+\s+\w+\b)\s+\1\b",
+        r"(\b\w+\s+\w+\s+\w+\b)\s+\1\b",
+        r"(\b\w+\s+\w+\s+\w+\s+\w+\b)\s+\1\b",
+    ]  # note: these can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
     results = []
     for item in items:

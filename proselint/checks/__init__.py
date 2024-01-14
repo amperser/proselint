@@ -239,6 +239,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #       fast-string? or do padding already in checks -> see test below
     #       just optimizing the slowest test improved performance by 5%
     #       alternative: checks just return config-data to use (can be pickled)
+    #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
 def preferred_forms_check2_pre(items: list) -> list:

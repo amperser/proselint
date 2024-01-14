@@ -6,6 +6,7 @@ from tests.conftest import assert_pass
 
 # TODO: there is more than garner now
 
+
 def test():
     """Basic smoke test for punctuation.misc.garner."""
     assert_pass(check, "Smoke phrase with nothing flagged.")

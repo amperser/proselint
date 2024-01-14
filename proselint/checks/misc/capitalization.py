@@ -14,8 +14,11 @@ Incorrect capitalization.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, existence_check, Pd, simple_existence_check
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
+from proselint.checks import simple_existence_check
 
 
 def check_terms(text: str) -> list[ResultCheck]:
@@ -87,12 +90,14 @@ def check_days(text: str) -> list[ResultCheck]:
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
+
 # TODO: test the checks below
+
 
 def check_roman_war(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.capitalization.roman_num.ww"
-    msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
+    msg = "Don't fail to capitalize roman numeral abbreviation in '{}'."
 
     numerals_regex = " (I(i*)|i*)"
 
@@ -108,13 +113,17 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
     err = "misc.capitalization.roman_num"
     msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
 
-    numerals_regex = Pd.sep_in_txt.value.format("M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})")
-    results_all = simple_existence_check(text, numerals_regex, err, msg, ignore_case=True)
+    numerals_regex = Pd.sep_in_txt.value.format(
+        r"M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})"
+    )
+    results_all = simple_existence_check(
+        text, numerals_regex, err, msg, ignore_case=True
+    )
     results_valid = []
-    for (_start, _end, _err, _msg, _) in results_all:
+    for _start, _end, _err, _msg, _ in results_all:
         # is it possible to bring that into the regex or check?
         _item: str = text[_start:_end].strip()
-        if len(_item) < 2 or _item.isupper(): # TODO: could be < 1
+        if len(_item) < 2 or _item.isupper():  # TODO: could be < 1
             continue
         if any(_letter in _item for _letter in "MDCLXVI"):
             results_valid.append((_start, _end, _err, _msg, _))
