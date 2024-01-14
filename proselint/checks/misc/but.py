@@ -5,7 +5,7 @@ layout:     post
 source:     Justin Jungé
 source_url:
 title:      paragraph-start-with-but
-date:       2016-03-10 12:31:19
+date:       2016-03-10
 categories: writing
 ---
 

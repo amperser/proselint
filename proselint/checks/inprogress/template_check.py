@@ -5,7 +5,7 @@ layout:     post
 source:     Nobody
 source_url: ???
 title:      First line is always wrong.
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
