@@ -21,7 +21,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.false_plurals"
+    err = "misc.plurals.misc"
     msg = "The plural is {}"
 
     preferences = [
@@ -34,7 +34,7 @@ def check(text: str) -> list[ResultCheck]:
 
 def check_kudos(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "misc.false_plurals.kudos"
+    err = "misc.plurals.kudos"
     msg = "Kudos is singular."
 
     return existence_check(text, ["many kudos"], err, msg)
