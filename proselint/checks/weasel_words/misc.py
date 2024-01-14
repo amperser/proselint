@@ -14,12 +14,8 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
+from proselint.checks import ResultCheck
 from proselint.checks import existence_check
-
-if TYPE_CHECKING:
-    from proselint.checks import ResultCheck
 
 
 def check(text: str) -> list[ResultCheck]:

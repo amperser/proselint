@@ -31,8 +31,10 @@ def check_num_unit(text: str) -> list[ResultCheck]:
     # TODO: add more than the SI-Units: N,
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "scientific.misc.num_unit"
-    msg = ("In scientific writings there is a whitespace between number and its unit, "
-           "here '{}'.")
+    msg = (
+        "In scientific writings there is a whitespace between number and its unit, "
+        "here '{}'."
+    )
     regex = Pd.sep_in_txt.value.format(
         r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n)"
     )
@@ -87,8 +89,10 @@ def check_avoid_misc(text: str) -> list[ResultCheck]:
 def check_preferred(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.preference"
-    msg = ("In scientific writing some terms are less preferred or wrong, "
-           "here '{}' -> use '{}' instead")
+    msg = (
+        "In scientific writing some terms are less preferred or wrong, "
+        "here '{}' -> use '{}' instead"
+    )
     items = [
         ["not significant", ["insignificant"]],
         ["although", ["though"]],

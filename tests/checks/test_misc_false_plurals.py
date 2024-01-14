@@ -1,8 +1,9 @@
 """Tests for misc.false_plurals check."""
 
+from proselint.checks.misc import plurals
 from tests.conftest import assert_fail
 from tests.conftest import assert_pass
-from proselint.checks.misc import plurals
+
 
 def test_misc():
     """Basic smoke test for misc.false_plurals."""

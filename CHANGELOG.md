@@ -12,6 +12,7 @@
   - example new:  `(?:^|\W)(w1|w2|w3)[\W$]`
 
 ```shell
+> lint_path(corpora)   OLD
 serial took 50196.394 ms -> run0
 serial took 53044.826 ms -> run1
 parallel took 15721.931 ms -> run0
@@ -25,7 +26,21 @@ parallel took 10132.006 ms -> run1
 ```
 
 - add benchmark to compare lint(), lint_path() and proselint-executable
-
+- fix and improve naming of checks (files, dirs and inside checks)
+- add pre-commit tests-suite
+- extend and activate check for roman numerals
+- extend check for lexical illusions (now 1-4 words)
+- add check for lower case word at the beginning of new sentence
+- add check for comma between digits
+- add check for repeated beginning word of consecutive sentences (monotonic)
+- add check for no whitespace between numbers and its unit (scientific)
+- add check for whitespace before punctuation
+- add scientific-checks, ported from TNT https://github.com/entorb/typonuketool and other sources
+- add check for unmatched braces (), [], {}
+- add check for consistence of apostrophes
+- fix checks for punctuation
+- add check for digits at the beginning of sentence, and single digits
+- improve various checks - mostly reduction of computational overhead of regexes
 
 ## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)
 

@@ -22,7 +22,10 @@ from proselint.checks import simple_existence_check
 def check_sentence(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""
     err = "misc.monotonic.sentence"
-    msg = "It is bad style to open sentences with the same word, here '{}'."
+    msg = (
+        "It is bad style to open consecutive sentences with the same word, "
+        "here '{}'."
+    )
 
     regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
     # matches identical words starting uppercase after either newline or .!?
