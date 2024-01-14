@@ -5,7 +5,7 @@ layout:     post
 source:     write-good
 source_url: https://github.com/btford/write-good
 title:      Lexical illusion present
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

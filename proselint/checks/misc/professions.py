@@ -5,7 +5,7 @@ layout:     post
 source:
 source_url:
 title:      Professions
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

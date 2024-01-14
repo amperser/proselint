@@ -5,7 +5,7 @@ layout:     post
 source:     Fowler's Modern English Usage
 source_url: bit.ly/1YBG8QJ
 title:      Waxed lyrical
-date:       2016-03-10 14:48:42
+date:       2016-03-10
 categories: writing
 ---
 

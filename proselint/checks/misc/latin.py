@@ -5,7 +5,7 @@ layout:     post
 source:     The sense of style
 source_url: http://amzn.to/1EOUZ5g
 title:      back-formations
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

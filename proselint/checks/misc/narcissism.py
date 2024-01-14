@@ -5,7 +5,7 @@ layout:     post
 source:     Pinker's book on writing
 source_url: ???
 title:      professional narcissism
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

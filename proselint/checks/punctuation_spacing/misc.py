@@ -5,7 +5,7 @@ layout:     post
 source:     puntuation_spacing.
 source_url: https://style.mla.org/colons-how-to-use-them/
 title:      Checks for acceptable spacing around punctuation.
-date:       2023-04-12 12:31:19
+date:       2023-04-12
 categories: writing
 ---
 

@@ -5,7 +5,7 @@ layout:     post
 source:     David Foster Wallace
 source_url: http://www.telegraph.co.uk/a/9715551
 title:      Comparing an uncomparable
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

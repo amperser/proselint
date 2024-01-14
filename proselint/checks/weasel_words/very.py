@@ -5,7 +5,7 @@ layout:     post
 source:     William Allen White
 source_url: http://bit.ly/1XaMllw
 title:      very
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

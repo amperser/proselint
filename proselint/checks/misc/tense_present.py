@@ -5,7 +5,7 @@ layout:     post
 source:     DFW's Tense Present
 source_url: http://bit.ly/1c85lgR
 title:      Tense present
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

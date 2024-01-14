@@ -4,8 +4,8 @@
 layout:     post
 source:     The Wall Street Journal
 source_url: http://on.wsj.com/1rksm8k
-title:      misspellings
-date:       2014-06-10 12:31:19
+title:      misspellings of athletes
+date:       2014-06-10
 categories: writing
 ---
 

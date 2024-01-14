@@ -5,7 +5,7 @@ layout:     post
 source:     George Carlin
 source_url: https://youtu.be/kyBH5oNQOS0
 title:      filthy words
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

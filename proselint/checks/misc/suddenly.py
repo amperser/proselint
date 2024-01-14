@@ -5,7 +5,7 @@ layout:     post
 source:     Reference for Writers
 source_url: http://bit.ly/1E94vyD
 title:      suddenly
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

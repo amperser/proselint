@@ -5,7 +5,7 @@ layout:     post
 source:     Scott O. Lilienfeld, et al.
 source_url: http://dx.doi.org/10.3389/fpsyg.2015.01100
 title:      psychological and psychiatric terms to avoid
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

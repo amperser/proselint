@@ -5,7 +5,7 @@ layout:     post
 source:     Intelligent Editing Ltd.
 source_url: http://bit.ly/1x3hYj7
 title:      Inconsistent spelling
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

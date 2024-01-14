@@ -5,7 +5,7 @@ layout:     post
 source:     Travis Bradberry for Inc.com
 source_url: http://bit.ly/1IxWnto
 title:      corporate speak
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

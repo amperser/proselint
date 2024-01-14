@@ -5,7 +5,7 @@ layout:     post
 source:     Institution's webpage
 source_url: http://bit.ly/2en1zbv,
 title:      Institution Name
-date:       2016-11-16 11:46:19
+date:       2016-11-16
 categories: writing
 ---
 

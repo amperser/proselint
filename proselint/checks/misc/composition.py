@@ -5,7 +5,7 @@ layout:     post
 source:     Strunk & White
 source_url: ???
 title:      Elementary Principles of Composition
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

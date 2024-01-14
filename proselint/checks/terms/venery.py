@@ -5,7 +5,7 @@ layout:     post
 source:     Oxford Dictionaries
 source_url: http://www.oxforddictionaries.com/words/what-do-you-call-a-group-of
 title:      Names for groups of animals
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

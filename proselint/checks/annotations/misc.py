@@ -4,8 +4,8 @@
 layout:     post
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
-title:      archaism
-date:       2014-06-10 12:31:19
+title:      annotations
+date:       2014-06-10
 categories: writing
 ---
 

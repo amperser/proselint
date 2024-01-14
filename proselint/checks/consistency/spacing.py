@@ -5,7 +5,7 @@ layout:     post
 source:     Consistency.
 source_url: ???
 title:      Mixed use of 1 vs. 2 spaces after a period.
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 

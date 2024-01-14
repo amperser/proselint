@@ -4,8 +4,8 @@
 layout:     post
 source:     ???
 source_url: ???
-title:      yelling
-date:       2014-06-10 12:31:19
+title:      pretension
+date:       2014-06-10
 categories: writing
 ---
 

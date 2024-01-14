@@ -5,7 +5,7 @@ layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Not guilty beyond a reasonable doubt.
-date:       2016-03-09 15:50:31
+date:       2016-03-09
 categories: writing
 ---
 
