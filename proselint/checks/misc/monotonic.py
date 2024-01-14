@@ -25,6 +25,9 @@ def check_sentence(text: str) -> list[ResultCheck]:
     msg = "It is bad style to open sentences with the same word, here '{}'."
 
     regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
-    # explanation: matches identical words starting uppercase after either newline or .!?
+    # matches identical words starting uppercase after either newline or .!?
     # note: can't be padded without mod -> because of \2
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
+
+
+# TODO: same line-beginning
