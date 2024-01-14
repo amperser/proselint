@@ -321,6 +321,7 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     pattern: str,
     err: str,
     msg: str,
+    ignore_case: bool = True,
     offset: tuple[int] = (0, 0),
     exceptions=(),
 ):
@@ -330,9 +331,10 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
         - no padding
         - excluded topics
 
-        TODO: maybe add re.IGNORECASE as option, or just take flags
     """
-
+    flags = 0
+    if ignore_case:
+        flags |= re.IGNORECASE
     return [
         (
             _m.start() + offset[0],
@@ -341,7 +343,7 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
             msg.format(_m.group(0)),
             None,
         )
-        for _m in re.finditer(pattern, text)
+        for _m in re.finditer(pattern, text, flags=flags)
         if any(re.search(exception, _m.group(0)) for exception in exceptions)
     ]
 
@@ -383,6 +385,32 @@ def context(text, position, level="paragraph"):
         pass
 
     return ""
+
+
+###############################################################################
+# Experimental ################################################################
+###############################################################################
+
+
+def detect_language(text: str) -> str:
+    # TODO: add language to text.metadata, some checks are independent from language
+    lang_regex = {
+        # latin script, sorted by number of native speakers
+        # https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers
+        "es": Pd.sep_in_txt.format("y|es|la|el"),
+        "en": Pd.sep_in_txt.format("and|is|the"),
+        "pt": Pd.sep_in_txt.format("e|é|o|a"),
+        "fr": Pd.sep_in_txt.format("et|est|la|le"),
+        "de": Pd.sep_in_txt.format("und|ist|der|die|das"),
+    }
+    count_max = 0
+    lang_max = "en"
+    for _lang, _regex in lang_regex.items():
+        _count = len(re.findall(_regex, text))
+        if _count > count_max:
+            lang_max = _lang
+            count_max = _count
+    return lang_max
 
 
 ###############################################################################
