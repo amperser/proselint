@@ -16,6 +16,7 @@ from __future__ import annotations
 from proselint.checks import ResultCheck, simple_existence_check
 from proselint.checks import existence_check
 
+# TODO: test the checks below
 
 def check_sentence(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""

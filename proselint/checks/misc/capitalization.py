@@ -87,6 +87,7 @@ def check_days(text: str) -> list[ResultCheck]:
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
+# TODO: test the checks below
 
 def check_roman_war(text: str) -> list[ResultCheck]:
     """Check the text."""

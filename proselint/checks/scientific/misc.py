@@ -17,6 +17,7 @@ from __future__ import annotations
 from proselint.checks import ResultCheck, simple_existence_check, Pd
 from proselint.checks import existence_check
 
+# TODO: test the checks below
 
 def check_num_unit(text: str) -> list[ResultCheck]:
     """Check numbers"""

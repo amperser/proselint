@@ -34,6 +34,8 @@ def disable_check(text: str) -> list[ResultCheck]:
         exceptions=exceptions,
     )
 
+# TODO: test the checks below
+
 
 def check_tnt(text: str) -> list[ResultCheck]:
     """Check the text."""
