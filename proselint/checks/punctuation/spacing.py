@@ -19,50 +19,40 @@ from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
 
-def check(text: str) -> list[ResultCheck]:
-    """Combine the above tests into one -
-    these are quick and should be load-balanced
-    """
-
-    results: list[ResultCheck] = []
-    results.extend(find_end_punctuation_spacing(text))
-    results.extend(find_general_spacing(text))
-    results.extend(find_comma_spacing(text))
-    return results
-
-
-def find_end_punctuation_spacing(text: str) -> list[ResultCheck]:
+def check_end_punctuation_spacing(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "punctuationspacing.end_punctuation"
-    msg = "Unacceptable number of spaces behind ! or ? (must be 1 or 2)."
-
-    pattern = r"[?!]\s{2,} |[?!](?!\s|$)"
-
+    err = "punctuation.spacing.end_punctuation"
+    msg = "Unacceptable number of spaces behind ! or ? (should be 1)."
+    pattern = r"[a-z][\?!][ ]{2,}"
     return simple_existence_check(text, pattern, err, msg)
 
 
-# checks for acceptable behind ,";: which should be no more or less than 1
-def find_general_spacing(text: str) -> list[ResultCheck]:
-    """Check the text."""
-    err = "punctuation.whitespace"
-    msg = '"Unacceptable number of spaces behind ";: (must be 1)."'
-
-    pattern = r'[;:"]\s{1,} |[;:](;:\s|$])'
-
+def check_general_spacing(text: str) -> list[ResultCheck]:
+    """Checks for acceptable behind >>> , " ; : ' <<<  which should be no more than 1."""
+    # comma is slightly more complex, consider the number 1,000
+    # note: this can be faulty - the previous implementation was far off / defective
+    err = "punctuation.spacing.separators"
+    msg = 'Unacceptable number of spaces behind ";: (must be 1 or less).'
+    pattern = r"""[,;:\"'][ ]{2,}"""
     return simple_existence_check(text, pattern, err, msg)
 
 
-# comma is slightly more complex, consider the number 1,000
-def find_comma_spacing(text: str) -> list[ResultCheck]:
+# Todo: test new checks below
+
+
+def check_whitespace_before(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "punctuation.comma"
-    msg = (
-        "Unacceptable number of spaces behind "
-        "(must be 1) except when used in numbers."
-    )
+    err = "punctuation.whitespace_before"
+    msg = "Unacceptable whitespace before punctuation"
+    pattern = r"[a-z]+\s[\.!\?]"
+    return simple_existence_check(text, pattern, err, msg)
 
-    pattern = r';:"]\s{2,} |[;:](;:\s|$])'
 
+def check_whitespace_inbetween(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "punctuation.whitespace_inbetween"
+    msg = "Multiple spaces, that would be ugly in Word or LibreOffice."
+    pattern = r"\b  +\b"
     return simple_existence_check(text, pattern, err, msg)
 
 
