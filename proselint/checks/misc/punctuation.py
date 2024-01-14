@@ -20,7 +20,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "garner.punctuation"
+    err = "misc.punctuation.garner"
     msg = "Misplaced punctuation. It's 'et al.'"
 
     items = [

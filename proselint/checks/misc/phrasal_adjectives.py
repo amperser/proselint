@@ -22,7 +22,7 @@ from proselint.checks import preferred_forms_check
 
 def check_ly(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "garner.phrasal_adjectives.ly"
+    err = "misc.phrasal_adjectives.garner.ly"
     msg = (
         "No hyphen is necessary in phrasal adjectives with an adverb "
         "ending in -ly, unless the -ly adverb is part of a longer phrase"
@@ -35,7 +35,7 @@ def check_ly(text: str) -> list[ResultCheck]:
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "garner.phrasal_adjectives.examples"
+    err = "misc.phrasal_adjectives.garner"
     msg = "Hyphenate '{1}', a phrasal adjective, as '{0}'."
 
     items = [

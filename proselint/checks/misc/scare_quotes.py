@@ -20,7 +20,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "pinker.scare_quotes"
+    err = "misc.scare_quotes.pinker"
     msg = "Misuse of 'scare quotes'. Delete them."
 
     items = [

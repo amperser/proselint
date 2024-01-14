@@ -25,7 +25,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    error_code = "example.first"
+    error_code = "inprogress.template"
     msg = "First line always has an error."
 
     items = ["first line"]

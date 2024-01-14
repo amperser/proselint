@@ -145,7 +145,7 @@ def check_atd_1(text: str) -> list[ResultCheck]:
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
     """
-    err = "after_the_deadline.redundancy"
+    err = "redundancy.after_the_deadline"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -343,7 +343,7 @@ def check_atd_2(text: str) -> list[ResultCheck]:
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
     """
-    err = "after_the_deadline.redundancy"
+    err = "redundancy.after_the_deadline"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [

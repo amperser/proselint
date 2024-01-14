@@ -22,7 +22,7 @@ from proselint.checks import limit_results
 @limit_results(1)
 def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "leonard.hell"
+    err = "cliches.hell"
     msg = "Never use the words 'all hell broke loose'."
 
     items = ["all hell broke loose"]

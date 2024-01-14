@@ -22,7 +22,7 @@ from proselint.checks import limit_results
 @limit_results(1)
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "ogilvy.pretension"
+    err = "misc.pretension.ogilvy"
     msg = "Jargon words like this one are the hallmarks of a pretentious ass."
 
     items = [

@@ -25,7 +25,7 @@ def check(text: str) -> list[ResultCheck]:
     if not any(re.finditer("group|bunch", text, flags=re.IGNORECASE)):
         return []
 
-    err = "oxford.venery_terms"
+    err = "terms.venery.oxford"
     msg = "The venery term is '{}'."
 
     term_list = [

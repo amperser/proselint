@@ -69,6 +69,7 @@ def load_options(
     config_file_path: Optional[Path] = None,
 ) -> dict:
     """Read various proselintrc files, allowing user overrides."""
+    # TODO: allow toml - json is a pain for user-configs
     cfg_default = config_base.proselint_base
 
     # global config will be a base for

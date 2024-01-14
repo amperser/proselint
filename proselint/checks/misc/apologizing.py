@@ -20,7 +20,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "pinker.apologizing"
+    err = "misc.apologizing.pinker"
     msg = "Excessive apologizing."
 
     narcissism = [

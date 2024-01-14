@@ -23,7 +23,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "MSC104"
+    err = "capitalization.roman_num"
     msg = "Don't fail to capitalize roman numeral abbreviations."
 
     numerals_regex = " (I(i*)|i*)"

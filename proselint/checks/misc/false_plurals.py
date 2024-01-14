@@ -21,7 +21,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.false_plurals.examples"
+    err = "misc.false_plurals"
     msg = "The plural is {}"
 
     preferences = [

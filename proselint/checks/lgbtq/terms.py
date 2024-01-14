@@ -22,7 +22,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest preferred forms given the reference document."""
-    err = "glaad.terms"
+    err = "lgbtq.terms.glaad"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
 
     items = [

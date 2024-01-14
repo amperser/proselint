@@ -24,7 +24,7 @@ def check_vtech(text: str) -> list[ResultCheck]:
     source: Virginia Tech Division of Student Affairs
     source_url: http://bit.ly/2en1zbv
     """
-    err = "institution.vtech"
+    err = "misc.institution.vtech"
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
     institution = [

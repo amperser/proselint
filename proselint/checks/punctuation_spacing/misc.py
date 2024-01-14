@@ -44,7 +44,7 @@ def find_end_punctuation_spacing(text: str) -> list[ResultCheck]:
 # checks for acceptable behind ,";: which should be no more or less than 1
 def find_general_spacing(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "punctuation_spacing.misc.general"
+    err = "punctuation_spacing.misc.spacing"
     msg = '"Unacceptable number of spaces behind ";: (must be 1)."'
 
     pattern = r'[;:"]\s{1,} |[;:](;:\s|$])'

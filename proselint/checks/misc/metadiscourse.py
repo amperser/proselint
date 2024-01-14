@@ -20,7 +20,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "pinker.metadiscourse"
+    err = "misc.metadiscourse.pinker"
     msg = "Excessive metadiscourse."
 
     metadiscourse = [

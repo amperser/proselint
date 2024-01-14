@@ -21,7 +21,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "hyperbolic.misc"
+    err = "hyperbole.misc"
     msg = "'{}' is hyperbolic."
 
     words = [

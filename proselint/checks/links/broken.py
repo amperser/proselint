@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "links.valid"
+    err = "links.broken"
     msg = "Broken link: {}"
 
     regex = re.compile(

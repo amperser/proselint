@@ -22,7 +22,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Flag offensive words based on the GLAAD reference guide."""
-    err = "glaad.offensive_terms"
+    err = "lgbtq.offensive_terms.glaad"
     msg = "Offensive term. Remove it or consider the context."
 
     items = [

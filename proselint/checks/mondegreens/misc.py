@@ -20,7 +20,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.mondegreens"
+    err = "mondegreens.misc"
     msg = "'{}' is the preferred form."
 
     items = [

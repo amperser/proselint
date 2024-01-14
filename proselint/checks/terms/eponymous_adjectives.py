@@ -20,7 +20,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "garner.eponymous_adjective"
+    err = "terms.eponymous_adjective.garner"
     msg = "'{}' is the preferred eponymous adjective."
 
     preferences = [

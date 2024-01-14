@@ -36,7 +36,7 @@ def check_misc(text: str) -> list[ResultCheck]:
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
     """
-    err = "mixed_metaphors.misc.misc"
+    err = "mixed_metaphors.misc"
     msg = "Mixed metaphor. Try '{}'."
 
     preferences = [

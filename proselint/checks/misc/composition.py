@@ -53,7 +53,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "strunk_white.composition"
+    err = "misc.composition.strunk_white"
     msg = "Try '{}' instead of '{}'."
 
     bad_forms = [

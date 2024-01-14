@@ -40,7 +40,7 @@ from proselint.checks import existence_check
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    err = "strunk_white.greylist"
+    err = "misc.greylist.strunk_white"
     msg = "Use of '{}'. {}"
 
     bad_words = {

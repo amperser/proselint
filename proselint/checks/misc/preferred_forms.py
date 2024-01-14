@@ -20,7 +20,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "garner.preferred_forms"
+    err = "misc.preferred_forms.garner"
     msg = "'{}' is the preferred form."
 
     preferences = [

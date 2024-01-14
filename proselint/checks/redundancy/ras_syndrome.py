@@ -8,7 +8,7 @@ from proselint.checks import preferred_forms_check
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "garner.redundancy.ras"
+    err = "redundancy.ras.garner"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -24,6 +24,7 @@ def check(text: str) -> list[ResultCheck]:
         ["HIV", ["HIV virus"]],
         ["ISBN", ["ISBN number"]],
         ["LCD", ["LCD display"]],
+        ["LED", ["LED diode"]],
         ["PDF", ["PDF format"]],
         ["PIN", ["PIN number"]],
         ["RAS", ["RAS syndrome"]],
