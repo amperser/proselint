@@ -25,7 +25,7 @@ def disable_check(text: str) -> list[ResultCheck]:
     msg = "There's a lexical illusion here: a word is repeated."
     item = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
     exceptions = [r"^had had$", r"^that that$"]
-    # TODO: could be removed, regex below finds more, except the unexplained "\-" part
+    # TODO: could be removed, regex below finds more, except the unknown "\-" part
     return simple_existence_check(
         text,
         item,
@@ -39,7 +39,7 @@ def check_tnt(text: str) -> list[ResultCheck]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
     err = "lexical_illusions.misc.tnt"
-    msg = "There's a lexical illusion here: one or more words are repeated."
+    msg = "There's a lexical illusion in '{}' - one or more words are repeated."
     # check for repetition of 1, 2, 3 or 4 words
     items = [
         r"(((?<!\\)\b\w+)\s+\2\b)",  # ignores \EA EA

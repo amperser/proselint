@@ -191,3 +191,14 @@ more research is needed
 The rest of this article argues that, to a certain degree
 in recent years, an increasing number of psychologists have
 mutatis mutandis
+
+# Lexical Illusion
+
+The text is is about some new
+new check that can find even multiple
+find even multiple words.
+
+# Capitalization
+
+A term like World War i is to be corrected.
+Same for other roman numerals like Iv or MCii.

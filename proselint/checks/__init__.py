@@ -322,7 +322,6 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    offset: tuple[int] = (0, 0),
     exceptions=(),
 ):
     """Build a checker for single patters.
@@ -330,6 +329,7 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
         - does not work on lists
         - no padding
         - excluded topics
+        - offset
 
     """
     flags = 0
@@ -337,14 +337,14 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
         flags |= re.IGNORECASE
     return [
         (
-            _m.start() + offset[0],
-            _m.end() + offset[1],
+            _m.start(),
+            _m.end(),
             err,
-            msg.format(_m.group(0)),
+            msg.format(_m.group(0).strip()),
             None,
         )
         for _m in re.finditer(pattern, text, flags=flags)
-        if any(re.search(exception, _m.group(0)) for exception in exceptions)
+        if not any(re.search(exception, _m.group(0)) for exception in exceptions)
     ]
 
 
