@@ -18,9 +18,9 @@ from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
 
-def check(text: str) -> list[ResultCheck]:
+def check_terms(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.capitalization"
+    err = "misc.capitalization.terms"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
     items = [
@@ -35,7 +35,7 @@ def check(text: str) -> list[ResultCheck]:
 
 def check_seasons(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.seasons"
     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
     items = [
         ["winter", ["Winter"]],
@@ -49,7 +49,7 @@ def check_seasons(text: str) -> list[ResultCheck]:
 
 def check_months(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.months"
     msg = "Months should be capitalized. '{}' is the preferred form."
 
     items = [
@@ -72,7 +72,7 @@ def check_months(text: str) -> list[ResultCheck]:
 
 def check_days(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.days"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
     items = [
