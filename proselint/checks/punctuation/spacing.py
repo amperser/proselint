@@ -28,7 +28,10 @@ def check_end_punctuation_spacing(text: str) -> list[ResultCheck]:
 
 
 def check_general_spacing(text: str) -> list[ResultCheck]:
-    """Checks for acceptable behind >>> , " ; : ' <<<  which should be no more than 1."""
+    """Checks for acceptable space behind
+        , " ; : '
+        which should be no more than 1.
+    """
     # comma is slightly more complex, consider the number 1,000
     # note: this can be faulty - the previous implementation was far off / defective
     err = "punctuation.spacing.separators"

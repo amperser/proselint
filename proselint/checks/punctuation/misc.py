@@ -42,7 +42,8 @@ def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
     msg = "Is the lower case letter correct after the punctuation?"
     regex = r"\b[a-z]+[\.!\?]\s+[a-z]+\b"
     exceptions = ["al.", "lat.", "vs.", "etc.", "Prof.", "Dr."]  # en, TODO: add more
-    # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.", "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
+    # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
+    #                   "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
     return simple_existence_check(
         text, regex, err, msg, ignore_case=False, exceptions=exceptions
     )

@@ -155,6 +155,10 @@ def is_quoted(position: int, text: str) -> bool:
 # PADDINGS, add more if needed
 # Notes:
 # - () make it safe to put '|'.join(strings) inside (safe for str with whitespace)
+# - TODO: if data is precompiled and
+#           - len(strings)==0 -> skip
+#           - len(strings)==1 -> pad.format("string")
+#           - len(strings)>1 -> pad.format("(" + "|".join(strings) + ")")
 # NOTE: v0.16 turned join-format inside-out for less computation
 # example orig: (?:^|\W)w1[\W$]|(?:^|\W)w2[\W$]|(?:^|\W)w3[\W$]
 # example new:  (?:^|\W)(w1|w2|w3)[\W$]

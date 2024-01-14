@@ -6,10 +6,12 @@ source_url: http://practicaltypography.com/
 
 from __future__ import annotations
 
-from proselint.checks import Pd, simple_existence_check, consistency_check
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
+from proselint.checks import consistency_check
 from proselint.checks import existence_check
 from proselint.checks import limit_results
+from proselint.checks import simple_existence_check
 
 
 @limit_results(3)
@@ -21,6 +23,7 @@ def check_ellipsis(_text: str) -> list[ResultCheck]:
 
     return existence_check(_text, items, err, msg, padding=Pd.disabled)
 
+
 @limit_results(1)
 def check_copyright_symbol(_text: str) -> list[ResultCheck]:
     """Use the copyright symbol instead of (c)."""
@@ -29,6 +32,7 @@ def check_copyright_symbol(_text: str) -> list[ResultCheck]:
     regex = r"\([cC]\)"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
+
 
 @limit_results(3)
 def check_trademark_symbol(_text: str) -> list[ResultCheck]:
@@ -39,6 +43,7 @@ def check_trademark_symbol(_text: str) -> list[ResultCheck]:
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
+
 @limit_results(3)
 def check_registered_trademark_symbol(_text: str) -> list[ResultCheck]:
     """Use the registered trademark symbol instead of (R)."""
@@ -47,6 +52,7 @@ def check_registered_trademark_symbol(_text: str) -> list[ResultCheck]:
     regex = r"\([rR]\)"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
+
 
 @limit_results(3)
 def check_sentence_spacing(_text: str) -> list[ResultCheck]:
@@ -57,6 +63,7 @@ def check_sentence_spacing(_text: str) -> list[ResultCheck]:
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
+
 @limit_results(3)
 def check_multiplication_symbol(_text: str) -> list[ResultCheck]:
     """Use the multiplication symbol ×, not the lowercase letter x."""
@@ -65,6 +72,7 @@ def check_multiplication_symbol(_text: str) -> list[ResultCheck]:
     regex = r"[0-9]+ ?x ?[0-9]+"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
+
 
 @limit_results(3)
 def check_curly_quotes(_text: str) -> list[ResultCheck]:
@@ -75,22 +83,25 @@ def check_curly_quotes(_text: str) -> list[ResultCheck]:
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
+
 def disabled_check_en_dash_separated_names(text: str) -> list[ResultCheck]:
     """Use an en-dash to separate names."""
     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
     #     u"Use an en dash (–) to separate names."],
     return []  # TODO
 
+
 # TODO: test new checks below
+
 
 def check_apostrophes(text: str) -> list[ResultCheck]:
     """use the correct one"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
     err = "typography.symbols.apostrophes"
     msg = "Use the correct apostrophe - 's is preferred - ´s is ok"
-    regex = "\w+`s"
+    regex = r"\w+`s"
     results = simple_existence_check(text, regex, err, msg)
 
     msg = "Use the same apostrophe consistently - {} vs {}"
-    results.extend(consistency_check(text, ["\w+'s", "\w+´s"], err, msg))
+    results.extend(consistency_check(text, [r"\w+'s", r"\w+´s"], err, msg))
     return results
