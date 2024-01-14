@@ -15,7 +15,6 @@ and this happens most often between line breaks.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 

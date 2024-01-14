@@ -9,7 +9,7 @@ learnings:
     - TODO: find faster alternative to click
 """
 
-import subprocess
+import subprocess  # noqa: S404
 from pathlib import Path
 from timeit import timeit
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     print("\n############# proselint(demo.md) - parallel")
 
-    cmds =  {
+    cmds = {
         "parallel": ["proselint", file_path.as_posix(), "-o", "compact"],
         "parallel-cached": ["proselint", file_path.as_posix(), "-o", "compact"],
     }
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     # test
     subprocess.call(
-        cmds["parallel"],  # noqa: S607
+        cmds["parallel"],
         timeout=4,
         shell=False,  # noqa: S603
         stdout=subprocess.DEVNULL,
@@ -94,7 +94,6 @@ if __name__ == "__main__":
             number=1,
         )
         print(f"{_name} took {t1 * 1e3:4.3f} ms")
-
 
     print("\n############# lint_path(corpora)")
 
@@ -112,7 +111,7 @@ if __name__ == "__main__":
 
     print("\n############# proselint ./corpora")
 
-    cmds =  {
+    cmds = {
         "parallel": ["proselint", corp_path.as_posix(), "-o", "compact"],
         "parallel-cached": ["proselint", corp_path.as_posix(), "-o", "compact"],
     }

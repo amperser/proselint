@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import contextlib
 import hashlib
-import pickle
+import pickle  # noqa: S403
 import shutil
+from datetime import UTC
 from datetime import datetime
 from datetime import timedelta
 from typing import TYPE_CHECKING
@@ -37,7 +38,7 @@ class Cache:
     def __init__(self) -> None:
         self._data: dict[str, list[dict]] = {}
         self._age: dict[str, int] = {}
-        self._ts_now: int = round(datetime.now().timestamp())
+        self._ts_now: int = round(datetime.now(tz=UTC).timestamp())
         self._modified: bool = False
         self.name2key: dict[str, str] = {}
 

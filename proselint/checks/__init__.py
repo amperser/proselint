@@ -156,10 +156,9 @@ def is_quoted(position: int, text: str) -> bool:
 # Notes:
 # - () make it safe to put '|'.join(strings) inside (safe for str with whitespace)
 # NOTE: v0.16 turned join-format inside-out for less computation
-# example orig: (?:^|\W)wt[\W$]|(?:^|\W)wa[\W$]|(?:^|\W)dm[\W$]
-# example new:  (?:^|\W)(wt|wa|dm)[\W$]
-# second one runs much more efficient, BUT fails ATM
-# lexical illusion is the problem - but without that speed is doubled again
+# example orig: (?:^|\W)w1[\W$]|(?:^|\W)w2[\W$]|(?:^|\W)w3[\W$]
+# example new:  (?:^|\W)(w1|w2|w3)[\W$]
+# second one runs much more efficient
 class Pd(str, Enum):
     disabled = r"({})"
     # choose for checks with custom regex
@@ -234,9 +233,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
             item[0],
         )
         for item in items
-        for m in re.finditer(
-            padding.format("|".join(item[1])), text, flags=flags
-        )
+        for m in re.finditer(padding.format("|".join(item[1])), text, flags=flags)
     ]
     # TODO: can we speed up str.format() ?
     #       fast-string? or do padding already in checks -> see test below
@@ -246,10 +243,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 
 def preferred_forms_check2_pre(items: list) -> list:
     padding = Pd.sep_in_txt
-    return [
-        [item[0], padding.format("|".join(item[1]))]
-        for item in items
-    ]
+    return [[item[0], padding.format("|".join(item[1]))] for item in items]
 
 
 def preferred_forms_check2_main(
@@ -322,8 +316,13 @@ def existence_check(  # noqa: PLR0913, PLR0917
     return errors
 
 
-def simple_existence_check(
-    text: str, pattern: str, err: str, msg: str, offset: tuple[int] = (0, 0), exceptions=(),
+def simple_existence_check(  # noqa: PLR0913, PLR0917
+    text: str,
+    pattern: str,
+    err: str,
+    msg: str,
+    offset: tuple[int] = (0, 0),
+    exceptions=(),
 ):
     """Build a checker for single patters.
     in comparison to existence_check:
@@ -335,7 +334,13 @@ def simple_existence_check(
     """
 
     return [
-        (_m.start() + offset[0], _m.end() + offset[1], err, msg.format(_m.group(0)), None)
+        (
+            _m.start() + offset[0],
+            _m.end() + offset[1],
+            err,
+            msg.format(_m.group(0)),
+            None,
+        )
         for _m in re.finditer(pattern, text)
         if any(re.search(exception, _m.group(0)) for exception in exceptions)
     ]

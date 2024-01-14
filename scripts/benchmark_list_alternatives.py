@@ -36,7 +36,7 @@ print("\n################### creating lint-results")
 # - dict is slower (halve as fast) and wins against named tuple
 # - frozenmap is still not implemented, https://peps.python.org/pep-0603/
 
-Const = namedtuple("ResultLint", ("val1", "val2", "val3"))
+Const = namedtuple("ResultLint", ("val1", "val2", "val3"))  # noqa: PYI024
 res1 = Const(val1=457, val2=458, val3=120)
 res2 = [457, 458, 120]
 

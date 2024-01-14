@@ -88,7 +88,7 @@ def load_options(
             user_options = json.load(path.open())
             break
         path_old = path.with_suffix("")
-        if path_old.is_file() and path.suffix != "":
+        if path_old.is_file() and path.suffix:  # equals 'suffix != ""'
             warn(
                 f"{path_old} was found instead of a JSON file. Rename to {path}.",
                 DeprecationWarning,
@@ -266,7 +266,7 @@ def lint_path(
     }
 
     # bad style ... but
-    global last_char_count
+    global last_char_count  # noqa: PLW0603
     last_char_count = chars
     return results
 

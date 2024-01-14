@@ -5,7 +5,7 @@ NOTE: relic, probably broken
 
 import os
 import re
-import subprocess
+import subprocess  # noqa: S404
 from pathlib import Path
 
 from .config_paths import proselint_path

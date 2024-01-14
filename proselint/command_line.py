@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 import signal
-import subprocess
+import subprocess  # noqa: S404
 import sys
 import time
 from pathlib import Path
@@ -96,7 +96,7 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
 @click.option("--dump-default-config", is_flag=True, help="Prints default config.")
 @click.option("--version", is_flag=True)
 @click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
-def proselint(  # noqa: PLR0913, PLR0917, C901
+def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,
     clean: bool = False,  # TODO: this should be a subcommand
