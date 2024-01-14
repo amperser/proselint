@@ -81,7 +81,9 @@ def load_options(
     if config_file_path:
         # place provided config as highest user input
         if not config_file_path.is_file():
-            raise FileNotFoundError(f"Provided config-file {config_file_path} does not exist")
+            raise FileNotFoundError(
+                f"Provided config-file {config_file_path} does not exist"
+            )
         config_user_paths.insert(0, config_file_path)
 
     user_options = {}

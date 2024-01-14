@@ -19,10 +19,12 @@ from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
+
 # TODO: this could benefit from a general roman numeral regex
 # -> detect valids: ^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$
 # - maybe detect with ignore-case and check for capitalization, OR
 # - RE_ignorecase - RE_uppercase
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
