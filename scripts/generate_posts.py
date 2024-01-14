@@ -2,7 +2,7 @@
 
 import ast
 import os
-from datetime import UTC
+from datetime import timezone
 from datetime import datetime
 from pathlib import Path
 
@@ -37,7 +37,7 @@ for root, _, files in listing:
 
             post_filename = (
                 project_path
-                / f"site/_posts/{datetime.now(tz=UTC).date()}-{docstring[0:6]}.md"
+                / f"site/_posts/{datetime.now(tz=timezone.utc).date()}-{docstring[0:6]}.md"
             )
 
             # Chop off the first two lines
