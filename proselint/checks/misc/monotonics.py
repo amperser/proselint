@@ -23,7 +23,7 @@ def check_sentence(text: str) -> list[ResultCheck]:
     err = "misc.monotonic.sentence"
     msg = "It is bad style to open sentences with the same word, here '{}'."
 
-    regex = r"(([\.!?]\s+|^)([A-Z][a-z]*\b)[^\.!?]+[\.!?]\s+\3\b(\s+[a-z]*))"
+    regex = r"(([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\3\b(\s+[a-z]*))"
     # explanation: matches identical words starting uppercase after either newline or .!?
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
