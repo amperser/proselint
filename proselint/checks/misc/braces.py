@@ -13,6 +13,7 @@ categories: writing
 from __future__ import annotations
 
 import re
+from typing import Optional
 
 from proselint.checks import ResultCheck
 
@@ -24,9 +25,9 @@ def check_unmatched(text: str) -> list[ResultCheck]:
     err = "misc.braces.unmatched"
     # msg = "Don't fail to match / close opened braces '{}'."
 
-    def runner(_text: str, char1: str, char2: str) -> ResultCheck:
+    def runner(_text: str, rex: str, char1: str, char2: str) -> Optional[ResultCheck]:
         _count = 0
-        for _m in re.finditer(f"[\\{char1}\\{char2}]", text):
+        for _m in re.finditer(rex, text):
             if _m.group(0) == char1:
                 _count += 1
             elif _m.group(0) == char2:
@@ -39,17 +40,25 @@ def check_unmatched(text: str) -> list[ResultCheck]:
                 )
                 return _m.start(), _m.end(), err, _msg, None
         if _count > 0:
-            _msg = f"Don't fail to match / close opened braces -> at least one '{char1}' is left open"
+            _msg = ("Don't fail to match / close opened braces -> "
+                    f"at least one '{char1}' is left open")
             return 0, len(text), err, _msg, None
+        return None
 
     results = []
-    if any(re.finditer(r"[\(\)]", text)):
-        results.append(runner(text, "(", ")"))
+    if any(re.finditer(r"[()]", text)):
+        _res = runner(text, r"[()]", "(", ")")
+        if _res:
+            results.append(_res)
 
     if any(re.finditer(r"[\[\]]", text)):
-        results.append(runner(text, "[", "]"))
+        _res = runner(text, r"[\[\]]", "[", "]")
+        if _res:
+            results.append(_res)
 
-    if any(re.finditer(r"[\{\}]", text)):
-        results.append(runner(text, "{", "}"))
+    if any(re.finditer(r"[{}]", text)):
+        _res = runner(text, r"[{}]", "{", "}")
+        if _res:
+            results.append(_res)
 
     return results
