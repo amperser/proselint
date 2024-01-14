@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # direct text input
     results = plt.lint("This sentence contains a clear as mud error")
 
-    # result is a list of ResultLint with all essential data included
+    # result is a list of ResultLint-NamedTuple with all essential data included
     print("\n## Custom Error-Printing")
     for item in results:
         print(f"{item.line}:{item.column}: {item.message}")
@@ -39,6 +39,6 @@ if __name__ == "__main__":
 
     # text from file - v2
     result2 = plt.lint_path(file)
-    print(f"V1 found {len(result2)} warnings")
-
-    # t
+    print(f"V2 found {len(result2)} files")
+    for _fname, _warnings in result2.items():
+        print(f"- {_fname.name} has {len(_warnings)} warnings")

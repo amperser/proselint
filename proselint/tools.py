@@ -71,14 +71,16 @@ def load_options(
     """Read various proselintrc files, allowing user overrides."""
     cfg_default = config_base.proselint_base
 
+    # global config will be a base for
     if config_global_path.is_file():
         log.debug("Config read from global '%s' (as base)", config_global_path)
         _cfg = json.load(config_global_path.open())
         cfg_default = _deepmerge_dicts(cfg_default, _cfg)
 
     if config_file_path:
+        # place provided config as highest user input
         if not config_file_path.is_file():
-            raise FileNotFoundError(f"Config file {config_file_path} does not exist")
+            raise FileNotFoundError(f"Provided config-file {config_file_path} does not exist")
         config_user_paths.insert(0, config_file_path)
 
     user_options = {}
