@@ -25,4 +25,4 @@ def check(text: str) -> list[ResultCheck]:
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
 
     regex = [r"[\.\?!] [A-Z]", r"[\.\?!]  [A-Z]"]
-    return consistency_check(text, [regex], err, msg)
+    return consistency_check(text, [regex], err, msg, ignore_case=False)

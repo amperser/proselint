@@ -46,4 +46,4 @@ def check(text: str) -> list[ResultCheck]:
         ["recognise", "recognize"],
     ]
 
-    return consistency_check(text, word_pairs, err, msg)
+    return consistency_check(text, word_pairs, err, msg, ignore_case=True)

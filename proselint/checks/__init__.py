@@ -186,17 +186,19 @@ def consistency_check(
     word_pairs: list,
     err: str,
     msg: str,
+    ignore_case: bool = True,
     offset: tuple[int] = (0, 0),
 ) -> list[ResultCheck]:
     """Build a consistency checker for the given word_pairs.
     Note: offset-usage corrects for pre-added padding-chars
     """
+    flags = re.IGNORECASE if ignore_case else 0
     results = []
 
     for w in word_pairs:
         matches = [
-            list(re.finditer(w[0], text)),
-            list(re.finditer(w[1], text)),
+            list(re.finditer(w[0], text, flags)),
+            list(re.finditer(w[1], text, flags)),
         ]
 
         if len(matches[0]) > 0 and len(matches[1]) > 0:

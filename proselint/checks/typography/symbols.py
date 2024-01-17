@@ -99,9 +99,9 @@ def check_apostrophes(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
     err = "typography.symbols.apostrophes"
     msg = "Use the correct apostrophe - 's is preferred - ´s is ok"
-    regex = r"\w+`s"
+    regex = r"\w+`s"  # unwanted form
     results = simple_existence_check(text, regex, err, msg)
 
     msg = "Use the same apostrophe consistently - {} vs {}"
-    results.extend(consistency_check(text, [[r"\w+'s", r"\w+´s"]], err, msg))
+    results.extend(consistency_check(text, [[r"\w+'s", r"\w+´s"]], err, msg, ignore_case=False))
     return results
