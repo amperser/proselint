@@ -10,17 +10,28 @@ categories: writing
 ---
 
 Note:
-    - this is just a small example
-    - there are more lint-checks available
-    - check-fn must at least begin with "check" to be found,
-      so check() & check_xyz() are fine
-    - don't forget to add unittests and an entry in the base-config
+
+- this is just a small example
+- there are more lint-checks available in the parent-dir/__init__.py
+- check-fn must at least begin with "check" to be found & used
+    - so check() & check_xyz() are fine
+- the _pass and _fail examples at the start are part of the unittests and get checked
+    - this mixed approach is unconventional, but maintaining much easier
+    - TODO: make mandatory when rebuild complete
 
 """
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "This is the famous first line.",
+]
 
 
 def check(text: str) -> list[ResultCheck]:
@@ -30,5 +41,4 @@ def check(text: str) -> list[ResultCheck]:
 
     items = ["first line"]
 
-    # note:
     return existence_check(text, items, error_code, msg, ignore_case=False)

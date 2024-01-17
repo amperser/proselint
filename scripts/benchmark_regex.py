@@ -22,10 +22,17 @@ print("\n# ################# short string #################")
 
 text = "this is an example is an example of a regular expression"
 
-_dur = timeit("_e = re.findall(regex_str, text, flags=re.IGNORECASE)", setup=setup, globals=locals(), number=100_000)
+_dur = timeit(
+    "_e = re.findall(regex_str, text, flags=re.IGNORECASE)",
+    setup=setup,
+    globals=locals(),
+    number=100_000,
+)
 print(f"{_dur * 1000:.3f} ms -> re.find()")
 
-_dur = timeit("_e = regex_pat.findall(text)", setup=setup, globals=locals(), number=100_000)
+_dur = timeit(
+    "_e = regex_pat.findall(text)", setup=setup, globals=locals(), number=100_000
+)
 print(f"{_dur * 1000:.3f} ms -> pattern.find()")
 
 re.findall(regex_str, text, flags=re.IGNORECASE)
@@ -36,10 +43,17 @@ file_path = proselint.path / "demo.md"
 with file_path.open() as fh:
     text = fh.read()
 
-_dur = timeit("_e = re.findall(regex_str, text, flags=re.IGNORECASE)", setup=setup, globals=locals(), number=1_000)
+_dur = timeit(
+    "_e = re.findall(regex_str, text, flags=re.IGNORECASE)",
+    setup=setup,
+    globals=locals(),
+    number=1_000,
+)
 print(f"{_dur * 1000:.3f} ms -> re.find(demo.md)")
 
-_dur = timeit("_e = regex_pat.findall(text)", setup=setup, globals=locals(), number=1_000)
+_dur = timeit(
+    "_e = regex_pat.findall(text)", setup=setup, globals=locals(), number=1_000
+)
 print(f"{_dur * 1000:.3f} ms -> pattern.find(demo.md)")
 
 re.findall(regex_str, text, flags=re.IGNORECASE)
