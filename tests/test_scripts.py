@@ -18,6 +18,8 @@ scripts = [
     "scripts/benchmark_hashes.py",
     "scripts/benchmark_linter.py",
     "scripts/benchmark_list_alternatives.py",
+    "scripts/benchmark_regex.py",
+    "scripts/benchmark_str_format.py",
     "scripts/test_hyperlinks_on_shell.py",
 ]
 
