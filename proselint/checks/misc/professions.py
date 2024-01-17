@@ -21,7 +21,7 @@ from proselint.checks import preferred_forms_check
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.professions"
-    msg = "'{}' is the name of that job."
+    msg = "'{}' is the name of that job, not '{}'"
 
     preferences = [
         ["cobbler", ["shoe repair guy"]],

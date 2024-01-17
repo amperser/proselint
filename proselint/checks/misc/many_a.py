@@ -21,7 +21,7 @@ from proselint.checks import preferred_forms_check
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.many_a"
-    msg = "'many a' requires a singular verb."
+    msg = "'many a' requires a singular verb, as in '{}'."
 
     preferences = [
         ["is many a", ["are many a"]],

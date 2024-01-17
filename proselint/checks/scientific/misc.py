@@ -90,8 +90,8 @@ def check_preferred(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.preference"
     msg = (
-        "In scientific writing some terms are less preferred or wrong, "
-        "here '{}' -> use '{}' instead"
+        "In scientific writing some terms are less preferred or wrong. "
+        "Consider using '{}' instead of '{}'."
     )
     items = [
         ["not significant", ["insignificant"]],
@@ -169,7 +169,7 @@ def check_this_vs_those(text: str) -> list[ResultCheck]:
         r"this \w+ss\b",
         r"this is\b",
         r"this (agrees|allows|cancels|corresponds|enables)",
-        r"this (explains|hypothesis|leads|shows|suggests|thesis)",
+        r"this (explains|hypothesis|involves|leads|shows|suggests|thesis)",
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results = []
