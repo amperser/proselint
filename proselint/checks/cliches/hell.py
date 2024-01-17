@@ -18,6 +18,14 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I was at xyz and then all hell broke loose again.",
+]
+
 
 @limit_results(1)
 def check_repeated_exclamations(text: str) -> list[ResultCheck]:

@@ -20,6 +20,17 @@ from proselint.checks import existence_check
 from proselint.checks import limit_results
 from proselint.checks import ppm_threshold
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "The QUICK BROWN fox juMPED over the lazy cat.",
+    "Sally sells seashells and they were too expensive!",
+]
+
+examples_fail = [
+    "Sally sells seashells and they were too expensive!!!!",
+    "Sally sells seashells and they were too expensive! They were not!",
+]
+
 
 @limit_results(1)
 def check_repeated_exclamations(text: str) -> list[ResultCheck]:

@@ -17,6 +17,14 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "Have i used the n-word?",
+]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

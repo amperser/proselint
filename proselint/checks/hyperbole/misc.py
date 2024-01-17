@@ -18,6 +18,12 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = ["So exaggerated!!!", "really??"]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

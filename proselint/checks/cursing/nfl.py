@@ -17,6 +17,18 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "The QB is named ball licker.",
+    "The difference between femme and famme.",
+    "Interracial is the word.",
+    "you jackass, be funny.",
+    "To rent a fuck or not to rent a fuck.",
+]
+
 
 def check_a_to_e(text: str) -> list[ResultCheck]:
     """Check the text."""

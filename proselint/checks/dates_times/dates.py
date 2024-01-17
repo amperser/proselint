@@ -20,6 +20,26 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "It happened in the 90s.",
+    "It happened in the 1980s.",
+    "It happened from 2000 to 2005.",
+    "It happened in August 2008.",
+    "It happened in August 2008.",
+    """Dr. Dre suggested to 50's manager that he look into signing
+Eminem to the G-Unit record label.""",
+]
+
+examples_fail = [
+    "It happened in the 90's.",
+    "It happened in the 1980's.",
+    "It happened from 2000-2005.",
+    "It happened in August, 2008.",
+    "It happened in August of 2008.",
+    "The 50's were swell." "From 1999-2002, Sally served as chair of the committee.",
+]
+
 
 def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:
     """Check the text for dates of the form X0's."""

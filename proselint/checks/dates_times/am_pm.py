@@ -16,6 +16,23 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "It happened at 7 a.m.",
+    "On Wed, Sep 21, 2016 at 11:42 AM -0400, X wrote:",
+    "It happened at 7 a.m.",
+    "It happened at noon.",
+    "It happened at 7 a.m.",
+]
+
+examples_fail = [
+    "It happened at 7 am.",
+    "It happened at 7a.m.",
+    "It happened at 12 a.m.",
+    "It happened at 12 p.m.",
+    "It happened at 7a.m. in the morning.",
+]
+
 
 def check_lowercase_periods(text: str) -> list[ResultCheck]:
     """Check the text."""

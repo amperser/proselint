@@ -5,6 +5,31 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "No cliches here.",
+]
+
+examples_fail = [
+    # garner
+    "Worse than a fate worse than death.",
+    # write good
+    "He's a chip off the old block.",
+    "You sound like a broken record.",
+    "You gave me a crash course in xyz.",
+    "You always had a green thumb.",
+    "You know the score.",
+    "You payed out of pocket for years.",
+    "I feel sick as a dog since yesterday.",
+    "I feel sick as a dog.",
+    "You, me and that uphill battle.",
+    "You, me and that uphill battle with him.",
+    # diction
+    "It's a matter of concern.",
+    # nigel
+    "He's sick and tired of it.",
+]
+
 
 def check_cliches_garner(text: str) -> list[ResultCheck]:
     """Check the text.

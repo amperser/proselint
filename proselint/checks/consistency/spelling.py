@@ -24,6 +24,16 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "The centre for the arts is the art centre.",
+    "The center for the arts is the art center.",
+]
+
+examples_fail = [
+    "The centre of the arts is the art center.",
+]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
@@ -45,5 +55,6 @@ def check(text: str) -> list[ResultCheck]:
         ["organising", "organizing"],
         ["recognise", "recognize"],
     ]
+    # TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
 
     return consistency_check(text, word_pairs, err, msg, ignore_case=True)

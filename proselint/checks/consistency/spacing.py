@@ -18,6 +18,13 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "This is good. Only one space each time. Every time.",
+]
+
+examples_fail = ["This is bad.  Not consistent. At all."]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
