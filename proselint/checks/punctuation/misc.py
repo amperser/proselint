@@ -21,10 +21,14 @@ from proselint.checks import simple_existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
+    "A cat can sleep 20.5 hours a day.",
+    "I asked the Prof. what to do",
 ]
 
 examples_fail = [
     "See Smith et. al.",
+    "i drive 5,5 kmh.",
+    "I usually wait an hour. and then another."
 ]
 
 
@@ -38,9 +42,6 @@ def check_garner(text: str) -> list[ResultCheck]:
         "et. al.",
     ]
     return existence_check(text, items, err, msg)
-
-
-# TODO: test the checks below
 
 
 def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:

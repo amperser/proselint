@@ -19,6 +19,9 @@ examples_pass = [
     """This is “a sentence”. Look at it.""",
     """“This should produce no error”, he said.""",
     """A 'singular' should not, though.""",
+    # apo
+    "jim's is preferred",
+    "amanda´s is ok",
 ]
 
 examples_fail = [
@@ -37,6 +40,9 @@ examples_fail = [
     """This is "another sentence". How faulty.""",
     """"This should produce an error", he said.""",
     """Alas, "it should here too".""",
+    # apo
+    "jim's is preferred - amanda´s is ok, but not mixed",
+    "pauls`s is not fine",
 ]
 
 
@@ -115,9 +121,6 @@ def disabled_check_en_dash_separated_names(text: str) -> list[ResultCheck]:
     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
     #     u"Use an en dash (–) to separate names."],
     return []  # TODO
-
-
-# TODO: test new checks below
 
 
 def check_apostrophes(text: str) -> list[ResultCheck]:

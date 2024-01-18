@@ -41,7 +41,7 @@ examples_fail = [
 
 def check_num_unit(text: str) -> list[ResultCheck]:
     """Check numbers with units"""
-    # TODO: add more than the SI-Units: N,
+    # TODO: add more than the SI-Units
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "scientific.misc.num_unit"
     msg = (
@@ -49,7 +49,7 @@ def check_num_unit(text: str) -> list[ResultCheck]:
         "here '{}'."
     )
     regex = Pd.sep_in_txt.value.format(
-        r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n|Hz|dB|%)"
+        r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n|Hz|dB|%|N|cal|C|F)"
     )
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 

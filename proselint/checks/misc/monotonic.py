@@ -16,7 +16,6 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
-# TODO: test the checks below
 examples_pass = [
     "Smoke phrase with nothing flagged.",
     """I like to tell you something:

@@ -25,7 +25,6 @@ examples_pass = [
 ]
 
 examples_fail = [
-    "This is the famous first line.",
     "I once met a fag.",
 ]
 

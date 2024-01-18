@@ -17,7 +17,7 @@ Note:
     - so check() & check_xyz() are fine
 - the _pass and _fail examples at the start are part of the unittests and get checked
     - this mixed approach is unconventional, but maintaining much easier
-    - TODO: make mandatory when rebuild complete
+    - they are now mandatory for each check-file
 
 """
 from __future__ import annotations

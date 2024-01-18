@@ -56,9 +56,6 @@ def disabled_check(text: str) -> list[ResultCheck]:
     )
 
 
-# TODO: test the checks below
-
-
 def check_repetitions(text: str) -> list[ResultCheck]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"

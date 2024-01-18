@@ -24,6 +24,8 @@ examples_pass = [
     "Smoke phrase with nothing flagged.",
     "Smoke Stone Age with nothing flagged.",
     "Smoke winter with nothing flagged",
+    "world war II",
+    "XVII",
 ]
 
 examples_fail = [
@@ -32,6 +34,11 @@ examples_fail = [
     "A nice day in Spring.",
     "A nice day in june.",
     "It happened on friday.",
+    "World War ii",
+    "world War Ii",
+    "MCVi",
+    "CLx",
+    "mCv",
 ]
 
 
@@ -103,9 +110,6 @@ def check_days(text: str) -> list[ResultCheck]:
     ]
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
-
-
-# TODO: test the checks below
 
 
 def check_roman_war(text: str) -> list[ResultCheck]:

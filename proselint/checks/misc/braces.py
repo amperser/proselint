@@ -26,6 +26,8 @@ examples_pass = [
     """Is everything fine (I mean
 in a general way)?""",
     "a) heading",
+    """1) do smth
+2) do another thing""",
 ]
 
 examples_fail = [
@@ -35,7 +37,6 @@ examples_fail = [
 ]
 
 
-# TODO: test the checks below
 def trace_braces(
     text: str, rex: str, char1: str, char2: str, err: str
 ) -> Optional[ResultCheck]:

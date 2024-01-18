@@ -31,7 +31,7 @@ examples_fail = [
 
 
 def check_1(text: str) -> list[ResultCheck]:
-    """Suggest the preferred forms.  # TODO: test for precalculating consts, see below
+    """Suggest the preferred forms.  # TODO: test-balloon for precalculating consts, see below
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
