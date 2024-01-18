@@ -66,31 +66,30 @@ def test_check(module_name: str) -> None:
         raise ImportError(f"Is {module_name} broken?") from _xpt
 
     checks = {d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)}
-    try:
-        if len(module.examples_pass) < 1:
-            # TODO: raise to two as min
-            raise ValueError(
-                f"there are no passing examples for testing in {module_name}"
-            )
-        for example in module.examples_pass:
-            for _name, _check in checks.items():  # not-any config
-                assert (
-                    _check(example) == []
-                ), f"false positive - {_name}('{example}')"
-    except AttributeError as _xpt:
-        raise AttributeError(f"'examples_pass' missing in {module_name}") from _xpt
 
-    try:
-        if len(module.examples_fail) < 1:
-            raise ValueError(
-                f"there are no failing examples for testing in {module_name}"
-            )
-        for example in module.examples_fail:
-            result = []
-            for check in checks.values():  # any-config
-                result.extend(check(example))
+    if not hasattr(module, "examples_pass"):
+        raise AttributeError(f"'examples_pass' missing in {module_name}")
+    if not isinstance(module.examples_pass, list) or len(module.examples_pass) < 1:
+        # TODO: raise to two as min
+        raise ValueError(
+            f"The examples_pass-list must have >=1 entry for testing in {module_name}"
+        )
+    for example in module.examples_pass:
+        for _name, _check in checks.items():  # not-any config
             assert (
-                result != []
-            ), f"false negative (did NOT trigger) - {module_name}: '{example}'"
-    except AttributeError as _xpt:
-        raise AttributeError(f"'examples_fail' missing in {module_name}") from _xpt
+                _check(example) == []
+            ), f"false positive - {_name}('{example}')"
+
+    if not hasattr(module, "examples_fail"):
+        raise AttributeError(f"'examples_fail' missing in {module_name}")
+    if not isinstance(module.examples_fail, list) or len(module.examples_fail) < 1:
+        raise ValueError(
+            f"The examples_fail-list must have >=1 entry for testing in {module_name}"
+        )
+    for example in module.examples_fail:
+        result = []
+        for check in checks.values():  # any-config
+            result.extend(check(example))
+        assert (
+            result != []
+        ), f"false negative (did NOT trigger) - {module_name}: '{example}'"
