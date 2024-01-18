@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib
 import os
 import re
@@ -39,6 +41,7 @@ def get_check_files() -> list[Path]:
 
 
 def get_module_names() -> list[str]:
+    """transform file-list to importable module names"""
     result = []
     for _file in get_check_files():
         path_relative = _file.relative_to(proselint.path)
@@ -50,30 +53,44 @@ def get_module_names() -> list[str]:
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
+    """ this checks multiple things:
+    - successful import of check
+    - example_fail and _pass present in file
+    - both example-lists with at least one entry
+    - successful testing of these examples
+
+    """
     try:
         module = importlib.import_module("." + module_name, "proselint")
-    except ModuleNotFoundError:
-        raise ImportError(f"Is {module_name} broken?")
+    except ModuleNotFoundError as _xpt:
+        raise ImportError(f"Is {module_name} broken?") from _xpt
 
     checks = {d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)}
     try:
-        examples_pass = module.examples_pass
-        for example in examples_pass:
+        if len(module.examples_pass) < 1:
+            # TODO: raise to two as min
+            raise ValueError(
+                f"there are no passing examples for testing in {module_name}"
+            )
+        for example in module.examples_pass:
             for _name, _check in checks.items():  # not-any config
                 assert (
                     _check(example) == []
-                ), f"Example did trigger: {_name}('{example}')"
-    except AttributeError:
-        print(f"Found no examples_pass in {module_name}")
+                ), f"false positive - {_name}('{example}')"
+    except AttributeError as _xpt:
+        raise AttributeError(f"'examples_pass' missing in {module_name}") from _xpt
 
     try:
-        examples_fail = module.examples_fail
-        for example in examples_fail:
+        if len(module.examples_fail) < 1:
+            raise ValueError(
+                f"there are no failing examples for testing in {module_name}"
+            )
+        for example in module.examples_fail:
             result = []
             for check in checks.values():  # any-config
                 result.extend(check(example))
             assert (
                 result != []
-            ), f"Example did NOT trigger in {module_name}: '{example}'"
-    except AttributeError:
-        print(f"Found no examples_fail in {module_name}")
+            ), f"false negative (did NOT trigger) - {module_name}: '{example}'"
+    except AttributeError as _xpt:
+        raise AttributeError(f"'examples_fail' missing in {module_name}") from _xpt
