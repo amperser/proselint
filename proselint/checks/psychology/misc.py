@@ -23,10 +23,11 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The defendant took a lie detector test.",
-"The effect was highly signficant at p = 0.00.",
-"I've been practicing mental telepathy.",
+    "The defendant took a lie detector test.",
+    "The effect was highly signficant at p = 0.00.",
+    "I've been practicing mental telepathy.",
 ]
+
 
 def check_lie_detector_test(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

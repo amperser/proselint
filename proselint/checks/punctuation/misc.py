@@ -24,8 +24,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"See Smith et. al.",
+    "See Smith et. al.",
 ]
+
 
 def check_garner(text: str) -> list[ResultCheck]:
     """Check the text."""

@@ -12,9 +12,10 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The project produced a huge bottleneck.",
-"Writing tests is not rocket surgery.",
+    "The project produced a huge bottleneck.",
+    "Writing tests is not rocket surgery.",
 ]
+
 
 @limit_results(1)
 def check_bottleneck(text: str) -> list[ResultCheck]:

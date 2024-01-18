@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"There was a demonstratable difference.",
+    "There was a demonstratable difference.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-able vs. -atable."""

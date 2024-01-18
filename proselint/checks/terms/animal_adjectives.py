@@ -17,14 +17,14 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
-
 examples_pass = [
     "Smoke phrase with nothing flagged.",
 ]
 
 examples_fail = [
-"It was some bird-like creature.",
+    "It was some bird-like creature.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

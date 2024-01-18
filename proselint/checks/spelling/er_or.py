@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"She met with the invester.",
+    "She met with the invester.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-er vs. -or."""

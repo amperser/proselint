@@ -22,8 +22,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The test was good irregardless.",
+    "The test was good irregardless.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

@@ -16,28 +16,29 @@ from proselint.checks import simple_existence_check
 examples_pass = [
     "Smoke phrase with nothing flagged.",
     # quotes
-"""This is “a sentence”. Look at it.""",
-"""“This should produce no error”, he said.""",
-"""A 'singular' should not, though.""",
+    """This is “a sentence”. Look at it.""",
+    """“This should produce no error”, he said.""",
+    """A 'singular' should not, though.""",
 ]
 
 examples_fail = [
-"The long and winding road...",
-"Show me the money! (C)",
-"Show me the money! (c)",
-"The Fresh Maker (TM)",
-"The Fresh Maker (tm)",
-"Just Do It (R)",
-"Just Do It (r)",
-# spacing
-"This is a sentence.   This is another.",
-# mult
-"It is obvious that 2 x 2 = 4.",
-# quotes
-"""This is "another sentence". How faulty.""",
-""""This should produce an error", he said.""",
-"""Alas, "it should here too".""",
+    "The long and winding road...",
+    "Show me the money! (C)",
+    "Show me the money! (c)",
+    "The Fresh Maker (TM)",
+    "The Fresh Maker (tm)",
+    "Just Do It (R)",
+    "Just Do It (r)",
+    # spacing
+    "This is a sentence.   This is another.",
+    # mult
+    "It is obvious that 2 x 2 = 4.",
+    # quotes
+    """This is "another sentence". How faulty.""",
+    """"This should produce an error", he said.""",
+    """Alas, "it should here too".""",
 ]
+
 
 @limit_results(3)
 def check_ellipsis(_text: str) -> list[ResultCheck]:

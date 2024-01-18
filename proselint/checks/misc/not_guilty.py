@@ -32,8 +32,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"She is not guilty beyond a reasonable doubt.",
+    "She is not guilty beyond a reasonable doubt.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

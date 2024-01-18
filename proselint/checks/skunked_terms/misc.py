@@ -25,6 +25,7 @@ examples_fail = [
     "I gave an impassionate defence of the situation.",
 ]
 
+
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "skunked_terms.misc"

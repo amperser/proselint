@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"We shall imbark on a voyage.",
+    "We shall imbark on a voyage.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """em- vs. en-, im- vs. in-."""

@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"This could of been the third test.",
+    "This could of been the third test.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-ve vs. -of."""

@@ -22,8 +22,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"He needed an exact estimate.",
+    "He needed an exact estimate.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

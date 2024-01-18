@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"He was definitely a Hong Kongite.",
+    "He was definitely a Hong Kongite.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.

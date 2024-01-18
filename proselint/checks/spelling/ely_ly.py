@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"She was completly unprepared.",
+    "She was completly unprepared.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-ely vs. -ly."""

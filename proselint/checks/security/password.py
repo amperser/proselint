@@ -21,9 +21,10 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The password is 123456.",
-"My password is PASSWORD.",
+    "The password is 123456.",
+    "My password is PASSWORD.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

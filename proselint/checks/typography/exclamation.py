@@ -29,8 +29,8 @@ examples_pass = [
 examples_fail = [
     "Sally sells seashells and they were too expensive!!!!",
     "Sally sells seashells and they were too expensive! They were not!",
-"I'm really excited!!",
-"I'm really excited! Really!",
+    "I'm really excited!!",
+    "I'm really excited! Really!",
 ]
 
 

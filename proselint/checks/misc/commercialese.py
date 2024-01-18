@@ -18,7 +18,6 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 
-
 examples_pass = [
     "Smoke phrase with nothing flagged.",
 ]
@@ -27,6 +26,7 @@ examples_fail = [
     "We regret to inform you of this.",
     "the C.i.F. is free.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

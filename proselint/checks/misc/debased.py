@@ -25,6 +25,7 @@ examples_fail = [
     "This leaves much to be desired.",
 ]
 
+
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.debased"

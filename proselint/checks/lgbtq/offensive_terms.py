@@ -21,7 +21,7 @@ from proselint.checks import existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"I once met a gay man.",
+    "I once met a gay man.",
 ]
 
 examples_fail = [

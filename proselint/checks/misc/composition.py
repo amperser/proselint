@@ -58,6 +58,7 @@ examples_fail = [
     "His story is not honest.",
 ]
 
+
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.composition.strunk_white"

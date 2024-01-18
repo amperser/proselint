@@ -25,6 +25,7 @@ examples_fail = [
     "I went to the Virginia Polytechnic and State University.",
 ]
 
+
 def check_vtech(text: str) -> list[ResultCheck]:
     """Suggest the correct name.
 

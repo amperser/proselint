@@ -20,17 +20,18 @@ from proselint.checks import simple_existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"flagged?  ",
-"The quick brown fox jumps; over the lazy dog!",
+    "flagged?  ",
+    "The quick brown fox jumps; over the lazy dog!",
 ]
 
 examples_fail = [
-"flagged!    ",
-"flagged?    ",
-"The quick brown fox jumps;  over the lazy dog!",
-"The quick brown fox jumps:over the lazy dog!",
-"The quick brown fox jumps  :over the lazy dog!",
+    "flagged!    ",
+    "flagged?    ",
+    "The quick brown fox jumps;  over the lazy dog!",
+    "The quick brown fox jumps:over the lazy dog!",
+    "The quick brown fox jumps  :over the lazy dog!",
 ]
+
 
 def check_end_punctuation_spacing(text: str) -> list[ResultCheck]:
     """Check the text."""

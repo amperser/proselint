@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The resistence was futile.",
+    "The resistence was futile.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-ance vs. -ence."""

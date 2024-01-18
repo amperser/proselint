@@ -19,16 +19,17 @@ from proselint.checks import existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"I did it by accident honestly.",
+    "I did it by accident honestly.",
 ]
 
 examples_fail = [
-"I did it on accident honestly.",
-"I did it On accident honestly.",
-"Told you something between you and i.",
-"Told you something between you and I.",
-"I feel nauseous.",
+    "I did it on accident honestly.",
+    "I did it On accident honestly.",
+    "Told you something between you and i.",
+    "Told you something between you and I.",
+    "I feel nauseous.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

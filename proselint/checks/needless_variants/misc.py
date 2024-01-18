@@ -26,8 +26,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"It was an extensible telescope.",
+    "It was an extensible telescope.",
 ]
+
 
 def check_1(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.  # TODO: test for precalculating consts, see below

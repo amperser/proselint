@@ -22,8 +22,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"My credit card number is 5555555555554444.",
+    "My credit card number is 5555555555554444.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

@@ -23,8 +23,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"We need to reconceptualize the project.",
+    "We need to reconceptualize the project.",
 ]
+
 
 @limit_results(1)
 def check(text: str) -> list[ResultCheck]:

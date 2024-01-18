@@ -24,8 +24,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The book was very interesting.",
+    "The book was very interesting.",
 ]
+
 
 @limit_results(1)
 def check(text: str) -> list[ResultCheck]:

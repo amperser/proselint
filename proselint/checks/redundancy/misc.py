@@ -10,11 +10,12 @@ examples_pass = [
 ]
 
 examples_fail = [
-"The table was rectangular in shape.",
-"It was blatantly obvious what to do next.",
-"Taking the package was absolutely essential.",
-"He often repeated the old adage.",
+    "The table was rectangular in shape.",
+    "It was blatantly obvious what to do next.",
+    "Taking the package was absolutely essential.",
+    "He often repeated the old adage.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

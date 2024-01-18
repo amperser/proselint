@@ -19,16 +19,17 @@ from proselint.checks import preferred_forms_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"Hello Mr. Birdperson. You look good.",
-"Hello Mr. birdperson. still looking good.",
-"Oh Chairperson - happy face.",
+    "Hello Mr. Birdperson. You look good.",
+    "Hello Mr. birdperson. still looking good.",
+    "Oh Chairperson - happy face.",
 ]
 
 examples_fail = [
-"The legal team had two lawyers and a lady lawyer.",
-"Oh chairperson - why so sad.",
-"You get the mailperson.",
+    "The legal team had two lawyers and a lady lawyer.",
+    "Oh chairperson - why so sad.",
+    "You get the mailperson.",
 ]
+
 
 def check_sexism(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

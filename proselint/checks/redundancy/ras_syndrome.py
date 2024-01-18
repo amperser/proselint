@@ -10,8 +10,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"Please enter your PIN number.",
+    "Please enter your PIN number.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

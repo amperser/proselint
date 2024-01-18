@@ -47,7 +47,7 @@ def check(text: str) -> list[ResultCheck]:
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
         re.U | re.X,
-    ) # TODO: update regex?
+    )  # TODO: update regex?
 
     results: list[ResultCheck] = []
     for m in re.finditer(regex, text):

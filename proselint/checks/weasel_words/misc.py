@@ -22,10 +22,11 @@ examples_pass = [
 ]
 
 examples_fail = [
-"Some people say this is bad.",
-"This is somewhat crazy.",
-"It is said this is wrong.",
+    "Some people say this is bad.",
+    "This is somewhat crazy.",
+    "It is said this is wrong.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """

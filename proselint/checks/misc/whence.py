@@ -22,8 +22,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"Go back from whence you came!",
+    "Go back from whence you came!",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

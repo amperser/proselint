@@ -5,14 +5,14 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
-
 examples_pass = [
     "Smoke phrase with nothing flagged.",
 ]
 
 examples_fail = [
-"She was accidently fired.",
+    "She was accidently fired.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """-ally vs. -ly."""

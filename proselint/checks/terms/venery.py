@@ -21,14 +21,15 @@ from proselint.checks import preferred_forms_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"There was a congregation of alligators.",
-"There was a wisdom of wombats.",
+    "There was a congregation of alligators.",
+    "There was a wisdom of wombats.",
 ]
 
 examples_fail = [
-"There was a group of alligators.",
-"There was a bunch of wombats.",
+    "There was a group of alligators.",
+    "There was a bunch of wombats.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

@@ -29,6 +29,7 @@ examples_fail = [
 I am a fan of superman.""",
 ]
 
+
 def check_sentence(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""
     err = "misc.monotonic.sentence"

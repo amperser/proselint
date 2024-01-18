@@ -5,7 +5,7 @@ learnings:
 - BUT re-module seems to memoize
 """
 
-import pickle
+import pickle  # noqa: S403
 import re
 from pathlib import Path
 from timeit import timeit

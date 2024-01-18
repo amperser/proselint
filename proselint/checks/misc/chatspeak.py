@@ -25,6 +25,7 @@ examples_fail = [
     "BRB getting coffee.",
 ]
 
+
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.chatspeak"

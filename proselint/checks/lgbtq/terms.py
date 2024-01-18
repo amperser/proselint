@@ -21,13 +21,13 @@ from proselint.checks import preferred_forms_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-"They were a gay couple.",
-"Homosexual.",
+    "They were a gay couple.",
+    "Homosexual.",
 ]
 
 examples_fail = [
     "He was a homosexual man.",
-"My sexual preference is for women.",
+    "My sexual preference is for women.",
 ]
 
 

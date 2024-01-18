@@ -25,6 +25,7 @@ examples_fail = [
     "It cost $10 dollars.",
 ]
 
+
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.currency"

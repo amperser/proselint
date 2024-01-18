@@ -22,11 +22,11 @@ examples_pass = [
 ]
 
 examples_fail = [
-"We should preplan the trip.",
-"To coin a phrase from him, No diggity",
-"Not Without your collusion you won't'.",
-
+    "We should preplan the trip.",
+    "To coin a phrase from him, No diggity",
+    "Not Without your collusion you won't'.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

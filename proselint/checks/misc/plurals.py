@@ -23,9 +23,10 @@ examples_pass = [
 ]
 
 examples_fail = [
-"There were several phenomenons.",
-"I give you many kudos.",
+    "There were several phenomenons.",
+    "I give you many kudos.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

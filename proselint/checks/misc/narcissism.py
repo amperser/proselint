@@ -22,8 +22,9 @@ examples_pass = [
 ]
 
 examples_fail = [
-"In recent years, an increasing number of scientists have studied the problem in detail.",
+    "In recent years, an increasing number of scientists have studied the problem in detail.",
 ]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
