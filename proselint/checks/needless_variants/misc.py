@@ -21,6 +21,13 @@ from proselint.checks import preferred_forms_check
 from proselint.checks import preferred_forms_check2_main
 from proselint.checks import preferred_forms_check2_pre
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"It was an extensible telescope.",
+]
 
 def check_1(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms.  # TODO: test for precalculating consts, see below
@@ -29,7 +36,7 @@ def check_1(text: str) -> list[ResultCheck]:
           so it was segmented to even the load for parallelization
     """
     err = "needless_variants.misc"
-    msg = "Needless variant. '{}' is the preferred form."
+    msg = "'{1}' is a needless variant. '{0}' is the preferred form."
 
     preferences = [
         # Needless variants
@@ -588,7 +595,7 @@ def disabled_check_1(text: str) -> list[ResultCheck]:
           so it was segmented to even the load for parallelization
     """
     err = "needless_variants.misc"
-    msg = "Needless variant. '{}' is the preferred form."
+    msg = "'{1}' is a needless variant. '{0}' is the preferred form."
     return preferred_forms_check2_main(text, data1, err, msg)
 
 
@@ -599,5 +606,5 @@ def check_2(text: str) -> list[ResultCheck]:
           so it was segmented to even the load for parallelization
     """
     err = "needless_variants.misc"
-    msg = "Needless variant. '{}' is the preferred form."
+    msg = "'{1}' is a needless variant. '{0}' is the preferred form."
     return preferred_forms_check2_main(text, data2, err, msg)

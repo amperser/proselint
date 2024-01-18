@@ -17,6 +17,13 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I went to the Virginia Polytechnic and State University.",
+]
 
 def check_vtech(text: str) -> list[ResultCheck]:
     """Suggest the correct name.

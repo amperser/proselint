@@ -19,6 +19,17 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"They were a gay couple.",
+"Homosexual.",
+]
+
+examples_fail = [
+    "He was a homosexual man.",
+"My sexual preference is for women.",
+]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest preferred forms given the reference document."""

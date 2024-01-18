@@ -19,6 +19,13 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import simple_existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"See Smith et. al.",
+]
 
 def check_garner(text: str) -> list[ResultCheck]:
     """Check the text."""

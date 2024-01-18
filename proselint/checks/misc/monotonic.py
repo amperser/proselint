@@ -17,7 +17,17 @@ from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
 # TODO: test the checks below
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    """I like to tell you something:
+I am a fan of superman.""",
+]
 
+examples_fail = [
+    "The sentence is easy. The clock is round.",
+    """I like to read and sleep.
+I am a fan of superman.""",
+]
 
 def check_sentence(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""
@@ -33,4 +43,4 @@ def check_sentence(text: str) -> list[ResultCheck]:
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
 
-# TODO: same line-beginning
+# TODO: check same line/section-beginning

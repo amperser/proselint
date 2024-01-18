@@ -37,6 +37,16 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"She should utilize her knowledge.",
+"This is obviously an inadvisable word to use obviously.",
+"I utilize a hammer to drive nails into wood.",
+"Do you know anyone who *needs* to utilize the word utilize?",
+]
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""

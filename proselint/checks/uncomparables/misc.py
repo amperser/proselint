@@ -50,6 +50,21 @@ import itertools
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"Every perfect instance.",
+"A more perfect union.",
+"A more possible future.",
+]
+
+examples_fail = [
+"The item was more unique.",
+"This sentence is very unique.",
+"This sentence is very\nunique.",
+"Kind of complete.",
+"An increasingly possible future.",
+
+]
 
 def compile_uncomparables() -> list:
     comparators = [

@@ -7,6 +7,14 @@ from proselint.checks import existence_check
 from proselint.checks import limit_results
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"The project produced a huge bottleneck.",
+"Writing tests is not rocket surgery.",
+]
 
 @limit_results(1)
 def check_bottleneck(text: str) -> list[ResultCheck]:

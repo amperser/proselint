@@ -5,6 +5,13 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"We shall imbark on a voyage.",
+]
 
 def check(text: str) -> list[ResultCheck]:
     """em- vs. en-, im- vs. in-."""

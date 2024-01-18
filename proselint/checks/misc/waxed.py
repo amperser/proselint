@@ -22,6 +22,15 @@ import re
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"Wax me if you can.",
+"He waxed poetic.",
+]
+
+examples_fail = [
+"They really could wax poetically.",
+]
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

@@ -19,6 +19,21 @@ from typing import Optional
 if TYPE_CHECKING:
     from proselint.checks import ResultCheck
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "Let me (I mean you) help her.",
+    "Counting is easy (for me).",
+    """Is everything fine (I mean
+in a general way)?""",
+    "a) heading",
+]
+
+examples_fail = [
+    "This is the famous first line.",
+    "Counting (to two) is hard (for me.",
+    "there might be an error).",
+]
+
 
 # TODO: test the checks below
 def trace_braces(

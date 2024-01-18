@@ -18,6 +18,15 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"The defendant took a lie detector test.",
+"The effect was highly signficant at p = 0.00.",
+"I've been practicing mental telepathy.",
+]
 
 def check_lie_detector_test(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

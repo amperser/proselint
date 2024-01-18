@@ -18,6 +18,26 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"And he's gone, gone with the breeze",
+"You should know that that sentence wasn't wrong.",
+"She had had dessert on the balcony.",
+"The practitioner's side",
+"An antimatter particle",
+"The theory",
+"She had coffee at the Foo-bar bar.",
+]
+
+examples_fail = [
+    "Paris in the the springtime.",
+"You should know that that that was wrong.",
+"She had coffee at the Foo bar bar.",
+    "She she coffee at the Foo-bar.",
+    "After I write i write i write.",
+    "that is an echo is an echo",
+    "don't miss the biggest illusion miss the biggest illusion.",
+]
 
 def disabled_check(text: str) -> list[ResultCheck]:
     """Check the text."""

@@ -24,7 +24,7 @@ examples_fail = [
     "I feel sick as a dog.",
     "You, me and that uphill battle.",
     "You, me and that uphill battle with him.",
-    # diction
+    # gnu diction
     "It's a matter of concern.",
     # nigel
     "He's sick and tired of it.",

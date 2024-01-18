@@ -17,6 +17,13 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"In recent years, an increasing number of scientists have studied the problem in detail.",
+]
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

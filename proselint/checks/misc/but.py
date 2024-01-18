@@ -18,6 +18,16 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    'But I never start with the word "but".',
+    """I never start with the word "but",
+but might use it after a linebreak.""",
+]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Do not start a paragraph with a 'But'."""

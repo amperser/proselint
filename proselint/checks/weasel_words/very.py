@@ -19,6 +19,13 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"The book was very interesting.",
+]
 
 @limit_results(1)
 def check(text: str) -> list[ResultCheck]:

@@ -18,6 +18,14 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+"There were several phenomenons.",
+"I give you many kudos.",
+]
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

@@ -19,6 +19,16 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"I once met a gay man.",
+]
+
+examples_fail = [
+    "This is the famous first line.",
+    "I once met a fag.",
+]
+
 
 def check(text: str) -> list[ResultCheck]:
     """Flag offensive words based on the GLAAD reference guide."""

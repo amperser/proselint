@@ -16,7 +16,26 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import simple_existence_check
 
-# TODO: test the checks below
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "The preamble is composed of eight OFDM symbols from 1 to 4 kHz.",
+    "It can vary by 9 dB between locations.",
+    "With a 1 s duration.",
+    "In a lake at a 5 m distance.",
+    "A Google Pixel 4, a OnePlus 8 Pro, and a Samsung Galaxy Watch 4.",
+    "Subjects distanced by 2 m.",
+    "There is a high noise amplitude below 1 kHz,",
+    "as observed variation of 9 dB can be attributed",
+    "because (1) smaller spacing and (2) something else",
+    "In Fig. 3 we see the frequency response of the chirp.",
+    "1 INTRODUCTION",
+    """2 BACKGROUND: CHARACTERISTICS OF MOBILE DEVICES IN WATER
+this is a new sentence.""",
+]
+
+examples_fail = [
+    "remainder of only 7 symbol",
+]
 
 
 def check_sentence(text: str) -> list[ResultCheck]:

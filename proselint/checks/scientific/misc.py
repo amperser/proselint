@@ -23,7 +23,20 @@ from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 from proselint.checks import simple_existence_check
 
-# TODO: test the checks below
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I walked 30km to get there.",
+    "that statement is ridiculous.",
+    "Attempts were made to get there.",
+    "This works not very well.",
+    "this is a low doped region.",
+    "The progress is huge.",
+    "This shows a systematical error.",
+    "We present you something I built.",
+]
 
 
 def check_num_unit(text: str) -> list[ResultCheck]:
@@ -36,7 +49,7 @@ def check_num_unit(text: str) -> list[ResultCheck]:
         "here '{}'."
     )
     regex = Pd.sep_in_txt.value.format(
-        r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n)"
+        r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n|Hz|dB|%)"
     )
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
@@ -46,7 +59,12 @@ def check_emotion(text: str) -> list[ResultCheck]:
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.emotion"
     msg = "Scientific writing should not contain emotionally laden terms like '{}'"
-    items = ["ridiculous", "unfortunately"]
+    items = [
+        "ridiculous",
+        "unfortunately",
+        "obvious",
+        "obviously",
+    ]
     return existence_check(text, items, err, msg)
 
 
@@ -162,14 +180,15 @@ def check_preferred(text: str) -> list[ResultCheck]:
 
 def check_this_vs_those(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L812
+    # TODO: magnet for false positives -> remove? seems niche
     err = "scientific.misc.this_vs_those"
-    msg = "Wrong plural for '{}' -> use 'those *'"
+    msg = "(Maybe) wrong plural for '{}' -> use 'those *'"
     exceptions = [
         "this results in",
         r"this \w+ss\b",
         r"this is\b",
-        r"this (agrees|allows|cancels|corresponds|enables)",
-        r"this (explains|hypothesis|involves|leads|shows|suggests|thesis)",
+        r"this (agrees|allows|cancels|corresponds|enables|explains|has)",
+        r"this (hypothesis|involves|leads|reduces|shows|suggests|thesis)",
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results = []
@@ -187,7 +206,7 @@ def check_we_or_i(text: str) -> list[ResultCheck]:
     msg = "Decide if you alone ('{}') or a team ('{}') has written the report"
 
     word_pairs = [[Pd.sep_in_txt.value.format("we"), Pd.sep_in_txt.value.format("i")]]
-    return consistency_check(text, word_pairs, err, msg)
+    return consistency_check(text, word_pairs, err, msg, ignore_case=True)
 
 
 # TODO: skipped in TNT:

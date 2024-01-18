@@ -20,6 +20,20 @@ from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 from proselint.checks import simple_existence_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"Smoke Stone Age with nothing flagged.",
+"Smoke winter with nothing flagged",
+]
+
+examples_fail = [
+    "It goes back to the stone age.",
+"A nice day during Winter.",
+"A nice day in Spring.",
+"A nice day in june.",
+"It happened on friday.",
+]
+
 
 def check_terms(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

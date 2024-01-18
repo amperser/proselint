@@ -19,6 +19,15 @@ from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+"The not-so-hotly-contested result was fine.",
+]
+
+examples_fail = [
+"There were across the board discounts.",
+"He ran swiftly-fast.",
+]
 
 def check_ly(text: str) -> list[ResultCheck]:
     """Check the text."""
