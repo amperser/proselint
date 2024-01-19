@@ -12,6 +12,26 @@ categories: writing
 A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
+
+matching repetition for one word:
+- V0: ((?<!\\)\b\w+)\s+\1\b -> from TNT
+    - only detects one repetition
+    - ignores latex "\word word"
+- V1: \b(?<!\-)(\w+)(\b\s\1)+\b -> from proselint
+    - middle \b is expensive & not needed
+    - ignores "w1-w2 w2"
+- V2: \b(?<!\\|\-)(\w+)(\s\1)+\b
+    - combines ignores of V0 & V1
+    - still 14.3k steps on demo
+- V3 -> see v2 below
+
+Two or more:
+- v0: (\b\w+\s+\w+\b)\s+\1\b -> inefficient (19.2k steps on demo)
+- v0.1: (\b\w+\s+\w+)\s+\1   -> 15.3k Steps on demo
+- v1: (\b\w+\s+\w+)\s+\1     -> 15.5k Steps on demo
+- v2: \b(?<!\\|\-)(\w+(\s+\w+){0,3})(\s+\1)+\b -> 30k steps
+    - replaces all individual regex
+
 """
 from __future__ import annotations
 
@@ -27,6 +47,8 @@ examples_pass = [
     "An antimatter particle",
     "The theory",
     "She had coffee at the Foo-bar bar.",
+    "Don't just play the game - play the game.",
+    "green greenery",
 ]
 
 examples_fail = [
@@ -40,44 +62,19 @@ examples_fail = [
 ]
 
 
-def disabled_check(text: str) -> list[ResultCheck]:
-    """Check the text."""
-    err = "lexical_illusions.misc"
-    msg = "There's a lexical illusion here: a word is repeated."
-    regex = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
-    exceptions = [r"^had had$", r"^that that$"]
-    # TODO: could be removed, regex below finds more, except the unknown "\-" part
-    return simple_existence_check(
-        text,
-        regex,
-        err,
-        msg,
-        exceptions=exceptions,
-    )
-
-
 def check_repetitions(text: str) -> list[ResultCheck]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
     err = "lexical_illusions.misc.tnt"
     msg = "There's a lexical illusion in '{}' - one or more words are repeated."
-    # check for repetition of 1, 2, 3 or 4 words
-    items = [
-        r"((?<!\\)\b\w+)\s+\1\b",  # ignores \EA EA
-        r"(\b\w+\s+\w+\b)\s+\1\b",
-        r"(\b\w+\s+\w+\s+\w+\b)\s+\1\b",
-        r"(\b\w+\s+\w+\s+\w+\s+\w+\b)\s+\1\b",
-    ]  # note: these can't be padded without mod -> \1
+    # check for repetition of 1 to 4 words
+    regex = r"\b(?<!\\|\-)(\w+(\s+\w+){0,3})(\s+\1)+\b"
+    # note: this can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
-    results = []
-    for item in items:
-        results.extend(
-            simple_existence_check(
+    return simple_existence_check(
                 text,
-                item,
+                regex,
                 err,
                 msg,
                 exceptions=exceptions,
             )
-        )
-    return results
