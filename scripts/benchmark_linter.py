@@ -8,7 +8,7 @@ learnings:
     - cached-version is even 60x slower ... -> abs. relevant
     - TODO: find faster alternative to click
 """
-
+import platform
 import subprocess  # noqa: S404
 from pathlib import Path
 from timeit import timeit
@@ -27,6 +27,7 @@ if __name__ == "__main__":
 
     file_path = proselint.path / "demo.md"
     corp_path = Path(__file__).parent.parent / "corpora"
+    _os = platform.system()
 
     _cfg = proselint.config_default
     options = {
@@ -35,8 +36,9 @@ if __name__ == "__main__":
         "parallel": (True, True),
         "parallel-cached": (True, False),
     }
+    _num_checks = len(proselint.tools.get_checks(_cfg))
 
-    print("\n############# lint(demo.md)")
+    print(f"\n############# lint(demo.md) - {_os}, {_num_checks} checks")
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
@@ -53,7 +55,7 @@ if __name__ == "__main__":
             )
             print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
 
-    print("\n############# lint_path(demo.md)")
+    print(f"\n############# lint_path(demo.md) - {_os}, {_num_checks} checks")
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
@@ -67,7 +69,7 @@ if __name__ == "__main__":
             )
             print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
 
-    print("\n############# proselint(demo.md) - parallel")
+    print(f"\n############# proselint(demo.md) - parallel, {_os}, {_num_checks} checks")
 
     cmds = {
         "parallel": ["proselint", file_path.as_posix(), "-o", "compact"],
@@ -95,7 +97,7 @@ if __name__ == "__main__":
         )
         print(f"{_name} took {t1 * 1e3:4.3f} ms")
 
-    print("\n############# lint_path(corpora)")
+    print(f"\n############# lint_path(corpora) - {_os}, {_num_checks} checks")
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
@@ -109,7 +111,7 @@ if __name__ == "__main__":
             )
             print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
 
-    print("\n############# proselint ./corpora")
+    print(f"\n############# proselint ./corpora - {_os}, {_num_checks} checks")
 
     cmds = {
         "parallel": ["proselint", corp_path.as_posix(), "-o", "compact"],

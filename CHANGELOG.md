@@ -18,7 +18,7 @@ serial took 53044.826 ms -> run1
 parallel took 15721.931 ms -> run0
 parallel took 15773.215 ms -> run1
 
-> lint_path(corpora)  	(NEW)
+> lint_path(corpora)  	optimized regex (NEW)
 serial took 31550.519 ms -> run0
 serial took 36539.587 ms -> run1
 parallel took 10411.408 ms -> run0
@@ -65,9 +65,9 @@ Proselint-main (uncached & cached)
 
 Proselint-modernized
 
-- Found 108 lint-warnings in 39.930 s (12 files, 617.45 kiByte) -> serialized
+- Found 108 lint-warnings in 39.930 s (12 files, 617.45 kiByte) -> serialized (old approach)
 - Found 108 lint-warnings in 13.164 s (12 files, 617.45 kiByte) -> serial files, parallel checks
-- Found 108 lint-warnings in 9.931 s (12 files, 617.45 kiByte)  -> global check-executor
+- Found 108 lint-warnings in 9.931 s (12 files, 617.45 kiByte)  -> global check-executor (new approach)
 - Found 108 lint-warnings in 0.011 s (12 files, 617.45 kiByte)  -> cached
 
 #### Linux / WSL
@@ -79,10 +79,10 @@ Proselint-main (uncached & cached)
 
 Proselint-modernized
 
-- Found 108 lint-warnings in 34.521 s (12 files, 617.45 kiByte)
-- Found 108 lint-warnings in 8.248 s (12 files, 617.45 kiByte)
-- Found 108 lint-warnings in 6.098 s (12 files, 617.45 kiByte)
-- Found 108 lint-warnings in 0.044 s (12 files, 617.45 kiByte)
+- Found 108 lint-warnings in 34.521 s (12 files, 617.45 kiByte) -> serialized (old approach)
+- Found 108 lint-warnings in 8.248 s (12 files, 617.45 kiByte)  -> serial files, parallel checks
+- Found 108 lint-warnings in 6.098 s (12 files, 617.45 kiByte)  -> global check-executor (new approach)
+- Found 108 lint-warnings in 0.044 s (12 files, 617.45 kiByte)  -> cached
 
 ### Breaking changes
 
