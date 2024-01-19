@@ -251,9 +251,11 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
-def preferred_forms_check2_pre(items: list) -> list:
+def preferred_forms_check2_pre(items: list, ignore_case: bool = True) -> list:
     padding = Pd.sep_in_txt.value.format(Pd.safe_join.value)
-    return [[item[0], padding.format("|".join(item[1]))] for item in items]
+    flags = re.IGNORECASE if ignore_case else 0
+    #return [[item[0], padding.format("|".join(item[1]))] for item in items]
+    return [[item[0], re.compile(padding.format("|".join(item[1])), flags=flags)] for item in items]
 
 
 def preferred_forms_check2_main(
@@ -261,12 +263,10 @@ def preferred_forms_check2_main(
     items: list,
     err: str,
     msg: str,
-    ignore_case: bool = True,
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form.
     Note: offset-usage corrects for pre-added padding-chars
     """
-    flags = re.IGNORECASE if ignore_case else 0
     return [
         (
             m.start() + 1,
@@ -276,7 +276,8 @@ def preferred_forms_check2_main(
             item[0],
         )
         for item in items
-        for m in re.finditer(item[1], text, flags=flags)
+        #for m in re.finditer(item[1], text, re.IGNORECASE)
+        for m in item[1].finditer(text)
     ]
 
 
