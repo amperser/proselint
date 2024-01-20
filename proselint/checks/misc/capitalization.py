@@ -16,7 +16,6 @@ from __future__ import annotations
 
 from proselint.checks import Pd
 from proselint.checks import ResultCheck
-from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 from proselint.checks import simple_existence_check
 
@@ -35,7 +34,8 @@ examples_fail = [
     "A nice day in june.",
     "It happened on friday.",
     "World War ii",
-    "world War Ii",
+    "World War i",
+    "world War Ii",  # not covered by war-check
     "MCVi",
     "CLx",
     "mCv",
@@ -117,13 +117,8 @@ def check_roman_war(text: str) -> list[ResultCheck]:
     err = "misc.capitalization.roman_num.ww"
     msg = "Don't fail to capitalize roman numeral abbreviation in '{}'."
 
-    numerals_regex = " (I(i*)|i*)"
-
-    items = [
-        f"World War{numerals_regex}",
-    ]
-
-    return existence_check(text, items, err, msg, ignore_case=False)
+    regex = "World War (I(i*)|i*)"
+    return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
 
 def check_roman_numerals(text: str) -> list[ResultCheck]:
@@ -131,8 +126,8 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
     err = "misc.capitalization.roman_num"
     msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
 
-    numerals_regex = Pd.sep_in_txt.value.format(
-        r"M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})"
+    numerals_regex = Pd.words_in_txt.value.format(
+        r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
     )
     results_all = simple_existence_check(
         text, numerals_regex, err, msg, ignore_case=True
@@ -143,6 +138,6 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
         _item: str = text[_start:_end].strip()
         if len(_item) < 2 or _item.isupper():  # TODO: could be < 1
             continue
-        if any(_letter in _item for _letter in "MDCLXVI"):
+        if any(_letter in _item for _letter in "mdclxvi"):
             results_valid.append((_start, _end, _err, _msg, _))
     return results_valid
