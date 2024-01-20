@@ -19,12 +19,14 @@ learnings
 - lru_cache and memoizer only call for trouble during multiprocessing
 
 """
+from pathlib import Path
 from timeit import timeit
 
 import proselint
 from proselint.memoizer import cache
 
-file_path = proselint.path / "demo.md"
+#file_path = proselint.path / "demo.md"
+file_path = Path().cwd() / "sherlock.txt"
 
 _cfg = proselint.config_default
 
@@ -35,7 +37,7 @@ with file_path.open(encoding="utf-8", errors="replace") as fh:
 _checks = proselint.tools.get_checks(_cfg)
 
 print("\n############# Benchmark manually optimized Checks ###################")
-print("\n############# * or with calculations in check()   ###################")
+print("############# * or with calculations in check()   ###################")
 
 specials = [
     "proselint.checks.misc.waxed.check",

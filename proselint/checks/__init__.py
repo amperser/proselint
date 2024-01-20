@@ -166,14 +166,15 @@ def is_quoted(position: int, text: str) -> bool:
 class Pd(str, Enum):
     disabled = r"{}"
     # choose for checks with custom regex
-    safe_join = r"({})"
+    safe_join = r"(?:{})"
     # can be filled with w1|w2|w3|...
 
     whitespace = r"\s{}\s"
     # -> req whitespace around (no punctuation!)
 
     # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
-    sep_in_txt = r"(?:^|\W){}[\W$]"
+    #sep_in_txt = r"\b(?:^|\W){}[\W$]"
+    sep_in_txt = r"\b{}\b"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
@@ -230,7 +231,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    padding = Pd.sep_in_txt.value.format(Pd.safe_join.value)
+    padding = Pd.sep_in_txt.value
     # -> correct regex_offset=(1,-1) below
 
     return [
@@ -242,20 +243,19 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
             item[0],
         )
         for item in items
-        for m in re.finditer(padding.format("|".join(item[1])), text, flags=flags)
+        for m in re.finditer(padding.format(Pd.safe_join.format("|".join(item[1])) if len(item[1])>1 else item[1][0]), text, flags=flags)
     ]
     # TODO: can we speed up str.format() ?
     #       fast-string? or do padding already in checks -> see test below
     #       just optimizing the slowest test improved performance by 5%
-    #       alternative: checks just return config-data to use (can be pickled)
+    #       alternative: checks() just return config-data to use (can be pickled)
     #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
 def preferred_forms_check2_pre(items: list, ignore_case: bool = True) -> list:
-    padding = Pd.sep_in_txt.value.format(Pd.safe_join.value)
+    padding = Pd.sep_in_txt.value
     flags = re.IGNORECASE if ignore_case else 0
-    #return [[item[0], padding.format("|".join(item[1]))] for item in items]
-    return [[item[0], re.compile(padding.format("|".join(item[1])), flags=flags)] for item in items]
+    return [[item[0], re.compile(padding.format(Pd.safe_join.format("|".join(item[1])) if len(item[1])>1 else item[1][0]), flags=flags)] for item in items]
 
 
 def preferred_forms_check2_main(
@@ -276,7 +276,6 @@ def preferred_forms_check2_main(
             item[0],
         )
         for item in items
-        #for m in re.finditer(item[1], text, re.IGNORECASE)
         for m in item[1].finditer(text)
     ]
 
