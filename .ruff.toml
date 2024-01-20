@@ -53,7 +53,7 @@ ignore = [
 preview = true
 
 [lint.per-file-ignores]
-"tests/**" = ["S", "N8", "SLF001", "PLR2004"]
+"tests/**" = ["S", "N8", "SLF001", "PLR", "PLC2701"]
 "proselint/checks/**" = ["RUF001", "RUF002", "RUF003", "TID252"]
 "scripts/**" = ["E501"]
 
