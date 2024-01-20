@@ -47,7 +47,7 @@ structure.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import preferred_forms_check
 
 examples_pass = [
@@ -56,6 +56,7 @@ examples_pass = [
 
 examples_fail = [
     "His story is not honest.",
+    "Her story is a strange one.",
 ]
 
 
@@ -78,7 +79,7 @@ def check(text: str) -> list[ResultCheck]:
         ["he", ["he is a man who"]],
         ["hastily", ["in a hasty manner"]],
         ["this subject", ["this is a subject that"]],
-        ["Her story is strange.", ["Her story is a strange one."]],
+        ["strange", ["a strange one"]],
         ["because", ["the reason why is that"]],
         ["because / since", ["owing to the fact that"]],
         ["although / though", ["in spite of the fact that"]],

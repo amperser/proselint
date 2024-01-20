@@ -14,7 +14,7 @@ Archaism.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -45,4 +45,4 @@ def check(text: str) -> list[ResultCheck]:
         "Thankfully,",
     ]
 
-    return existence_check(text, skunked_terms, err, msg)
+    return existence_check(text, skunked_terms, err, msg, padding=Pd.sep_in_txt)

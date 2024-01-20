@@ -14,6 +14,7 @@ examples_fail = [
     # garner
     "Worse than a fate worse than death.",
     "Since last year, he's got his hands full.",
+    "The thought leader is here to influence.",
     # write good
     "He's a chip off the old block.",
     "You sound like a broken record.",
@@ -25,6 +26,7 @@ examples_fail = [
     "I feel sick as a dog.",
     "You, me and that uphill battle.",
     "You, me and that uphill battle with him.",
+    "Will wonders never cease?",
     # gnu diction
     "It's a matter of concern.",
     # nigel
@@ -111,7 +113,7 @@ def check_cliches_garner(text: str) -> list[ResultCheck]:
         "the straw that broke the camel's back",
         "thick as thieves",
         "thinking outside the box",
-        "thought leaders?",
+        "thought leaders?",  # singular + plural
         "throw the baby out with the bathwater",
         "various and sundry",
         "viable alternative",
@@ -884,7 +886,7 @@ def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
         "whole hog",
         "whole nine yards",
         "wild goose chase",
-        "will wonders never cease?",
+        "will wonders never cease",
         "wisdom of the ages",
         "wise as an owl",
         "wolf at the door",

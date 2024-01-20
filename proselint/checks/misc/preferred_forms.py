@@ -23,6 +23,7 @@ examples_pass = [
 
 examples_fail = [
     "It was almost haloween.",
+    "He is Chief Justice of the Supreme Court of the United States.",
 ]
 
 
@@ -62,7 +63,7 @@ def check(text: str) -> list[ResultCheck]:
             "Chief Justice of the United States",
             [
                 "Chief Justice of the United States Supreme Court",
-                "Chief Justice of the Supreme Court of the United States.",
+                "Chief Justice of the Supreme Court of the United States",
             ],
         ],
         ["chitterlings", ["chitlings", "chitlins"]],

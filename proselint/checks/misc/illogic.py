@@ -25,6 +25,7 @@ examples_fail = [
     "We should preplan the trip.",
     "To coin a phrase from him, No diggity",
     "Not Without your collusion you won't'.",
+    "it fills a much-needed gap"
 ]
 
 
@@ -36,11 +37,11 @@ def check(text: str) -> list[ResultCheck]:
     illogics = [
         "preplan",
         "more than .{1,10} all",
-        "appraisal valuations?",
+        "appraisal valuations?",  # singular & plural
         "(?:i|you|he|she|it|y'all|all y'all|you all|they) could care less",
         "least worst",
-        "much-needed gaps?",
-        "much-needed voids?",
+        "much-needed gaps?",  # singular & plural
+        "much-needed voids?",  # singular & plural
         "no longer requires oxygen",
         "without scarcely",
     ]

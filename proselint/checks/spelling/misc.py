@@ -14,7 +14,7 @@ Points out misspellings.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import preferred_forms_check
 
 examples_pass = [
@@ -23,6 +23,7 @@ examples_pass = [
 
 examples_fail = [
     "I like this alot.",
+    "I stay 'til sundown."
 ]
 
 
@@ -60,7 +61,6 @@ def check(text: str) -> list[ResultCheck]:
         ["glamour", ["glamor"]],
         ["granddad", ["grandad"]],
         ["grandpa", ["granpa"]],
-        ["highfalutin", ["highfaluting", "highfalutin'", "hifalutin"]],
         ["Hippocratic", ["hypocratic"]],
         ["hirable", ["hireable"]],
         ["holistic", ["wholistic"]],
@@ -143,7 +143,6 @@ def check(text: str) -> list[ResultCheck]:
         ["spicy", ["spicey"]],
         ["stupefy", ["stupify"]],
         ["subtly", ["subtley"]],
-        ["till", ["'till?"]],
         ["tinderbox", ["tenderbox"]],
         ["timpani", ["tympani"]],
         ["a timpani", ["a timpano"]],
@@ -152,3 +151,14 @@ def check(text: str) -> list[ResultCheck]:
     ]
 
     return preferred_forms_check(text, misspellings, err, msg)
+
+def check_special(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms."""
+    err = "spelling.misc"
+    msg = "Misspelling. '{}' is the preferred spelling."
+
+    misspellings = [
+        ["highfalutin", ["highfaluting", "highfalutin'", "hifalutin"]],
+        ["till", ["'till?"]],
+    ]
+    return preferred_forms_check(text, misspellings, err, msg, padding=Pd.sep_in_txt)

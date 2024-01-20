@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import preferred_forms_check
 
 examples_pass = [
@@ -14,6 +14,8 @@ examples_fail = [
     "It was blatantly obvious what to do next.",
     "Taking the package was absolutely essential.",
     "He often repeated the old adage.",
+    "So much stuff and etc.",
+    "Associate together in groups."
 ]
 
 
@@ -46,7 +48,7 @@ def check_garner(text: str) -> list[ResultCheck]:
         ["alumnus", ["former alumnus"]],
         ["antithetical", ["directly antithetical"]],
         ["approximately", ["approximately about"]],
-        ["associate", ["associate together(?: in groups)?"]],
+        ["associate", [r"associate together(?: in groups)?"]],
         ["bivouac", ["temporary bivouac", "bivouac camp"]],
         ["blend", ["blend together"]],
         ["but", ["but nevertheless"]],
@@ -285,7 +287,6 @@ def check_atd_1(text: str) -> list[ResultCheck]:
             "estimated at",
             ["estimated at about", "estimated at approximately", "estimated at around"],
         ],
-        ["etc.", ["and etc."]],
         ["evolve", ["evolve over time"]],
         ["exaggerate", ["over exaggerate"]],
         ["exited", ["exited from"]],
@@ -522,3 +523,18 @@ def check_atd_2(text: str) -> list[ResultCheck]:
     ]
 
     return preferred_forms_check(text, redundancies, err, msg)
+
+
+def check_atd_special(text: str) -> list[ResultCheck]:
+    """Check for redundancies from After the Deadline.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+    """
+    err = "redundancy.after_the_deadline"
+    msg = "Redundancy. Use '{}' instead of '{}'."
+    redundancies = [
+        ["etc.", ["and etc."]],
+    ]
+    return preferred_forms_check(text, redundancies, err, msg, padding=Pd.sep_in_txt)
+

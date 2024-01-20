@@ -23,6 +23,7 @@ examples_pass = [
 
 examples_fail = [
     "I would argue that this is a good test.",
+    "You could say that, so to speak."
 ]
 
 
@@ -33,7 +34,7 @@ def check(text: str) -> list[ResultCheck]:
 
     narcissism = [
         "I would argue that",
-        ", so to speak",
+        "so to speak",
         "to a certain degree",
     ]
 

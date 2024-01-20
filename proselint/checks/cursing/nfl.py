@@ -14,8 +14,7 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -28,6 +27,7 @@ examples_fail = [
     "Interracial is the word.",
     "you jackass, be funny.",
     "To rent a fuck or not to rent a fuck.",
+    "get your a.s.s. over here."
 ]
 
 
@@ -49,7 +49,6 @@ def check_a_to_e(text: str) -> list[ResultCheck]:
         "4twenty",
         "60 nine",
         "60nine",
-        "a.s.s.",
         "anal",
         "anal annie",
         "anal sex",
@@ -406,8 +405,6 @@ def check_f_to_h(text: str) -> list[ResultCheck]:
 
     items = [
         "f toyota",
-        "f.i.n.e.",
-        "f.u.c.k.",
         "face fucker",
         "facefucker",
         "faggot",
@@ -623,9 +620,7 @@ def check_f_to_h(text: str) -> list[ResultCheck]:
         "hussy",
         "hustler",
     ]
-    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
-    # TODO: can't be padding=Pd.words_in_txt because of f.u.c.k.
-    # TODO: monkeypatch _check() and test for that!
+    return existence_check(text, items, err, msg)
 
 
 def check_i_to_p(text: str) -> list[ResultCheck]:
@@ -1227,3 +1222,16 @@ def check_q_to_z(text: str) -> list[ResultCheck]:
     ]
 
     return existence_check(text, items, err, msg)
+
+
+def check_abb(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
+        "a.s.s.",
+        "f.i.n.e.",
+        "f.u.c.k.",
+    ]
+    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)

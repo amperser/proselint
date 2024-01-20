@@ -41,7 +41,7 @@ def check_garner(text: str) -> list[ResultCheck]:
         "et. al",
         "et. al.",
     ]
-    return existence_check(text, items, err, msg)
+    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
 
 
 def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:

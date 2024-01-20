@@ -23,6 +23,7 @@ examples_pass = [
 
 examples_fail = [
     "He needed an exact estimate.",
+    "Are we advancing backward?",
 ]
 
 
@@ -34,7 +35,7 @@ def check(text: str) -> list[ResultCheck]:
     oxymorons = [
         "amateur expert",
         "increasingly less",
-        "advancing backwards?",
+        "advancing backwards?",  # plural & singular
         "alludes explicitly to",
         "explicitly alludes to",
         "totally obsolescent",
