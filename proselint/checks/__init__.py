@@ -184,6 +184,7 @@ class Pd(str, Enum):
     # much faster version of sep_in_txt, but a bit unsafer / specialized, as
     # non A-z - characters at start & end of search-string don't match!
 
+
 def consistency_check(
     text: str,
     word_pairs: list,
@@ -264,7 +265,9 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
-def preferred_forms_check2_pre(items: list, ignore_case: bool = True, padding: str = Pd.words_in_txt) -> list:
+def preferred_forms_check2_pre(
+    items: list, ignore_case: bool = True, padding: str = Pd.words_in_txt
+) -> list:
     flags = re.IGNORECASE if ignore_case else 0
     return [
         [

@@ -14,7 +14,7 @@ Airlinese.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, Pd
+from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
 examples_pass = [

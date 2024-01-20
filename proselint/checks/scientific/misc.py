@@ -205,7 +205,9 @@ def check_we_or_i(text: str) -> list[ResultCheck]:
     err = "scientific.misc.we_or_i"
     msg = "Decide if you alone ('{}') or a team ('{}') has written the report"
 
-    word_pairs = [[Pd.words_in_txt.value.format("we"), Pd.words_in_txt.value.format("i")]]
+    word_pairs = [
+        [Pd.words_in_txt.value.format("we"), Pd.words_in_txt.value.format("i")]
+    ]
     return consistency_check(text, word_pairs, err, msg, ignore_case=True)
 
 
