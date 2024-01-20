@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -13,6 +13,7 @@ examples_pass = [
 examples_fail = [
     # garner
     "Worse than a fate worse than death.",
+    "Since last year, he's got his hands full.",
     # write good
     "He's a chip off the old block.",
     "You sound like a broken record.",
@@ -899,7 +900,7 @@ def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
         "you are what you eat",
         "you can run but you can't hide",
         "you only live once",
-        "you're the boss ",
+        "you're the boss",
         "young and foolish",
         "young and vibrant",
     ]

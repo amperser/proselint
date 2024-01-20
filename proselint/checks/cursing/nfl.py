@@ -14,7 +14,7 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -622,7 +622,9 @@ def check_f_to_h(text: str) -> list[ResultCheck]:
         "hussy",
         "hustler",
     ]
-    return existence_check(text, items, err, msg)
+    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
+    # TODO: can't be padding=Pd.words_in_txt because of f.u.c.k.
+    # TODO: monkeypatch _check() and test for that!
 
 
 def check_i_to_p(text: str) -> list[ResultCheck]:

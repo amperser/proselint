@@ -14,7 +14,7 @@ Commercialese.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck, Pd
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check
 
@@ -77,4 +77,4 @@ def check_apprev(text: str) -> list[ResultCheck]:
         ["Free On Board", [r"f\.o\.b\."]],
     ]
 
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check(text, items, err, msg, padding=Pd.sep_in_txt)

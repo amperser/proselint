@@ -48,7 +48,7 @@ def check_repetitions(text: str) -> list[ResultCheck]:
     err = "lexical_illusions.misc.tnt"
     msg = "There's a lexical illusion in '{}' - one or more words are repeated."
     # check for repetition of 1 to 4 words
-    regex = r"\b(?<!\\|\-)(\w+(\s+\w+){0,3})(\s+\1)+\b"
+    regex = r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b"
     # note: this can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
     return simple_existence_check(

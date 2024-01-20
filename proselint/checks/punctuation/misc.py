@@ -63,6 +63,7 @@ def check_comma_digits(text: str) -> list[ResultCheck]:
     # note: tnt has also check for german numbers, not implemented here
     err = "punctuation.misc.comma_digits"
     msg = "In English ',' is used as decimal separator."
-    regex = Pd.sep_in_txt.value.format(r"\d+,\d+")
+    regex = Pd.words_in_txt.value.format(r"\d+,\d+")
+    # NOTE: intentional words_in_txt
 
     return simple_existence_check(text, regex, err, msg)

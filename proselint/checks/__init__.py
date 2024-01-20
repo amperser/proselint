@@ -173,14 +173,16 @@ class Pd(str, Enum):
     # -> req whitespace around (no punctuation!)
 
     # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
-    # sep_in_txt = r"\b(?:^|\W){}[\W$]"
-    sep_in_txt = r"\b{}\b"
+    sep_in_txt = r"(?:^|\W){}[\W$]"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
     #       - whitespace
     #       - punctuation
     #       - newline ...
-
+    # TODO: some cases can use faster non-word-boundary \B
+    words_in_txt = r"\b{}\b"
+    # much faster version of sep_in_txt, but a bit unsafer / specialized, as
+    # non A-z - characters at start & end of search-string don't match!
 
 def consistency_check(
     text: str,
@@ -188,7 +190,7 @@ def consistency_check(
     err: str,
     msg: str,
     ignore_case: bool = True,
-    offset: tuple[int] = (0, 0),
+    offset: tuple[int, int] = (0, 0),
 ) -> list[ResultCheck]:
     """Build a consistency checker for the given word_pairs.
     Note: offset-usage corrects for pre-added padding-chars
@@ -225,19 +227,21 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    offset: tuple[int] = (0, 0),
+    offset: tuple[int, int] = (0, 0),
+    padding: str = Pd.words_in_txt,
 ) -> list[ResultCheck]:
     """Build a checker that suggests the preferred form.
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    padding = Pd.sep_in_txt.value
-    # -> correct regex_offset=(1,-1) below
+    if padding not in {Pd.disabled, Pd.safe_join, Pd.words_in_txt}:
+        # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
+        offset = (offset[0] + 1, offset[1] - 1)
 
     return [
         (
-            m.start() + 1 + offset[0],
-            m.end() - 1 + offset[1],
+            m.start() + offset[0],
+            m.end() + offset[1],
             err,
             msg.format(item[0], m.group(0).strip()),
             item[0],
@@ -260,8 +264,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
-def preferred_forms_check2_pre(items: list, ignore_case: bool = True) -> list:
-    padding = Pd.sep_in_txt.value
+def preferred_forms_check2_pre(items: list, ignore_case: bool = True, padding: str = Pd.words_in_txt) -> list:
     flags = re.IGNORECASE if ignore_case else 0
     return [
         [
@@ -290,8 +293,8 @@ def preferred_forms_check2_main(
     """
     return [
         (
-            m.start() + 1,
-            m.end() - 1,
+            m.start(),  # todo: offset is currently not adapted to pattern
+            m.end(),
             err,
             msg.format(item[0], m.group(0).strip()),
             item[0],
@@ -308,8 +311,8 @@ def existence_check(  # noqa: PLR0913, PLR0917
     msg: str,
     ignore_case: bool = True,
     string: bool = False,  # todo: why not default on?
-    offset: tuple[int] = (0, 0),
-    padding: Pd = Pd.sep_in_txt,
+    offset: tuple[int, int] = (0, 0),
+    padding: Pd = Pd.words_in_txt,
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
     exceptions=(),
@@ -331,7 +334,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(t in excluded_topics for t in tps):
             return errors
 
-    if padding not in {Pd.disabled, Pd.safe_join}:
+    if padding not in {Pd.disabled, Pd.safe_join, Pd.words_in_txt}:
         # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
         offset = (offset[0] + 1, offset[1] - 1)
 
@@ -399,7 +402,7 @@ def detector_50_Cent(text: str) -> tuple[str, float]:
         "In da Club",
         "Interscope",
     ]
-    num_keywords = sum(word in text for word in keywords)
+    num_keywords = sum(word in text for word in keywords)  # TODO: regex
     return "50 Cent", float(num_keywords > 2)
 
 
@@ -432,11 +435,11 @@ def detect_language(text: str) -> str:
     lang_regex = {
         # latin script, sorted by number of native speakers
         # https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers
-        "es": Pd.sep_in_txt.format("y|es|la|el"),
-        "en": Pd.sep_in_txt.format("and|is|the"),
-        "pt": Pd.sep_in_txt.format("e|é|o|a"),
-        "fr": Pd.sep_in_txt.format("et|est|la|le"),
-        "de": Pd.sep_in_txt.format("und|ist|der|die|das"),
+        "es": Pd.words_in_txt.format("(y|es|la|el)"),
+        "en": Pd.words_in_txt.format("(and|is|the)"),
+        "pt": Pd.words_in_txt.format("(e|é|o|a)"),
+        "fr": Pd.words_in_txt.format("(et|est|la|le)"),
+        "de": Pd.words_in_txt.format("(und|ist|der|die|das)"),
     }
     count_max = 0
     lang_max = "en"
