@@ -49,7 +49,7 @@ def check_num_unit(text: str) -> list[ResultCheck]:
         "here '{}'."
     )
     regex = Pd.sep_in_txt.value.format(
-        r"\d+(k|M|G|T|E|m|u|µ|n|p|f)?(s|m|g|A|K|mol|cd|n|Hz|dB|%|N|cal|C|F)"
+        r"\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+"
     )
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
@@ -205,9 +205,10 @@ def check_we_or_i(text: str) -> list[ResultCheck]:
     err = "scientific.misc.we_or_i"
     msg = "Decide if you alone ('{}') or a team ('{}') has written the report"
 
-    word_pairs = [[Pd.sep_in_txt.value.format("we"), Pd.sep_in_txt.value.format("i")]]
+    word_pairs = [[Pd.words_in_txt.value.format("we"), Pd.words_in_txt.value.format("i")]]
     return consistency_check(text, word_pairs, err, msg, ignore_case=True)
 
 
 # TODO: skipped in TNT:
 #       - L812 this vs those
+#     - deg C or deg K is old, deg not used anymore
