@@ -173,7 +173,7 @@ class Pd(str, Enum):
     # -> req whitespace around (no punctuation!)
 
     # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
-    #sep_in_txt = r"\b(?:^|\W){}[\W$]"
+    # sep_in_txt = r"\b(?:^|\W){}[\W$]"
     sep_in_txt = r"\b{}\b"
     # req non-text character around
     # -> finds item as long it is surrounded by any non-word character:
@@ -243,7 +243,15 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
             item[0],
         )
         for item in items
-        for m in re.finditer(padding.format(Pd.safe_join.format("|".join(item[1])) if len(item[1])>1 else item[1][0]), text, flags=flags)
+        for m in re.finditer(
+            padding.format(
+                Pd.safe_join.format("|".join(item[1]))
+                if len(item[1]) > 1
+                else item[1][0]
+            ),
+            text,
+            flags=flags,
+        )
     ]
     # TODO: can we speed up str.format() ?
     #       fast-string? or do padding already in checks -> see test below
@@ -255,7 +263,20 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
 def preferred_forms_check2_pre(items: list, ignore_case: bool = True) -> list:
     padding = Pd.sep_in_txt.value
     flags = re.IGNORECASE if ignore_case else 0
-    return [[item[0], re.compile(padding.format(Pd.safe_join.format("|".join(item[1])) if len(item[1])>1 else item[1][0]), flags=flags)] for item in items]
+    return [
+        [
+            item[0],
+            re.compile(
+                padding.format(
+                    Pd.safe_join.format("|".join(item[1]))
+                    if len(item[1]) > 1
+                    else item[1][0]
+                ),
+                flags=flags,
+            ),
+        ]
+        for item in items
+    ]
 
 
 def preferred_forms_check2_main(
@@ -310,7 +331,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(t in excluded_topics for t in tps):
             return errors
 
-    if padding not in (Pd.disabled, Pd.safe_join):
+    if padding not in {Pd.disabled, Pd.safe_join}:
         # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
         offset = (offset[0] + 1, offset[1] - 1)
 

@@ -12,26 +12,6 @@ categories: writing
 A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
-
-matching repetition for one word:
-- V0: ((?<!\\)\b\w+)\s+\1\b -> from TNT
-    - only detects one repetition
-    - ignores latex "\word word"
-- V1: \b(?<!\-)(\w+)(\b\s\1)+\b -> from proselint
-    - middle \b is expensive & not needed
-    - ignores "w1-w2 w2"
-- V2: \b(?<!\\|\-)(\w+)(\s\1)+\b
-    - combines ignores of V0 & V1
-    - still 14.3k steps on demo
-- V3 -> see v2 below
-
-Two or more:
-- v0: (\b\w+\s+\w+\b)\s+\1\b -> inefficient (19.2k steps on demo)
-- v0.1: (\b\w+\s+\w+)\s+\1   -> 15.3k Steps on demo
-- v1: (\b\w+\s+\w+)\s+\1     -> 15.5k Steps on demo
-- v2: \b(?<!\\|\-)(\w+(\s+\w+){0,3})(\s+\1)+\b -> 30k steps
-    - replaces all individual regex
-
 """
 from __future__ import annotations
 
@@ -72,9 +52,9 @@ def check_repetitions(text: str) -> list[ResultCheck]:
     # note: this can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
     return simple_existence_check(
-                text,
-                regex,
-                err,
-                msg,
-                exceptions=exceptions,
-            )
+        text,
+        regex,
+        err,
+        msg,
+        exceptions=exceptions,
+    )

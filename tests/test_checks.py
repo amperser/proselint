@@ -53,7 +53,7 @@ def get_module_names() -> list[str]:
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
-    """ this checks multiple things:
+    """this checks multiple things:
     - successful import of check
     - example_fail and _pass present in file
     - both example-lists with at least one entry
@@ -76,9 +76,7 @@ def test_check(module_name: str) -> None:
         )
     for example in module.examples_pass:
         for _name, _check in checks.items():  # not-any config
-            assert (
-                _check(example) == []
-            ), f"false positive - {_name}('{example}')"
+            assert _check(example) == [], f"false positive - {_name}('{example}')"
 
     if not hasattr(module, "examples_fail"):
         raise AttributeError(f"'examples_fail' missing in {module_name}")

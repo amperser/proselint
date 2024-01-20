@@ -28,7 +28,7 @@ examples_pass = [
 examples_fail = [
     "See Smith et. al.",
     "i drive 5,5 kmh.",
-    "I usually wait an hour. and then another."
+    "I usually wait an hour. and then another.",
 ]
 
 
