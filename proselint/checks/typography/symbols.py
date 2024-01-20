@@ -61,7 +61,7 @@ def check_copyright_symbol(_text: str) -> list[ResultCheck]:
     """Use the copyright symbol instead of (c)."""
     err = "typography.symbols.copyright"
     msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
-    regex = r"\([cC]\)"
+    regex = r"\([cC]\)\B"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
@@ -71,7 +71,7 @@ def check_trademark_symbol(_text: str) -> list[ResultCheck]:
     """Use the trademark symbol instead of (TM)."""
     err = "typography.symbols.trademark"
     msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
-    regex = r"\(TM\)"
+    regex = r"\(TM\)\B"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
@@ -81,7 +81,7 @@ def check_registered_trademark_symbol(_text: str) -> list[ResultCheck]:
     """Use the registered trademark symbol instead of (R)."""
     err = "typography.symbols.trademark"
     msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
-    regex = r"\([rR]\)"
+    regex = r"\([rR]\)\B"
 
     return existence_check(_text, [regex], err, msg, padding=Pd.disabled)
 
