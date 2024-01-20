@@ -25,8 +25,8 @@ from timeit import timeit
 import proselint
 from proselint.memoizer import cache
 
-# file_path = proselint.path / "demo.md"
-file_path = Path().cwd() / "sherlock.txt"
+file_path = proselint.path / "demo.md"
+# file_path = Path().cwd() / "sherlock.txt"
 
 _cfg = proselint.config_default
 

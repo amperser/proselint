@@ -14,6 +14,7 @@ Symbols.
 """
 from __future__ import annotations
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -35,4 +36,4 @@ def check(text: str) -> list[ResultCheck]:
         r"\$[\d]* ?(?:dollars|usd|us dollars)",
     ]
 
-    return existence_check(text, symbols, err, msg)
+    return existence_check(text, symbols, err, msg, padding=Pd.sep_in_txt)

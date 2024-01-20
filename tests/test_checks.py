@@ -51,6 +51,8 @@ def get_module_names() -> list[str]:
     return result
 
 
+# ######### Unittests
+
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
     """this checks multiple things:
