@@ -14,17 +14,15 @@ Points out misspellings.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, Pd
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
 ]
 
-examples_fail = [
-    "I like this alot.",
-    "I stay 'til sundown."
-]
+examples_fail = ["I like this alot.", "I stay 'til sundown."]
 
 
 def check(text: str) -> list[ResultCheck]:
@@ -128,6 +126,7 @@ def check(text: str) -> list[ResultCheck]:
         ["non sequitur", ["non sequiter", "non sequitar", "non sequitor"]],
         ["nouveau riche", ["nouveau rich"]],
         ["occurred", ["occured"]],
+        ["off-the-shelf", ["of-the-shelf"]],
         ["plantar fasciitis", ["planter fasciitis", "plantar fascitis"]],
         ["pledgeable", ["pledgable", "pledgeble"]],
         ["portentous", ["portentuous", "portentious"]],
@@ -151,6 +150,7 @@ def check(text: str) -> list[ResultCheck]:
     ]
 
     return preferred_forms_check(text, misspellings, err, msg)
+
 
 def check_special(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""

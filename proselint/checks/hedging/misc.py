@@ -23,7 +23,7 @@ examples_pass = [
 
 examples_fail = [
     "I would argue that this is a good test.",
-    "You could say that, so to speak."
+    "You could say that, so to speak.",
 ]
 
 

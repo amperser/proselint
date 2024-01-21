@@ -25,7 +25,7 @@ examples_fail = [
     "We should preplan the trip.",
     "To coin a phrase from him, No diggity",
     "Not Without your collusion you won't'.",
-    "it fills a much-needed gap"
+    "it fills a much-needed gap",
 ]
 
 

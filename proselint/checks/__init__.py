@@ -348,7 +348,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     rx = padding.format(re_items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
-        if any(re.search(exception, txt) for exception in exceptions):
+        if any(re.search(exception, txt, flags=flags) for exception in exceptions):
             continue
         errors.append(
             (m.start() + offset[0], m.end() + offset[1], err, msg.format(txt), None),
@@ -363,6 +363,7 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
+    unicode: bool = True,
     exceptions=(),
 ):
     """Build a checker for single patters.
@@ -374,6 +375,8 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
 
     """
     flags = 0
+    if unicode:
+        flags |= re.UNICODE
     if ignore_case:
         flags |= re.IGNORECASE
     return [
@@ -385,7 +388,9 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
             None,
         )
         for _m in re.finditer(pattern, text, flags=flags)
-        if not any(re.search(exception, _m.group(0)) for exception in exceptions)
+        if not any(
+            re.search(exception, _m.group(0), flags=flags) for exception in exceptions
+        )
     ]
 
 

@@ -25,10 +25,15 @@ from proselint.checks import simple_existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
+    "ignore /30m of this.",
+    "this 5\xa0km is fine.",
+    "this 5 km is also fine - will be flagged by check.numbers",
 ]
 
 examples_fail = [
     "I walked 30km to get there.",
+    "I walked .9km to get there.",
+    "I walked 7.9km to get there.",
     "that statement is ridiculous.",
     "Attempts were made to get there.",
     "This works not very well.",
@@ -45,12 +50,13 @@ def check_num_unit(text: str) -> list[ResultCheck]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "scientific.misc.num_unit"
     msg = (
-        "In scientific writings there is a whitespace between number and its unit, "
-        "here '{}'."
+        "In scientific writings there is a non-breaking space (U+00A0, ~ in latex) "
+        "between number and its unit, here '{}'."
     )
-    regex = Pd.sep_in_txt.value.format(
-        r"\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+"
-    )
+    regex = (r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
+             r"(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+\b")
+    # - start with a space and a number that may contain a decimal.point
+    # - no space afterward, optional exponent, common units
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
 
 
@@ -187,8 +193,8 @@ def check_this_vs_those(text: str) -> list[ResultCheck]:
         "this results in",
         r"this \w+ss\b",
         r"this is\b",
-        r"this (agrees|allows|cancels|corresponds|enables|explains|has)",
-        r"this (hypothesis|involves|leads|reduces|shows|suggests|thesis)",
+        r"this (agrees|allows|cancels|corresponds|enables|ensures|explains|has)",
+        r"this (hypothesis|involves|indicates|leads|reduces|shows|suggests|thesis)",
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results = []

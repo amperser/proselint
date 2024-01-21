@@ -14,12 +14,11 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, Pd
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
-examples_pass = [
-    "Smoke phrase with nothing flagged.",
-]
+examples_pass = ["Smoke phrase with nothing flagged.", "get your axsysz over here."]
 
 examples_fail = [
     "The QB is named ball licker.",
@@ -27,7 +26,7 @@ examples_fail = [
     "Interracial is the word.",
     "you jackass, be funny.",
     "To rent a fuck or not to rent a fuck.",
-    "get your a.s.s. over here."
+    "get your a.s.s. over here.",
 ]
 
 
@@ -1230,8 +1229,8 @@ def check_abb(text: str) -> list[ResultCheck]:
     msg = "The NFL won't print this word on a jersey."
 
     items = [
-        "a.s.s.",
-        "f.i.n.e.",
-        "f.u.c.k.",
+        r"a\.s\.s\.",
+        r"f\.i\.n\.e\.",
+        r"f\.u\.c\.k\.",
     ]
     return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)

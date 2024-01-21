@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck, Pd
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check
 
 examples_pass = [
@@ -14,8 +15,8 @@ examples_fail = [
     "It was blatantly obvious what to do next.",
     "Taking the package was absolutely essential.",
     "He often repeated the old adage.",
-    "So much stuff and etc.",
-    "Associate together in groups."
+    "So much stuff and etc. happened in",
+    "Associate together in groups.",
 ]
 
 
@@ -534,7 +535,6 @@ def check_atd_special(text: str) -> list[ResultCheck]:
     err = "redundancy.after_the_deadline"
     msg = "Redundancy. Use '{}' instead of '{}'."
     redundancies = [
-        ["etc.", ["and etc."]],
+        ["etc.", [r"\band etc\."]],
     ]
-    return preferred_forms_check(text, redundancies, err, msg, padding=Pd.sep_in_txt)
-
+    return preferred_forms_check(text, redundancies, err, msg, padding=Pd.disabled)

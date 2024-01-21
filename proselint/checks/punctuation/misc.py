@@ -48,9 +48,19 @@ def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
     """can have false positives after abbreviations"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "punctuation.misc.lower_case"
-    msg = "Is the lower case letter correct after the punctuation?"
+    msg = "Is the lower case letter correct after the punctuation? here '{}'."
     regex = r"\b[a-z]+[\.!\?]\s+[a-z]+\b"
-    exceptions = ["al.", "lat.", "vs.", "etc.", "Prof.", "Dr."]  # en, TODO: add more
+    exceptions = [
+        r"al\.",
+        r"lat\.",
+        r"vs\.",
+        r"etc\.",
+        r"Prof\.",
+        r"Dr\.",
+        r"[vV]ol\.",
+        r"[fF]ig\.",
+    ]
+    # en, TODO: add more, sync with numbers/sentence
     # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
     #                   "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
     return simple_existence_check(
