@@ -33,20 +33,20 @@ ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 
 def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
     """Extract the checks.
-    Rule: fn-name must begin with "check", so check_xyz() is ok
+    All check function names must start with `check`, e.g. `check_xyz`
     """
-    # TODO: benchmark consecutive runs of this
-    #       config should only translate once to check-list
+    # TODO: benchmark consecutive runs of this fn
+    #       the check list generated from config should be static
+    #       and only generated once per lint-run
     checks = []
     check_names = [key for (key, val) in options["checks"].items() if val]
 
     for check_name in check_names:
         try:
-            module = importlib.import_module("." + check_name, "proselint.checks")
+            module = importlib.import_module(f".{check_name}", "proselint.checks")
         except ModuleNotFoundError:
             log.exception(
-                "requested config-flag '%s' not found in proselint.checks",
-                check_name,
+                f"requested config-flag '{check_name}' not found in proselint.checks",
             )
             continue
         checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
@@ -91,7 +91,7 @@ def get_line_and_column(text, position):
     line_no=len(_t)
     column=len(_t[-1])
     # todo: test this fn
-     TODO: like LUT in in_quoted(), it shows that the text should be pre-analyzed
+     TODO: like LUT in is_quoted(), it shows that the text should be pre-analyzed
            just use a list with line-start-positions, store all in text_meta: dict
     """
     line_start_pos = 0
@@ -115,8 +115,8 @@ def is_quoted(position: int, text: str) -> bool:
         )
 
     def find_ranges(_text: str) -> list[tuple[int, int]]:
-        # TODO: optimize, as it is top3 time-waster (of module-functions)
-        #       this could be a 1d array / LUT
+        # FIXME: optimize - this function is one of the 3 most expensive in the module
+        #        this could be a 1-dimensional array or lookup table
         s = 0
         q = pc = ""
         start = None
@@ -151,37 +151,29 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 
 
-# PADDINGS, add more if needed
-# Notes:
-# - () make it safe to put '|'.join(strings) inside (safe for str with whitespace)
-# - TODO: if data is precompiled and
-#           - len(strings)==0 -> skip
-#           - len(strings)==1 -> pad.format("string")
-#           - len(strings)>1 -> pad.format("(" + "|".join(strings) + ")")
-# NOTE: v0.16 turned join-format inside-out for less computation
-# example orig: (?:^|\W)w1[\W$]|(?:^|\W)w2[\W$]|(?:^|\W)w3[\W$]
-# example new:  (?:^|\W)(w1|w2|w3)[\W$]
-# second one runs much more efficient
+# Regex-PADDINGS
+# - these can be handed to the check-functions
+# - most efficient is `words_in_txt` but it does not work
+#   for all use-cases
+# - test with tools like https://regex101.com/ and optimize for low step-count
 class Pd(str, Enum):
     disabled = r"{}"
     # choose for checks with custom regex
+
     safe_join = r"(?:{})"
     # can be filled with w1|w2|w3|...
 
     whitespace = r"\s{}\s"
-    # -> req whitespace around (no punctuation!)
+    # req whitespace around (no punctuation!)
 
-    # sep_in_txt = r"[\W^]{}[\W$]"  # prev. version r"(?:^|\W){}[\W$]"
     sep_in_txt = r"(?:^|\W){}[\W$]"
-    # req non-text character around
-    # -> finds item as long it is surrounded by any non-word character:
-    #       - whitespace
-    #       - punctuation
-    #       - newline ...
-    # TODO: some cases can use faster non-word-boundary \B
+    # finds item as long it is surrounded by any non-word character:
+    # whitespace, punctuation, newline ...
+
     words_in_txt = r"\b{}\b"
-    # much faster version of sep_in_txt, but a bit unsafer / specialized, as
+    # much faster version of sep_in_txt, but more specialized, as
     # non A-z - characters at start & end of search-string don't match!
+    # TODO: some cases can use faster non-word-boundary \B
 
 
 def consistency_check(
@@ -192,7 +184,7 @@ def consistency_check(
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
 ) -> list[ResultCheck]:
-    """Build a consistency checker for the given word_pairs.
+    """Build a consistency checker for the given `word_pairs`.
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
@@ -295,7 +287,7 @@ def preferred_forms_check2_main(
     """
     return [
         (
-            m.start(),  # todo: offset is currently not adapted to pattern
+            m.start(),  # TODO: offset is currently not adapted to pattern
             m.end(),
             err,
             msg.format(item[0], m.group(0).strip()),
@@ -312,7 +304,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    string: bool = False,  # todo: why not default on?
+    string: bool = False,  # TODO: why not default on?
     offset: tuple[int, int] = (0, 0),
     padding: Pd = Pd.words_in_txt,
     dotall: bool = False,
@@ -331,6 +323,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     errors: list[ResultCheck] = []
 
     # If the topic of the text is in the excluded list, return immediately.
+    # TODO: might be removed, as the implementation is bad & not that useful
     if excluded_topics:
         tps = topics(text)
         if any(t in excluded_topics for t in tps):
@@ -368,10 +361,8 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     """Build a checker for single patters.
     in comparison to existence_check:
         - does not work on lists
-        - no padding
-        - excluded topics
-        - offset
-
+        - has no padding & offset
+        - does not exclude topics
     """
     flags = 0
     if unicode:
@@ -464,7 +455,7 @@ def detect_language(text: str) -> str:
 
 
 def limit_results(value: int):
-    """Decorate a check to truncate error output to a specified limit."""
+    """A check decorator that truncates error output to a specified threshold."""
 
     def wrapper(fn):
         @functools.wraps(fn)
@@ -480,9 +471,8 @@ def _truncate_errors(
     errors: list[ResultCheck],
     limit: int,
 ) -> list[ResultCheck]:
-    """If limit was specified, truncate the list of errors.
-
-    Give the total number of times that the error was found elsewhere.
+    """Truncates a list of errors to a given threshold.
+    This also notes how many times the error was encountered prior to truncation.
     """
     if len(errors) > limit:
         start1, end1, err1, msg1, replacements = errors[0]
@@ -498,7 +488,7 @@ def _truncate_errors(
 
 
 def ppm_threshold(threshold: float):
-    """Decorate a check to error if the PPM threshold is surpassed."""
+    """A check decorator that errors if the PPM threshold is surpassed."""
 
     def wrapped(fn):
         @functools.wraps(fn)
@@ -516,7 +506,7 @@ def ppm_threshold(threshold: float):
 
 
 def _threshold_check(errors: list, threshold: float, length: int):
-    """Check that returns an error if the PPM threshold is surpassed."""
+    """Returns an error if the specified PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)
         # statistics only work with big numbers, so add some workarounds
