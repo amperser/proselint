@@ -365,6 +365,26 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     return errors
 
 
+def reverse_existence_check(text, list, err, msg):
+    """Build a checker that prohibits words outside of a set."""
+    # clean the text of punctuation and lowercasing words in the string
+    cleaned_text = re.sub(r"[^a-zA-Z0-9 ]+", "", text)
+    cleaned_text = re.sub(r'[^\w\s]', '', cleaned_text)
+    cleaned_list = cleaned_text.strip().split()
+    cleaned_list = [x.casefold() for x in cleaned_list]
+    lowercase_list = [x.casefold() for x in list]
+
+    # get a list of all words that should not be in the string
+    words_not_in_list = set(cleaned_list) - set(lowercase_list)
+    words_not_in_list = [w for w in words_not_in_list]
+
+    # reuse existence check to get the location
+    # containing the prohibited words
+    if(len(words_not_in_list) == 0):
+        return []
+    return existence_check(text, words_not_in_list, err, msg)
+
+
 def max_errors(limit):
     """Decorate a check to truncate error output to a specified limit."""
     def wrapper(f):

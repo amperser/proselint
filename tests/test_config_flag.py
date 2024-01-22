@@ -26,7 +26,8 @@ def test_load_options_function(isfile):
 
     isfile.side_effect = "tests/test_config_flag_proselintrc.json".__eq__
 
-    overrides = load_options("tests/test_config_flag_proselintrc.json", default)
+    json = "tests/test_config_flag_proselintrc.json"
+    overrides = load_options(json, default)
     assert load_options(conf_default=default)["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
 
@@ -56,8 +57,8 @@ def test_dump_config():
     """Test --dump-default-config and --dump-config"""
     output = runner.invoke(proselint, "--dump-default-config")
     assert json.loads(output.stdout) == default
-
+    comm = "--dump-config --config tests/test_config_flag_proselintrc.json"
     output = runner.invoke(
-        proselint, "--dump-config --config tests/test_config_flag_proselintrc.json")
+        proselint, comm)
     assert json.loads(output.stdout) == json.load(
         open("tests/test_config_flag_proselintrc.json"))
