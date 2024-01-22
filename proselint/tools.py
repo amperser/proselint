@@ -295,6 +295,23 @@ def consistency_check(text, word_pairs, err, msg, offset=0):
     return errors
 
 
+def punctuation_check(text, pattern, err, msg, offset=0):
+    """Build a checker for unnacceptable number of spaces behind puncuation."""
+    errors = []
+
+    period_spaces = re.finditer(pattern, text)
+
+    for inst in period_spaces:
+        errors.append((
+            inst.start() + offset,
+            inst.end() + offset,
+            err,
+            msg,
+            None))
+
+    return errors
+
+
 def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     """Build a checker that suggests the preferred form."""
     if ignore_case:
