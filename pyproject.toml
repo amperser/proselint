@@ -18,7 +18,6 @@ exclude = ["tests/.gitignore"]
 [tool.poetry.dependencies]
 python = "^3.6.1"
 click = "^8.0.0"
-future = "^0.18.2"
 
 [tool.poetry.dev-dependencies]
 gmail = {git = "https://github.com/charlierguo/gmail.git"}
