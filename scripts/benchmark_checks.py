@@ -19,7 +19,6 @@ learnings
 - lru_cache and memoizer only call for trouble during multiprocessing
 
 """
-from pathlib import Path
 from timeit import timeit
 
 import proselint
@@ -104,7 +103,7 @@ for _key, _value in result.items():
     print(f"{_key}: {_value * 1e3:.3f} ms")
 
 _val = list(result.values())
-print(f"count:  {len(_val)}")
+print(f"count:  {len(_val)} checks")
 print(f"min:    {min(_val)} s")
 print(f"median: {_val[round(len(_val) / 2)]} s")
 print(f"mean:   {sum(_val) / len(_val)} s")

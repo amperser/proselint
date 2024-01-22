@@ -12,7 +12,7 @@
   - example new:  `(?:^|\W)(w1|w2|w3)[\W$]`
 
 ```shell
-> lint_path(corpora)   OLD
+> lint_path(corpora)   OLD v0.15
 serial took 50196.394 ms -> run0
 serial took 53044.826 ms -> run1
 parallel took 15721.931 ms -> run0
@@ -41,6 +41,31 @@ parallel took 10132.006 ms -> run1
 - fix checks for punctuation
 - add check for digits at the beginning of sentence, and single digits
 - improve various checks - mostly reduction of computational overhead of regexes
+- move example text into check-files, these get tested by pytest
+	- this approach is unconventional, but it's better maintainable (there were several tests missing, some were broken or testing same thing twice)
+	- also better documentation
+	- downside: slightly slower import of check-modules (unconfirmed)
+- precompiling the regex of the slowest check improves performance significantly
+- fix and improve several checks (less computation, more powerful, pass unittests)
+	- lexical illusions
+	- but
+	- cursing (something like "a.s.s." allowed "amsisa")
+- speedup for not needed safe_join-formatting (+10% in sherlock)
+- speedup for sep_in_txt by setting word-boundry (\b) (+33% in sherlock)
+- speedup by replacing sep_in_txt completely (100x less computation in sherlock)
+- sherlock-benchmark of checks from >500s down to 174s
+- reduce false positives on numbers-checks, use non-breaking space if you need to use numbers
+
+latest benchmark-results, comparable to results above
+
+```
+############# lint_path(corpora) - Linux, 147 checks
+serial took 26687.769 ms -> run0
+serial took 28858.442 ms -> run1
+parallel took 9076.079 ms -> run0
+parallel took 8898.538 ms -> run1
+
+```
 
 ## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)
 

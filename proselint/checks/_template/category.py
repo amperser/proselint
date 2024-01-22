@@ -11,7 +11,7 @@ categories: writing
 
 Note:
 
-- this is just a small example
+- this is just a small example / template
 - there are more lint-checks available in the parent-dir/__init__.py
 - check-fn must at least begin with "check" to be found & used
     - so check() & check_xyz() are fine

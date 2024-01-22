@@ -1,11 +1,10 @@
 """All the checks are organized into modules and placed in subdirectories.
 
 This file contains:
-- contained function-set called by linter
-- _check-functions used by the checks
+- a function set used by the linter
+- utility functions for checks
 
-This submodule gets used for multiprocessing!
-All custom code is contained in here.
+This submodule is thread safe.
 
 """
 
@@ -23,7 +22,7 @@ from proselint.logger import log
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
-# NOTE1: NewType() is too strict here
+# NOTE1: NewType() is too strict here, as it involves explicit type-casting
 # NOTE2: py312 can use -> type ResultCheck = tuple[int, int, str, str, Optional[str]]
 
 

@@ -53,8 +53,10 @@ def check_num_unit(text: str) -> list[ResultCheck]:
         "In scientific writings there is a non-breaking space (U+00A0, ~ in latex) "
         "between number and its unit, here '{}'."
     )
-    regex = (r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
-             r"(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+\b")
+    regex = (
+        r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
+        r"(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+\b"
+    )
     # - start with a space and a number that may contain a decimal.point
     # - no space afterward, optional exponent, common units
     return simple_existence_check(text, regex, err, msg, ignore_case=False)
