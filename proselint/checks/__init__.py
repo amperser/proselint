@@ -365,7 +365,7 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     unicode: bool = True,
     exceptions=(),
-):
+) -> list[ResultCheck]:
     """Build a checker for single patters.
     in comparison to existence_check:
         - does not work on lists

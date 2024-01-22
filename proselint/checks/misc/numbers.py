@@ -30,7 +30,8 @@ examples_pass = [
     "In Fig. 3 we see the frequency response of the chirp.",
     "In Fig.\xa03 we see the frequency response of the chirp.",
     "1 INTRODUCTION",
-    """2 BACKGROUND: CHARACTERISTICS OF MOBILE DEVICES IN WATER
+    "2 Foreground: CHARACTERISTICS OF MOBILE DEVICES IN WATER",
+    """3 BACKGROUND: CHARACTERISTICS OF MOBILE DEVICES IN WATER\n
 this is a new sentence.""",
     "The preamble is composed of eight OFDM symbols from 1 to 4 kHz.",
 ]
@@ -49,10 +50,11 @@ def check_section(text: str) -> list[ResultCheck]:
         "It is untidy to open sentences with a number-digit, "
         "here '{}' -> spell it out or reword (num with unit or decimal places)."
     )
-    regex = r"^\d+(?:\.\d+)?\s[^$\.!\?]{7,}[\.!\?]"
+    regex = r"^\d+(?:\.\d+)?\s[^\v\r\n\.!\?]{7,}[\.!\?]"
     # - starts with newline
     # - look for number, can have punctuation
     # - must be also a sentence (7 chars & end with punctuation) in same line
+    # - \v\r\n is a fix, as python does not seem to honor vertical whitespace \v
     return simple_existence_check(text, regex, err, msg)
 
 
@@ -92,6 +94,8 @@ def check_single_digit(text: str) -> list[ResultCheck]:
         "here '{}' -> spell it out or "
         "use non-break space (U+00A0) if its part of a name."
     )
-    regex = r"\b [0-9][ \.!\?]"
+    regex = r"(?<![\.!\?]) [0-9][ \.!\?](?!to \d+)"
+    # looks for single digit in separate in text (not at beginning of sentence)
+    # but not part of "x to y"
     # TODO: reduce false positives from numbers without decimal point but with unit
     return simple_existence_check(text, regex, err, msg)

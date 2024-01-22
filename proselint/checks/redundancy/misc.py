@@ -15,7 +15,7 @@ examples_fail = [
     "It was blatantly obvious what to do next.",
     "Taking the package was absolutely essential.",
     "He often repeated the old adage.",
-    "So much stuff and etc. happened in",
+    "So much stuff and etc.",
     "Associate together in groups.",
 ]
 
