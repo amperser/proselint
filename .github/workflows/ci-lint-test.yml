@@ -30,7 +30,7 @@ jobs:
           key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
       - name: "[INIT] Install dependencies"
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: pip install poetry && poetry install
+        run: poetry install
     #  - name: "[EXEC] Lint"
     #    run: ./utils ci lint
     #  - name: Run Pre-Commit Tests 🧪
@@ -71,7 +71,7 @@ jobs:
       - name: "[EXEC] Test build package"
         run: poetry build
       - name: "[EXEC] Unit test"
-        run: pytest
+        run: poetry run pytest
 #      - name: "[EXEC] Test"
 #        run: ./utils ci test --coverage
 #      - name: "[EXEC] Upload coverage to Codecov"
