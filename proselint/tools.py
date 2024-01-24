@@ -265,7 +265,7 @@ def lint(input_file, debug=False, config=config.default):
 def assert_error(text, check, n=1):
     """Assert that text has n errors of type check."""
     assert_error.description = f"No {check} error for '{text}'"
-    assert(check in [error[0] for error in lint(text)])
+    assert len([error[0] for error in lint(text) if error[0] == check]) == n
 
 
 def consistency_check(text, word_pairs, err, msg, offset=0):
