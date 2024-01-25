@@ -14,16 +14,18 @@ raises an error marking them as offensive. The New York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Flag offensive words based on the GLAAD reference guide."""
     err = "glaad.offensive_terms"
     msg = "Offensive term. Remove it or consider the context."
 
-    list = [
+    items = [
         "fag",
         "faggot",
         "dyke",
@@ -32,9 +34,9 @@ def check(text):
         "gay agenda",
         "transvestite",
         "homosexual lifestyle",
-        "gay lifestyle"
+        "gay lifestyle",
         # homo - may create false positives without additional context
-        # FIXME use topic detetor to decide whether "homo" is offensive
+        # FIXME use topic detector to decide whether "homo" is offensive
     ]
 
-    return existence_check(text, list, err, msg, join=True, ignore_case=False)
+    return existence_check(text, items, err, msg, ignore_case=False)

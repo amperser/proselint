@@ -12,11 +12,14 @@ categories: writing
 Commercialese.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.commercialese"
     msg = "'{}' is commercialese."
@@ -29,25 +32,40 @@ def check(text):
         "further to yours of",
         "further to your letter",
         "in regard to",
-        r"inst\.",
         "in the amount of",
         "of even date",
         "pending receipt of",
         "please be advised that",
         "please return same",
         "pleasure of a reply",
-        r"prox\.",
         "pursuant to your request",
         "regarding the matter",
         "regret to inform",
         "thanking you in advance",
         "the undersigned",
         "this acknowledges your letter",
-        r"ult\."
         "we are pleased to note",
         "with regard to",
         "your favor has come to hand",
-        "yours of even date"
+        "yours of even date",
     ]
 
-    return existence_check(text, commercialese, err, msg, join=True)
+    return existence_check(text, commercialese, err, msg)
+
+
+def check_abbrev(text: str) -> list[ResultCheck]:
+    """
+    source: https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm
+    """
+    err = "misc.commercialese.abbreviations"
+    msg = "'{}' is commercialese. Depending on audience switch to {}"
+
+    items = [
+        ["this month", [r"inst\."]],
+        ["next month", [r"prox\."]],
+        ["last month", [r"ult\."]],
+        ["cost, insurance, freight", [r"c\.i\.f\."]],
+        ["Free On Board", [r"f\.o\.b\."]],
+    ]
+
+    return preferred_forms_check(text, items, err, msg)

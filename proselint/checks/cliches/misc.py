@@ -1,10 +1,12 @@
 """Cliches are cliché."""
 
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check_cliches_garner(text):
+def check_cliches_garner(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     Garner's Modern American Usage
@@ -13,7 +15,7 @@ def check_cliches_garner(text):
     err = "cliches.garner"
     msg = "'{}' is cliché."
 
-    cliches = [
+    items = [
         "a fate worse than death",
         "alas and alack",
         "at the end of the day",
@@ -94,12 +96,14 @@ def check_cliches_garner(text):
         "wool pulled over our eyes",
         "writ large",
     ]
-    return existence_check(text, cliches, err, msg, join=True)
+    return existence_check(text, items, err, msg)
 
 
-@memoize
-def check_cliches_write_good(text):
+def check_cliches_write_good_a_to_c(text: str) -> list[ResultCheck]:
     """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
 
     source:     write-good
     source_url: https://github.com/btford/write-good
@@ -107,7 +111,7 @@ def check_cliches_write_good(text):
     err = "cliches.write_good"
     msg = "'{}' is a cliché."
 
-    cliches = [
+    items = [
         "a chip off the old block",
         "a clean slate",
         "a dark and stormy night",
@@ -260,6 +264,23 @@ def check_cliches_write_good(text):
         "cute as a button",
         "cute as a puppy",
         "cuts to the quick",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_d_to_j(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "dark before the dawn",
         "day in, day out",
         "dead as a doornail",
@@ -429,6 +450,23 @@ def check_cliches_write_good(text):
         "just a hop, skip, and a jump",
         "just the ticket",
         "justice is blind",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_k_to_o(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "keep a stiff upper lip",
         "keep an eye on",
         "keep it simple, stupid",
@@ -581,6 +619,23 @@ def check_cliches_write_good(text):
         "out on a limb",
         "over a barrel",
         "over the hump",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_p_to_s(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+      so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "pain and suffering",
         "pain in the",
         "panic button",
@@ -700,6 +755,23 @@ def check_cliches_write_good(text):
         "stuffed shirt",
         "sweating blood",
         "sweating bullets",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    NOTE: this was one of the slowest Checks,
+          so it was segmented to even the load for parallelization
+
+    source:     write-good
+    source_url: https://github.com/btford/write-good
+    """
+    err = "cliches.write_good"
+    msg = "'{}' is a cliché."
+
+    items = [
         "take a load off",
         "take one for the team",
         "take the bait",
@@ -806,12 +878,10 @@ def check_cliches_write_good(text):
         "young and foolish",
         "young and vibrant",
     ]
+    return existence_check(text, items, err, msg)
 
-    return existence_check(text, cliches, err, msg, join=True)
 
-
-@memoize
-def check_cliches_gnu_diction(text):
+def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     GNU diction
@@ -820,7 +890,7 @@ def check_cliches_gnu_diction(text):
     err = "cliches.gnu_diction"
     msg = "'{}' is a cliché."
 
-    list = [
+    items = [
         "a matter of concern",
         "all things being equal",
         "as a last resort",
@@ -850,4 +920,168 @@ def check_cliches_gnu_diction(text):
         "you are hereby advised that",
     ]
 
-    return existence_check(text, list, err, msg, join=True, ignore_case=True)
+    return existence_check(text, items, err, msg, ignore_case=True)
+
+
+def check_cliches_nigel(text: str) -> list[ResultCheck]:
+    """Check the text.
+
+    source:     Nigel Ree's Dictionary of Cliches
+    source_url: bit.ly/3sL091j
+    """
+    err = "cliches.nigel"
+    msg = "'{}' is cliché."
+
+    cliches = [
+        "abhors a vacuum",
+        "accident waiting to happen",
+        "Achilles' heel",
+        "acquired taste",
+        "active consideration",
+        "added bonus",
+        "agenda-setting",
+        "agonizing reappraisal",
+        "alive and well",
+        "all-time low",
+        "ample opportunity",
+        "and now, if you'll excuse me",
+        "as every schoolboy knows",
+        "as night follows day",
+        "as surely as night follows day",
+        "at daggers drawn",
+        "at this moment in time",
+        "at this point in time",
+        "auspicious occasion",
+        "back to basics",
+        "baptism of fire",
+        "bare necessities",
+        "bears eloquent testimony",
+        "beggars all description",
+        "best-kept secret",
+        "birth pangs",
+        "bitter experience",
+        "blazing inferno",
+        "brave new world",
+        "breathing space",
+        "brought to a satisfactory conclusion",
+        "caring and sharing",
+        "case of the tail wagging the dog",
+        "categorical denial",
+        "caught up in a sinister web",
+        "caught up in a sinister plot",
+        "chequered career",
+        "chicken and egg situation",
+        "close proximity",
+        "closely knit community",
+        "common decency",
+        "competitive edge",
+        "concerted effort",
+        "concrete jungle",
+        "cream of the crop",
+        "crowd pleaser",
+        "cruellest month",
+        "crumbling edifice",
+        "crushing blow",
+        "crux of the matter",
+        "crux of the case",
+        "crux of the problem",
+        "daunting prospect",
+        "deafening silence",
+        "death knell",
+        "defining moment",
+        "deserving of serious consideration",
+        "dire straits",
+        "dizzy heights",
+        "down memory lane",
+        "draconian powers",
+        "drastic measures",
+        "dream turned to nightmare",
+        "dulcet tones",
+        "earth shattering",
+        "echo these fears",
+        "elder statesman",
+        "end of civilization as we know it",
+        "existing conditions",
+        "exposed to the ravages",
+        "fair sex",
+        "fate worse than death",
+        "flights of fancy",
+        "fly on the wall",
+        "foregone conclusion",
+        "further ado",
+        "gentle sex",
+        "gone but not forgotten",
+        "greatly to be desired",
+        "hair's breadth",
+        "hand in glove",
+        "having said that",
+        "heads must roll",
+        "heads will roll",
+        "heady mixture",
+        "heart of gold",
+        "hearts of gold",
+        "heinous crime",
+        "honeymoon is over for",
+        "hotly contested",
+        "humble abode",
+        "ill-gotten gains",
+        "illustrious dead",
+        "in a very real sense",
+        "in no uncertain terms",
+        "in the cold light of day",
+        "in the land of the living",
+        "in the lap of luxury",
+        "in this day and age",
+        "it was a dark and stormy night",
+        "it was going to be a long night",
+        "it was just like a fairy tale",
+        "just deserts",
+        "killer instinct",
+        "land of the living",
+        "light at the end of the tunnel",
+        "like a dream come true",
+        "like a fish out of water",
+        "long hot summer",
+        "major setback",
+        "man behind the myth",
+        "merciful release",
+        "miles of golden sand",
+        "nail into the coffin",
+        "needs no introduction",
+        "nipped in the bud",
+        "no pun intended",
+        "not a pretty sight",
+        "of paramount importance",
+        "of which more anon",
+        "only time will tell",
+        "rash act",
+        "ravages of time",
+        "redeeming feature",
+        "redeeming features",
+        "rest is history",
+        "rooted objection",
+        "rough old trade",
+        "rude awakening",
+        "select few",
+        "seminal classic",
+        "seminal work",
+        "sick and tired",
+        "sight for sore eyes",
+        "silent majority",
+        "sorely missed",
+        "speculation was rife",
+        "spending spree",
+        "thrown into the melting-pot",
+        "time immemorial",
+        "tragedy struck when",
+        "unbridled passion",
+        "unimpeachable authority",
+        "usual suspects",
+        "when all is said and done",
+        "when the chips are down",
+        "wind of change",
+        "yawning gap",
+    ]
+
+    return existence_check(text, cliches, err, msg, ignore_case=True)
+

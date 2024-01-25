@@ -1,63 +1,46 @@
 """Check that a check is working."""
 
-import codecs
 import os
-from unittest import TestCase
+from pathlib import Path
+
+from proselint.tools import lint
 
 
-class Check(TestCase):
+def assert_error(check: str, text: str, n: int = 1):
+    # TODO: check_in_result - replace remaining
+    """Assert that text has n errors of type check."""
+    assert_error.description = f"No {check} error for '{text}'"
+    assert check in [error[0] for error in lint(text)]
+
+
+class Check:
     """All tests inherit from Check."""
 
-    __test__ = False
-
-    def setUp(self):
-        """Create a placeholder for setup procedure."""
-        pass
-
-    def tearDown(self):
-        """Create a placeholder for teardown procedure."""
-        pass
-
-    @property
-    def this_check(self):
-        """Create a placeholder for the specific check."""
-        raise NotImplementedError
-
-    def passes(self, lst):
-        """Check if the test runs cleanly on the given text."""
-        if isinstance(lst, str):
-            lst = [lst]
-
-        errors = []
-        for text in lst:
-            errors += self.this_check.check.__wrapped__(text)
-
-        return len(errors) == 0
-
-    def wpe_too_high(self):
+    def wpe_too_high(check) -> None:  # todo is this salvagable?
         """Check whether the check is too noisy."""
         min_wpe = 50
 
-        examples_dir = os.path.join(os.getcwd(), "tests", "corpus")
-        examples = os.listdir(examples_dir)
+        examples_path = (
+            Path.cwd() / "tests" / "corpus"
+        )  # TODO: probably old path to corpus
+        examples = os.listdir(examples_path)
 
         for example in examples:
-            example_path = os.path.join(examples_dir, example)
+            example_path = examples_path / example
 
             if ".DS_Store" in example_path:
                 break
 
-            # Compute the number of words per (wpe) error.
-            with codecs.open(example_path, "r", encoding='utf-8') as f:
-                text = f.read()
-                num_errors = len(self.this_check.check.__wrapped__(text))
+            # Compute the number of words per error.
+            with example_path.open(encoding="utf-8") as fh:
+                text = fh.read()
+                num_errors = len(check.__wrapped__(text))
                 num_words = len(text)
 
             try:
                 wpe = 1.0 * num_words / num_errors
             except ZeroDivisionError:
-                wpe = float('Inf')
+                wpe = float("Inf")
 
             # Make sure that
-            assert wpe > min_wpe, \
-                f"{example} has only {round(wpe, 2)} wpe."
+            assert wpe > min_wpe, f"{example} has only {round(wpe, 2)} wpe."

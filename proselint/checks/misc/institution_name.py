@@ -12,11 +12,13 @@ categories: writing
 Institution names.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check_vtech(text):
+def check_vtech(text: str) -> list[ResultCheck]:
     """Suggest the correct name.
 
     source: Virginia Tech Division of Student Affairs
@@ -26,7 +28,9 @@ def check_vtech(text):
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
     institution = [
-        ["Virginia Polytechnic Institute and State University",
-         ["Virginia Polytechnic and State University"]],
+        [
+            "Virginia Polytechnic Institute and State University",
+            ["Virginia Polytechnic and State University"],
+        ],
     ]
     return preferred_forms_check(text, institution, err, msg)

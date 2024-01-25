@@ -12,20 +12,22 @@ categories: writing
 Back-formations.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "pinker.latin"
     msg = "Use English. '{}' is the preferred form."
 
-    list = [
-        ["other things being equal",          ["ceteris paribus"]],
-        ["among other things",                ["inter alia"]],
-        ["in and of itself",                  ["simpliciter"]],
+    items = [
+        ["other things being equal", ["ceteris paribus"]],
+        ["among other things", ["inter alia"]],
+        ["in and of itself", ["simpliciter"]],
         ["having made the necessary changes", ["mutatis mutandis"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

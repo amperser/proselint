@@ -22,11 +22,13 @@ Not guilty beyond a reasonable doubt
 """
 
 
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.not_guilty"
     msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."

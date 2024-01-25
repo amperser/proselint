@@ -1,48 +1,47 @@
 """Generate blog posts from check docstrings."""
 
-from builtins import str
-from builtins import range
-import os
 import ast
-import datetime
+import os
+from datetime import datetime
+from pathlib import Path
+
+project_path = Path(__file__).parent.parent
+checks_path = project_path / "proselint" / "checks"
+listing = os.walk(checks_path)
 
 
-grandparent = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-checks_dir = os.path.join(grandparent, "proselint", "checks")
-listing = os.walk(checks_dir)
-
-
-def is_check(fn):
+def is_check(file_path: Path) -> bool:
     """Check whether a file contains a check."""
-    if not fn[-3:] == ".py":
+    if file_path.suffix != ".py":
         return False
 
-    if fn[-11:] == "__init__.py":
+    if file_path.name == "__init__.py":
         return False
 
-    if "inprogress" in fn:
+    if "inprogress" in file_path.name:
         return False
 
     return True
 
 
-for root, subdirs, files in listing:
+for root, _, files in listing:
+    root_path = Path(root)
     for file in files:
-        fn = os.path.join(root, file)
-        if is_check(fn):
-            M = ast.parse(''.join(open(os.path.join(checks_dir, fn))))
+        file_path = root_path / file
+        if is_check(file_path):
+            M = ast.parse("".join(file_path.open()))
             docstring = ast.get_docstring(M)
             head, sep, tail = docstring.partition("title: ")
             docstring = head + sep + "     &#58;" + tail[4:]
 
-            post_filename = os.path.join(
-                os.path.join(grandparent, "site", "_posts"),
-                str(datetime.date.today()) + "-" + docstring[0:6] + ".md")
+            post_filename = (
+                project_path
+                / f"site/_posts/{datetime.now().date()}-{docstring[0:6]}.md"
+            )
 
             # Chop off the first two lines
-            for i in range(2):
-                docstring = '\n'.join(docstring.split('\n')[1:])
+            docstring = "\n".join(docstring.split("\n")[2:])
 
             # Create a new post in the blog.
-            with open(post_filename, 'w') as f:
-                f.write(docstring.encode('utf8'))
+            with post_filename.open("xb") as f:  # TODO: added b, so test
+                f.write(docstring.encode("utf8"))

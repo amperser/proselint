@@ -12,81 +12,79 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    err = "misc.captalization"
+    err = "misc.capitalization"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
-    list = [
-        ["Stone Age",          ["stone age"]],
-        ["space age",          ["Space Age"]],
-        ["the American West",  ["the American west"]],
-        ["Mother Nature",      ["mother nature"]],
+    items = [
+        ["Stone Age", ["stone age"]],
+        ["space age", ["Space Age"]],
+        ["the American West", ["the American west"]],
+        ["Mother Nature", ["mother nature"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-# @memoize
-# def check_seasons(text):
-#     """Suggest the preferred forms."""
-#     err = "MAU102"
-#     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
+def check_seasons(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms."""
+    err = "MAU102"
+    msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
+    items = [
+        ["winter", ["Winter"]],
+        # ["fall",          ["Fall"]],
+        ["summer", ["Summer"]],
+        ["spring", ["Spring"]],
+    ]
 
-#     list = [
-#         # ["winter",        ["Winter"]],
-#         # ["fall",          ["Fall"]],
-#         # ["summer",        ["Summer"]],
-#         # ["spring",        ["Spring"]],
-#     ]
-
-#     return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-@memoize
-def check_months(text):
+def check_months(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Months should be capitalized. '{}' is the preferred form."
 
-    list = [
-
-        ["January",         ["january"]],
-        ["February",        ["february"]],
+    items = [
+        ["January", ["january"]],
+        ["February", ["february"]],
         # ["March",           ["march"]],
-        ["April",           ["april"]],
+        ["April", ["april"]],
         # ["May",             ["may"]],
-        ["June",            ["june"]],
-        ["July",            ["july"]],
-        ["August",          ["august"]],
-        ["September",       ["september"]],
-        ["October",         ["october"]],
-        ["November",        ["november"]],
-        ["December",        ["december"]],
+        ["June", ["june"]],
+        ["July", ["july"]],
+        ["August", ["august"]],
+        ["September", ["september"]],
+        ["October", ["october"]],
+        ["November", ["november"]],
+        ["December", ["december"]],
     ]
+    # TODO: deal better with collisions / false positives
+    #       i.e. "(you|he|...) may proceed" follows a pattern
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)
 
 
-@memoize
-def check_days(text):
+def check_days(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "MAU102"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
-    list = [
-
-        ["Monday",       ["monday"]],
-        ["Tuesday",      ["tuesday"]],
-        ["Wednesday",    ["wednesday"]],
-        ["Thursday",     ["thursday"]],
-        ["Friday",       ["friday"]],
-        ["Saturday",     ["saturday"]],
-        ["Sunday",       ["sunday"]],
+    items = [
+        ["Monday", ["monday"]],
+        ["Tuesday", ["tuesday"]],
+        ["Wednesday", ["wednesday"]],
+        ["Thursday", ["thursday"]],
+        ["Friday", ["friday"]],
+        ["Saturday", ["saturday"]],
+        ["Sunday", ["sunday"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)

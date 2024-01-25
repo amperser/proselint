@@ -12,19 +12,20 @@ categories: writing
 Eponymous adjectives.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "garner.eponymous_adjective"
     msg = "'{}' is the preferred eponymous adjective."
 
     preferences = [
-
-        ["Mephistophelean",    ["Mephistophelian"]],
-        ["Shakespearean",      ["Shakespearian"]],
+        ["Mephistophelean", ["Mephistophelian"]],
+        ["Shakespearean", ["Shakespearian"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

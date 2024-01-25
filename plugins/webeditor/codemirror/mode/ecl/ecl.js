@@ -75,11 +75,11 @@ CodeMirror.defineMode("ecl", function(config) {
     } else if (builtin.propertyIsEnumerable(cur)) {
       if (blockKeywords.propertyIsEnumerable(cur)) curPunc = "newstatement";
       return "builtin";
-    } else { //Data types are of from KEYWORD## 
+    } else { //Data types are of from KEYWORD##
 		var i = cur.length - 1;
 		while(i >= 0 && (!isNaN(cur[i]) || cur[i] == '_'))
 			--i;
-		
+
 		if (i > 0) {
 			var cur2 = cur.substr(0, i + 1);
 	    	if (variable_3.propertyIsEnumerable(cur2)) {

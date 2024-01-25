@@ -12,11 +12,13 @@ categories: writing
 Bureaucratese.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.bureaucratese"
     msg = "'{}' is bureaucratese."
@@ -26,4 +28,4 @@ def check(text):
         "meets with your approval",
     ]
 
-    return existence_check(text, bureaucratese, err, msg, join=True)
+    return existence_check(text, bureaucratese, err, msg)

@@ -12,17 +12,19 @@ categories: writing
 Dates.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "garner.punctuation"
     msg = "Misplaced punctuation. It's 'et al.'"
 
-    list = [
+    items = [
         "et. al",
-        "et. al."
+        "et. al.",
     ]
-    return existence_check(text, list, err, msg, join=True)
+    return existence_check(text, items, err, msg)

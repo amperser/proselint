@@ -12,16 +12,16 @@ categories: writing
 Archaism.
 
 """
-import re
+from __future__ import annotations
 
-from proselint.tools import memoize
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.tense_present"
-    msg = r"'{}'."
+    msg = "'{}'."
 
     illogics = [
         r"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
@@ -37,15 +37,11 @@ def check(text):
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
 
-    errors = []
-    for i in illogics:
-        for m in re.finditer(fr"\s{i}\s", text, flags=re.U | re.I):
-            txt = m.group(0).strip()
-            errors.append((
-                m.start() + 1,
-                m.end(),
-                err,
-                msg.format(txt),
-                None))
-
-    return errors
+    return existence_check(
+        text,
+        illogics,
+        err,
+        msg,
+        ignore_case=True,
+        string=True,
+    )

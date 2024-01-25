@@ -1,12 +1,15 @@
 """Mixed metaphors."""
 
-from proselint.tools import (existence_check, max_errors, memoize,
-                             preferred_forms_check)
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
+from proselint.checks import preferred_forms_check
 
 
-@max_errors(1)
-@memoize
-def check_bottleneck(text):
+@limit_results(1)
+def check_bottleneck(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
@@ -14,7 +17,7 @@ def check_bottleneck(text):
     """
     err = "mixed_metaphors.misc.bottleneck"
     msg = "Mixed metaphor — bottles with big necks are easy to pass through."
-    list = [
+    items = [
         "biggest bottleneck",
         "big bottleneck",
         "large bottleneck",
@@ -24,11 +27,10 @@ def check_bottleneck(text):
         "massive bottleneck",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)
 
 
-@memoize
-def check_misc(text):
+def check_misc(text: str) -> list[ResultCheck]:
     """Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage
@@ -38,12 +40,11 @@ def check_misc(text):
     msg = "Mixed metaphor. Try '{}'."
 
     preferences = [
-
-        ["cream rises to the top",    ["cream rises to the crop"]],
-        ["fasten your seatbelts",     ["button your seatbelts"]],
-        ["a minute to decompress",    ["a minute to decompose"]],
+        ["cream rises to the top", ["cream rises to the crop"]],
+        ["fasten your seatbelts", ["button your seatbelts"]],
+        ["a minute to decompress", ["a minute to decompose"]],
         ["sharpest tool in the shed", ["sharpest marble in the (shed|box)"]],
-        ["not rocket science",        ["not rocket surgery"]],
+        ["not rocket science", ["not rocket surgery"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

@@ -12,30 +12,35 @@ categories: writing
 Phrasal adjectives.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check_ly(text):
+def check_ly(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "garner.phrasal_adjectives.ly"
-    msg = """No hyphen is necessary in phrasal adjectives with an adverb
-              ending in -ly, unless the -ly adverb is part of a longer
-              phrase"""
+    msg = (
+        "No hyphen is necessary in phrasal adjectives with an adverb "
+        "ending in -ly, unless the -ly adverb is part of a longer phrase"
+    )
 
-    regex = r"\s[^\s-]+ly-"
+    items = [r"\s[^\s-]+ly-"]
 
-    return existence_check(text, [regex], err, msg,
-                           require_padding=False, offset=-1)
+    return existence_check(
+        text, items, err, msg, padding=Pd.disabled, offset=-1
+    )
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"
-    msg = """Hyphenate '{1}', a phrasal adjective, as '{0}'."""
+    msg = "Hyphenate '{1}', a phrasal adjective, as '{0}'."
 
-    list = [
+    items = [
         ["across-the-board discounts", ["across the board discounts"]],
         ["acute-care treatment", ["acute care treatment"]],
         ["agreed-upon answer", ["agreed upon answer"]],
@@ -61,8 +66,10 @@ def check(text):
         ["hit-and-run statute", ["hit and run statute"]],
         ["HIV-negative person", ["HIV negative person"]],
         ["HIV-positive person", ["HIV positive person"]],
-        ["information-technology personnel",
-            ["information technology personnel"]],
+        [
+            "information-technology personnel",
+            ["information technology personnel"],
+        ],
         ["intellectual-property rights", ["intellectual property rights"]],
         ["interest-group pressures", ["interest group pressures"]],
         ["joint-stock company", ["joint stock company"]],
@@ -122,18 +129,19 @@ def check(text):
         ["stained-glass window", ["stained glass window"]],
         ["free-range chicken", ["free range chicken"]],
         ["free-range poultry", ["free range poultry"]],
-        ["non-profit-making organization",
-            ["non profit making organization",
-             "non-profit making organization",
-             "non profit-making organization"]],
-
-
+        [
+            "non-profit-making organization",
+            [
+                "non profit making organization",
+                "non-profit making organization",
+                "non profit-making organization",
+            ],
+        ],
         # Harmony
         ["three-part harmony", ["three part harmony"]],
         ["four-part harmony", ["four part harmony"]],
         ["six-part harmony", ["six part harmony"]],
         ["eight-part harmony", ["eight part harmony"]],
-
         # Losses and gains.
         ["first-quarter loss", ["first quarter loss"]],
         ["second-quarter loss", ["second quarter loss"]],
@@ -143,7 +151,6 @@ def check(text):
         ["second-quarter gain", ["second quarter gain"]],
         ["third-quarter gain", ["third quarter gain"]],
         ["fourth-quarter gain", ["fourth quarter gain"]],
-
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

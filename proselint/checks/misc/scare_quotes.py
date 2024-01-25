@@ -12,17 +12,19 @@ categories: writing
 Points out misuse of scare quotes.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "pinker.scare_quotes"
     msg = "Misuse of 'scare quotes'. Delete them."
 
-    narcissism = [
+    items = [
         "the 'take-home message'",
     ]
 
-    return existence_check(text, narcissism, err, msg)
+    return existence_check(text, items, err, msg)

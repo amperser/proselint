@@ -12,17 +12,19 @@ categories: writing
 Take responsibility with the shitty words you wanna say.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "cursing.nword"
     msg = "Take responsibility for the shitty words you want to say."
 
-    list = [
+    items = [
         "the n-word",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

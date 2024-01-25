@@ -12,50 +12,51 @@ categories: writing
 Nonwords.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "nonwords.misc"
     msg = "Nonword, try '{}'."
 
     preferences = [
-
-        ["doubtless' or 'undoubtedly",   ["doubtlessly"]],
-        ["analysis",                     ["analyzation"]],
-        ["annoyance",                    ["annoyment"]],
-        ["confirmand",                   ["confirmant"]],
-        ["confirmands",                  ["confirmants"]],
-        ["converse",                     ["conversate"]],
-        ["cranded",                      ["crained"]],
-        ["disbursement' or 'dispersal",  ["dispersement"]],
+        ["doubtless' or 'undoubtedly", ["doubtlessly"]],
+        ["analysis", ["analyzation"]],
+        ["annoyance", ["annoyment"]],
+        ["confirmand", ["confirmant"]],
+        ["confirmands", ["confirmants"]],
+        ["converse", ["conversate"]],
+        ["cranded", ["crained"]],
+        ["disbursement' or 'dispersal", ["dispersement"]],
         ["discomfort' or 'discomfiture", ["discomforture"]],
-        ["effrontery",                   ["affrontery"]],
-        ["forbearance",                  ["forebearance"]],
-        ["improper",                     ["improprietous"]],
-        ["inclement",                    ["inclimate"]],
+        ["effrontery", ["affrontery"]],
+        ["forbearance", ["forebearance"]],
+        ["improper", ["improprietous"]],
+        ["inclement", ["inclimate"]],
         ["relatively low price' or 'affordability", ["relative inexpense"]],
-        ["inimical",                     ["inimicable"]],
-        ["regardless",                   ["irregardless"]],
-        ["minimize",                     ["minimalize"]],
-        ["minimized",                    ["minimalized"]],
-        ["minimizes",                    ["minimalizes"]],
-        ["minimizing",                   ["minimalizing"]],
+        ["inimical", ["inimicable"]],
+        ["regardless", ["irregardless"]],
+        ["minimize", ["minimalize"]],
+        ["minimized", ["minimalized"]],
+        ["minimizes", ["minimalizes"]],
+        ["minimizing", ["minimalizing"]],
         # muchly
-        ["optimize",                     ["optimalize"]],
-        ["paralysis",                    ["paralyzation"]],
-        ["pettifog",                     ["pettifogger"]],
-        ["proper",                       ["proprietous"]],
-        ["quell' or 'quash",             ["squelch"]],
-        ["seldom",                       ["seldomly"]],
+        ["optimize", ["optimalize"]],
+        ["paralysis", ["paralyzation"]],
+        ["pettifog", ["pettifogger"]],
+        ["proper", ["proprietous"]],
+        ["quell' or 'quash", ["squelch"]],
+        ["seldom", ["seldomly"]],
         # slinged
-        ["thus",                         ["thusly"]],
-        ["categorically",                ["uncategorically"]],
+        ["thus", ["thusly"]],
+        ["categorically", ["uncategorically"]],
         ["undoubtedly' or 'indubitably", ["undoubtably"]],
-        ["unequivocal",                  ["unequivocable"]],
-        ["mercilessly",                  ["unmercilessly"]],
+        ["unequivocal", ["unequivocable"]],
+        ["mercilessly", ["unmercilessly"]],
         ["unrelentingly' or relentlessly", ["unrelentlessly"]],
     ]
 

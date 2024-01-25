@@ -12,18 +12,21 @@ categories: writing
 Hyperbolic language.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "hyperbolic.misc"
     msg = "'{}' is hyperbolic."
 
     words = [
         r"[a-z]*[!]{2,}",
-        r"[a-z]*\?{2,}"
+        r"[a-z]*\?{2,}",
     ]
 
-    return existence_check(text, words, err, msg)
+    return existence_check(text, words, err, msg, padding=Pd.disabled)

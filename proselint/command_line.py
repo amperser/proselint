@@ -1,185 +1,185 @@
 """Command line utility for proselint."""
 
+from __future__ import annotations
+
 import json
 import os
-import shutil
-import subprocess
+import signal
+import subprocess  # noqa: S404
 import sys
-import traceback
+import time
+from pathlib import Path
+from typing import TYPE_CHECKING
+from typing import Optional
+from typing import Union
 
 import click
 
-from .config import default
-from .tools import (close_cache_shelves, close_cache_shelves_after,
-                    errors_to_json, lint, load_options)
+from proselint.tools import output_errors
+
+from . import tools
+from .config_base import Output
+from .config_base import proselint_base
+from .config_paths import demo_file
+from .logger import log
+from .logger import set_verbosity
+from .memoizer import cache
 from .version import __version__
 
-CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
+if TYPE_CHECKING:
+    from types import FrameType
+
+CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 base_url = "proselint.com/"
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-demo_file = os.path.join(proselint_path, "demo.md")
 
 
-# TODO: fix broken corpus
-def timing_test(corpus="0.1.0"):
+def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
+    log.warning("Exiting!")
+    sys.exit(0)
+
+
+def run_benchmark(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
-    import time
-    dirname = os.path.dirname
-    corpus_path = os.path.join(
-        dirname(dirname(os.path.realpath(__file__))), "corpora", corpus)
-    start = time.time()
-    for file in os.listdir(corpus_path):
-        filepath = os.path.join(corpus_path, file)
-        if ".md" == filepath[-3:]:
-            subprocess.call(["proselint", filepath, ">/dev/null"])
-
-    return time.time() - start
-
-
-def clear_cache():
-    """Delete the contents of the cache."""
-    click.echo("Deleting the cache...")
-
-    # see issue #624
-    _delete_compiled_python_files()
-    _delete_cache()
-
-
-def _delete_compiled_python_files():
-    """Remove files with a 'pyc' extension."""
-    for path, _, files in os.walk(os.getcwd()):
-        for fname in [f for f in files if os.path.splitext(f)[1] == ".pyc"]:
-            try:
-                os.remove(os.path.join(path, fname))
-            except OSError:
-                pass
-
-
-def _delete_cache():
-    """Remove the proselint cache."""
-    proselint_cache = os.path.join("proselint", "cache")
-    try:
-        shutil.rmtree(proselint_cache)
-    except OSError:
-        pass
-
-
-def print_errors(filename, errors, output_json=False, compact=False):
-    """Print the errors, resulting from lint, for filename."""
-    if output_json:
-        click.echo(errors_to_json(errors))
-
-    else:
-        for error in errors:
-
-            (check, message, line, column, start, end,
-             extent, severity, replacements) = error
-
-            if compact:
-                filename = "-"
-
-            click.echo(
-                filename + ":" +
-                str(1 + line) + ":" +
-                str(1 + column) + ": " +
-                check + " " +
-                message)
+    # force a clean slate
+    cache.clear()
+    # corpus was removed in https://github.com/amperser/proselint/pull/186
+    log.error("Corpus is unavailable for the time being -> using demo")
+    corpus_path = demo_file.parent  # proselint_path.parent / "corpora" / corpus
+    for _type in ["uncached", "cached"]:
+        start = time.time()
+        for file in os.listdir(corpus_path):
+            filepath = corpus_path / file
+            if filepath.suffix == ".md":
+                subprocess.call(
+                    ["proselint", "--demo", "-o", "compact"],  # noqa: S607
+                    # filepath.as_posix()
+                    timeout=4,
+                    shell=False,  # noqa: S603
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+        duration = time.time() - start
+        log.info("Linting corpus %s took %.3f s.", _type, duration)
+    log.info(
+        "Note: this has full CLI-Overhead, "
+        "to compare linting-performance run 'proselint --demo'",
+    )
+    return duration
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False, type=click.Path(),
-              help="Path to configuration file.")
-@click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
-@click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
-@click.option('--json', '-j', 'output_json', is_flag=True,
-              help="Output as JSON.")
-@click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
-@click.option('--demo', is_flag=True, help="Run over demo file.")
-@click.option('--compact', is_flag=True, help="Shorten output.")
-@click.option('--dump-config', is_flag=True, help="Prints current config.")
-@click.option('--dump-default-config', is_flag=True,
-              help="Prints default config.")
-@click.argument('paths', nargs=-1, type=click.Path())
-@close_cache_shelves_after
-def proselint(paths=None, config=None, version=None, clean=None,
-              debug=None, output_json=None, time=None, demo=None, compact=None,
-              dump_config=None, dump_default_config=None):
+@click.option(
+    "--config",
+    is_flag=False,
+    type=click.Path(exists=True, dir_okay=False, resolve_path=True),
+    help="Path to configuration file.",
+)
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    help="Give verbose output.",
+)
+@click.option("--clean", "-c", is_flag=True, help="Clear the cache and exit.")
+@click.option("--benchmark", "-b", is_flag=True, help="Time on a corpus.")
+@click.option("--demo", is_flag=True, help="Run over demo file.")
+@click.option(
+    "--output-format",
+    "-o",
+    type=click.Choice(Output.names()),
+    default=None,
+    help="Override config to change format.",
+)
+@click.option("--dump-config", is_flag=True, help="Prints current config.")
+@click.option(
+    "--dump-default-config", is_flag=True, help="Prints default config."
+)
+@click.option("--version", is_flag=True)
+@click.argument(
+    "paths", nargs=-1, type=click.Path(exists=True, resolve_path=True)
+)
+def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
+    paths: Union[list[Path], Path, None],
+    config: Optional[Path] = None,
+    clean: bool = False,  # TODO: this should be a subcommand
+    verbose: bool = False,
+    output_format: Optional[str] = None,
+    benchmark: bool = False,
+    demo: bool = False,
+    dump_config: bool = False,  # TODO: this should be a subcommand
+    dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
+    version: bool = False,
+):
     """Create the CLI for proselint, a linter for prose."""
+    signal.signal(signal.SIGTERM, exit_gracefully)
+    signal.signal(signal.SIGINT, exit_gracefully)
+
+    if verbose:
+        set_verbosity(True)
+
+    if version:
+        click.echo("Proselint v%s" % __version__)
+        log.debug("Python    v%s", sys.version)
+        log.debug("Click     v%s", click.__version__)
+        sys.exit(0)
+
+    if clean:
+        cache.clear()
+        sys.exit(0)
+
     if dump_default_config:
-        return print(json.dumps(default, sort_keys=True, indent=4))
+        click.echo(json.dumps(proselint_base, sort_keys=True, indent=4))
+        sys.exit(0)
 
-    config = load_options(config, default)
+    if isinstance(config, str):
+        config = Path(config)
+    config = tools.load_options(config)
+
     if dump_config:
-        print(json.dumps(config, sort_keys=True, indent=4))
-        return
+        click.echo(json.dumps(config, sort_keys=True, indent=4))
+        sys.exit(0)
 
-    if time:
-        # click.echo(timing_test())
-        print("This option does not work for the time being.")
-        return
+    if output_format in Output.names():
+        config["output_format"] = output_format
 
-    # In debug or clean mode, delete cache & *.pyc files before running.
-    if debug or clean:
-        clear_cache()
+    if benchmark:
+        run_benchmark()
+        sys.exit(0)
 
     # Use the demo file by default.
     if demo:
+        log.info("Demo-mode activated")
         paths = [demo_file]
 
-    # Expand the list of directories and files.
-    filepaths = extract_files(list(paths))
+    # prepare list
+    if paths is None:
+        paths = []
+    if isinstance(paths, str):
+        paths = [Path(paths)]
+    if isinstance(paths, Path):
+        paths = [paths]
+    if isinstance(paths, (list, tuple)):
+        paths = [Path(path) for path in paths]
+    log.debug("Paths to lint: %s", paths)
 
-    # Lint the files
-    num_errors = 0
+    ts_start = time.time()
+    results = tools.lint_path(paths, config)
+    duration = time.time() - ts_start
 
-    # Use stdin if no paths were specified
-    if len(paths) == 0:
-        filepaths.append('-')
+    error_sum = 0
+    for _file, _errors in results.items():
+        output_errors(_errors, config, _file)
+        error_sum += len(_errors)
 
-    for fp in filepaths:
-        if fp == '-':
-            fp = '<stdin>'
-            f = sys.stdin
-        else:
-            try:
-                f = click.open_file(fp, 'r', "utf-8", "replace")
-            except Exception:
-                traceback.print_exc()
-                sys.exit(2)
-        errors = lint(f, debug, config)
-        num_errors += len(errors)
-        print_errors(fp, errors, output_json, compact)
-
-    # Return an exit code
-    close_cache_shelves()
-    if num_errors > 0:
-        sys.exit(1)
-    else:
-        sys.exit(0)
+    log.info(
+        "Found %d lint-warnings in %.3f s (%d files, %.2f kiByte)",
+        error_sum,
+        duration,
+        len(results),
+        tools.last_char_count / 1024,
+    )
+    sys.exit(error_sum)  # Return an exit code
 
 
-def extract_files(files):
-    """Expand list of paths to include all text files matching the pattern."""
-    expanded_files = []
-    legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
-
-    for f in files:
-        # If it's a directory, recursively walk through it and find the files.
-        if os.path.isdir(f):
-            for dir_, _, filenames in os.walk(f):
-                for filename in filenames:
-                    fn, file_extension = os.path.splitext(filename)
-                    if file_extension in legal_extensions:
-                        joined_file = os.path.join(dir_, filename)
-                        expanded_files.append(joined_file)
-
-        # Otherwise add the file directly.
-        else:
-            expanded_files.append(f)
-
-    return expanded_files
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     proselint()

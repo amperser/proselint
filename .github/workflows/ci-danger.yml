@@ -10,15 +10,15 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        ruby: [3.0.0]
+        ruby: ["3.0.0"]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
-        uses: ruby/setup-ruby@v1.95.0
+        uses: ruby/setup-ruby@v1.165.1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true

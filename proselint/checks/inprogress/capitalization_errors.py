@@ -15,19 +15,21 @@ and After.
 
 World War Ii should have correct capitalization.
 """
-from proselint.tools import blacklist, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "MSC104"
     msg = "Don't fail to capitalize roman numeral abbreviations."
 
-    pwd_regex = " (I(i*)|i*)"
+    numerals_regex = " (I(i*)|i*)"
 
-    password = [
-        f"World War{pwd_regex}",
+    items = [
+        f"World War{numerals_regex}",
     ]
 
-    return blacklist(text, password, err, msg)
+    return existence_check(text, items, err, msg, ignore_case=False)

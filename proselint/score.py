@@ -1,11 +1,15 @@
-"""Compute the lintscore on the corpus."""
+"""Compute the lintscore on the corpus.
+NOTE: relic, probably broken
+"""
 
 
 import os
 import re
-import subprocess
+import subprocess  # noqa: S404
+from pathlib import Path
 
-proselint_path = os.path.dirname(os.path.realpath(__file__))
+from .config_paths import proselint_path
+from .logger import log
 
 
 def score(check=None):
@@ -28,43 +32,44 @@ def score(check=None):
     """
     tp = 0
     fp = 0
-
-    parent_directory = os.path.dirname(proselint_path)
-    path_to_corpus = os.path.join(parent_directory, "corpora", "0.1.0")
+    # corpus was removed in https://github.com/amperser/proselint/pull/186
+    path_to_corpus = proselint_path.parent / "corpora" / "0.1.0"
     for root, _, files in os.walk(path_to_corpus):
-        files = [f for f in files if f.endswith(".md")]
-        for f in files:
-            fullpath = os.path.join(root, f)
+        files_md = [f for f in files if f.endswith(".md")]
+        root_path = Path(root)
+        for file_md in files_md:
+            fullpath = root_path / file_md
 
             # Run the linter.
-            print(f"Linting {f}")
-            out = subprocess.check_output(["proselint", fullpath])
+            log.debug("Linting %s", file_md)
+            out = subprocess.check_output(["proselint", fullpath])  # noqa: S603, S607
+            # TODO: this can just call lint() ?!?
 
             # Determine the number of errors.
             regex = r".+?:(?P<line>\d+):(?P<col>\d+): (?P<message>.+)"
             num_errors = len(tuple(re.finditer(regex, out)))
-            print(f"Found {num_errors} errors.")
+            log.debug(" -> found %d errors.", num_errors)
 
             # Open the document.
-            subprocess.call(["open", fullpath])
+            subprocess.call(["open", fullpath])  # noqa: S603, S607
 
             # Ask the scorer how many of the errors were false alarms?
+            # TODO: this should not be manual - data can be stored in corpus
             input_val = None
             while not isinstance(input_val, int):
                 try:
                     input_val = input("# of false alarms? ")
                     if input_val == "exit":
-                        return
-                    else:
-                        input_val = int(input_val)
-                        fp += input_val
-                        tp += (num_errors - input_val)
-                except ValueError:
+                        return None
+                    input_val = int(input_val)
+                    fp += input_val
+                    tp += num_errors - input_val
+                except ValueError:  # noqa: PERF203
                     pass
 
-            print(f"Currently {tp} hits and {fp} false alarms\n---")
+            log.debug(" -> currently %d hits and %d false alarms", tp, fp)
 
     if (tp + fp) > 0:
         return tp * (1.0 * tp / (tp + fp)) ** 2
-    else:
-        return 0
+
+    return 0

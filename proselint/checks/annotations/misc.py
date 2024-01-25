@@ -12,16 +12,18 @@ categories: writing
 Annotation left in text.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "annotations.misc"
     msg = "Annotation left in text."
 
-    annotations = [
+    items = [
         "FIXME",
         "FIX ME",
         "TODO",
@@ -30,5 +32,4 @@ def check(text):
         "FIX THIS",
     ]
 
-    return existence_check(
-        text, annotations, err, msg, ignore_case=False, join=True)
+    return existence_check(text, items, err, msg, ignore_case=False)

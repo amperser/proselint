@@ -12,17 +12,19 @@ categories: writing
 Symbols.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.currency"
     msg = "Incorrect use of symbols in {}."
 
     symbols = [
-        r"\$[\d]* ?(?:dollars|usd|us dollars)"
+        r"\$[\d]* ?(?:dollars|usd|us dollars)",
     ]
 
     return existence_check(text, symbols, err, msg)

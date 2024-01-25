@@ -6,15 +6,15 @@ CodeMirror.remoteValidator = function(cm, updateLinting, options) {
 		updateLinting(cm, []);
 		return;
 	}
-	
+
 	function result_cb(error_list)
 	{
 		var found = [];
-		
+
 		for(var i in error_list)
 		{
 			var error = error_list[i];
-			
+
 			var start_line = error.line_no;
 
             var start_char;
@@ -37,7 +37,7 @@ CodeMirror.remoteValidator = function(cm, updateLinting, options) {
                 severity = error.severity;
             else
                 severity = 'error';
-			
+
 			found.push({
 				from: CodeMirror.Pos(start_line - 1, start_char),
 				to: CodeMirror.Pos(end_line - 1, end_char),
@@ -45,10 +45,9 @@ CodeMirror.remoteValidator = function(cm, updateLinting, options) {
 				severity: severity // "error", "warning"
 			});
 		}
-		
+
 		updateLinting(cm, found);
 	}
-	
+
 	options.check_cb(text, result_cb)
 }
-

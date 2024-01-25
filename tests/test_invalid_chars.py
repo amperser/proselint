@@ -5,22 +5,18 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
-
-from .check import Check
+from tests.conftest import print_invoke_return
 
 CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
 
 
-class TestInvalidCharacters(Check):
-    """Test class for testing invalid characters on the CLI"""
+def test_invalid_characters():
+    """Ensure that invalid characters do not break proselint."""
+    runner = CliRunner()
 
-    __test__ = True
+    result = runner.invoke(proselint, CHAR_FILE.as_posix())
+    print_invoke_return(result)
 
-    def test_invalid_characters(self):
-        """Ensure that invalid characters do not break proselint."""
-        runner = CliRunner()
-
-        output = runner.invoke(proselint, CHAR_FILE)
-
-        assert "UnicodeDecodeError" not in output.stdout
-        assert "FileNotFoundError" not in output.stdout
+    assert result.exit_code == 0
+    assert "UnicodeDecodeError" not in result.stdout
+    assert "FileNotFoundError" not in result.stdout

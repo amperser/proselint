@@ -12,16 +12,18 @@ categories: writing
 Words the NFL won't print on a jersey.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check_a_to_e(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
 
-    list = [
+    items = [
         "420",
         "666",
         "2 on 1",
@@ -380,6 +382,16 @@ def check(text):
         "erection",
         "evl",
         "excrement",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_f_to_h(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "f toyota",
         "f.i.n.e.",
         "f.u.c.k.",
@@ -597,6 +609,16 @@ def check(text):
         "hottotrot",
         "hussy",
         "hustler",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_i_to_p(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "i love beer",
         "i luv beer",
         "id ten t",
@@ -867,6 +889,16 @@ def check(text):
         "pussypounder",
         "putt pirate",
         "pwt",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_q_to_z(text: str) -> list[ResultCheck]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "queef",
         "queer",
         "quickie",
@@ -1176,7 +1208,7 @@ def check(text):
         "wuutang",
         "xxx",
         "yellow man",
-        "yellowman"
+        "yellowman",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

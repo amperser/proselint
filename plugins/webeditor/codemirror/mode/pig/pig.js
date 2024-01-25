@@ -1,5 +1,5 @@
 /*
- *	Pig Latin Mode for CodeMirror 2 
+ *	Pig Latin Mode for CodeMirror 2
  *	@author Prasanth Jayachandran
  *	@link 	https://github.com/prasanthj/pig-codemirror-2
  *  This implementation is adapted from PL/SQL mode in CodeMirror 2.
@@ -9,20 +9,20 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 		builtins = parserConfig.builtins,
 		types = parserConfig.types,
 		multiLineStrings = parserConfig.multiLineStrings;
-	
+
 	var isOperatorChar = /[*+\-%<>=&?:\/!|]/;
-	
+
 	function chain(stream, state, f) {
 		state.tokenize = f;
 		return f(stream, state);
 	}
-	
+
 	var type;
 	function ret(tp, style) {
 		type = tp;
 		return style;
 	}
-	
+
 	function tokenComment(stream, state) {
 		var isEnd = false;
 		var ch;
@@ -35,7 +35,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 		}
 		return ret("comment", "comment");
 	}
-	
+
 	function tokenString(quote) {
 		return function(stream, state) {
 			var escaped = false, next, end = false;
@@ -50,10 +50,10 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 			return ret("string", "error");
 		};
 	}
-	
+
 	function tokenBase(stream, state) {
 		var ch = stream.next();
-		
+
 		// is a start of string?
 		if (ch == '"' || ch == "'")
 			return chain(stream, state, tokenString(ch));
@@ -115,7 +115,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 			return ret("variable", "pig-word");
 		}
 	}
-	
+
 	// Interface
 	return {
 		startState: function() {
@@ -124,7 +124,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 				startOfLine: true
 			};
 		},
-		
+
 		token: function(stream, state) {
 			if(stream.eatSpace()) return null;
 			var style = state.tokenize(stream, state);
@@ -141,7 +141,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
  	}
 
 	// builtin funcs taken from trunk revision 1303237
-	var pBuiltins = "ABS ACOS ARITY ASIN ATAN AVG BAGSIZE BINSTORAGE BLOOM BUILDBLOOM CBRT CEIL " 
+	var pBuiltins = "ABS ACOS ARITY ASIN ATAN AVG BAGSIZE BINSTORAGE BLOOM BUILDBLOOM CBRT CEIL "
 	+ "CONCAT COR COS COSH COUNT COUNT_STAR COV CONSTANTSIZE CUBEDIMENSIONS DIFF DISTINCT DOUBLEABS "
 	+ "DOUBLEAVG DOUBLEBASE DOUBLEMAX DOUBLEMIN DOUBLEROUND DOUBLESUM EXP FLOOR FLOATABS FLOATAVG "
 	+ "FLOATMAX FLOATMIN FLOATROUND FLOATSUM GENERICINVOKER INDEXOF INTABS INTAVG INTMAX INTMIN "
@@ -150,18 +150,18 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
 	+ "LONGAVG LONGMAX LONGMIN LONGSUM MAX MIN MAPSIZE MONITOREDUDF NONDETERMINISTIC OUTPUTSCHEMA  "
 	+ "PIGSTORAGE PIGSTREAMING RANDOM REGEX_EXTRACT REGEX_EXTRACT_ALL REPLACE ROUND SIN SINH SIZE "
 	+ "SQRT STRSPLIT SUBSTRING SUM STRINGCONCAT STRINGMAX STRINGMIN STRINGSIZE TAN TANH TOBAG "
-	+ "TOKENIZE TOMAP TOP TOTUPLE TRIM TEXTLOADER TUPLESIZE UCFIRST UPPER UTF8STORAGECONVERTER "; 
-	
+	+ "TOKENIZE TOMAP TOP TOTUPLE TRIM TEXTLOADER TUPLESIZE UCFIRST UPPER UTF8STORAGECONVERTER ";
+
 	// taken from QueryLexer.g
 	var pKeywords = "VOID IMPORT RETURNS DEFINE LOAD FILTER FOREACH ORDER CUBE DISTINCT COGROUP "
 	+ "JOIN CROSS UNION SPLIT INTO IF OTHERWISE ALL AS BY USING INNER OUTER ONSCHEMA PARALLEL "
 	+ "PARTITION GROUP AND OR NOT GENERATE FLATTEN ASC DESC IS STREAM THROUGH STORE MAPREDUCE "
-	+ "SHIP CACHE INPUT OUTPUT STDERROR STDIN STDOUT LIMIT SAMPLE LEFT RIGHT FULL EQ GT LT GTE LTE " 
-	+ "NEQ MATCHES TRUE FALSE "; 
-	
+	+ "SHIP CACHE INPUT OUTPUT STDERROR STDIN STDOUT LIMIT SAMPLE LEFT RIGHT FULL EQ GT LT GTE LTE "
+	+ "NEQ MATCHES TRUE FALSE ";
+
 	// data types
 	var pTypes = "BOOLEAN INT LONG FLOAT DOUBLE CHARARRAY BYTEARRAY BAG TUPLE MAP ";
-	
+
 	CodeMirror.defineMIME("text/x-pig", {
 	 name: "pig",
 	 builtins: keywords(pBuiltins),

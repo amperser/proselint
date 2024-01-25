@@ -11,19 +11,19 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        python: [3.9]
+        python: ["3.10"]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Poetry"
         uses: snok/install-poetry@v1.3
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip

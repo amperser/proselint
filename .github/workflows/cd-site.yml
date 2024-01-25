@@ -11,17 +11,17 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        python: [3.9]
-        ruby: [3.0.0]
+        python: ["3.10"]
+        ruby: ["3.0.0"]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: "[INIT] Install Ruby ${{ matrix.ruby }}"
-        uses: ruby/setup-ruby@v1.95.0
+        uses: ruby/setup-ruby@v1.165.1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true

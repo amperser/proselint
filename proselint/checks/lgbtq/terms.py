@@ -14,25 +14,27 @@ makes more acceptable recommendations. TheNew York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest preferred forms given the reference document."""
     err = "glaad.terms"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
 
-    list = [
-        ["gay man",            ["homosexual man"]],
-        ["gay men",            ["homosexual men"]],
-        ["lesbian",            ["homosexual woman"]],
-        ["lesbians",           ["homosexual women"]],
-        ["gay people",         ["homosexual people"]],
-        ["gay couple",         ["homosexual couple"]],
+    items = [
+        ["gay man", ["homosexual man"]],
+        ["gay men", ["homosexual men"]],
+        ["lesbian", ["homosexual woman"]],
+        ["lesbians", ["homosexual women"]],
+        ["gay people", ["homosexual people"]],
+        ["gay couple", ["homosexual couple"]],
         ["sexual orientation", ["sexual preference"]],
-        ["openly gay",         ["admitted homosexual", "avowed homosexual"]],
-        ["equal rights",       ["special rights"]]
-        ]
+        ["openly gay", ["admitted homosexual", "avowed homosexual"]],
+        ["equal rights", ["special rights"]],
+    ]
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check(text, items, err, msg, ignore_case=False)

@@ -13,11 +13,13 @@ Points out instances where there are two conventions, 1 vs. 2 spaces after
 a period, in the same document.
 
 """
-from proselint.tools import consistency_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import consistency_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "consistency.spacing"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."

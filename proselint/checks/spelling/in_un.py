@@ -1,20 +1,21 @@
 """in- vs. un-."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """in- vs un-."""
     err = "spelling.in_un"
     msg = "in- vs. un-. '{}' is the preferred spelling."
 
     preferences = [
-
-        ["inadvisable",         ["unadvisable"]],
-        ["inalienable",         ["unalienable"]],
-        ["inexpressive",        ["unexpressive"]],
-        ["infeasible",          ["unfeasible"]],
+        ["inadvisable", ["unadvisable"]],
+        ["inalienable", ["unalienable"]],
+        ["inexpressive", ["unexpressive"]],
+        ["infeasible", ["unfeasible"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

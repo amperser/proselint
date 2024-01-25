@@ -12,11 +12,13 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "oxymorons.misc"
     msg = "'{}' is an oxymoron."
@@ -45,4 +47,4 @@ def check(text):
         # "executive secretary",
     ]
 
-    return existence_check(text, oxymorons, err, msg, offset=1, join=True)
+    return existence_check(text, oxymorons, err, msg, offset=1)

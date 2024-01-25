@@ -12,15 +12,19 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "skunked_terms.misc"
-    msg = """'{}' is a bit of a skunked term, impossible to use without issue.
-             Find some other way to say it."""
+    msg = (
+        "'{}' is a skunked term, impossible to use without issue. "
+        "Find another way to say it."
+    )
 
     skunked_terms = [
         "bona fides",

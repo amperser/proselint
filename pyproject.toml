@@ -12,33 +12,40 @@ include = ["proselint/", "tests/", "proselint/demo.md"]
 exclude = ["tests/.gitignore"]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-click = "^8.0.0"
+python = ">=3.8.1"
+click = ">=8.0.0"
+typing_extensions = ">=4.9.0"
 
-[tool.poetry.group.dev.dependencies]
-gmail = { git = "https://github.com/charlierguo/gmail.git" }
-APScheduler = ">=3.5.3"
+[tool.poetry.extras]
+
+
+[tool.poetry.dev-dependencies]
 bumpversion = ">=0.5.3"
-coverage = "^6.1"
+coverage = "^7.4.0"
+mock = ">=2.0.0"
+pydocstyle = "^6.1.1"
+pytest = ">=7.0.0"
+pytest-click = ">=1.1.0"
+pytest-cov = ">=4.0.0"
+twine = ">=4.0.0"
+pre-commit = ">=3.0.0"
+# web-stuff
+APScheduler = ">=3.5.3"
 Flask-API = ">=1.0"
 Flask-Cors = ">=3.0.4"
 Flask = ">=1.1.4"
 Flask-Limiter = ">=1.0.1"
 gunicorn = ">=19.8.1"
-mock = ">=2.0.0"
-pytest = "^7.4.0"
+gmail = { git = "https://github.com/charlierguo/gmail.git" }
 redis = ">=2.10.6"
 requests = ">=2.19.1"
 rq = ">=0.12.0"
-pydocstyle = "^6.3.0"
-twine = "^3.5.0"
-flake8 = "^6.1.0"
-flake8-bugbear = "^23.7.10"
-flake8-import-order = "^0.18.2"
-isort = "^5.12.0"
 
 [tool.poetry.scripts]
 proselint = "proselint.command_line:proselint"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.14"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

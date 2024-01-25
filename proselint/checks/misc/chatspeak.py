@@ -12,11 +12,13 @@ categories: writing
 Chatspeak.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.chatspeak"
     msg = "'{}' is chatspeak. Write it out."
@@ -44,7 +46,7 @@ def check(text):
         "THNX",
         "THX",
         "TTYL",
-        "XOXO"
+        "XOXO",
     ]
 
     return existence_check(text, words, err, msg)

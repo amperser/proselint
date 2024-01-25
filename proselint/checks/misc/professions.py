@@ -12,19 +12,20 @@ categories: writing
 Professions.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.professions"
     msg = "'{}' is the name of that job."
 
     preferences = [
-
-        ["cobbler",    ["shoe repair guy"]],
-        ["geometer",   ["geometrist"]],
+        ["cobbler", ["shoe repair guy"]],
+        ["geometer", ["geometrist"]],
     ]
 
     return preferred_forms_check(text, preferences, err, msg)

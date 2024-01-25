@@ -69,11 +69,11 @@ CodeMirror.defineMode("tiddlywiki", function () {
 
 	function jsTokenBase(stream, state) {
 		var sol = stream.sol(), ch;
-			
+
 		state.block = false;	// indicates the start of a code block.
 
 		ch = stream.peek(); 	// don't eat, to make matching simpler
-		
+
 		// check start of  blocks
 		if (sol && /[<\/\*{}\-]/.test(ch)) {
 			if (stream.match(reCodeBlockStart)) {
@@ -160,7 +160,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
 			if (stream.eat("%")) {
 				return chain(stream, state, twTokenComment);
 			}
-			else if (stream.eat("/")) { // 
+			else if (stream.eat("/")) { //
 				return chain(stream, state, twTokenEm);
 			}
 		}
@@ -234,7 +234,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
 	// tw code
 	function twTokenCode(stream, state) {
 		var ch, sb = state.block;
-		
+
 		if (sb && stream.current()) {
 			return ret("code", "comment");
 		}
@@ -285,7 +285,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
 	// change CSS if needed
 	function twTokenStrike(stream, state) {
 		var maybeEnd = false, ch;
-			
+
 		while (ch = stream.next()) {
 			if (ch == "-" && maybeEnd) {
 				state.tokenize = jsTokenBase;

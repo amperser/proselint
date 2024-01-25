@@ -12,16 +12,19 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
+from proselint.checks import limit_results
 
 
-@max_errors(1)
-@memoize
-def check_repeated_exclamations(text):
+@limit_results(1)
+def check_repeated_exclamations(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "leonard.hell"
     msg = "Never use the words 'all hell broke loose'."
 
-    regex = r"all hell broke loose"
+    items = ["all hell broke loose"]
 
-    return existence_check(text, [regex], err, msg)
+    return existence_check(text, items, err, msg)

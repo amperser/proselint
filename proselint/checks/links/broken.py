@@ -12,15 +12,17 @@ categories: writing
 Check that links are not broken.
 
 """
+from __future__ import annotations
+
 import re
-import urllib.request as urllib_request  # for Python 3
-from socket import error as SocketError
+import urllib.request as ulr
+from typing import TYPE_CHECKING
 
-from proselint.tools import memoize
+if TYPE_CHECKING:
+    from proselint.checks import ResultCheck
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "links.valid"
     msg = "Broken link: {}"
@@ -30,9 +32,11 @@ def check(text):
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
-        re.U | re.X)
 
-    errors = []
+        re.UNICODE | re.VERBOSE,
+    )
+
+    results: list[ResultCheck] = []
     for m in re.finditer(regex, text):
         url = m.group(0).strip()
 
@@ -40,20 +44,19 @@ def check(text):
             url = "http://" + url
 
         if is_broken_link(url):
-            errors.append((m.start(), m.end(), err, msg.format(url), None))
+            results.append((m.start(), m.end(), err, msg.format(url), None))
+        # TODO: this should probably be rate limited (10/s)?
 
-    return errors
+    return results
 
 
-@memoize
-def is_broken_link(url):
+def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
-        request = urllib_request.Request(
-            url, headers={'User-Agent': 'Mozilla/5.0'})
-        urllib_request.urlopen(request).read()
+        request = ulr.Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
+        ulr.urlopen(request).read()  # noqa: S310
         return False
-    except urllib_request.URLError:
+    except ulr.URLError:
         return True
-    except SocketError:
+    except OSError:
         return True

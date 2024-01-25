@@ -13,16 +13,25 @@ A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import Pd
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "lexical_illusions.misc"
     msg = "There's a lexical illusion here: a word is repeated."
     regex = r"\b(?<!\-)(\w+)(\b\s\1)+\b"
     exceptions = [r"^had had$", r"^that that$"]
 
-    return existence_check(text, [regex], err, msg, exceptions=exceptions,
-                           require_padding=False)
+    return existence_check(
+        text,
+        [regex],
+        err,
+        msg,
+        exceptions=exceptions,
+        padding=Pd.disabled,
+    )

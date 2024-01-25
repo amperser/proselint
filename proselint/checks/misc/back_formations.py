@@ -12,17 +12,19 @@ categories: writing
 Back-formations.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import preferred_forms_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
     err = "misc.back_formations"
     msg = "Back-formation. '{}' is the preferred form."
 
-    list = [
-        ["improper",       ["improprietous"]],
+    items = [
+        ["improper", ["improprietous"]],
     ]
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check(text, items, err, msg)

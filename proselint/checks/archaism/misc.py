@@ -12,11 +12,13 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import ResultCheck
+from proselint.checks import existence_check
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "archaism.misc"
     msg = "'{}' is archaic."
@@ -79,4 +81,4 @@ def check(text):
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(text, archaisms, err, msg, join=True)
+    return existence_check(text, archaisms, err, msg)
