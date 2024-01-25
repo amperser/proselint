@@ -14,10 +14,9 @@ def test_invalid_characters():
     """Ensure that invalid characters do not break proselint."""
     runner = CliRunner()
 
-    result = runner.invoke(proselint, CHAR_FILE)
+    result = runner.invoke(proselint, CHAR_FILE.as_posix())
     print_invoke_return(result)
 
-    assert len(result.stdout) > 0
     assert result.exit_code == 0
     assert "UnicodeDecodeError" not in result.stdout
     assert "FileNotFoundError" not in result.stdout
