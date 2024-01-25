@@ -7,7 +7,7 @@ from proselint.tools import lint
 
 
 def assert_error(check: str, text: str, n: int = 1):
-    # todo: check_in_result - replace remaining
+    # TODO: check_in_result - replace remaining
     """Assert that text has n errors of type check."""
     assert_error.description = f"No {check} error for '{text}'"
     assert check in [error[0] for error in lint(text)]
