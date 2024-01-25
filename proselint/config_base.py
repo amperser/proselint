@@ -79,6 +79,7 @@ proselint_base: dict = {
         "nonwords.misc": True,
         "oxymorons.misc": True,
         "psychology.misc": True,
+        "punctuation_spacing.misc": True,
         "redundancy.misc": True,
         "redundancy.ras_syndrome": True,
         "skunked_terms.misc": True,

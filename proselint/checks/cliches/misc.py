@@ -922,7 +922,7 @@ def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
 
     return existence_check(text, items, err, msg, ignore_case=True)
 
-def check_cliches_nigel(text):
+def check_cliches_nigel(text: str) -> list[ResultCheck]:
     """Check the text.
 
     source:     Nigel Ree's Dictionary of Cliches
