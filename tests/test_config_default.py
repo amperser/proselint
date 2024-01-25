@@ -25,7 +25,9 @@ def test_config_default_flag_for_check_missing():
 
     for check_name in check_names:
         module = importlib.import_module("." + check_name, "proselint.checks")
-        checks += [getattr(module, d) for d in dir(module) if re.match("check", d)]
+        checks += [
+            getattr(module, d) for d in dir(module) if re.match("check", d)
+        ]
 
 
 def is_check(file_path: Path) -> bool:
@@ -55,11 +57,15 @@ def test_config_default_check_for_flag_missing():
             file_path = root_path / _file
             if is_check(file_path):
                 if not (file_path.parent / "__init__.py").exists():
-                    raise FileNotFoundError("Check-Directory is missing '__init__.py'")
+                    raise FileNotFoundError(
+                        "Check-Directory is missing '__init__.py'"
+                    )
 
                 flag_name = (
                     str(
-                        file_path.absolute().with_suffix("").relative_to(checks_path),
+                        file_path.absolute()
+                        .with_suffix("")
+                        .relative_to(checks_path),
                     )
                     .replace("\\", ".")
                     .replace("/", ".")

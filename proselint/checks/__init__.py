@@ -24,7 +24,8 @@ from proselint.logger import log
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
 # NOTE1: NewType() is too strict here
-# NOTE2: py312 can use -> type ResultCheck = tuple[int, int, str, str, Optional[str]]
+# NOTE2: py312 can use ->
+# type ResultCheck = tuple[int, int, str, str, Optional[str]]
 
 
 ###############################################################################
@@ -50,15 +51,17 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
                 check_name,
             )
             continue
-        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
+        checks += [
+            getattr(module, d) for d in dir(module) if re.match(r"^check", d)
+        ]
 
     log.debug("Collected %d checks to run", len(checks))
     return checks
 
 
 def run_checks(_check: Callable, _text: str, source: str = "") -> list:
-    # TODO: frozenset is hashable (list without duplicates) -> check-list, result-lists
-    # padding
+    # TODO: frozenset is hashable (list without duplicates)
+    # -> check-list, result-lists padding
     # -> some checks expect words in text and need something around it
     # -> this prevents edge-cases
     _text = f" \n{_text}\n "  # maybe not the fastest OP
@@ -136,7 +139,9 @@ def is_quoted(position: int, text: str) -> bool:
             pc = c
         return ranges
 
-    def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
+    def position_in_ranges(
+        ranges: list[tuple[int, int]], _position: int
+    ) -> bool:
         return any(start <= _position < end for start, end in ranges)
 
     return position_in_ranges(find_ranges(text), position)
@@ -258,7 +263,13 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(re.search(exception, txt) for exception in exceptions):
             continue
         errors.append(
-            (m.start() + 1 + offset, m.end() + offset, err, msg.format(txt), None),
+            (
+                m.start() + 1 + offset,
+                m.end() + offset,
+                err,
+                msg.format(txt),
+                None,
+            ),
         )
         # TODO: doesn't the padding alter the start+end?
 

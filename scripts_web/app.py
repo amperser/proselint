@@ -37,7 +37,9 @@ def worker_function(text: str) -> list[ResultLint]:
 @app.errorhandler(429)
 def ratelimit_handler(e):
     """Inform user that the rate limit has been exceeded."""
-    return make_response(jsonify(status="error", message="Rate limit exceeded."), 429)
+    return make_response(
+        jsonify(status="error", message="Rate limit exceeded."), 429
+    )
 
 
 def check_auth(username, password):
@@ -114,7 +116,9 @@ def lint():
         job = q.fetch_job(request.values["job_id"])
 
         if not job:
-            return jsonify(status="error", message="No job with requested job_id."), 404
+            return jsonify(
+                status="error", message="No job with requested job_id."
+            ), 404
 
         if job.return_value() is None:
             return jsonify(status="error", message="Job is not yet ready."), 202

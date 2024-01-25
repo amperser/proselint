@@ -1,14 +1,18 @@
 """Test user option overrides using --config and load_options"""
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 from click.testing import CliRunner
 
 from proselint.command_line import proselint
 from proselint.config_base import proselint_base
-from proselint.tools import _deepmerge_dicts
+from proselint.tools import _deepmerge_dicts  # noqa: PLC2701
 from proselint.tools import load_options
 from tests.conftest import print_invoke_return
+
+CONFIG_FILE = Path(__file__, "../test-proselintrc.json").resolve()
+FLAG = ["--config", str(CONFIG_FILE)]
 
 
 def test_deepmerge_dicts():
@@ -24,29 +28,34 @@ def test_load_options_function_default():
 
 def test_load_options_function():
     """Test load_options by specifying a user options path"""
-    config_file = Path(__file__).parent / "test_config_flag_proselintrc.json"
-    overrides = load_options(config_file)
+    isfile.side_effect = CONFIG_FILE.__eq__
+
+    overrides = load_options(CONFIG_FILE)
+    default = load_options()
+    assert default == proselint_base
+    assert default["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
+
+    isfile.side_effect = (Path.cwd() / ".proselintrc.json").__eq__
 
 
 def test_config_flag_demo():
     """Test the --config CLI argument"""
-    result = CliRunner().invoke(proselint, ["--demo"])
+    result = CliRunner().invoke(proselint, ["--demo", "-v"])
     print_invoke_return(result)
     assert "uncomparables.misc" in result.stdout
 
 
 def test_config_flag_config():
-    result = CliRunner().invoke(
-        proselint,
-        ["--demo", "--debug", "--config", "tests/test_config_flag_proselintrc.json"],
-    )
+    result = CliRunner().invoke(proselint, ["--demo", "-v", *FLAG])
     print_invoke_return(result)
     assert "uncomparables.misc" not in result.stdout
 
 
 def test_config_flag_config_nonexist():
-    result = CliRunner().invoke(proselint, ["--demo", "--config", "non_existent_file"])
+    result = CliRunner().invoke(
+        proselint, ["--demo", "--config", "non_existent_file"]
+    )
     assert result.exit_code != 0
     assert result.exc_info[0].__name__ == "SystemExit"
     # was FileNotFoundError, but click is now doing pre-checks
@@ -70,9 +79,5 @@ def test_dump_config():
     if triggered, the input-cfg was extended with the default-config
     -> add missing flags to input-cfg!
     """
-    config_file = Path(__file__).parent / "test_config_flag_proselintrc.json"
-    result = CliRunner().invoke(
-        proselint,
-        ["--dump-config", "--config", "tests/test_config_flag_proselintrc.json"],
-    )
-    assert json.loads(result.stdout) == json.load(config_file.open())
+    output = CliRunner().invoke(proselint, ["--dump-config", *FLAG])
+    assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())

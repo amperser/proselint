@@ -3,7 +3,7 @@ from __future__ import annotations
 import contextlib
 import functools
 import hashlib
-import pickle
+import pickle  # noqa: S403
 import shutil
 from concurrent.futures import Executor
 from concurrent.futures import Future
@@ -46,7 +46,8 @@ class Cache:
     def __init__(self) -> None:
         self._data: dict[str, list[ResultLint]] = {}
         self._age: dict[str, int] = {}
-        self._ts_now: int = round(datetime.now().timestamp())
+        # TODO: make timezone aware, possibly use UTC?
+        self._ts_now: int = round(datetime.now().timestamp())  # noqa: DTZ005
         self._modified: bool = False
         self.fname2key: dict[str, str] = {}
 
@@ -67,7 +68,8 @@ class Cache:
         Cache._instance = None
 
     def __getitem__(self, key: str) -> list[ResultLint]:
-        """Allows dict access -> instance["key"], in addition to instance.data["key"]"""
+        """Allows direct dict access.
+        This allows instance["key"], in addition to instance.data["key"]"""
         return self._data[key]
 
     def __setitem__(self, key: str, value: list[ResultLint]):
@@ -109,7 +111,11 @@ class Cache:
                 data = pickle.load(fd, fix_imports=False)  # noqa: S301
                 # TODO: consider replacing pickle with something faster
                 # only restore if data fits and package-version matches
-                if isinstance(data, list) and len(data) >= 3 and data[2] == version:
+                if (
+                    isinstance(data, list)
+                    and len(data) >= 3
+                    and data[2] == version
+                ):
                     _inst._data = data[0]  # noqa: SLF001
                     _inst._age = data[1]  # noqa: SLF001
                     log.debug(" -> found & restored cache")
@@ -129,7 +135,9 @@ class Cache:
 
         text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
         chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
-        chck_hash = hashlib.sha224(" ".join(chck_list).encode("utf-8")).hexdigest()[:10]
+        chck_hash = hashlib.sha224(
+            " ".join(chck_list).encode("utf-8")
+        ).hexdigest()[:10]
         # NOTE: Skip hashing config!
         #   -> Valid assumption that (current) config has
         #      no influence on result below this level

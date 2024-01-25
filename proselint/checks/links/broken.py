@@ -32,7 +32,8 @@ def check(text: str) -> list[ResultCheck]:
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
-        re.U | re.X,
+
+        re.UNICODE | re.VERBOSE,
     )
 
     results: list[ResultCheck] = []

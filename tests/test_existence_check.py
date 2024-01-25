@@ -19,7 +19,10 @@ def test_existence_check_multiple_matches():
     items = ["abc"]
     err = "error message"
     msg = "it exists"
-    assert len(existence_check("abc and abc are as easy as 123", items, err, msg)) == 2
+    assert (
+        len(existence_check("abc and abc are as easy as 123", items, err, msg))
+        == 2
+    )
     assert (
         len(
             existence_check(

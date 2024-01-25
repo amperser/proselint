@@ -79,7 +79,10 @@ def check(text: str) -> list[ResultCheck]:
         ["lent me their", ["loaned me their"]],
         ["lent me your", ["loaned me your"]],
         ["linguist", ["linguistician"]],
-        ["matzo-ball", ["matzoh-ball", "matza-ball", "matzah-ball", "matsah-ball"]],
+        [
+            "matzo-ball",
+            ["matzoh-ball", "matza-ball", "matzah-ball", "matsah-ball"],
+        ],
         ["mayoralty", ["mayorality"]],
         ["mealy-mouthed", ["mealymouthed"]],
         ["mean-spirited", ["meanspirited"]],

@@ -55,7 +55,7 @@ preview = true
 [lint.per-file-ignores]
 "tests/**" = ["S", "N8", "SLF001", "PLR2004"]
 "proselint/checks/**" = ["RUF001", "RUF002", "RUF003", "TID252"]
-"scripts/**" = ["E501"]
+"scripts/**" = ["E501", "DTZ005"]
 
 "plugins/**" = ["INP001", "RUF012"]
 "scripts_web/**" = ["S1", "SIM", "RET", "TCH"]
