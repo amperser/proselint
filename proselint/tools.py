@@ -95,7 +95,7 @@ def load_options(
         path_old = path.with_suffix("")
         if path_old.is_file() and path.suffix:  # equals 'suffix != ""'
             warn(
-                f"{path_old} was found instead of a JSON file. Rename to {path}.",
+                f"Found {path_old} instead of a JSON file. Rename to {path}.",
                 DeprecationWarning,
                 "",
                 0,
@@ -252,7 +252,9 @@ def lint_path(
                 with file.open(encoding="utf-8", errors="replace") as _fh:
                     content = _fh.read()
             except Exception:
-                log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
+                log.exception(
+                    "[LintPath] Error opening '%s' -> will skip", file.name
+                )
                 continue
             results[file] = lint(
                 content,
@@ -305,7 +307,9 @@ def convert_to_json(
         # assumed list
         out = [_rl._asdict() for _rl in results]
 
-    return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
+    return json.dumps(
+        {"status": "success", "data": {"errors": out}}, sort_keys=True
+    )
 
 
 def print_to_console(  # noqa: PLR0912

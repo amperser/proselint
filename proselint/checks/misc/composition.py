@@ -88,7 +88,8 @@ def check(text: str) -> list[ResultCheck]:
             "I did not know that / I was unaware that",
             ["I was unaware of the fact that"],
         ],
-        ["his failure", ["the fact that he had not succeeded"]],
+        ["failed", ["(had )?not succeeded"]],
+        ["fail", ["not succeed"]],
         ["my arrival", ["the fact that i had arrived"]],
     ]
 

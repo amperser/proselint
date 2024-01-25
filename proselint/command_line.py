@@ -34,7 +34,7 @@ base_url = "proselint.com/"
 
 
 def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
-    log.warning("Aborted!")
+    log.warning("Exiting!")
     sys.exit(0)
 
 
@@ -43,9 +43,7 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
     # force a clean slate
     cache.clear()
     # corpus was removed in https://github.com/amperser/proselint/pull/186
-    log.error(
-        "Benchmarking the corpus does not work for the time being -> will use demo",
-    )
+    log.error("Corpus is unavailable for the time being -> using demo")
     corpus_path = demo_file.parent  # proselint_path.parent / "corpora" / corpus
     for _type in ["uncached", "cached"]:
         start = time.time()
@@ -93,9 +91,13 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
     help="Override config to change format.",
 )
 @click.option("--dump-config", is_flag=True, help="Prints current config.")
-@click.option("--dump-default-config", is_flag=True, help="Prints default config.")
+@click.option(
+    "--dump-default-config", is_flag=True, help="Prints default config."
+)
 @click.option("--version", is_flag=True)
-@click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
+@click.argument(
+    "paths", nargs=-1, type=click.Path(exists=True, resolve_path=True)
+)
 def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,

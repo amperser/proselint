@@ -7,13 +7,16 @@ from click.testing import CliRunner
 from proselint.command_line import proselint
 from tests.conftest import print_invoke_return
 
+CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
 
-def test_invalid_characters():  # todo: probably broken
-    """Ensure that a file with illegal characters does not break us."""
-    test_path = Path(__file__).parent
-    test_file = test_path / "illegal_chars.txt"
-    result = CliRunner().invoke(proselint, test_file.as_posix())
+
+def test_invalid_characters():
+    """Ensure that invalid characters do not break proselint."""
+    runner = CliRunner()
+
+    result = runner.invoke(proselint, CHAR_FILE.as_posix())
     print_invoke_return(result)
+
     assert result.exit_code == 0
     assert "UnicodeDecodeError" not in result.stdout
     assert "FileNotFoundError" not in result.stdout

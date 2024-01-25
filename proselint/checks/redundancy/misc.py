@@ -271,7 +271,11 @@ def check_atd_1(text: str) -> list[ResultCheck]:
         ["earlier", ["earlier in time"]],
         [
             "eliminate",
-            ["completely eliminate", "eliminate altogether", "entirely eliminate"],
+            [
+                "completely eliminate",
+                "eliminate altogether",
+                "entirely eliminate",
+            ],
         ],
         ["ember", ["glowing ember"]],
         ["embers", ["burning embers"]],
@@ -286,7 +290,11 @@ def check_atd_1(text: str) -> list[ResultCheck]:
         ["essential", ["absolutely essential"]],
         [
             "estimated at",
-            ["estimated at about", "estimated at approximately", "estimated at around"],
+            [
+                "estimated at about",
+                "estimated at approximately",
+                "estimated at around",
+            ],
         ],
         ["evolve", ["evolve over time"]],
         ["exaggerate", ["over exaggerate"]],
@@ -379,7 +387,10 @@ def check_atd_2(text: str) -> list[ResultCheck]:
         # ["input",             ["input into"]],
         ["instinct", ["natural instinct", "naturally instinct"]],
         ["integrate", ["integrate together", "integrate with each other"]],
-        ["interdependent", ["interdependent on each other", "mutually interdependent"]],
+        [
+            "interdependent",
+            ["interdependent on each other", "mutually interdependent"],
+        ],
         ["introduced", ["introduced for the first time"]],
         ["invention", ["new invention"]],
         ["kneel", ["kneel down"]],

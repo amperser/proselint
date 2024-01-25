@@ -25,6 +25,8 @@ def test_preferred_forms_check_capitalization():
         ignore_case=False,
     ) != []
     assert (
-        preferred_forms_check("In the Stone Age", items, err, msg, ignore_case=False)
+        preferred_forms_check(
+            "In the Stone Age", items, err, msg, ignore_case=False
+        )
         == []
     )

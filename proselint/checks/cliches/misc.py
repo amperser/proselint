@@ -1111,4 +1111,5 @@ def check_cliches_nigel(text: str) -> list[ResultCheck]:
         "yawning gap",
     ]
 
-    return existence_check(text, cliches, err, msg)
+    return existence_check(text, cliches, err, msg, ignore_case=True)
+

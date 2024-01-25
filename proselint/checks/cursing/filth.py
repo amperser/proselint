@@ -27,7 +27,10 @@ examples_fail = ["Bad shit in this phrase."]
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "cursing.filth"
-    msg = "Nobody ever tells you this as a kid, but you're supposed to avoid this word."
+    msg = (
+        "Nobody ever tells you this as a kid,",
+        "but you're supposed to avoid this word.",
+    )
 
     items = [
         "shit",

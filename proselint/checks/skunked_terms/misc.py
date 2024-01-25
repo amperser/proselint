@@ -31,8 +31,8 @@ def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "skunked_terms.misc"
     msg = (
-        "'{}' is a bit of a skunked term, impossible to use without issue. "
-        "Find some other way to say it."
+        "'{}' is a skunked term, impossible to use without issue. "
+        "Find another way to say it."
     )
 
     skunked_terms = [

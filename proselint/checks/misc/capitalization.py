@@ -89,7 +89,9 @@ def check_months(text: str) -> list[ResultCheck]:
         ["October", ["october"]],
         ["November", ["november"]],
         ["December", ["december"]],
-    ]  # TODO: deal better with collisions / false positives
+    ]
+    # TODO: deal better with collisions / false positives
+    #       i.e. "(you|he|...) may proceed" follows a pattern
 
     return preferred_forms_check(text, items, err, msg, ignore_case=False)
 

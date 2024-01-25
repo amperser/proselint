@@ -52,7 +52,6 @@ def check_ellipsis(_text: str) -> list[ResultCheck]:
     err = "typography.symbols.ellipsis"
     msg = "'...' is an approximation, use the ellipsis symbol '…'."
     items = [r"\.\.\."]
-
     return existence_check(_text, items, err, msg, padding=Pd.disabled)
 
 

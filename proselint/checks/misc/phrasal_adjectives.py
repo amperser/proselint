@@ -74,7 +74,10 @@ def check(text: str) -> list[ResultCheck]:
         ["hit-and-run statute", ["hit and run statute"]],
         ["HIV-negative person", ["HIV negative person"]],
         ["HIV-positive person", ["HIV positive person"]],
-        ["information-technology personnel", ["information technology personnel"]],
+        [
+            "information-technology personnel",
+            ["information technology personnel"],
+        ],
         ["intellectual-property rights", ["intellectual property rights"]],
         ["interest-group pressures", ["interest group pressures"]],
         ["joint-stock company", ["joint stock company"]],
