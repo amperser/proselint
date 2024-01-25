@@ -1,5 +1,5 @@
 
-#line-length = 90
+line-length = 80
 target-version = "py38"
 
 [lint]
