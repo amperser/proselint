@@ -1,6 +1,5 @@
 """Test user option overrides using --config and load_options"""
 import json
-import os
 from pathlib import Path
 from unittest.mock import patch
 
@@ -33,7 +32,7 @@ def test_load_options_function(isfile):
     assert default["checks"]["uncomparables.misc"]
     assert not overrides["checks"]["uncomparables.misc"]
 
-    isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
+    isfile.side_effect = (Path.cwd() / ".proselintrc.json").__eq__
 
 def test_config_flag_demo():
     """Test the --config CLI argument"""
@@ -42,7 +41,7 @@ def test_config_flag_demo():
     assert "uncomparables.misc" in result.stdout
 
 def test_config_flag_config():
-    result = CliRunner().invoke(proselint, ["--demo", "-v"] + FLAG)
+    result = CliRunner().invoke(proselint, ["--demo", "-v", *FLAG])
     print_invoke_return(result)
     assert "uncomparables.misc" not in result.stdout
 
@@ -69,6 +68,6 @@ def test_dump_config():
     if triggered, the input-cfg was extended with the default-config
     -> add missing flags to input-cfg!
     """
-    output = CliRunner().invoke(proselint, ["--dump-config"] + FLAG)
+    output = CliRunner().invoke(proselint, ["--dump-config", *FLAG])
     assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())
 
