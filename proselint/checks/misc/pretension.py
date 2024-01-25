@@ -9,7 +9,7 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Never use the phrase 'all hell broke loose'.
+Points out pretension.
 
 """
 from __future__ import annotations

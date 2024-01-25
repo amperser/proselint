@@ -21,7 +21,7 @@ from proselint.checks import existence_check
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "misc.debased"
-    msg = "Bad usage, debased language, a continuous temptation."
+    msg = "Debased language is a continuous temptation."
 
     items = [
         "a not unjustifiable assumption",

@@ -53,7 +53,7 @@ def check(text: str) -> list[ResultCheck]:
     return existence_check(text, commercialese, err, msg)
 
 
-def check_apprev(text: str) -> list[ResultCheck]:
+def check_abbrev(text: str) -> list[ResultCheck]:
     """
     source: https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm
     """

@@ -34,7 +34,7 @@ base_url = "proselint.com/"
 
 
 def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
-    log.warning("Aborted!")
+    log.warning("Exiting!")
     sys.exit(0)
 
 

@@ -31,7 +31,7 @@ class Check:
             if ".DS_Store" in example_path:
                 break
 
-            # Compute the number of words per (wpe) error.
+            # Compute the number of words per error.
             with example_path.open(encoding="utf-8") as fh:
                 text = fh.read()
                 num_errors = len(check.__wrapped__(text))
