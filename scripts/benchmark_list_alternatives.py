@@ -11,11 +11,15 @@ _dur = timeit(
 )
 print(f"dq_1k_a took {_dur * 1000:.2f} ms")
 _dur = timeit(
-    stmt="el = deque([_i for _i in range(100)])", globals=locals(), number=100_000
+    stmt="el = deque([_i for _i in range(100)])",
+    globals=locals(),
+    number=100_000,
 )
 print(f"dq_l1k_a took {_dur * 1000:.2f} ms")
 _dur = timeit(
-    stmt="el = list([_i for _i in range(100)])", globals=locals(), number=100_000
+    stmt="el = list([_i for _i in range(100)])",
+    globals=locals(),
+    number=100_000,
 )
 print(f"lst_1k_a took {_dur * 1000:.2f} ms")
 
@@ -38,7 +42,9 @@ _dur = timeit(
     stmt="el.append(x)", setup="el = deque()", globals=locals(), number=100_000
 )
 print(f"dq_app took {_dur * 1000:.2f} ms")
-_dur = timeit(stmt="el.append(x)", setup="el = []", globals=locals(), number=100_000)
+_dur = timeit(
+    stmt="el.append(x)", setup="el = []", globals=locals(), number=100_000
+)
 print(f"dq_app took {_dur * 1000:.2f} ms")
 
 print("############# extend with extend(iterable)")
@@ -47,5 +53,7 @@ _dur = timeit(
     stmt="el.extend(x)", setup="el = deque()", globals=locals(), number=100_000
 )
 print(f"dq_app took {_dur * 1000:.2f} ms")
-_dur = timeit(stmt="el.extend(x)", setup="el = []", globals=locals(), number=100_000)
+_dur = timeit(
+    stmt="el.extend(x)", setup="el = []", globals=locals(), number=100_000
+)
 print(f"dq_app took {_dur * 1000:.2f} ms")

@@ -9,6 +9,7 @@ from tests.conftest import print_invoke_return
 
 CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
 
+
 def test_invalid_characters():
     """Ensure that invalid characters do not break proselint."""
     runner = CliRunner()

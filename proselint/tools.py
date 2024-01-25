@@ -28,7 +28,8 @@ from .memoizer import memoize_future
 from .memoizer import memoize_lint
 
 ResultLint: TypeAlias = tuple[str, str, str, int, int, int, int, int, str, str]
-# content: check_name, message, source, line, column, start, end, length, type, replacement
+# content: check_name, message, source, line, column, start, end, length, type,
+# replacement
 
 
 ###############################################################################
@@ -67,7 +68,9 @@ def load_options(
 
     if config_file_path:
         if not config_file_path.is_file():
-            raise FileNotFoundError(f"Config file {config_file_path} does not exist")
+            raise FileNotFoundError(
+                f"Config file {config_file_path} does not exist"
+            )
         config_user_paths.insert(0, config_file_path)
 
     user_options = {}
@@ -77,9 +80,9 @@ def load_options(
             user_options = json.load(path.open())
             break
         path_old = path.with_suffix("")
-        if path_old.is_file() and path.suffix != "":
+        if path_old.is_file() and path.suffix:
             warn(
-                f"{path_old} was found instead of a JSON file. Rename to {path}.",
+                f"Found {path_old} instead of a JSON file. Rename to {path}.",
                 DeprecationWarning,
                 "",
                 0,
@@ -153,7 +156,9 @@ def lint(
             log.debug("[Lint] used outer Executor for parallelization")
         # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu
         # NOTE: .map() is build on .submit(), harder to use here, same speed
-        futures = [_exe.submit(run_checks, check, _text, source) for check in checks]
+        futures = [
+            _exe.submit(run_checks, check, _text, source) for check in checks
+        ]
         if ret_future:
             # this will skip the memoizer
             return futures
@@ -195,9 +200,13 @@ def lint_path(
                 with file.open(encoding="utf-8", errors="replace") as _fh:
                     content = _fh.read()
             except Exception:
-                log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
+                log.exception(
+                    "[LintPath] Error opening '%s' -> will skip", file.name
+                )
                 continue
-            results[file] = lint(content, config, checks, file.as_posix(), _exe=exe)
+            results[file] = lint(
+                content, config, checks, file.as_posix(), _exe=exe
+            )
             chars += len(content)
 
     # fetch result from futures, if needed
@@ -214,7 +223,7 @@ def lint_path(
             results[_file] = _errors
 
     # bad style ... but
-    global last_char_count
+    global last_char_count  # noqa: PLW0603
     last_char_count = chars
     return results
 
@@ -237,7 +246,9 @@ def errors_to_json(items: list[ResultLint]) -> str:
         for item in items
     ]
 
-    return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
+    return json.dumps(
+        {"status": "success", "data": {"errors": out}}, sort_keys=True
+    )
 
 
 def output_errors(

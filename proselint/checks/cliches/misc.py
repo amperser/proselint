@@ -922,6 +922,7 @@ def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
 
     return existence_check(text, items, err, msg, ignore_case=True)
 
+
 def check_cliches_nigel(text: str) -> list[ResultCheck]:
     """Check the text.
 
@@ -1080,7 +1081,6 @@ def check_cliches_nigel(text: str) -> list[ResultCheck]:
         "when the chips are down",
         "wind of change",
         "yawning gap",
-
     ]
 
     return existence_check(text, cliches, err, msg, ignore_case=True)

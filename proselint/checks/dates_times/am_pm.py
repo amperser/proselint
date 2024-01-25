@@ -22,7 +22,9 @@ def check_lowercase_periods(text: str) -> list[ResultCheck]:
     err = "dates_times.am_pm.lowercase_periods"
     msg = "With lowercase letters, the periods are standard."
 
-    return existence_check(text, [r"\d{1,2} ?[ap]m"], err, msg, ignore_case=False)
+    return existence_check(
+        text, [r"\d{1,2} ?[ap]m"], err, msg, ignore_case=False
+    )
 
 
 def check_spacing(text: str) -> list[ResultCheck]:
@@ -36,7 +38,9 @@ def check_spacing(text: str) -> list[ResultCheck]:
 def check_midnight_noon(text: str) -> list[ResultCheck]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
-    msg = "12 a.m. and 12 p.m. are wrong and confusing. Use 'midnight' or 'noon'."
+    msg = (
+        "12 a.m. and 12 p.m. are wrong and confusing. Use 'midnight' or 'noon'."
+    )
 
     return existence_check(text, [r"12 ?[ap]\.?m\.?"], err, msg)
 

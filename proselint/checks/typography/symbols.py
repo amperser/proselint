@@ -13,7 +13,8 @@ from proselint.checks import limit_results
 
 
 def check(text: str) -> list[ResultCheck]:
-    # NOTE: these tests are pretty fast, so they are combined for a more even load
+    # NOTE: these tests are pretty fast, so they are combined for a more even
+    # load
 
     @limit_results(3)
     def check_ellipsis(_text: str) -> list[ResultCheck]:
