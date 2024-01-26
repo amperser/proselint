@@ -349,8 +349,8 @@ def existence_check(  # noqa: PLR0913, PLR0917
             continue
         errors.append(
             (
-                m.start() + 1 + offset,
-                m.end() + offset,
+                m.start() + offset[0],
+                m.end() + offset[1],
                 err,
                 msg.format(txt),
                 None,

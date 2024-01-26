@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -26,7 +27,7 @@ scripts = [
 
 @pytest.mark.parametrize("file", scripts)
 def test_scripts(project_path: Path, file) -> None:
-    subprocess.check_call(f"python3 {project_path / file}", shell=True)
+    subprocess.run([sys.executable, (project_path / file).as_posix()], shell=True, check=True)
 
 
 examples = [
@@ -36,4 +37,4 @@ examples = [
 
 @pytest.mark.parametrize("file", examples)
 def test_examples(project_path: Path, file) -> None:
-    subprocess.check_call(f"python3 {project_path / file}", shell=True)
+    subprocess.run([sys.executable, (project_path / file).as_posix()], shell=True, check=True)
