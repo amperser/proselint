@@ -297,6 +297,75 @@ def preferred_forms_check2_main(
     ]
 
 
+def preferred_forms_check3_conv(
+        text: str,
+    items: list,
+    err: str,
+    msg: str,
+    ignore_case: bool = True,
+    offset: tuple[int, int] = (0, 0),
+    padding: str = Pd.words_in_txt,
+) -> list[ResultCheck]:
+    # convert list-list to dict
+    items_dict: dict[str, str] = {}
+    for item_a in items:
+        for item_i in item_a[1]:
+            items_dict[item_i] = item_a[0]
+    # sort + print for conversion
+    sorted_dict = dict(sorted(items_dict.items()))
+    print("items = {")
+    for key, value in sorted_dict.items():
+        print(f'    "{key}": "{value}",')
+    print("}")
+    return preferred_forms_check3(text, sorted_dict, err, msg, ignore_case, offset, padding)
+
+
+def preferred_forms_check3(  # noqa: PLR0913, PLR0917
+    text: str,
+    re_items: dict,
+    err: str,
+    msg: str,
+    ignore_case: bool = True,
+    offset: tuple[int, int] = (0, 0),
+    padding: str = Pd.words_in_txt,
+) -> list[ResultCheck]:
+    """Build a checker that suggests the preferred form.
+    Note: offset-usage corrects for pre-added padding-chars
+    """
+
+    if ignore_case:
+        flags = re.IGNORECASE
+        re_items = {key.lower(): value for key, value in re_items.items()}
+    else:
+        flags = 0
+
+    if padding not in {Pd.disabled, Pd.safe_join, Pd.words_in_txt}:
+        # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
+        offset = (offset[0] + 1, offset[1] - 1)
+
+    if len(re_items) > 1:
+        rx = Pd.safe_join.value.format("|".join(re_items.keys()))
+    else:
+        rx = list(re_items.keys())[0]
+    rx = padding.format(rx)
+
+    results = []
+    for m in re.finditer(rx, text, flags=flags):
+        _orig = m.group(0).strip()
+        _repl = re_items.get(_orig.lower() if ignore_case else _orig)
+
+        results.append(
+        (
+            m.start() + offset[0],
+            m.end() + offset[1],
+            err,
+            msg.format(_repl, _orig),
+            _repl,
+        )
+        )
+    return results
+
+
 def existence_check(  # noqa: PLR0913, PLR0917
     text: str,
     re_items: list,
