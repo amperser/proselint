@@ -18,7 +18,7 @@ Const = namedtuple("c", ["val"])
 const = Const(val=457)
 
 -> both seem to make val constant!, same as a named
-todo: explore further
+TODO: explore further
 """
 from string import Template
 from timeit import timeit

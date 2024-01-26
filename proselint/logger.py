@@ -18,7 +18,7 @@ short reminder for format-strings:
 import logging
 import logging.handlers
 
-# todo: maybe use with rich to allow links
+# TODO: maybe use with rich to allow links
 
 log = logging.getLogger("proselint")
 log.setLevel(logging.INFO)

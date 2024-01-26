@@ -30,7 +30,7 @@ def assert_fail(check: Callable, texts: Union[list, str]) -> None:
 def check_in_lint_result(check: str, text: str, n: int = 1):
     """Assert that text has n errors of type check."""
     assert check in [error[0] for error in lint(text)]
-    # todo: n not checked, should not assert
+    # TODO: n not checked, should not assert
 
 
 def print_invoke_return(result) -> None:

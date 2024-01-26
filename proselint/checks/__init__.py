@@ -22,9 +22,7 @@ from proselint.logger import log
 
 ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
 # content: start_pos, end_pos, check_name, message, replacement)
-# NOTE1: NewType() is too strict here
-# NOTE2: py312 can use ->
-# type ResultCheck = tuple[int, int, str, str, Optional[str]]
+# TODO: transform to named tuple, as TypeAlias is py310+ feature
 
 
 ###############################################################################
@@ -50,9 +48,7 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
                 f"requested config-flag '{check_name}' not found in proselint.checks",
             )
             continue
-        checks += [
-            getattr(module, d) for d in dir(module) if re.match(r"^check", d)
-        ]
+        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
 
     log.debug("Collected %d checks to run", len(checks))
     return checks
@@ -93,7 +89,7 @@ def get_line_and_column(text, position):
     _t=text[:pos].splitlines(True)
     line_no=len(_t)
     column=len(_t[-1])
-    # todo: test this fn
+    # TODO: test this fn
      TODO: like LUT in is_quoted(), it shows that the text should be pre-analyzed
            just use a list with line-start-positions, store all in text_meta: dict
     """
@@ -143,9 +139,7 @@ def is_quoted(position: int, text: str) -> bool:
             pc = c
         return ranges
 
-    def position_in_ranges(
-        ranges: list[tuple[int, int]], _position: int
-    ) -> bool:
+    def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
         return any(start <= _position < end for start, end in ranges)
 
     return position_in_ranges(find_ranges(text), position)
@@ -181,7 +175,7 @@ class Pd(str, Enum):
     # TODO: some cases can use faster non-word-boundary \B
 
 
-def consistency_check(
+def consistency_check(  # noqa: PLR0913, PLR0917
     text: str,
     word_pairs: list,
     err: str,
@@ -261,7 +255,7 @@ def preferred_forms_check(  # noqa: PLR0913, PLR0917
     #                    it's possible to compile regex and do 'regex.finditer(text)'
 
 
-def preferred_forms_check2_pre(
+def preferred_forms_check2_pre(  # TODO: optimize with dict &regex-concat-trick
     items: list, ignore_case: bool = True, padding: str = Pd.words_in_txt
 ) -> list:
     flags = re.IGNORECASE if ignore_case else 0
@@ -356,7 +350,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
                 None,
             ),
         )
-        # todo: group(1) offers word already without padding (when turned inside out)
+        # TODO: group(1) offers word already without padding (when turned inside out)
     return errors
 
 
@@ -426,7 +420,7 @@ def topics(text: str) -> list[str]:
 
 def context(text, position, level="paragraph"):
     """Get sentence or paragraph that surrounds the given position."""
-    if level == "sentence":
+    if level == "sentence":  # noqa: SIM114
         pass
     elif level == "paragraph":
         pass

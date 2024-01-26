@@ -156,7 +156,7 @@ def check_preferred(text: str) -> list[ResultCheck]:
         [
             "***(p|n)-dop(ing|ed)***",
             ["(p|n) dop(ing|ed)"],
-        ],  # todo: no clean replacement, more below
+        ],  # TODO: no clean replacement, more below
         ["raises the", ["rises the"]],
         ["semiconductor(s)", ["semi conductor(|s)"]],
         ["spatial", ["spacial"]],
@@ -165,7 +165,7 @@ def check_preferred(text: str) -> list[ResultCheck]:
         ["those", ["the ones"]],
         ["these data", ["this data"]],
         # ["too ***", ["to strong", "to weak\w*", "to strong\w*"]],
-        # todo: except 'due to *'
+        # TODO: except 'due to *'
         [
             "were ***",
             [

@@ -58,7 +58,7 @@ class Cache:
         self.to_file()
         Cache._instance = None
 
-    def __getitem__(self, key: str) -> list[ResultLint]:
+    def __getitem__(self, key: str) -> list:
         """Allows direct dict access.
         This allows instance["key"], in addition to instance.data["key"]"""
         return self._data[key]
@@ -76,7 +76,7 @@ class Cache:
         if not cache_user_path.is_dir():
             cache_user_path.mkdir(parents=True)
         age_max: int = self._ts_now - round(timedelta(days=1).total_seconds())
-        # todo: reread on file-change. parallel runs,
+        # TODO: reread on file-change. parallel runs,
         for _key in self._data:
             # TODO: could be speed up with dict_base - dict_entries_to_remove
             if self._age[_key] < age_max:
@@ -103,11 +103,7 @@ class Cache:
                 data = pickle.load(fd, fix_imports=False)  # noqa: S301
                 # TODO: consider replacing pickle with something faster
                 # only restore if data fits and package-version matches
-                if (
-                    isinstance(data, list)
-                    and len(data) >= 3
-                    and data[2] == version
-                ):
+                if isinstance(data, list) and len(data) >= 3 and data[2] == version:
                     _inst._data = data[0]  # noqa: SLF001
                     _inst._age = data[1]  # noqa: SLF001
                     log.debug(" -> found & restored cache")
@@ -127,9 +123,7 @@ class Cache:
 
         text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
         chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
-        chck_hash = hashlib.sha224(
-            " ".join(chck_list).encode("utf-8")
-        ).hexdigest()[:10]
+        chck_hash = hashlib.sha224(" ".join(chck_list).encode("utf-8")).hexdigest()[:10]
         # NOTE: Skip hashing config!
         #   -> Valid assumption that (current) config has
         #      no influence on result below this level

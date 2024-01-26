@@ -26,7 +26,7 @@ def get_check_files() -> list[Path]:
     .py-files that are in a module (have an __init__.py) and are
     not in "inprogress"-dir
     """
-    # todo: duplicated code, test_config_default
+    # TODO: duplicated code, test_config_default
     checks_path = (proselint.path / "checks").absolute()
     results = []
     for _root, _, _files in os.walk(checks_path):
@@ -52,6 +52,7 @@ def get_module_names() -> list[str]:
 
 
 # ######### Unittests
+
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:

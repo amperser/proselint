@@ -17,16 +17,17 @@ def test_preferred_forms_check_capitalization():
     items = [["Stone Age", ["stone age"]]]
     err = "error message"
     msg = "use the preferred form"
-    assert preferred_forms_check(
-        "In the stone age",
-        items,
-        err,
-        msg,
-        ignore_case=False,
-    ) != []
     assert (
         preferred_forms_check(
-            "In the Stone Age", items, err, msg, ignore_case=False
+            "In the stone age",
+            items,
+            err,
+            msg,
+            ignore_case=False,
         )
+        != []
+    )
+    assert (
+        preferred_forms_check("In the Stone Age", items, err, msg, ignore_case=False)
         == []
     )
