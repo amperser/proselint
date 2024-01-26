@@ -15,21 +15,27 @@ from tests.test_checks import get_module_names
 
 
 def verify_regex_padding(regex: list[str], padding: str) -> None:
-    if padding is Pd.sep_in_txt.value:
+    assert isinstance(regex, list)
+    assert isinstance(padding, str)
+    assert all(
+        isinstance(_e, str) for _e in regex
+    ), f"all elements in list must be strings ({regex[:5]})"
+
+    if padding == Pd.sep_in_txt.value:
         # if all elements start&end with alpha/num we can optimize
         assert not all(
             _e[0].isalnum() and _e[-1].isalnum() for _e in regex
-        ), f"Choose Pd.sep_in_txt for {regex[:5]}[...]"
+        ), f"Choose Pd.words_in_txt for {regex[:5]}[...] as optimization for check()"
 
-    if padding is Pd.words_in_txt.value:
+    if padding == Pd.words_in_txt.value:
         # any element without num or alpha at start AND end should fail
         for _e in regex:
             assert (
                 _e[0].isalnum() and _e[-1].isalnum()
-            ), f"Choose Pd.sep_in_txt for {_e}"
+            ), f"Choose Pd.sep_in_txt for '{_e}' to fix check()"
 
 
-def mock_preferred_forms_check(
+def mock_preferred_forms_check_regex(
     text: str,
     items: list,
     err: str,
@@ -38,15 +44,25 @@ def mock_preferred_forms_check(
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
 ) -> list[ResultCheck]:
-    verify_regex_padding(items, padding)
+    _ilist = []
+    for item in items:
+        _ilist.extend(item[1])
+    verify_regex_padding(_ilist, padding)
     return []
 
 
 # TODO: update with new one
-def mock_preferred_forms_check2_pre(
-    items: list, ignore_case: bool = True, padding: str = Pd.words_in_txt
+def mock_preferred_forms_check_opti(
+    text: str,
+    items: dict[str, str],
+    err: str,
+    msg: str,
+    ignore_case: bool = True,
+    offset: tuple[int, int] = (0, 0),
+    padding: str = Pd.words_in_txt,
 ) -> list:
-    verify_regex_padding(items, padding)
+    _ilist = list(items.keys())
+    verify_regex_padding(_ilist, padding)
     return []
 
 
@@ -73,10 +89,10 @@ def mock_existence_check(
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_regex_in_checks(module_name: str, monkeypatch) -> None:
     monkeypatch.setattr(
-        proselint.checks, "preferred_forms_check", mock_preferred_forms_check
+        proselint.checks, "preferred_forms_check_regex", mock_preferred_forms_check_regex
     )
     monkeypatch.setattr(
-        proselint.checks, "preferred_forms_check2_pre", mock_preferred_forms_check2_pre
+        proselint.checks, "preferred_forms_check_opti", mock_preferred_forms_check_opti
     )
     monkeypatch.setattr(proselint.checks, "existence_check", mock_existence_check)
 
@@ -89,3 +105,8 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
 
     for check in checks.values():  # any-config
         check("smokey")
+
+    monkeypatch.undo()
+
+    # TODO: assemble list with xeger, and test here again
+    # https://github.com/leapfrogonline/rstr
