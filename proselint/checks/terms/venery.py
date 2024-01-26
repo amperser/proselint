@@ -33,7 +33,7 @@ examples_fail = [
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    if not any(re.finditer("group|bunch", text, flags=re.IGNORECASE)):
+    if not any(re.finditer("\b(?:group|bunch)\b", text, flags=re.IGNORECASE)):
         return []
 
     err = "terms.venery.oxford"
