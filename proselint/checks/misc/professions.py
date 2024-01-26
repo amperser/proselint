@@ -15,7 +15,7 @@ Professions.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,9 +31,9 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.professions"
     msg = "'{}' is the name of that job, not '{}'"
 
-    preferences = [
-        ["cobbler", ["shoe repair guy"]],
-        ["geometer", ["geometrist"]],
-    ]
+    items: dict[str, str] = {
+        "shoe repair guy": "cobbler",
+        "geometrist": "geometer",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

@@ -17,7 +17,7 @@ Associated Press have also adopted this style guide.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -36,16 +36,17 @@ def check(text: str) -> list[ResultCheck]:
     err = "lgbtq.terms.glaad"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
 
-    items = [
-        ["gay man", ["homosexual man"]],
-        ["gay men", ["homosexual men"]],
-        ["lesbian", ["homosexual woman"]],
-        ["lesbians", ["homosexual women"]],
-        ["gay people", ["homosexual people"]],
-        ["gay couple", ["homosexual couple"]],
-        ["sexual orientation", ["sexual preference"]],
-        ["openly gay", ["admitted homosexual", "avowed homosexual"]],
-        ["equal rights", ["special rights"]],
-    ]
+    items: dict[str, str] = {
+        "homosexual man": "gay man",
+        "homosexual men": "gay men",
+        "homosexual woman": "lesbian",
+        "homosexual women": "lesbians",
+        "homosexual people": "gay people",
+        "homosexual couple": "gay couple",
+        "sexual preference": "sexual orientation",
+        "admitted homosexual": "openly gay",
+        "avowed homosexual": "openly gay",
+        "special rights": "equal rights",
+    }
 
-    return preferred_forms_check(text, items, err, msg, ignore_case=False)
+    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)

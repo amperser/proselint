@@ -17,7 +17,7 @@ from __future__ import annotations
 from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_regex
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -78,4 +78,4 @@ def check_abbrev(text: str) -> list[ResultCheck]:
         ["Free On Board", [r"f\.o\.b\."]],
     ]
 
-    return preferred_forms_check(text, items, err, msg, padding=Pd.sep_in_txt)
+    return preferred_forms_check_regex(text, items, err, msg, padding=Pd.sep_in_txt)

@@ -15,7 +15,7 @@ The idiom 'many a' requires a singular verb.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,10 +31,10 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.many_a"
     msg = "'many a' requires a singular verb, as in '{}'."
 
-    preferences = [
-        ["is many a", ["are many a"]],
-        ["has been many a", ["have been many a"]],
-        ["was many a", ["were many a"]],
-    ]
+    items: dict[str, str] = {
+        "are many a": "is many a",
+        "have been many a": "has been many a",
+        "were many a": "was many a",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

@@ -20,7 +20,8 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
+from proselint.checks import preferred_forms_check_regex
 from proselint.checks import simple_existence_check
 
 examples_pass = [
@@ -119,71 +120,78 @@ def check_preferred(text: str) -> list[ResultCheck]:
         "In scientific writing some terms are less preferred or wrong. "
         "Consider using '{}' instead of '{}'."
     )
+
+    items: dict[str, str] = {
+        "insignificant": "not significant",
+        "though": "although",
+        "they're": "they are",
+        "isn't": "is not",
+        "can't": "cannot",
+        "can not": "cannot",
+        "a bit": "somewhat",
+        "fair agreement": "reasonable agreement",
+        "well agreement": "good agreement",
+        "low till": "low to",
+        "two times": "twice",
+        "can be attributed": "is attributed",
+        "large conductivity": "high conductivity",
+        "air-volatile": "air-sensitive",
+        "in the case of": "in case of",
+        "agreement to": "agreement with",
+        "automatization": "automation",
+        "beside": "besides",
+        "consistent to": "consistent with",
+        "contra-intuitive": "counter-intuitive",
+        "data is": "data are",
+        "fullfill": "fulfill",
+        "informations": "information",
+        "in to": "into",
+        "let to": "led to",
+        "little affect": "little effect",
+        "orientated": "oriented",
+        "persons": "people",
+        "possible, that": "possible that",
+        "rises the": "raises the",
+        "semi conductor(|s)": "semiconductor(s)",
+        "spacial": "spatial",
+        "systematical error": "systematic",
+        "temperature dependency": "temperature dependence",
+        "the ones": "those",
+        "this data": "these data",
+        "where shown": "were shown",
+        "where derived": "were derived",
+        "where observed": "were observed",
+        "where used": "were used",
+        "where removed": "were removed",
+        "where introduced": "were introduced",
+        "uppon": "upon",
+        # https://www.sciencewrites.org/dos-and-donts
+        "utilize": "use",
+        "substantiate": "support",
+        "in accordance with": "agree",
+    }
+
+    return preferred_forms_check_opti(text, items, err, msg)
+
+
+def check_preferred_regex(text: str) -> list[ResultCheck]:
+    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
+    err = "scientific.misc.preference"
+    msg = (
+        "In scientific writing some terms are less preferred or wrong. "
+        "Consider using '{}' instead of '{}'."
+    )
+
     items = [
-        ["not significant", ["insignificant"]],
-        ["although", ["though"]],
-        ["they are", ["they're"]],
-        ["is not", ["isn't"]],
-        ["cannot", ["can't"]],
-        ["cannot", ["can not"]],
-        ["somewhat", ["a bit"]],
-        ["reasonable agreement", ["fair agreement"]],
-        ["good agreement", ["well agreement"]],
-        ["low to", ["low till"]],
-        ["twice", ["two times"]],
+        ["photovoltaic", ["solar cell(|s)"]],
         ["increases", ["(is|are) increasing"]],
         ["decreases", ["(is|are) decreasing"]],
-        ["is attributed", ["can be attributed"]],
-        ["high conductivity", ["large conductivity"]],
-        ["air-sensitive", ["air-volatile"]],
-        ["in case of", ["in the case of"]],
-        ["photovoltaic", ["solar cell(|s)"]],
-        # ["whether", ["weather"]],
-        ["agreement with", ["agreement to"]],
-        ["automation", ["automatization"]],
-        ["besides", ["beside"]],
-        ["consistent with", ["consistent to"]],
-        ["counter-intuitive", ["contra-intuitive"]],
-        ["data are", ["data is"]],
-        ["fulfill", ["fullfill"]],
-        ["information", ["informations"]],
-        ["into", ["in to"]],
-        ["led to", ["let to"]],
-        ["little effect", ["little affect"]],
-        ["oriented", ["orientated"]],
-        ["people", ["persons"]],
-        ["possible that", ["possible, that"]],
-        [
-            "***(p|n)-dop(ing|ed)***",
-            ["(p|n) dop(ing|ed)"],
-        ],  # TODO: no clean replacement, more below
-        ["raises the", ["rises the"]],
-        ["semiconductor(s)", ["semi conductor(|s)"]],
-        ["spatial", ["spacial"]],
-        ["systematic", ["systematical error"]],
-        ["temperature dependence", ["temperature dependency"]],
-        ["those", ["the ones"]],
-        ["these data", ["this data"]],
+        ["***(p|n)-dop(ing|ed)***", ["(p|n) dop(ing|ed)"]],
+        # TODO: active regex or no clean replacement
         # ["too ***", ["to strong", "to weak\w*", "to strong\w*"]],
         # TODO: except 'due to *'
-        [
-            "were ***",
-            [
-                "where shown",
-                "where derived",
-                "where observed",
-                "where used",
-                "where removed",
-                "where introduced",
-            ],
-        ],
-        ["upon", ["uppon"]],
-        # https://www.sciencewrites.org/dos-and-donts
-        ["use", ["utilize"]],
-        ["support", ["substantiate"]],
-        ["agree", ["in accordance with"]],
     ]
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_regex(text, items, err, msg)
 
 
 def check_this_vs_those(text: str) -> list[ResultCheck]:

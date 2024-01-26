@@ -15,7 +15,7 @@ Eponymous adjectives.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,9 +31,9 @@ def check(text: str) -> list[ResultCheck]:
     err = "terms.eponymous_adjective.garner"
     msg = "'{}' is the preferred eponymous adjective."
 
-    preferences = [
-        ["Mephistophelean", ["Mephistophelian"]],
-        ["Shakespearean", ["Shakespearian"]],
-    ]
+    items: dict[str, str] = {
+        "Mephistophelian": "Mephistophelean",
+        "Shakespearian": "Shakespearean",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

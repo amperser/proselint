@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -19,32 +19,31 @@ def check(text: str) -> list[ResultCheck]:
     err = "spelling.er_or"
     msg = "-er vs. -or. '{}' is the preferred spelling."
 
-    preferences = [
-        ["abductor", ["abducter"]],
-        ["abettor", ["abbeter"]],
-        ["acquirer", ["acquiror"]],
-        ["adapter", ["adaptor"]],
-        ["collector", ["collecter"]],
-        ["conjurer", ["conjuror"]],
-        ["corrupter", ["corruptor"]],
-        ["digester", ["digestor"]],
-        ["dispenser", ["dispensor"]],
-        ["distributor", ["distributer"]],
-        ["endorser", ["endorsor"]],
-        ["eraser", ["erasor"]],
-        ["idolater", ["idolator"]],
-        ["impostor", ["imposter"]],
-        ["infiltrator", ["infiltrater"]],
-        ["investor", ["invester"]],
-        ["manipulator", ["manipulater"]],
-        ["mortgagor", ["mortgager"]],
-        ["persecutor", ["persecuter"]],
-        ["promoter", ["promotor"]],
-        ["promoter", ["promotor"]],
-        ["purveyor", ["purveyer"]],
-        ["requester", ["requestor"]],
-        ["reviser", ["revisor"]],
-        ["surveyor", ["surveyer"]],
-    ]
+    items: dict[str, str] = {
+        "abducter": "abductor",
+        "abbeter": "abettor",
+        "acquiror": "acquirer",
+        "adaptor": "adapter",
+        "collecter": "collector",
+        "conjuror": "conjurer",
+        "corruptor": "corrupter",
+        "digestor": "digester",
+        "dispensor": "dispenser",
+        "distributer": "distributor",
+        "endorsor": "endorser",
+        "erasor": "eraser",
+        "idolator": "idolater",
+        "imposter": "impostor",
+        "infiltrater": "infiltrator",
+        "invester": "investor",
+        "manipulater": "manipulator",
+        "mortgager": "mortgagor",
+        "persecuter": "persecutor",
+        "promotor": "promoter",
+        "purveyer": "purveyor",
+        "requestor": "requester",
+        "revisor": "reviser",
+        "surveyer": "surveyor",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

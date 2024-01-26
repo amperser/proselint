@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -33,12 +33,12 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.plurals.misc"
     msg = "The plural is {} and not {}"
 
-    preferences = [
-        ["talismans", ["talismen"]],
-        ["phenomena", ["phenomenons"]],
-    ]
+    items: dict[str, str] = {
+        "talismen": "talismans",
+        "phenomenons": "phenomena",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)
 
 
 def check_kudos(text: str) -> list[ResultCheck]:

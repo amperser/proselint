@@ -20,7 +20,7 @@ from __future__ import annotations
 import re
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -64,11 +64,8 @@ def check(text: str) -> list[ResultCheck]:
 
     # NOTE: python automatically caches this calculation for reruns
     #       check with benchmark_checks.py
+    items = {
+        f"{word} {pair[1]}": f"{word} {pair[0]}" for pair in modifiers for word in waxes
+    }
 
-    items = [
-        [word + " " + pair[0], [word + " " + pair[1]]]
-        for pair in modifiers
-        for word in waxes
-    ]
-
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

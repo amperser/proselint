@@ -5,7 +5,7 @@ from __future__ import annotations
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import limit_results
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -48,12 +48,12 @@ def check_misc(text: str) -> list[ResultCheck]:
     err = "mixed_metaphors.misc"
     msg = "Mixed metaphor. Try '{}'."
 
-    preferences = [
-        ["cream rises to the top", ["cream rises to the crop"]],
-        ["fasten your seatbelts", ["button your seatbelts"]],
-        ["a minute to decompress", ["a minute to decompose"]],
-        ["sharpest tool in the shed", ["sharpest marble in the (shed|box)"]],
-        ["not rocket science", ["not rocket surgery"]],
-    ]
+    items: dict[str, str] = {
+        "cream rises to the crop": "cream rises to the top",
+        "button your seatbelts": "fasten your seatbelts",
+        "a minute to decompose": "a minute to decompress",
+        "sharpest marble in the (shed|box)": "sharpest tool in the shed",
+        "not rocket surgery": "not rocket science",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

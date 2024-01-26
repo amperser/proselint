@@ -15,7 +15,7 @@ Points out sexist language.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -36,51 +36,60 @@ def check_sexism(text: str) -> list[ResultCheck]:
     err = "sexism.misc"
     msg = "Gender bias. Use '{}' instead of '{}'."
 
-    sexism = [
-        ["anchor", ["anchorman", "anchorwoman"]],
-        ["chair", ["chairman", "chairwoman"]],
-        ["drafter", ["draftman", "draftwoman"]],
-        ["ombuds", ["ombudsman", "ombudswoman"]],
-        ["tribe member", ["tribesman", "tribeswoman"]],
-        ["police officer", ["policeman", "policewoman"]],
-        ["firefighter", ["fireman", "firewoman"]],
-        ["mail carrier", ["mailman", "mailwoman"]],
-        ["history", ["herstory"]],
-        ["women", ["womyn"]],
-        ["poet", ["poetess"]],
-        ["author", ["authoress"]],
-        ["waiter", ["waitress"]],
-        ["lawyer", ["lady lawyer"]],
-        ["doctor", ["woman doctor"]],
-        ["bookseller", ["female booksalesman"]],
-        ["air pilot", ["female airman"]],
-        ["executor", ["executrix"]],
-        ["prosecutor", ["prosecutrix"]],
-        ["testator", ["testatrix"]],
-        ["husband and wife", ["man and wife"]],
-        ["chairs", ["chairmen and chairs"]],
-        ["men and women", ["men and girls"]],
-        ["comedian", ["comedienne"]],
-        ["confidant", ["confidante"]],
-        ["scientist", ["woman scientist"]],
-        ["scientists", ["women scientists"]],
-        # ["hero",             ["heroine"]]
-    ]
+    items: dict[str, str] = {
+        "anchorman": "anchor",
+        "anchorwoman": "anchor",
+        "chairman": "chair",
+        "chairwoman": "chair",
+        "draftman": "drafter",
+        "draftwoman": "drafter",
+        "ombudsman": "ombuds",
+        "ombudswoman": "ombuds",
+        "tribesman": "tribe member",
+        "tribeswoman": "tribe member",
+        "policeman": "police officer",
+        "policewoman": "police officer",
+        "fireman": "firefighter",
+        "firewoman": "firefighter",
+        "mailman": "mail carrier",
+        "mailwoman": "mail carrier",
+        "herstory": "history",
+        "womyn": "women",
+        "poetess": "poet",
+        "authoress": "author",
+        "waitress": "waiter",
+        "lady lawyer": "lawyer",
+        "woman doctor": "doctor",
+        "female booksalesman": "bookseller",
+        "female airman": "air pilot",
+        "executrix": "executor",
+        "prosecutrix": "prosecutor",
+        "testatrix": "testator",
+        "man and wife": "husband and wife",
+        "chairmen and chairs": "chairs",
+        "men and girls": "men and women",
+        "comedienne": "comedian",
+        "confidante": "confidant",
+        "woman scientist": "scientist",
+        "women scientists": "scientists",
+        # "heroine": "hero",
+    }
 
-    return preferred_forms_check(text, sexism, err, msg, ignore_case=False)
+    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
 
 def check_preferred_form(text: str) -> list[ResultCheck]:
     err = "sexism.misc"
     msg = "Not a preferred form. Use '{}' instead of '{}'."
-    pref = [
-        ["anchor", ["anchorperson"]],
-        ["chair", ["chairperson"]],
-        ["drafter", ["draftperson"]],
-        ["ombuds", ["ombudsperson"]],
-        ["tribe member", ["tribesperson"]],
-        ["police officer", ["policeperson"]],
-        ["firefighter", ["fireperson"]],
-        ["mail carrier", ["mailperson"]],
-    ]
-    return preferred_forms_check(text, pref, err, msg, ignore_case=False)
+
+    items: dict[str, str] = {
+        "anchorperson": "anchor",
+        "chairperson": "chair",
+        "draftperson": "drafter",
+        "ombudsperson": "ombuds",
+        "tribesperson": "tribe member",
+        "policeperson": "police officer",
+        "fireperson": "firefighter",
+        "mailperson": "mail carrier",
+    }
+    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)

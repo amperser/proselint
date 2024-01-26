@@ -15,7 +15,7 @@ Back-formations.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,8 +31,6 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.back_formations"
     msg = "Back-formation. '{}' is the preferred form."
 
-    items = [
-        ["improper", ["improprietous"]],
-    ]
+    items = {"improprietous": "improper"}
 
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

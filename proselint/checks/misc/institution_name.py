@@ -15,7 +15,7 @@ Institution names.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -35,10 +35,8 @@ def check_vtech(text: str) -> list[ResultCheck]:
     err = "misc.institution.vtech"
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
-    institution = [
-        [
-            "Virginia Polytechnic Institute and State University",
-            ["Virginia Polytechnic and State University"],
-        ],
-    ]
-    return preferred_forms_check(text, institution, err, msg)
+    items: dict[str, str] = {
+        "Virginia Polytechnic and State University": "Virginia Polytechnic Institute and State University"
+    }
+
+    return preferred_forms_check_opti(text, items, err, msg)

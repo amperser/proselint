@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -98,12 +98,10 @@ def check(text: str) -> list[ResultCheck]:
 
     # NOTE: python automatically caches this calculation for reruns
     #       check with benchmark_checks.py
+    items = {
+        f"a {generic} of {term_pair[0]}": f"a {term_pair[1]} of {term_pair[0]}"
+        for term_pair in term_list
+        for generic in generic_terms
+    }
 
-    items = []
-    for term_pair in term_list:
-        for generic in generic_terms:
-            wrong = f"a {generic} of {term_pair[0]}"
-            right = f"a {term_pair[1]} of {term_pair[0]}"
-            items += [[right, [wrong]]]
-
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

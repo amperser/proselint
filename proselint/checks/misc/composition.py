@@ -48,7 +48,8 @@ structure.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
+from proselint.checks import preferred_forms_check_regex
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -57,6 +58,8 @@ examples_pass = [
 examples_fail = [
     "His story is not honest.",
     "Her story is a strange one.",
+    "He had not succeeded.",
+    "He had not succeeded with that.",
 ]
 
 
@@ -65,32 +68,41 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.composition.strunk_white"
     msg = "Try '{}' instead of '{}'."
 
-    bad_forms = [
+    items: dict[str, str] = {
         # Put statements in positive form
-        ["dishonest", ["not honest"]],
-        ["trifling", ["not important"]],
-        ["forgot", ["did not remember"]],
-        ["ignored", ["did not pay (any )?attention to"]],
-        ["distrusted", ["did not have much confidence in"]],
+        "not honest": "dishonest",
+        "not important": "trifling",
+        "did not remember": "forgot",
+        "did not pay (any )?attention to": "ignored",
+        "did not have much confidence in": "distrusted",
         # Omit needless words
-        ["whether", ["the question as to whether"]],
-        ["no doubt", ["there is no doubt but that"]],
-        ["used for fuel", ["used for fuel purposes"]],
-        ["he", ["he is a man who"]],
-        ["hastily", ["in a hasty manner"]],
-        ["this subject", ["this is a subject that"]],
-        ["strange", ["a strange one"]],
-        ["because", ["the reason why is that"]],
-        ["because / since", ["owing to the fact that"]],
-        ["although / though", ["in spite of the fact that"]],
-        ["remind you / notify you", ["call your attention to the fact that"]],
-        [
-            "I did not know that / I was unaware that",
-            ["I was unaware of the fact that"],
-        ],
+        "the question as to whether": "whether",
+        "there is no doubt but that": "no doubt",
+        "used for fuel purposes": "used for fuel",
+        "he is a man who": "he",
+        "in a hasty manner": "hastily",
+        "this is a subject that": "this subject",
+        "a strange one": "strange",
+        "the reason why is that": "because",
+        "owing to the fact that": "because / since",
+        "in spite of the fact that": "although / though",
+        "call your attention to the fact that": "remind you / notify you",
+        "I was unaware of the fact that": "I did not know that / I was unaware that",
+        "not succeed": "fail",
+        "the fact that i had arrived": "my arrival",
+    }
+
+    return preferred_forms_check_opti(text, items, err, msg)
+
+
+def check_regex(text: str) -> list[ResultCheck]:
+    """Suggest the preferred forms."""
+    err = "misc.composition.strunk_white"
+    msg = "Try '{}' instead of '{}'."
+
+    items = [
+        ["ignored", ["did not pay (any )?attention to"]],
         ["failed", ["(had )?not succeeded"]],
-        ["fail", ["not succeed"]],
-        ["my arrival", ["the fact that i had arrived"]],
     ]
 
-    return preferred_forms_check(text, bad_forms, err, msg)
+    return preferred_forms_check_regex(text, items, err, msg)

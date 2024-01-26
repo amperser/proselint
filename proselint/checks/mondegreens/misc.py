@@ -15,7 +15,7 @@ Points out preferred form.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -32,15 +32,15 @@ def check(text: str) -> list[ResultCheck]:
     err = "mondegreens.misc"
     msg = "'{}' is the preferred form."
 
-    items = [
-        ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
-        ["a partridge in a pear tree", ["a part-red gingerbread tree"]],
-        ["attorney and notary public", ["attorney and not a republic"]],
-        ["beck and call", ["beckon call"]],
-        ["for all intents and purposes", ["for all intensive purposes"]],
-        ["laid him on the green", ["Lady Mondegreen"]],
-        ["all of the other reindeer", ["Olive, the other reindeer"]],
-        ["to the manner born", ["to the manor born"]],
-    ]
+    items: dict[str, str] = {
+        "a girl with colitis goes by": "a girl with kaleidoscope eyes",
+        "a part-red gingerbread tree": "a partridge in a pear tree",
+        "attorney and not a republic": "attorney and notary public",
+        "beckon call": "beck and call",
+        "for all intensive purposes": "for all intents and purposes",
+        "Lady Mondegreen": "laid him on the green",
+        "Olive, the other reindeer": "all of the other reindeer",
+        "to the manor born": "to the manner born",
+    }
 
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

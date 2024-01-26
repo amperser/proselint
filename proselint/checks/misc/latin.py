@@ -15,7 +15,7 @@ Back-formations.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,11 +31,11 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.latin.pinker"
     msg = "Use English. '{}' is the preferred form."
 
-    items = [
-        ["other things being equal", ["ceteris paribus"]],
-        ["among other things", ["inter alia"]],
-        ["in and of itself", ["simpliciter"]],
-        ["having made the necessary changes", ["mutatis mutandis"]],
-    ]
+    items: dict[str, str] = {
+        "ceteris paribus": "other things being equal",
+        "inter alia": "among other things",
+        "simpliciter": "in and of itself",
+        "mutatis mutandis": "having made the necessary changes",
+    }
 
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

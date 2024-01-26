@@ -15,7 +15,7 @@ Corrects 'inferior/superior than' to 'inferior/superior to'.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,9 +31,9 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.inferior_superior"
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."
 
-    preferences = [
-        ["inferior to", ["inferior than"]],
-        ["superior to", ["superior than"]],
-    ]
+    items: dict[str, str] = {
+        "inferior than": "inferior to",
+        "superior than": "superior to",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

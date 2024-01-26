@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -34,12 +34,12 @@ def check_lie_detector_test(text: str) -> list[ResultCheck]:
     err = "psychology.lie_detector"
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
 
-    items = [
-        ["polygraph test", ["lie detector test"]],
-        ["polygraph machine", ["lie detector machine"]],
-    ]
+    items: dict[str, str] = {
+        "lie detector test": "polygraph test",
+        "lie detector machine": "polygraph machine",
+    }
 
-    return preferred_forms_check(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)
 
 
 def check_p_equals_zero(text: str) -> list[ResultCheck]:

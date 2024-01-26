@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import preferred_forms_check
+from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -19,10 +19,10 @@ def check(text: str) -> list[ResultCheck]:
     err = "spelling.ance_ence"
     msg = "-ance vs. -ence. '{}' is the correct spelling."
 
-    preferences = [
-        ["appearance", ["appearence"]],
-        ["occurrence", ["occurrance"]],
-        ["resistance", ["resistence"]],
-    ]
+    items: dict[str, str] = {
+        "appearence": "appearance",
+        "occurrance": "occurrence",
+        "resistence": "resistance",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)
