@@ -29,6 +29,7 @@ pytest-click = ">=1.1.0"
 pytest-cov = ">=4.0.0"
 twine = ">=4.0.0"
 pre-commit = ">=3.0.0"
+ruff = "^0.1.14"
 # web-stuff
 APScheduler = ">=3.5.3"
 Flask-API = ">=1.0"
@@ -43,9 +44,6 @@ rq = ">=0.12.0"
 
 [tool.poetry.scripts]
 proselint = "proselint.command_line:proselint"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.1.14"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
