@@ -17,7 +17,7 @@ from __future__ import annotations
 from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -63,7 +63,7 @@ def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
     # en, TODO: add more, sync with numbers/sentence
     # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
     #                   "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
-    return simple_existence_check(
+    return existence_check_simple(
         text, regex, err, msg, ignore_case=False, exceptions=exceptions
     )
 
@@ -76,4 +76,4 @@ def check_comma_digits(text: str) -> list[ResultCheck]:
     regex = Pd.words_in_txt.value.format(r"\d+,\d+")
     # NOTE: intentional words_in_txt
 
-    return simple_existence_check(text, regex, err, msg)
+    return existence_check_simple(text, regex, err, msg)

@@ -11,7 +11,7 @@ from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 from proselint.checks import existence_check
 from proselint.checks import limit_results
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -128,7 +128,7 @@ def check_apostrophes(text: str) -> list[ResultCheck]:
     err = "typography.symbols.apostrophes"
     msg = "Use the correct apostrophe - 's is preferred - ´s is ok"
     regex = r"\w+`s"  # unwanted form
-    results = simple_existence_check(text, regex, err, msg)
+    results = existence_check_simple(text, regex, err, msg)
 
     msg = "Use the same apostrophe consistently - {} vs {}"
     results.extend(

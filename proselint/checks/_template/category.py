@@ -36,7 +36,7 @@ examples_fail = [
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    error_code = "inprogress.template"
+    error_code = "template.category"
     msg = "First line always has an error."
 
     items = ["first line"]

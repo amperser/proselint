@@ -14,7 +14,7 @@ categories: writing
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -55,7 +55,7 @@ def check_section(text: str) -> list[ResultCheck]:
     # - look for number, can have punctuation
     # - must be also a sentence (7 chars & end with punctuation) in same line
     # - \v\r\n is a fix, as python does not seem to honor vertical whitespace \v
-    return simple_existence_check(text, regex, err, msg)
+    return existence_check_simple(text, regex, err, msg)
 
 
 def check_sentence(text: str) -> list[ResultCheck]:
@@ -82,7 +82,7 @@ def check_sentence(text: str) -> list[ResultCheck]:
         r"[fF]ig\.",
     )
     # TODO: sync the exceptions with punctuation/misc
-    return simple_existence_check(text, regex, err, msg, exceptions=exceptions)
+    return existence_check_simple(text, regex, err, msg, exceptions=exceptions)
 
 
 def check_single_digit(text: str) -> list[ResultCheck]:
@@ -98,4 +98,4 @@ def check_single_digit(text: str) -> list[ResultCheck]:
     # looks for single digit in separate in text (not at beginning of sentence)
     # but not part of "x to y"
     # TODO: reduce false positives from numbers without decimal point but with unit
-    return simple_existence_check(text, regex, err, msg)
+    return existence_check_simple(text, regex, err, msg)

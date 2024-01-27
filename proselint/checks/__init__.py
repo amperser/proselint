@@ -359,7 +359,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     return errors
 
 
-def simple_existence_check(  # noqa: PLR0913, PLR0917
+def existence_check_simple(  # noqa: PLR0913, PLR0917
     text: str,
     pattern: str,
     err: str,

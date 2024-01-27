@@ -1,1 +1,1 @@
-"""InProgress."""
+"""template check-module."""

@@ -16,7 +16,7 @@ and this happens most often between line breaks.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -51,7 +51,7 @@ def check_repetitions(text: str) -> list[ResultCheck]:
     regex = r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b"
     # note: this can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
-    return simple_existence_check(
+    return existence_check_simple(
         text,
         regex,
         err,

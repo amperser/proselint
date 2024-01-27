@@ -22,7 +22,7 @@ from proselint.checks import consistency_check
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_opti
 from proselint.checks import preferred_forms_check_regex
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -60,7 +60,7 @@ def check_num_unit(text: str) -> list[ResultCheck]:
     )
     # - start with a space and a number that may contain a decimal.point
     # - no space afterward, optional exponent, common units
-    return simple_existence_check(text, regex, err, msg, ignore_case=False)
+    return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
 def check_emotion(text: str) -> list[ResultCheck]:

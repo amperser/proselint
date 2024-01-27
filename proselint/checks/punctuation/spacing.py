@@ -16,7 +16,7 @@ Checks for acceptable spacing around punctuation.
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -50,7 +50,7 @@ def check_end_punctuation_spacing(text: str) -> list[ResultCheck]:
     err = "punctuation.spacing.end_punctuation"
     msg = "Unacceptable number of spaces behind ! or ? (should be 1)."
     pattern = r"[a-z][!\?][ ]{2,}"
-    return simple_existence_check(text, pattern, err, msg)
+    return existence_check_simple(text, pattern, err, msg)
 
 
 def check_general_spacing(text: str) -> list[ResultCheck]:
@@ -63,7 +63,7 @@ def check_general_spacing(text: str) -> list[ResultCheck]:
     err = "punctuation.spacing.separators"
     msg = 'Unacceptable number of spaces behind ";: (must be 1 or less).'
     pattern = r"""[,;\:\"'][ ]{2,}"""
-    return simple_existence_check(text, pattern, err, msg)
+    return existence_check_simple(text, pattern, err, msg)
 
 
 def check_whitespace_before(text: str) -> list[ResultCheck]:
@@ -71,7 +71,7 @@ def check_whitespace_before(text: str) -> list[ResultCheck]:
     err = "punctuation.whitespace_before"
     msg = "Unacceptable whitespace before punctuation"
     pattern = r"[a-z]+\s+[,;\:\.!\?]"
-    return simple_existence_check(text, pattern, err, msg)
+    return existence_check_simple(text, pattern, err, msg)
 
 
 def check_whitespace_inbetween(text: str) -> list[ResultCheck]:
@@ -79,4 +79,4 @@ def check_whitespace_inbetween(text: str) -> list[ResultCheck]:
     err = "punctuation.whitespace_inbetween"
     msg = "Multiple spaces, that would be ugly in Word or LibreOffice."
     pattern = r"\b[ ]{2,}\b"
-    return simple_existence_check(text, pattern, err, msg)
+    return existence_check_simple(text, pattern, err, msg)

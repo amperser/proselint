@@ -17,7 +17,7 @@ from __future__ import annotations
 from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check_opti
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -117,7 +117,7 @@ def check_roman_war(text: str) -> list[ResultCheck]:
     msg = "Don't fail to capitalize roman numeral abbreviation in '{}'."
 
     regex = "World War (I(i*)|i*)"
-    return simple_existence_check(text, regex, err, msg, ignore_case=False)
+    return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
 def check_roman_numerals(text: str) -> list[ResultCheck]:
@@ -128,7 +128,7 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
     numerals_regex = Pd.words_in_txt.value.format(
         r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
     )
-    results_all = simple_existence_check(
+    results_all = existence_check_simple(
         text, numerals_regex, err, msg, ignore_case=True
     )
     results_valid: list[ResultCheck] = []

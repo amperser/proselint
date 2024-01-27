@@ -14,7 +14,7 @@ categories: writing
 from __future__ import annotations
 
 from proselint.checks import ResultCheck
-from proselint.checks import simple_existence_check
+from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -40,7 +40,7 @@ def check_sentence(text: str) -> list[ResultCheck]:
     regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
     # matches identical words starting uppercase after either newline or .!?
     # note: can't be padded without mod -> because of \2
-    return simple_existence_check(text, regex, err, msg, ignore_case=False)
+    return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
 # TODO: check same line/section-beginning
