@@ -17,10 +17,8 @@ from __future__ import annotations
 import asyncio
 import re
 import urllib.request as ulr
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -57,7 +55,15 @@ def check(text: str) -> list[ResultCheck]:
             url = "http://" + url
 
         if is_broken_link(url):
-            results.append((m.start(), m.end(), err, msg.format(url), None))
+            results.append(
+                ResultCheck(
+                    start_pos=m.start(),
+                    end_pos=m.end(),
+                    check=err,
+                    message=msg.format(url),
+                    replacements=None,
+                )
+            )
             asyncio.sleep(0.1)
 
     return results

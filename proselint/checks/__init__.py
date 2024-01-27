@@ -15,14 +15,18 @@ import importlib
 import re
 from enum import Enum
 from typing import Callable
+from typing import NamedTuple
 from typing import Optional
-from typing import TypeAlias
 
 from proselint.logger import log
 
-ResultCheck: TypeAlias = tuple[int, int, str, str, Optional[str]]
-# content: start_pos, end_pos, check_name, message, replacement)
-# TODO: transform to named tuple, as TypeAlias is py310+ feature
+
+class ResultCheck(NamedTuple):
+    start_pos: int
+    end_pos: int
+    check: str
+    message: str
+    replacements: Optional[str]
 
 
 ###############################################################################
@@ -56,27 +60,26 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
 
 def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
     errors = []
-    results = _check(_text)
-    for result in results:
-        (start, end, check_name, message, replacements) = result
-        (line, column) = get_line_and_column(_text, start)
-        if not is_quoted(start, _text):
+    results: list[ResultCheck] = _check(_text)
+    for _r in results:
+        (line, column) = get_line_and_column(_text, _r.start_pos)
+        if not is_quoted(_r.start_pos, _text):
             # note:
             #    - switch to 1based counting -> +1 for line, column, start, end
             #    - padding was added to text -> -1 for all except column
             #    - +1 -1 cancel out
             errors += [
                 {
-                    "check": check_name,
-                    "message": message,
+                    "check": _r.check,
+                    "message": _r.message,
                     "source": source,
                     "line": line,
                     "column": column + 1,
-                    "start": start,
-                    "end": end,
-                    "extent": end - start,
+                    "start": _r.start_pos,
+                    "end": _r.end_pos,
+                    "extent": _r.end_pos - _r.start_pos,
                     "severity": "warning",
-                    "replacements": replacements,
+                    "replacements": _r.replacements,
                 }
             ]
     return errors
@@ -187,7 +190,7 @@ def consistency_check(  # noqa: PLR0913, PLR0917
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    results = []
+    results: list[ResultCheck] = []
 
     for w in word_pairs:
         matches = [
@@ -199,12 +202,12 @@ def consistency_check(  # noqa: PLR0913, PLR0917
             idx_minority = len(matches[0]) > len(matches[1])
 
             results += [
-                (
-                    m.start() + offset[0],
-                    m.end() + offset[1],
-                    err,
-                    msg.format(w[not idx_minority], m.group(0)),
-                    w[not idx_minority],
+                ResultCheck(
+                    start_pos=m.start() + offset[0],
+                    end_pos=m.end() + offset[1],
+                    check=err,
+                    message=msg.format(w[not idx_minority], m.group(0)),
+                    replacements=w[not idx_minority],
                 )
                 for m in matches[idx_minority]
             ]
@@ -230,12 +233,12 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
         offset = (offset[0] + 1, offset[1] - 1)
 
     return [
-        (
-            m.start() + offset[0],
-            m.end() + offset[1],
-            err,
-            msg.format(item[0], m.group(0).strip()),
-            item[0],
+        ResultCheck(
+            start_pos=m.start() + offset[0],
+            end_pos=m.end() + offset[1],
+            check=err,
+            message=msg.format(item[0], m.group(0).strip()),
+            replacements=item[0],
         )
         for item in items
         for m in re.finditer(
@@ -282,18 +285,18 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
         rx = next(iter(items))
     rx = padding.format(rx)
 
-    results = []
+    results: list[ResultCheck] = []
     for m in re.finditer(rx, text, flags=flags):
         _orig = m.group(0).strip()
         _repl = items.get(_orig.lower() if ignore_case else _orig)
 
         results.append(
-            (
-                m.start() + offset[0],
-                m.end() + offset[1],
-                err,
-                msg.format(_repl, _orig),
-                _repl,
+            ResultCheck(
+                start_pos=m.start() + offset[0],
+                end_pos=m.end() + offset[1],
+                check=err,
+                message=msg.format(_repl, _orig),
+                replacements=_repl,
             )
         )
     return results
@@ -344,12 +347,12 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(re.search(exception, txt, flags=flags) for exception in exceptions):
             continue
         errors.append(
-            (
-                m.start() + offset[0],
-                m.end() + offset[1],
-                err,
-                msg.format(txt),
-                None,
+            ResultCheck(
+                start_pos=m.start() + offset[0],
+                end_pos=m.end() + offset[1],
+                check=err,
+                message=msg.format(txt),
+                replacements=None,
             ),
         )
         # TODO: group(1) offers word already without padding (when turned inside out)
@@ -377,12 +380,12 @@ def simple_existence_check(  # noqa: PLR0913, PLR0917
     if ignore_case:
         flags |= re.IGNORECASE
     return [
-        (
-            _m.start(),
-            _m.end(),
-            err,
-            msg.format(_m.group(0).strip()),
-            None,
+        ResultCheck(
+            start_pos=_m.start(),
+            end_pos=_m.end(),
+            check=err,
+            message=msg.format(_m.group(0).strip()),
+            replacements=None,
         )
         for _m in re.finditer(pattern, text, flags=flags)
         if not any(

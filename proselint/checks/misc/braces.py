@@ -13,11 +13,9 @@ categories: writing
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
 from typing import Optional
 
-if TYPE_CHECKING:
-    from proselint.checks import ResultCheck
+from proselint.checks import ResultCheck
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -52,13 +50,21 @@ def trace_braces(
                 "Don't fail to match / close opened braces -> "
                 f"more {char1}{char2}-braces closed than opened"
             )
-            return _m.start(), _m.end(), err, _msg, None
+            return ResultCheck(
+                start_pos=_m.start(),
+                end_pos=_m.end(),
+                check=err,
+                message=_msg,
+                replacements=None,
+            )
     if _count > 0:
         _msg = (
             "Don't fail to match / close opened braces -> "
             f"at least one '{char1}' is left open"
         )
-        return 0, len(text), err, _msg, None
+        return ResultCheck(
+            start_pos=0, end_pos=len(text), check=err, message=_msg, replacements=None
+        )
     return None
 
 
@@ -67,7 +73,7 @@ def check_unmatched(text: str) -> list[ResultCheck]:
     err = "misc.braces.unmatched"
     # msg = "Don't fail to match / close opened braces '{}'."
 
-    results = []
+    results: list[ResultCheck] = []
     if any(re.finditer(r"[()]", text)):
         _res = trace_braces(text, r"[()]", "(", ")", err)
         if _res:

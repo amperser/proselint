@@ -207,12 +207,20 @@ def check_this_vs_those(text: str) -> list[ResultCheck]:
         r"this (hypothesis|involves|indicates|leads|reduces|shows|suggests|thesis)",
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
-    results = []
+    results: list[ResultCheck] = []
     for _m in re.finditer(r"\b(this +\w+s(\s\w+)?)\b", text, flags=re.IGNORECASE):
         _res = _m.group(0).strip().lower()
         if any(re.finditer(expt_regex, _res)):
             continue
-        results.append((_m.start(), _m.end(), err, msg.format(_res), None))
+        results.append(
+            ResultCheck(
+                start_pos=_m.start(),
+                end_pos=_m.end(),
+                check=err,
+                message=msg.format(_res),
+                replacements=None,
+            )
+        )
     return results
 
 

@@ -89,7 +89,9 @@ def mock_existence_check(
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_regex_in_checks(module_name: str, monkeypatch) -> None:
     monkeypatch.setattr(
-        proselint.checks, "preferred_forms_check_regex", mock_preferred_forms_check_regex
+        proselint.checks,
+        "preferred_forms_check_regex",
+        mock_preferred_forms_check_regex,
     )
     monkeypatch.setattr(
         proselint.checks, "preferred_forms_check_opti", mock_preferred_forms_check_opti
