@@ -20,9 +20,9 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 from proselint.checks import existence_check
+from proselint.checks import existence_check_simple
 from proselint.checks import preferred_forms_check_opti
 from proselint.checks import preferred_forms_check_regex
-from proselint.checks import existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -152,7 +152,6 @@ def check_preferred(text: str) -> list[ResultCheck]:
         "persons": "people",
         "possible, that": "possible that",
         "rises the": "raises the",
-        "semi conductor(|s)": "semiconductor(s)",
         "spacial": "spatial",
         "systematical error": "systematic",
         "temperature dependency": "temperature dependence",
@@ -171,27 +170,21 @@ def check_preferred(text: str) -> list[ResultCheck]:
         "in accordance with": "agree",
     }
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-
-def check_preferred_regex(text: str) -> list[ResultCheck]:
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
-    err = "scientific.misc.preference"
-    msg = (
-        "In scientific writing some terms are less preferred or wrong. "
-        "Consider using '{}' instead of '{}'."
-    )
-
-    items = [
-        ["photovoltaic", ["solar cell(|s)"]],
-        ["increases", ["(is|are) increasing"]],
-        ["decreases", ["(is|are) decreasing"]],
-        ["***(p|n)-dop(ing|ed)***", ["(p|n) dop(ing|ed)"]],
+    items_regex: dict[str, str] = {
+        r"solar cell(|s)": "photovoltaic",
+        r"(is|are) increasing": "increases",
+        r"(is|are) decreasing": "decreases",
+        r"(p|n) dop(ing|ed)": "***(p|n)-dop(ing|ed)***",
+        r"semi conductor(|s)": "semiconductor(s)",
         # TODO: active regex or no clean replacement
         # ["too ***", ["to strong", "to weak\w*", "to strong\w*"]],
         # TODO: except 'due to *'
-    ]
-    return preferred_forms_check_regex(text, items, err, msg)
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+
+    return ret1 + ret2
 
 
 def check_this_vs_those(text: str) -> list[ResultCheck]:

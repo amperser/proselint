@@ -10,8 +10,8 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import consistency_check
 from proselint.checks import existence_check
-from proselint.checks import limit_results
 from proselint.checks import existence_check_simple
+from proselint.checks import limit_results
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

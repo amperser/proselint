@@ -14,6 +14,7 @@ Archaism.
 """
 from __future__ import annotations
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -36,8 +37,7 @@ def check(text: str) -> list[ResultCheck]:
     err = "misc.tense_present"
     msg = "'{}'."
 
-    illogics = [
-        r"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+    items1 = [
         "between you and I",
         "on accident",
         "somewhat of a",
@@ -49,12 +49,26 @@ def check(text: str) -> list[ResultCheck]:
         # "and so",
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
-
-    return existence_check(
+    ret1 = existence_check(
         text,
-        illogics,
+        items1,
         err,
         msg,
         ignore_case=True,
         string=True,
     )
+
+    items2 = [
+        r"\bup to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+    ]
+    ret2 = existence_check(
+        text,
+        items2,
+        err,
+        msg,
+        ignore_case=True,
+        string=True,
+        padding=Pd.disabled,
+    )
+
+    return ret1 + ret2

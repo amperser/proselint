@@ -70,12 +70,14 @@ def check_abbrev(text: str) -> list[ResultCheck]:
     err = "misc.commercialese.abbreviations"
     msg = "'{}' is commercialese. Depending on audience switch to {}"
 
-    items = [
-        ["this month", [r"inst\."]],
-        ["next month", [r"prox\."]],
-        ["last month", [r"ult\."]],
-        ["cost, insurance, freight", [r"c\.i\.f\."]],
-        ["Free On Board", [r"f\.o\.b\."]],
-    ]
+    items_regex: dict[str, str] = {
+        r"inst\.": "this month",
+        r"prox\.": "next month",
+        r"ult\.": "last month",
+        r"c\.i\.f\.": "cost, insurance, freight",
+        r"f\.o\.b\.": "Free On Board",
+    }
 
-    return preferred_forms_check_regex(text, items, err, msg, padding=Pd.sep_in_txt)
+    return preferred_forms_check_regex(
+        text, items_regex, err, msg, padding=Pd.sep_in_txt
+    )

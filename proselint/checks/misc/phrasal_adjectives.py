@@ -18,6 +18,7 @@ from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_opti
+from proselint.checks import preferred_forms_check_regex
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -122,7 +123,6 @@ def check(text: str) -> list[ResultCheck]:
         "state sponsored violence": "state-sponsored violence",
         "thumbs up sign": "thumbs-up sign",
         "time honored tradition": "time-honored tradition",
-        "U.S. led campaign": "U.S.-led campaign",
         "upward sloping line": "upward-sloping line",
         "venture backed company": "venture-backed company",
         "well publicized event": "well-publicized event",
@@ -151,5 +151,11 @@ def check(text: str) -> list[ResultCheck]:
         "third quarter gain": "third-quarter gain",
         "fourth quarter gain": "fourth-quarter gain",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex: dict[str, str] = {
+        r"U\.S\. led campaign": "U.S.-led campaign",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+
+    return ret1 + ret2

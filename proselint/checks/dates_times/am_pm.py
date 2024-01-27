@@ -47,7 +47,9 @@ def check_spacing(text: str) -> list[ResultCheck]:
     err = "dates_times.am_pm.spacing"
     msg = "It's standard to put a space before 'a.m.' or 'p.m.'."
 
-    return existence_check(text, [r"\d{1,2}[ap]\.?m\.?"], err, msg)
+    return existence_check(
+        text, [r"\b\d{1,2}[ap]\.?m\.?"], err, msg, padding=Pd.disabled
+    )
 
 
 def check_midnight_noon(text: str) -> list[ResultCheck]:
@@ -56,7 +58,7 @@ def check_midnight_noon(text: str) -> list[ResultCheck]:
 
     msg = "12 a.m. and 12 p.m. are wrong and confusing. Use 'midnight' or 'noon'."
 
-    return existence_check(text, [r"12 ?[ap]\.?m\.?"], err, msg)
+    return existence_check(text, [r"\b12 ?[ap]\.?m\.?"], err, msg, padding=Pd.disabled)
 
 
 def check_redundancy(text: str) -> list[ResultCheck]:
@@ -65,10 +67,10 @@ def check_redundancy(text: str) -> list[ResultCheck]:
     msg = "'a.m.' is always morning; 'p.m.' is always night."
 
     items = [
-        r"\d{1,2} ?a\.?m\.? in the morning",
-        r"\d{1,2} ?p\.?m\.? in the evening",
-        r"\d{1,2} ?p\.?m\.? at night",
-        r"\d{1,2} ?p\.?m\.? in the afternoon",
+        r"\b\d{1,2} ?a\.?m\.? in the morning",
+        r"\b\d{1,2} ?p\.?m\.? in the evening",
+        r"\b\d{1,2} ?p\.?m\.? at night",
+        r"\b\d{1,2} ?p\.?m\.? in the afternoon",
     ]
 
     return existence_check(text, items, err, msg, padding=Pd.disabled)

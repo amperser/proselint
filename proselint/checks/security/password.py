@@ -13,6 +13,7 @@ Don't put pass
 """
 from __future__ import annotations
 
+from proselint.checks import Pd
 from proselint.checks import ResultCheck
 from proselint.checks import existence_check
 
@@ -34,11 +35,11 @@ def check(text: str) -> list[ResultCheck]:
     _regex = r"[:]? [\S]{6,30}"
 
     items = [
-        f"the password is{_regex}",
-        f"my password is{_regex}",
-        f"the password's{_regex}",
-        f"my password's{_regex}",
-        f"^[pP]assword{_regex}",
+        rf"\bthe password is{_regex}",
+        rf"\bmy password is{_regex}",
+        rf"\bthe password's{_regex}",
+        rf"\bmy password's{_regex}",
+        rf"^password{_regex}",
     ]
 
-    return existence_check(text, items, err, msg)
+    return existence_check(text, items, err, msg, ignore_case=True, padding=Pd.disabled)

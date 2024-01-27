@@ -217,7 +217,7 @@ def consistency_check(  # noqa: PLR0913, PLR0917
 
 def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
     text: str,
-    items: list,
+    items: dict[str, str],
     err: str,
     msg: str,
     ignore_case: bool = True,
@@ -237,16 +237,12 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
             start_pos=m.start() + offset[0],
             end_pos=m.end() + offset[1],
             check=err,
-            message=msg.format(item[0], m.group(0).strip()),
-            replacements=item[0],
+            message=msg.format(_repl, m.group(0).strip()),
+            replacements=_repl,
         )
-        for item in items
+        for _orig, _repl in items.items()
         for m in re.finditer(
-            padding.format(
-                Pd.safe_join.format("|".join(item[1]))
-                if len(item[1]) > 1
-                else item[1][0]
-            ),
+            padding.format(_orig),
             text,
             flags=flags,
         )
@@ -464,8 +460,10 @@ def detect_language(text: str) -> str:
 ###############################################################################
 
 
-def limit_results(value: int):
+def limit_results(value: int) -> Callable:
     """A check decorator that truncates error output to a specified threshold."""
+    if value < 0:
+        raise ValueError("Value for @limit_results() must be >= 0")
 
     def wrapper(fn):
         @functools.wraps(fn)
@@ -485,20 +483,31 @@ def _truncate_errors(
     This also notes how many times the error was encountered prior to truncation.
     """
     if len(errors) > limit:
-        start1, end1, err1, msg1, replacements = errors[0]
+        e0 = errors[0]
+        m0 = e0.message
 
         if len(errors) == limit + 1:
-            msg1 += " Found once elsewhere."
+            m0 += " Found once elsewhere."
         else:
-            msg1 += f" Found {len(errors)} times elsewhere."
+            m0 += f" Found {len(errors)} times elsewhere."
 
-        errors = [(start1, end1, err1, msg1, replacements)] + errors[1:limit]
+        errors = [
+            ResultCheck(
+                start_pos=e0.start_pos,
+                end_pos=e0.end_pos,
+                check=e0.check,
+                message=m0,
+                replacements=e0.replacements,
+            )
+        ] + errors[1:limit]
 
     return errors
 
 
-def ppm_threshold(threshold: float):
+def ppm_threshold(threshold: float) -> Callable:
     """A check decorator that errors if the PPM threshold is surpassed."""
+    if threshold < 0:
+        raise ValueError("Value for @ppm_threshold() must be >= 0")
 
     def wrapped(fn):
         @functools.wraps(fn)
@@ -515,7 +524,9 @@ def ppm_threshold(threshold: float):
     return wrapped
 
 
-def _threshold_check(errors: list, threshold: float, length: int):
+def _threshold_check(
+    errors: list[ResultCheck], threshold: float, length: int
+) -> list[ResultCheck]:
     """Returns an error if the specified PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)

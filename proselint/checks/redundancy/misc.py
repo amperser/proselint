@@ -51,7 +51,6 @@ def check_garner(text: str) -> list[ResultCheck]:
         "former alumnus": "alumnus",
         "directly antithetical": "antithetical",
         "approximately about": "approximately",
-        "associate together(?: in groups)?": "associate",
         "temporary bivouac": "bivouac",
         "bivouac camp": "bivouac",
         "blend together": "blend",
@@ -69,7 +68,6 @@ def check_garner(text: str) -> list[ResultCheck]:
         "self-complacent": "complacent",
         "self-confessed": "confessed",
         "connect together": "connect",
-        "(?:general )?consensus of opinion": "consensus",
         "consolidate together": "consolidate",
         "still continues to": "continues to",
         "mutually contradictory": "contradictory",
@@ -134,8 +132,15 @@ def check_garner(text: str) -> list[ResultCheck]:
         "professional vocation": "vocation",
         "while at the same time": "while",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex = {
+        r"(?:general )?consensus of opinion": "consensus",
+        r"associate together(?: in groups)?": "associate",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+
+    return ret1 + ret2
 
 
 def check_nordquist(text: str) -> list[ResultCheck]:
@@ -150,11 +155,16 @@ def check_nordquist(text: str) -> list[ResultCheck]:
     items: dict[str, str] = {
         "absolutely essential": "essential",
         "absolutely necessary": "necessary",
-        "a.m. in the morning": "a.m.",
-        "p.m. at night": "p.m.",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex: dict[str, str] = {
+        r"a\.m\. in the morning": "a.m.",
+        r"p\.m\. at night": "p.m.",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+
+    return ret1 + ret2
 
 
 def check_atd_1(text: str) -> list[ResultCheck]:
@@ -562,19 +572,9 @@ def check_atd_2(text: str) -> list[ResultCheck]:
         "yakitori chicken": "yakitori",
         "yerba mate tea": "yerba mate",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex: dict[str, str] = {r"\band etc\.": "etc."}
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg, padding=Pd.disabled)
 
-
-def check_atd_special(text: str) -> list[ResultCheck]:
-    """Check for redundancies from After the Deadline.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-    """
-    err = "redundancy.after_the_deadline"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items = [["etc.", [r"\band etc\."]]]
-
-    return preferred_forms_check_regex(text, items, err, msg, padding=Pd.disabled)
+    return ret1 + ret2

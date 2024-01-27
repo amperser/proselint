@@ -66,8 +66,10 @@ def check(text: str) -> list[ResultCheck]:
         "non-sequitur": "non sequitur",
         # Misc
         "mental attitude": "attitude",
-        "Chief Justice of the United States Supreme Court": "Chief Justice of the United States",
-        "Chief Justice of the Supreme Court of the United States": "Chief Justice of the United States",
+        "Chief Justice of the United States "
+        "Supreme Court": "Chief Justice of the United States",
+        "Chief Justice of the Supreme Court "
+        "of the United States": "Chief Justice of the United States",
         "chitlings": "chitterlings",
         "chitlins": "chitterlings",
         "combustible engine": "combustion engine",

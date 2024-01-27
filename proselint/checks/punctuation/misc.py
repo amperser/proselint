@@ -38,8 +38,8 @@ def check_garner(text: str) -> list[ResultCheck]:
     msg = "Misplaced punctuation. It's 'et al.'"
 
     items = [
-        "et. al",
-        "et. al.",
+        r"et\. al",
+        r"et\. al\.",
     ]
     return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
 

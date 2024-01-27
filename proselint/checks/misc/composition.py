@@ -73,7 +73,6 @@ def check(text: str) -> list[ResultCheck]:
         "not honest": "dishonest",
         "not important": "trifling",
         "did not remember": "forgot",
-        "did not pay (any )?attention to": "ignored",
         "did not have much confidence in": "distrusted",
         # Omit needless words
         "the question as to whether": "whether",
@@ -91,18 +90,12 @@ def check(text: str) -> list[ResultCheck]:
         "not succeed": "fail",
         "the fact that i had arrived": "my arrival",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex: dict[str, str] = {
+        r"did not pay (any )?attention to": "ignored",
+        r"(had )?not succeeded": "failed",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
 
-
-def check_regex(text: str) -> list[ResultCheck]:
-    """Suggest the preferred forms."""
-    err = "misc.composition.strunk_white"
-    msg = "Try '{}' instead of '{}'."
-
-    items = [
-        ["ignored", ["did not pay (any )?attention to"]],
-        ["failed", ["(had )?not succeeded"]],
-    ]
-
-    return preferred_forms_check_regex(text, items, err, msg)
+    return ret1 + ret2

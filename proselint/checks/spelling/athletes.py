@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from proselint.checks import ResultCheck
 from proselint.checks import preferred_forms_check_opti
+from proselint.checks import preferred_forms_check_regex
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -37,7 +38,6 @@ def check(text: str) -> list[ResultCheck]:
         "Mark Buerhle": "Mark Buehrle",
         "Skyler Diggins": "Skylar Diggins",
         "Agnieska Radwanska": "Agnieszka Radwanska",
-        "J.J. Reddick": "J.J. Redick",
         "Manny Packquaio": "Manny Pacquiao",
         "Antwan Jamison": "Antawn Jamison",
         "Cal Ripkin": "Cal Ripken",
@@ -50,5 +50,11 @@ def check(text: str) -> list[ResultCheck]:
         "Stephon Curry": "Stephen Curry",
         "Mike Kryzewski": "Mike Krzyzewski",
     }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    items_regex: dict[str, str] = {
+        r"J\.J\. Reddick": "J.J. Redick",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+
+    return ret1 + ret2
