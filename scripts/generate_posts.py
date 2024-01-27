@@ -19,7 +19,7 @@ def is_check(file_path: Path) -> bool:
     if file_path.name == "__init__.py":
         return False
 
-    if "inprogress" in file_path.name:
+    if "_template" in file_path.name:
         return False
 
     return True

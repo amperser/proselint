@@ -17,6 +17,7 @@ def test_preferred_forms_check_capitalization():
     items = [["Stone Age", ["stone age"]]]
     err = "error message"
     msg = "use the preferred form"
+
     assert (
         preferred_forms_check_regex(
             "In the stone age",

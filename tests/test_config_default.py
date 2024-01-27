@@ -34,7 +34,7 @@ def is_check(file_path: Path) -> bool:
         return False
     if file_path.name == "__init__.py":
         return False
-    if "inprogress" in file_path.as_posix():
+    if "_template" in file_path.as_posix():
         return False
     return True
 

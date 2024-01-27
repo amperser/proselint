@@ -12,11 +12,12 @@ import proselint
 
 def is_check(file_path: Path) -> bool:
     """Check whether a file contains a check."""
+    # TODO: there are 3 variations of same FN, refactor when _preview is implemented
     if file_path.suffix != ".py":
         return False
     if file_path.name == "__init__.py":
         return False
-    if "inprogress" in file_path.as_posix():
+    if "_template" in file_path.as_posix():
         return False
     return True
 
@@ -24,7 +25,7 @@ def is_check(file_path: Path) -> bool:
 def get_check_files() -> list[Path]:
     """traverses through all subdirs and selects
     .py-files that are in a module (have an __init__.py) and are
-    not in "inprogress"-dir
+    not in "template"-dir
     """
     # TODO: duplicated code, test_config_default
     checks_path = (proselint.path / "checks").absolute()
