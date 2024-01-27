@@ -33,7 +33,7 @@ examples_fail = [
 
 def check(text: str) -> list[ResultCheck]:
     """Check the text."""
-    if not any(re.finditer("\b(?:group|bunch)\b", text, flags=re.IGNORECASE)):
+    if not any(re.finditer("(?:group|bunch) ", text, flags=re.IGNORECASE)):
         return []
 
     err = "terms.venery.oxford"
@@ -99,7 +99,7 @@ def check(text: str) -> list[ResultCheck]:
     # NOTE: python automatically caches this calculation for reruns
     #       check with benchmark_checks.py
     items = {
-        f"a {generic} of {term_pair[0]}": f"a {term_pair[1]} of {term_pair[0]}"
+        f"{generic} of {term_pair[0]}": f"{term_pair[1]} of {term_pair[0]}"
         for term_pair in term_list
         for generic in generic_terms
     }

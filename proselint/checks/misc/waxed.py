@@ -35,7 +35,7 @@ examples_fail = [
 
 def check(text: str) -> list[ResultCheck]:
     """Suggest the preferred forms."""
-    if not any(re.finditer("\bwax\b", text, re.IGNORECASE)):
+    if not any(re.finditer("wax ", text, re.IGNORECASE)):
         # early exit for a niche and costly check
         return []
 
