@@ -264,12 +264,14 @@ def lint_path(
             )
             chars += len(content)
 
+    log.debug("[Lint] finished pooling, will wait for results now")
     # fetch result from futures, if needed
     results = {
         _file: fetch_results(_errors, config, _file.as_posix())
         for _file, _errors in results.items()
     }
 
+    # TODO: transform linter into class
     # bad style ... but
     global last_char_count  # noqa: PLW0603
     last_char_count = chars

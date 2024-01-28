@@ -85,67 +85,56 @@ def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
     return errors
 
 
-def get_line_and_column(text, position):
+def get_line_and_column(text: str, position: int) -> tuple[int, int]:
     """Return the line number and column of a position in a string.
-
-    # could also just:
-    _t=text[:pos].splitlines(True)
-    line_no=len(_t)
-    column=len(_t[-1])
-    # TODO: test this fn
-     TODO: like LUT in is_quoted(), it shows that the text should be pre-analyzed
-           just use a list with line-start-positions, store all in text_meta: dict
+    implementation: ~10x faster than v1, but still splits
+    Note: could be further optimized, but it's not worth it atm
+          pre-analyze with lookup-table, list with line-start-positions
     """
-    line_start_pos = 0
-    line_no = 0
-    for line in text.splitlines(True):
-        if (line_start_pos + len(line)) >= position:
-            break
-        line_start_pos += len(line)
-        line_no += 1
-    return line_no, position - line_start_pos
+    # TODO: test this fn
+    _t = text[:position].splitlines(True)
+    return len(_t) - 1, len(_t[-1])
 
 
-def is_quoted(position: int, text: str) -> bool:
-    """Determine if the position in the text falls within a quote."""
-
+@functools.lru_cache
+def find_quoted_ranges(_text: str) -> list[tuple[int, int]]:
+    # FIXME: optimize - use regex or produce a 1-dimensional array or lookup table
     def matching(quotemark1: str, quotemark2: str) -> bool:
         straight = "\"'"
         curly = "“”"
+        # TODO: extend! straight Q should match (q1==q2) and curly shouldn't (q1!=q2)
         return (quotemark1 in straight and quotemark2 in straight) or (
             quotemark1 in curly and quotemark2 in curly
         )
 
-    def find_ranges(_text: str) -> list[tuple[int, int]]:
-        # FIXME: optimize - this function is one of the 3 most expensive in the module
-        #        this could be a 1-dimensional array or lookup table
-        s = 0
-        q = pc = ""
-        start = None
-        ranges = []
-        seps = " .,:;-\r\n"
-        quotes = ['"', "“", "”", "'"]
-        for i, c in enumerate(_text + "\n"):
-            if s == 0 and c in quotes and pc in seps:
-                start = i
-                s = 1
-                q = c
-            elif s == 1 and matching(c, q):
-                s = 2
-            elif s == 2:
-                if c in seps:
-                    ranges.append((start + 1, i - 1))
-                    start = None
-                    s = 0
-                else:
-                    s = 1
-            pc = c
-        return ranges
+    state = 0
+    quote_active = char_prev = ""
+    start = None
+    ranges = []
+    seps = " .,:;-\r\n"
+    quotes = ['"', "“", "”", "'"]
+    for _i, _char in enumerate(_text + "\n"):
+        if state == 0 and _char in quotes and char_prev in seps:
+            start = _i
+            state = 1
+            quote_active = _char
+        elif state == 1 and matching(_char, quote_active):
+            state = 2
+        elif state == 2:
+            if _char in seps:
+                ranges.append((start + 1, _i - 1))
+                start = None
+                state = 0
+            else:
+                state = 1
+        char_prev = _char
+    return ranges
 
-    def position_in_ranges(ranges: list[tuple[int, int]], _position: int) -> bool:
-        return any(start <= _position < end for start, end in ranges)
 
-    return position_in_ranges(find_ranges(text), position)
+def is_quoted(position: int, text: str) -> bool:
+    """Determine if the position in the text falls within a quote."""
+    ranges = find_quoted_ranges(text)
+    return any(start <= position < end for start, end in ranges)
 
 
 ###############################################################################

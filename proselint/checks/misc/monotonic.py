@@ -39,7 +39,7 @@ def check_sentence(text: str) -> list[ResultCheck]:
 
     regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
     # matches identical words starting uppercase after either newline or .!?
-    # note: can't be padded without mod -> because of \2
+    # note: can't be padded without modification -> because of \2
     return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 

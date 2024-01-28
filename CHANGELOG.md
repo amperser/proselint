@@ -42,21 +42,19 @@ parallel took 10132.006 ms -> run1
 - add check for digits at the beginning of sentence, and single digits
 - improve various checks - mostly reduction of computational overhead of regexes
 - move example text into check-files, these get tested by pytest
-	- this approach is unconventional, but it's better maintainable (there were several tests missing, some were broken or testing same thing twice)
-	- also better documentation
-	- downside: slightly slower import of check-modules (unconfirmed)
+  - this approach is unconventional, but it's better maintainable (there were several tests missing, some were broken or testing same thing twice)
+  - also better documentation
+  - downside: slightly slower import of check-modules (unconfirmed)
 - precompiling the regex of the slowest check improves performance significantly
 - fix and improve several checks (less computation, more powerful, pass unittests)
-	- lexical illusions
-	- but
-	- cursing (something like "a.s.s." allowed "amsisa")
+  - lexical illusions 
+  - but
+  - cursing (something like "a.s.s." allowed "amsisa")
 - speedup for not needed safe_join-formatting (+10% in sherlock)
-- speedup for sep_in_txt by setting word-boundry (\b) (+33% in sherlock)
+- speedup for sep_in_txt by setting word-boundary (\b) (+33% in sherlock)
 - speedup by replacing sep_in_txt completely (100x less computation in sherlock)
 - sherlock-benchmark of checks from >500s down to 174s
 - reduce false positives on numbers-checks, use non-breaking space if you need to use numbers
-
-latest benchmark-results, comparable to results above
 
 ```
 ############# lint_path(corpora) - Linux, 147 checks
@@ -64,7 +62,82 @@ serial took 26687.769 ms -> run0
 serial took 28858.442 ms -> run1
 parallel took 9076.079 ms -> run0
 parallel took 8898.538 ms -> run1
+```
 
+- new test-design for checks
+  - check-categories bring their own example-data
+  - must have at least 1x failing & passing example strings
+  - discovery and inclusion is automatically
+  - in addition, reverse-regex-ing is used to test-trigger each item in check
+  - advantages
+    - easier maintainable
+    - no untested or redundantly tested checks anymore
+    - extensive test for valid usage of _check-functions
+- preferred_check wants now a dict for items instead of multidimensional list
+- new optimized preferred_check() disallowes regex in items (applicable to most checks) and can speedup substantially
+  - small text like demo and even larger 500kb sherlock increase by factor of 3! 
+  - relation between durations of slowest & median check was 30 and is now 20
+  - relation between durations of median & fastest check was 100 and is now 20
+
+```
+# 10 runs for demo.md, before and after
+count:  148 checks
+min:    5.185200006962987e-05 s
+median: 0.001499587999205687 s
+mean:   0.011178609621624305 s
+max:    0.12145168799997919 s
+sum:    1.654434224000397 s
+
+count:  146 checks
+min:    5.214600241743028e-05 s
+median: 0.001201241000671871 s
+mean:   0.004014868616301499 s
+max:    0.0240363439952489 s
+sum:    0.5861708179800189 s
+```
+
+or to keep comparable to previous benchmarks
+
+```
+############# lint_path(corpora) - Linux, 149 checks
+serial took 15157.265 ms -> run0
+serial took 18547.386 ms -> run1
+parallel took 5610.961 ms -> run0
+parallel took 5836.078 ms -> run1
+```
+
+- large texts like sherlock show flaws in `is_quoted()` and `get_line_and_col()`, the first one is slower as it should be and the second one even grows exponentially
+  - is_quoted(), grows exponentially -> 30x slower sherlock, 20% demo
+  - get_line_and_column(), 5x slower than it should be, additional 40% improvement for sherlock, <1% demo
+
+```
+# 10 runs for sherlock, give a baseline (without these two mentioned functions)
+count:  146 checks
+min:    0.0009843750012805685 s
+median: 0.10638334300165297 s
+mean:   0.3801483482671906 s
+max:    2.5366100829996867 s
+sum:    55.50165884700982 s    (these numbers are for 10 runs)
+
+# -> text is 100x larger than demo, should take ~6s singlecore, but even multicore:
+Found 362 lint-warnings in 46.192 s (1 files, 548.63 kiByte)
+# -> now without get_line_and_col() & is_quoted()
+Found 1000 lint-warnings in 1.183 s (1 files, 548.63 kiByte)
+# -> just without is_quoted()
+Found 1000 lint-warnings in 1.649 s (1 files, 548.63 kiByte)
+# -> both optimized
+Found 362 lint-warnings in 1.375 s (1 files, 548.63 kiByte)
+
+```
+
+or to keep comparable to previous benchmarks
+
+```
+############# lint_path(corpora) - Linux, 146 checks
+serial took 5901.395 ms -> run0
+serial took 6331.165 ms -> run1
+parallel took 2245.927 ms -> run0
+parallel took 2456.038 ms -> run1
 ```
 
 ## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)

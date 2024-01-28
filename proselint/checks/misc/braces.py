@@ -38,6 +38,7 @@ examples_fail = [
 def trace_braces(
     text: str, rex: str, char1: str, char2: str, err: str
 ) -> Optional[ResultCheck]:
+    # TODO: same check for quotes?
     _count = 0
     for _m in re.finditer(rex, text):
         if _m.group(0) == char1:
