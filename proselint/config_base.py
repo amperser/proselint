@@ -60,7 +60,7 @@ proselint_base: dict = {
         "misc.numbers": True,
         "misc.many_a": True,
         "misc.metadiscourse": True,
-        "misc.monotonic": True,
+        "misc.monotonic": False,  # in preview phase
         "misc.narcissism": True,
         "misc.not_guilty": True,
         "misc.phrasal_adjectives": True,
@@ -95,7 +95,7 @@ proselint_base: dict = {
         "spelling.in_un": True,
         "spelling.misc": True,
         "spelling.ve_of": True,
-        "scientific.misc": True,
+        "scientific.misc": False,  # in preview phase
         "security.credit_card": True,
         "security.password": True,
         "sexism.misc": True,
