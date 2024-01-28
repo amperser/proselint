@@ -18,7 +18,7 @@ class Output(IntEnum):
 proselint_base: dict = {
     "max_errors": 1000,
     "parallelize": True,  # note: has some overhead, noticeable for small content
-    "output_format": Output.full.name,
+    "output_format": Output.compact.name,
     "checks": {
         "airlinese.misc": True,
         "annotations.misc": True,

@@ -47,7 +47,7 @@ parallel took 10132.006 ms -> run1
   - downside: slightly slower import of check-modules (unconfirmed)
 - precompiling the regex of the slowest check improves performance significantly
 - fix and improve several checks (less computation, more powerful, pass unittests)
-  - lexical illusions 
+  - lexical illusions
   - but
   - cursing (something like "a.s.s." allowed "amsisa")
 - speedup for not needed safe_join-formatting (+10% in sherlock)
@@ -75,7 +75,7 @@ parallel took 8898.538 ms -> run1
     - extensive test for valid usage of _check-functions
 - preferred_check wants now a dict for items instead of multidimensional list
 - new optimized preferred_check() disallowes regex in items (applicable to most checks) and can speedup substantially
-  - small text like demo and even larger 500kb sherlock increase by factor of 3! 
+  - small text like demo and even larger 500kb sherlock increase by factor of 3!
   - relation between durations of slowest & median check was 30 and is now 20
   - relation between durations of median & fastest check was 100 and is now 20
 

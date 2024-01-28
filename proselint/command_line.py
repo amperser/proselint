@@ -137,6 +137,8 @@ def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
 
     if output_format in Output.names():
         config["output_format"] = output_format
+    elif verbose:
+        config["output_format"] = Output.full.name
 
     if benchmark:
         run_benchmark()
