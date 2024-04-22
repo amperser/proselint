@@ -1,5 +1,16 @@
 # Change Log
 
+## [proselint@0.14.0](https://github.com/amperser/proselint/compare/0.13.0...0.14.0)
+
+### Bug Fixes
+
+- now loads the default configuration if none is provided ([#1246](https://github.com/amperser/proselint/pull/1246))
+- added support for hyphens in `lexical_illusions` ([#1344](https://github.com/amperser/proselint/pull/1344))
+
+### Features
+
+- additional spelling checks `ally_ly`, `ance_ence`, `ely_ly` and `ve_of` ([#1266](https://github.com/amperser/proselint/pull/1266))
+
 ## [proselint@0.13.0](https://github.com/amperser/proselint/compare/0.12.0...0.13.0)
 
 ### Bug Fixes
