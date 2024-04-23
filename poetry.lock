@@ -1357,6 +1357,17 @@ click = ">=5.0.0"
 redis = ">=4.0.0"
 
 [[package]]
+name = "rstr"
+version = "3.2.2"
+description = "Generate random strings in Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "rstr-3.2.2-py3-none-any.whl", hash = "sha256:f39195d38da1748331eeec52f1276e71eb6295e7949beea91a5e9af2340d7b3b"},
+    {file = "rstr-3.2.2.tar.gz", hash = "sha256:c4a564d4dfb4472d931d145c43d1cf1ad78c24592142e7755b8866179eeac012"},
+]
+
+[[package]]
 name = "ruff"
 version = "0.1.14"
 description = "An extremely fast Python linter and code formatter, written in Rust."
@@ -1658,4 +1669,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1"
-content-hash = "ca0032b5003833a8a1adeb62c73da7750c3673cc5caebaec2611f33c2f4252d6"
+content-hash = "a85f7878768274e085ef32e81370db56d6eb1ff3ebbacbac0d3ba7d70cc253cf"
