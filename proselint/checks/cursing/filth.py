@@ -14,7 +14,7 @@ Filthy words.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -24,7 +24,7 @@ examples_pass = [
 examples_fail = ["Bad shit in this phrase."]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.filth"
     msg = "Nobody ever tells you this as a kid, but you're supposed to avoid this word."

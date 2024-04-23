@@ -15,7 +15,7 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -37,7 +37,7 @@ examples_fail = [
 
 def trace_braces(
     text: str, rex: str, char1: str, char2: str, err: str
-) -> Optional[ResultCheck]:
+) -> Optional[CheckResult]:
     # TODO: same check for quotes?
     _count = 0
     for _m in re.finditer(rex, text):
@@ -51,7 +51,7 @@ def trace_braces(
                 "Don't fail to match / close opened braces -> "
                 f"more {char1}{char2}-braces closed than opened"
             )
-            return ResultCheck(
+            return CheckResult(
                 start_pos=_m.start(),
                 end_pos=_m.end(),
                 check=err,
@@ -63,18 +63,18 @@ def trace_braces(
             "Don't fail to match / close opened braces -> "
             f"at least one '{char1}' is left open"
         )
-        return ResultCheck(
+        return CheckResult(
             start_pos=0, end_pos=len(text), check=err, message=_msg, replacements=None
         )
     return None
 
 
-def check_unmatched(text: str) -> list[ResultCheck]:
+def check_unmatched(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.braces.unmatched"
     # msg = "Don't fail to match / close opened braces '{}'."
 
-    results: list[ResultCheck] = []
+    results: list[CheckResult] = []
     if any(re.finditer(r"[()]", text)):
         _res = trace_braces(text, r"[()]", "(", ")", err)
         if _res:

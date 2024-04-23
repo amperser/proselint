@@ -14,7 +14,7 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -28,7 +28,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """
     source: https://en.wikipedia.org/wiki/Weasel_word
     """

@@ -37,10 +37,10 @@ print(f"lst_1k_b took {_dur * 1000:.2f} ms")
 print("\n################### creating lint-results")
 # learning:
 # - list is fastest, but not the best result type to hand to user
-# - dict is slower (halve as fast) and wins against named tuple
+# - dict is slower (half as fast) and wins against named tuple
 # - frozenmap is still not implemented, https://peps.python.org/pep-0603/
 
-Const = namedtuple("ResultLint", ("val1", "val2", "val3"))  # noqa: PYI024
+Const = namedtuple("LintResult", ("val1", "val2", "val3"))  # noqa: PYI024
 res1 = Const(val1=457, val2=458, val3=120)
 res2 = [457, 458, 120]
 

@@ -15,7 +15,7 @@ Incorrect capitalization.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check_simple
 from proselint.checks import preferred_forms_check_opti
 
@@ -42,7 +42,7 @@ examples_fail = [
 ]
 
 
-def check_terms(text: str) -> list[ResultCheck]:
+def check_terms(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.capitalization.terms"
     msg = "Incorrect capitalization. '{}' is the preferred form."
@@ -57,7 +57,7 @@ def check_terms(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
 
-def check_seasons(text: str) -> list[ResultCheck]:
+def check_seasons(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.capitalization.seasons"
     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
@@ -70,7 +70,7 @@ def check_seasons(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
 
-def check_months(text: str) -> list[ResultCheck]:
+def check_months(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.capitalization.months"
     msg = "Months should be capitalized. '{}' is the preferred form."
@@ -93,7 +93,7 @@ def check_months(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
 
-def check_days(text: str) -> list[ResultCheck]:
+def check_days(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.capitalization.days"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
@@ -111,7 +111,7 @@ def check_days(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
 
-def check_roman_war(text: str) -> list[ResultCheck]:
+def check_roman_war(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.capitalization.roman_num.ww"
     msg = "Don't fail to capitalize roman numeral abbreviation in '{}'."
@@ -120,7 +120,7 @@ def check_roman_war(text: str) -> list[ResultCheck]:
     return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
-def check_roman_numerals(text: str) -> list[ResultCheck]:
+def check_roman_numerals(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.capitalization.roman_num"
     msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
@@ -131,7 +131,7 @@ def check_roman_numerals(text: str) -> list[ResultCheck]:
     results_all = existence_check_simple(
         text, numerals_regex, err, msg, ignore_case=True
     )
-    results_valid: list[ResultCheck] = []
+    results_valid: list[CheckResult] = []
     for _res in results_all:
         # is it possible to bring that into the regex or check?
         _item: str = text[_res.start_pos : _res.end_pos].strip()

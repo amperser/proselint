@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -34,7 +34,7 @@ examples_fail = [
 ]
 
 
-def check_cliches_garner(text: str) -> list[ResultCheck]:
+def check_cliches_garner(text: str) -> list[CheckResult]:
     """Check the text.
 
     source:     Garner's Modern American Usage
@@ -127,7 +127,7 @@ def check_cliches_garner(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_a_to_c(text: str) -> list[ResultCheck]:
+def check_cliches_write_good_a_to_c(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -296,7 +296,7 @@ def check_cliches_write_good_a_to_c(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_d_to_j(text: str) -> list[ResultCheck]:
+def check_cliches_write_good_d_to_j(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -482,7 +482,7 @@ def check_cliches_write_good_d_to_j(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_k_to_o(text: str) -> list[ResultCheck]:
+def check_cliches_write_good_k_to_o(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -651,7 +651,7 @@ def check_cliches_write_good_k_to_o(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_p_to_s(text: str) -> list[ResultCheck]:
+def check_cliches_write_good_p_to_s(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -787,7 +787,7 @@ def check_cliches_write_good_p_to_s(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
+def check_cliches_write_good_t_to_z(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -909,7 +909,7 @@ def check_cliches_write_good_t_to_z(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
+def check_cliches_gnu_diction(text: str) -> list[CheckResult]:
     """Check the text.
 
     source:     GNU diction
@@ -951,7 +951,7 @@ def check_cliches_gnu_diction(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, ignore_case=True)
 
 
-def check_cliches_nigel(text: str) -> list[ResultCheck]:
+def check_cliches_nigel(text: str) -> list[CheckResult]:
     """Check the text.
 
     source:     Nigel Ree's Dictionary of Cliches

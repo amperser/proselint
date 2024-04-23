@@ -14,7 +14,7 @@ Using the incorrect form of the plural.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_opti
 
@@ -28,7 +28,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.plurals.misc"
     msg = "The plural is {} and not {}"
@@ -41,7 +41,7 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_kudos(text: str) -> list[ResultCheck]:
+def check_kudos(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.plurals.kudos"
     msg = "Kudos is singular."

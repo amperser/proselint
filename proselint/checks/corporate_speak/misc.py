@@ -14,7 +14,7 @@ Avoid these cases of business jargon.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -27,7 +27,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "corporate_speak.misc"
     msg = "Minimize your use of corporate catchphrases like this one."

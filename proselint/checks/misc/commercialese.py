@@ -15,7 +15,7 @@ Commercialese.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_regex
 
@@ -29,7 +29,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.commercialese"
     msg = "'{}' is commercialese."
@@ -63,7 +63,7 @@ def check(text: str) -> list[ResultCheck]:
     return existence_check(text, commercialese, err, msg)
 
 
-def check_abbrev(text: str) -> list[ResultCheck]:
+def check_abbrev(text: str) -> list[CheckResult]:
     """
     source: https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm
     """

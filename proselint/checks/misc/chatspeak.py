@@ -14,7 +14,7 @@ Chatspeak.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -26,7 +26,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.chatspeak"
     msg = "'{}' is chatspeak. Write it out."

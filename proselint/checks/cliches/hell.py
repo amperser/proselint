@@ -14,7 +14,7 @@ Never use the phrase 'all hell broke loose'.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 
@@ -28,7 +28,7 @@ examples_fail = [
 
 
 @limit_results(1)
-def check_repeated_exclamations(text: str) -> list[ResultCheck]:
+def check_repeated_exclamations(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cliches.hell"
     msg = "Never use the words 'all hell broke loose'."

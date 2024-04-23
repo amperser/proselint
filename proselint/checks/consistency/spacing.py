@@ -15,7 +15,7 @@ a period, in the same document.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import consistency_check
 
 examples_pass = [
@@ -26,7 +26,7 @@ examples_pass = [
 examples_fail = ["This is bad.  Not consistent. At all."]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "consistency.spacing"
     msg = "Inconsistent spacing after period (1 vs. 2 spaces)."

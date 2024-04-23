@@ -27,9 +27,9 @@ from .logger import log
 from .memoizer import cache
 
 
-class ResultLint(NamedTuple):
+class LintResult(NamedTuple):
     # allows access by name and export ._asdict()
-    # note: const after instantiation & trouble with pickling
+    # NOTE: const after instantiation & trouble with pickling
     check: str
     message: str
     source: str
@@ -115,7 +115,7 @@ last_char_count: int = 0
 
 def extract_files(paths: Union[Path, list[Path]]) -> list[Path]:
     """Expand list of paths to include all text files matching the pattern."""
-    legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
+    valid_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
 
     if isinstance(paths, Path):
         paths = [paths]
@@ -128,7 +128,7 @@ def extract_files(paths: Union[Path, list[Path]]) -> list[Path]:
                 _path = Path(_dir)
                 for filename in _filenames:
                     _file_path = _path / filename
-                    if _file_path.suffix.lower() in legal_extensions:
+                    if _file_path.suffix.lower() in valid_extensions:
                         expanded_files.append(_file_path)
         # Otherwise add the file directly.
         else:
@@ -145,7 +145,7 @@ def lint(
     *,  # internals from here on, caution
     _checks: Optional[list[Callable]] = None,
     _exe: Optional[Executor] = None,
-) -> list[ResultLint]:
+) -> list[LintResult]:
     """Run the linter on the input file.
 
     arguments:
@@ -167,7 +167,7 @@ def lint(
     with contextlib.suppress(KeyError):
         # early exit if result is already cached
         errors = cache[memoizer_key]
-        return [ResultLint(**_e) for _e in errors]
+        return [LintResult(**_e) for _e in errors]
 
     # padding
     # -> some checks expect words in text and expect something around it
@@ -189,7 +189,7 @@ def lint(
             _exe.submit(run_check, check, content, source_name) for check in _checks
         ]
         if allow_futures:
-            cache.name2key[source_name] = memoizer_key
+            cache.name_to_key[source_name] = memoizer_key
             return futures
         errors = [_e for _ft in futures for _e in _ft.result()]
         # errors.extend([_ft.result for _ft in futures]), try it
@@ -203,12 +203,12 @@ def lint(
     )
     cache[memoizer_key] = errors
     # return user-friendly format
-    return [ResultLint(**_e) for _e in errors]
+    return [LintResult(**_e) for _e in errors]
 
 
 def fetch_results(
-    futures: Union[list[Future], list[ResultLint]], config: dict, source_name: str
-) -> list[ResultLint]:
+    futures: Union[list[Future], list[LintResult]], config: dict, source_name: str
+) -> list[LintResult]:
     """fetch result from futures, needed when working with multiprocessing"""
     if len(futures) > 0 and isinstance(futures[0], Future):
         _errors = [_e for _ft in futures for _e in _ft.result()]
@@ -217,16 +217,16 @@ def fetch_results(
             key=lambda e: (e["line"], e["column"]),
         )
         # store results in cache
-        key = cache.name2key.get(source_name)
+        key = cache.name_to_key.get(source_name)
         cache[key] = _errors
-        return [ResultLint(**_e) for _e in _errors]
+        return [LintResult(**_e) for _e in _errors]
     return futures
 
 
 def lint_path(
     paths: Union[Path, list[Path]],
     config: Optional[dict] = None,
-) -> dict[Path, list[ResultLint]]:
+) -> dict[Path, list[LintResult]]:
     """Lint path with files or point to specific file"""
     # Expand the list of directories and files.
     filepaths = extract_files(paths)
@@ -279,7 +279,7 @@ def lint_path(
 
 
 def convert_to_json(
-    results: Union[dict[list[str, ResultLint]], list[ResultLint]],
+    results: Union[dict[list[str, LintResult]], list[LintResult]],
 ) -> str:
     """Convert the errors to JSON.
 
@@ -311,7 +311,7 @@ def convert_to_json(
 
 
 def print_to_console(  # noqa: PLR0912
-    results: Union[dict[str, list[ResultLint]], list[ResultLint]],
+    results: Union[dict[str, list[LintResult]], list[LintResult]],
     config: Optional[dict] = None,
     file_path: Optional[Path] = None,
 ) -> None:

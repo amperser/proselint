@@ -2,12 +2,12 @@
 
 """Test GMEU entry 'a', part B."""
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from tests.conftest import assert_fail
 
 
 def check(text: str) -> list:
-    return [ResultCheck(0, 0, "misc.a_distributive", "ipsem", None)]
+    return [CheckResult(0, 0, "misc.a_distributive", "ipsem", None)]
 
 
 def test_misc_a_vs_an_p2():

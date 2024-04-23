@@ -14,7 +14,7 @@ Points out use of needless variants.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
@@ -26,7 +26,7 @@ examples_fail = [
 ]
 
 
-def check_1(text: str) -> list[ResultCheck]:
+def check_1(text: str) -> list[CheckResult]:
     """Suggest the preferred forms.
 
     NOTE: this was one of the slowest Checks,
@@ -211,7 +211,7 @@ def check_1(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_2(text: str) -> list[ResultCheck]:
+def check_2(text: str) -> list[CheckResult]:
     """Suggest the preferred forms.
 
     NOTE: this was one of the slowest Checks,

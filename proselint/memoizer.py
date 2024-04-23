@@ -40,7 +40,7 @@ class Cache:
         self._age: dict[str, int] = {}
         self._ts_now: int = round(datetime.now(tz=timezone.utc).timestamp())
         self._modified: bool = False
-        self.name2key: dict[str, str] = {}
+        self.name_to_key: dict[str, str] = {}
 
     def __exit__(
         self,

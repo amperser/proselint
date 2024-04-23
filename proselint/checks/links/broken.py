@@ -18,7 +18,7 @@ import asyncio
 import re
 import urllib.request as ulr
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -34,7 +34,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "links.broken"
     msg = "Broken link: {}"
@@ -47,7 +47,7 @@ def check(text: str) -> list[ResultCheck]:
         re.UNICODE | re.VERBOSE,
     )  # TODO: update regex?
 
-    results: list[ResultCheck] = []
+    results: list[CheckResult] = []
     for m in re.finditer(regex, text):
         url = m.group(0).strip()
 
@@ -56,7 +56,7 @@ def check(text: str) -> list[ResultCheck]:
 
         if is_broken_link(url):
             results.append(
-                ResultCheck(
+                CheckResult(
                     start_pos=m.start(),
                     end_pos=m.end(),
                     check=err,

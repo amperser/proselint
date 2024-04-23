@@ -15,7 +15,7 @@ Words the NFL won't print on a jersey.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = ["Smoke phrase with nothing flagged.", "get your axsysz over here."]
@@ -30,7 +30,7 @@ examples_fail = [
 ]
 
 
-def check_a_to_e(text: str) -> list[ResultCheck]:
+def check_a_to_e(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
@@ -397,7 +397,7 @@ def check_a_to_e(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_f_to_h(text: str) -> list[ResultCheck]:
+def check_f_to_h(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
@@ -622,7 +622,7 @@ def check_f_to_h(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_i_to_p(text: str) -> list[ResultCheck]:
+def check_i_to_p(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
@@ -902,7 +902,7 @@ def check_i_to_p(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_q_to_z(text: str) -> list[ResultCheck]:
+def check_q_to_z(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
@@ -1223,7 +1223,7 @@ def check_q_to_z(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_abb(text: str) -> list[ResultCheck]:
+def check_abb(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."

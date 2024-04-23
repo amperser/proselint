@@ -9,16 +9,16 @@ import rstr
 
 import proselint
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from tests.test_checks import get_module_names
 
 
-def generate_examples(items: list[str]) -> list[ResultCheck]:
-    results: list[ResultCheck] = []
+def generate_examples(items: list[str]) -> list[CheckResult]:
+    results: list[CheckResult] = []
     for item in items:
         example = rstr.xeger(item)
         results.append(
-            ResultCheck(
+            CheckResult(
                 start_pos=0,
                 end_pos=100,
                 check="mock",
@@ -62,7 +62,7 @@ def mock_preferred_forms_check_regex(
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     item_list = list(items.keys())
     verify_regex_padding(item_list, padding)
     return generate_examples(item_list)
@@ -76,7 +76,7 @@ def mock_preferred_forms_check_opti(
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     item_list = list(items.keys())
     # items can't contain any active regex - tested here:
     for item in item_list:
@@ -100,7 +100,7 @@ def mock_existence_check(
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
     exceptions=(),
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     verify_regex_padding(re_items, padding)
     return generate_examples(re_items)
 
@@ -113,7 +113,7 @@ def mock_existence_check_simple(
     ignore_case: bool = True,
     unicode: bool = True,
     exceptions=(),
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     items = [pattern]
     return generate_examples(items)
 
@@ -144,7 +144,7 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
 
     checks = {d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)}
 
-    examples: list[ResultCheck] = []
+    examples: list[CheckResult] = []
     for check in checks.values():  # any-config
         # reverse regex-action happening here
         examples.extend(check("smokey"))

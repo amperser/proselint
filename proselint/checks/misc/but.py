@@ -15,7 +15,7 @@ Paragraphs should not start with certain bad words.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -33,7 +33,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Do not start a paragraph with a 'But'."""
     err = "misc.but"
     msg = "No paragraph or sentence should start with a 'But'."

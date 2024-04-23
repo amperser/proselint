@@ -15,7 +15,7 @@ Points out misspellings.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
@@ -25,7 +25,7 @@ examples_pass = [
 examples_fail = ["I like this alot.", "I stay 'til sundown."]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "spelling.misc"
     msg = "Misspelling. '{}' is the preferred spelling."
@@ -162,7 +162,7 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_special(text: str) -> list[ResultCheck]:
+def check_special(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "spelling.misc"
     msg = "Misspelling. '{}' is the preferred spelling."

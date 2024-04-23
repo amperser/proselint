@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import consistency_check
 from proselint.checks import existence_check
 from proselint.checks import existence_check_simple
@@ -45,7 +45,7 @@ examples_fail = [
 ]
 
 
-def check_num_unit(text: str) -> list[ResultCheck]:
+def check_num_unit(text: str) -> list[CheckResult]:
     """Check numbers with units"""
     # TODO: add more than the SI-Units
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
@@ -63,7 +63,7 @@ def check_num_unit(text: str) -> list[ResultCheck]:
     return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
-def check_emotion(text: str) -> list[ResultCheck]:
+def check_emotion(text: str) -> list[CheckResult]:
     """avoid the following words"""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.emotion"
@@ -77,7 +77,7 @@ def check_emotion(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_weasel(text: str) -> list[ResultCheck]:
+def check_weasel(text: str) -> list[CheckResult]:
     """avoid the following words"""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.weasel"
@@ -86,7 +86,7 @@ def check_weasel(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_conversation(text: str) -> list[ResultCheck]:
+def check_conversation(text: str) -> list[CheckResult]:
     """avoid the following words"""
     # src = https://www2.spsc.tugraz.at/www-archive/downloads/DoesandDonts%20in%20scientific%20writing%20reisenhofer%20tumfart.pdf
     err = "scientific.misc.conversation"
@@ -95,7 +95,7 @@ def check_conversation(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_wrong(text: str) -> list[ResultCheck]:
+def check_wrong(text: str) -> list[CheckResult]:
     """avoid the following words"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.wrong"
@@ -104,7 +104,7 @@ def check_wrong(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_avoid_misc(text: str) -> list[ResultCheck]:
+def check_avoid_misc(text: str) -> list[CheckResult]:
     """avoid the following words"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.avoid"
@@ -113,7 +113,7 @@ def check_avoid_misc(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_preferred(text: str) -> list[ResultCheck]:
+def check_preferred(text: str) -> list[CheckResult]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.preference"
     msg = (
@@ -187,7 +187,7 @@ def check_preferred(text: str) -> list[ResultCheck]:
     return ret1 + ret2
 
 
-def check_this_vs_those(text: str) -> list[ResultCheck]:
+def check_this_vs_those(text: str) -> list[CheckResult]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L812
     # TODO: magnet for false positives -> remove? seems niche
     err = "scientific.misc.this_vs_those"
@@ -200,13 +200,13 @@ def check_this_vs_those(text: str) -> list[ResultCheck]:
         r"this (hypothesis|involves|indicates|leads|reduces|shows|suggests|thesis)",
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
-    results: list[ResultCheck] = []
+    results: list[CheckResult] = []
     for _m in re.finditer(r"\b(this +\w+s(\s\w+)?)\b", text, flags=re.IGNORECASE):
         _res = _m.group(0).strip().lower()
         if any(re.finditer(expt_regex, _res)):
             continue
         results.append(
-            ResultCheck(
+            CheckResult(
                 start_pos=_m.start(),
                 end_pos=_m.end(),
                 check=err,
@@ -217,7 +217,7 @@ def check_this_vs_those(text: str) -> list[ResultCheck]:
     return results
 
 
-def check_we_or_i(text: str) -> list[ResultCheck]:
+def check_we_or_i(text: str) -> list[CheckResult]:
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.we_or_i"
     msg = "Decide if you alone ('{}') or a team ('{}') has written the report"

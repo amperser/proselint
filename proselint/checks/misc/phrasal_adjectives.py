@@ -15,7 +15,7 @@ Phrasal adjectives.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_opti
 from proselint.checks import preferred_forms_check_regex
@@ -31,7 +31,7 @@ examples_fail = [
 ]
 
 
-def check_ly(text: str) -> list[ResultCheck]:
+def check_ly(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.phrasal_adjectives.garner.ly"
     msg = (
@@ -44,7 +44,7 @@ def check_ly(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, padding=Pd.disabled, offset=(1, 0))
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.phrasal_adjectives.garner"
     msg = "Hyphenate '{1}', a phrasal adjective, as '{0}'."

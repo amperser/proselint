@@ -47,7 +47,7 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -135,7 +135,7 @@ def compile_uncomparables() -> list:
 items = compile_uncomparables()
 
 
-def check_1(text: str) -> list[ResultCheck]:
+def check_1(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,
@@ -147,7 +147,7 @@ def check_1(text: str) -> list[ResultCheck]:
     return existence_check(text, items[: round(len(items) / 2)], err, msg)
 
 
-def check_2(text: str) -> list[ResultCheck]:
+def check_2(text: str) -> list[CheckResult]:
     """Check the text.
 
     NOTE: this was one of the slowest Checks,

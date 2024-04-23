@@ -14,7 +14,7 @@ Points out hedging.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -27,7 +27,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "hedging.misc"
     msg = "Hedging. Just say it."

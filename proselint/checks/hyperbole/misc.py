@@ -15,7 +15,7 @@ Hyperbolic language.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -25,7 +25,7 @@ examples_pass = [
 examples_fail = ["So exaggerated!!!", "really??"]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "hyperbole.misc"
     msg = "'{}' is hyperbolic."

@@ -13,7 +13,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check_simple
 
 examples_pass = [
@@ -29,7 +29,7 @@ I am a fan of superman.""",
 ]
 
 
-def check_sentence(text: str) -> list[ResultCheck]:
+def check_sentence(text: str) -> list[CheckResult]:
     """can have false positives after abbreviations"""
     err = "misc.monotonic.sentence"
     msg = (

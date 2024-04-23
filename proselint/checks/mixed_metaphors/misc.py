@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 from proselint.checks import preferred_forms_check_opti
@@ -19,7 +19,7 @@ examples_fail = [
 
 
 @limit_results(1)
-def check_bottleneck(text: str) -> list[ResultCheck]:
+def check_bottleneck(text: str) -> list[CheckResult]:
     """Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
@@ -40,7 +40,7 @@ def check_bottleneck(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_misc(text: str) -> list[ResultCheck]:
+def check_misc(text: str) -> list[CheckResult]:
     """Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage

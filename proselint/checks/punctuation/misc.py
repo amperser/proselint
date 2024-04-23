@@ -15,7 +15,7 @@ Dates.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import existence_check_simple
 
@@ -32,7 +32,7 @@ examples_fail = [
 ]
 
 
-def check_garner(text: str) -> list[ResultCheck]:
+def check_garner(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "punctuation.misc.garner"
     msg = "Misplaced punctuation. It's 'et al.'"
@@ -44,7 +44,7 @@ def check_garner(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
 
 
-def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
+def check_lower_case_after_punctuation(text: str) -> list[CheckResult]:
     """can have false positives after abbreviations"""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "punctuation.misc.lower_case"
@@ -68,7 +68,7 @@ def check_lower_case_after_punctuation(text: str) -> list[ResultCheck]:
     )
 
 
-def check_comma_digits(text: str) -> list[ResultCheck]:
+def check_comma_digits(text: str) -> list[CheckResult]:
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     # note: tnt has also check for german numbers, not implemented here
     err = "punctuation.misc.comma_digits"

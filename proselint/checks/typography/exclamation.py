@@ -15,7 +15,7 @@ Too much yelling.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 from proselint.checks import ppm_threshold
@@ -35,7 +35,7 @@ examples_fail = [
 
 
 @limit_results(1)
-def check_repeated_exclamations(text: str) -> list[ResultCheck]:
+def check_repeated_exclamations(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "typography.exclamation.leonard"
     msg = "Stop yelling. Keep your exclamation points under control."
@@ -54,7 +54,7 @@ def check_repeated_exclamations(text: str) -> list[ResultCheck]:
 
 
 @ppm_threshold(30)  # TODO: isn't that way too low?
-def check_exclamations_ppm(text: str) -> list[ResultCheck]:
+def check_exclamations_ppm(text: str) -> list[CheckResult]:
     """Make sure that the exclamation ppm is under 30."""
     err = "typography.exclamation.leonard.30ppm"
     msg = "More than 30 ppm of exclamations. Keep them under control."

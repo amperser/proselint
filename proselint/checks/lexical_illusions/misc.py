@@ -15,7 +15,7 @@ and this happens most often between line breaks.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check_simple
 
 examples_pass = [
@@ -42,7 +42,7 @@ examples_fail = [
 ]
 
 
-def check_repetitions(text: str) -> list[ResultCheck]:
+def check_repetitions(text: str) -> list[CheckResult]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
     err = "lexical_illusions.misc.tnt"

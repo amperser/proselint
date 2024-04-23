@@ -13,7 +13,7 @@ categories: writing
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -34,7 +34,7 @@ examples_fail = [
 ]
 
 
-def check_lowercase_periods(text: str) -> list[ResultCheck]:
+def check_lowercase_periods(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.am_pm.lowercase_periods"
     msg = "With lowercase letters, the periods are standard."
@@ -42,7 +42,7 @@ def check_lowercase_periods(text: str) -> list[ResultCheck]:
     return existence_check(text, [r"\d{1,2} ?[ap]m"], err, msg, ignore_case=False)
 
 
-def check_spacing(text: str) -> list[ResultCheck]:
+def check_spacing(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.am_pm.spacing"
     msg = "It's standard to put a space before 'a.m.' or 'p.m.'."
@@ -52,7 +52,7 @@ def check_spacing(text: str) -> list[ResultCheck]:
     )
 
 
-def check_midnight_noon(text: str) -> list[ResultCheck]:
+def check_midnight_noon(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
 
@@ -61,7 +61,7 @@ def check_midnight_noon(text: str) -> list[ResultCheck]:
     return existence_check(text, [r"\b12 ?[ap]\.?m\.?"], err, msg, padding=Pd.disabled)
 
 
-def check_redundancy(text: str) -> list[ResultCheck]:
+def check_redundancy(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
     msg = "'a.m.' is always morning; 'p.m.' is always night."

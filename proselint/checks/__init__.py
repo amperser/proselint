@@ -21,7 +21,7 @@ from typing import Optional
 from proselint.logger import log
 
 
-class ResultCheck(NamedTuple):
+class CheckResult(NamedTuple):
     start_pos: int
     end_pos: int
     check: str
@@ -34,7 +34,7 @@ class ResultCheck(NamedTuple):
 ###############################################################################
 
 
-def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
+def get_checks(options: dict) -> list[Callable[[str, str], list[CheckResult]]]:
     """Extract the checks.
     All check function names must start with `check`, e.g. `check_xyz`
     """
@@ -60,7 +60,7 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[ResultCheck]]]:
 
 def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
     errors = []
-    results: list[ResultCheck] = _check(_text)
+    results: list[CheckResult] = _check(_text)
     for _r in results:
         (line, column) = get_line_and_column(_text, _r.start_pos)
         if not is_quoted(_r.start_pos, _text):
@@ -174,12 +174,12 @@ def consistency_check(  # noqa: PLR0913, PLR0917
     msg: str,
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Build a consistency checker for the given `word_pairs`.
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
-    results: list[ResultCheck] = []
+    results: list[CheckResult] = []
 
     for w in word_pairs:
         matches = [
@@ -191,7 +191,7 @@ def consistency_check(  # noqa: PLR0913, PLR0917
             idx_minority = len(matches[0]) > len(matches[1])
 
             results += [
-                ResultCheck(
+                CheckResult(
                     start_pos=m.start() + offset[0],
                     end_pos=m.end() + offset[1],
                     check=err,
@@ -212,7 +212,7 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Build a checker that suggests the preferred form.
     Note: offset-usage corrects for manually added padding-chars
     """
@@ -222,7 +222,7 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
         offset = (offset[0] + 1, offset[1] - 1)
 
     return [
-        ResultCheck(
+        CheckResult(
             start_pos=m.start() + offset[0],
             end_pos=m.end() + offset[1],
             check=err,
@@ -247,7 +247,7 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Build a checker that suggests the preferred form.
     The provided items can't contain active regex
     -> use normal preferred_forms_check() for that
@@ -270,13 +270,13 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
         rx = next(iter(items))
     rx = padding.format(rx)
 
-    results: list[ResultCheck] = []
+    results: list[CheckResult] = []
     for m in re.finditer(rx, text, flags=flags):
         _orig = m.group(0).strip()
         _repl = items.get(_orig.lower() if ignore_case else _orig)
 
         results.append(
-            ResultCheck(
+            CheckResult(
                 start_pos=m.start() + offset[0],
                 end_pos=m.end() + offset[1],
                 check=err,
@@ -299,7 +299,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
     exceptions=(),
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
     if ignore_case:
@@ -309,7 +309,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     if dotall:
         flags |= re.DOTALL
 
-    errors: list[ResultCheck] = []
+    errors: list[CheckResult] = []
 
     # If the topic of the text is in the excluded list, return immediately.
     # TODO: might be removed, as the implementation is bad & not that useful
@@ -332,7 +332,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
         if any(re.search(exception, txt, flags=flags) for exception in exceptions):
             continue
         errors.append(
-            ResultCheck(
+            CheckResult(
                 start_pos=m.start() + offset[0],
                 end_pos=m.end() + offset[1],
                 check=err,
@@ -352,7 +352,7 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     unicode: bool = True,
     exceptions=(),
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Build a checker for single patters.
     in comparison to existence_check:
         - does not work on lists
@@ -365,7 +365,7 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
     if ignore_case:
         flags |= re.IGNORECASE
     return [
-        ResultCheck(
+        CheckResult(
             start_pos=_m.start(),
             end_pos=_m.end(),
             check=err,
@@ -465,9 +465,9 @@ def limit_results(value: int) -> Callable:
 
 
 def _truncate_errors(
-    errors: list[ResultCheck],
+    errors: list[CheckResult],
     limit: int,
-) -> list[ResultCheck]:
+) -> list[CheckResult]:
     """Truncates a list of errors to a given threshold.
     This also notes how many times the error was encountered prior to truncation.
     """
@@ -481,7 +481,7 @@ def _truncate_errors(
             m0 += f" Found {len(errors)} times elsewhere."
 
         errors = [
-            ResultCheck(
+            CheckResult(
                 start_pos=e0.start_pos,
                 end_pos=e0.end_pos,
                 check=e0.check,
@@ -514,8 +514,8 @@ def ppm_threshold(threshold: float) -> Callable:
 
 
 def _threshold_check(
-    errors: list[ResultCheck], threshold: float, length: int
-) -> list[ResultCheck]:
+    errors: list[CheckResult], threshold: float, length: int
+) -> list[CheckResult]:
     """Returns an error if the specified PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)

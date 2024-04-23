@@ -17,7 +17,7 @@ from flask_limiter import Limiter
 from rq import Queue
 
 import proselint
-from proselint.tools import ResultLint
+from proselint.tools import LintResult
 
 from .worker import conn
 
@@ -29,7 +29,7 @@ limiter = Limiter(app)
 q = Queue(connection=conn)
 
 
-def worker_function(text: str) -> list[ResultLint]:
+def worker_function(text: str) -> list[LintResult]:
     """Lint the text using a worker dyno."""
     return proselint.tools.lint(text)
 
@@ -42,7 +42,7 @@ def ratelimit_handler(e):
 
 def check_auth(username, password):
     """Check if a username / password combination is valid."""
-    legal_hashes = [
+    valid_hashes = [
         "15a7fdade5fa58d38c6d400770e5c0e948fbc03ba365b704a6d205687738ae46",
         "057b24043181523e3c3717071953c575bd13862517a8ce228601582a9cbd9dae",
         "c8d79ae7d388b6da21cb982a819065b18941925179f88041b87de2be9bcde79c",
@@ -64,7 +64,7 @@ def check_auth(username, password):
         "704c3ddde0b5fd3c6971a6ef16991ddff3e241c170ed539094ee668861e01764",
         "aaebc3ca0fe041a3a595170b8efda22308cd7d843510bf01263f05a1851cb173",
     ]
-    return hashlib.sha256(username + password).hexdigest() in legal_hashes
+    return hashlib.sha256(username + password).hexdigest() in valid_hashes
 
 
 def authenticate():

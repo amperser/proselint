@@ -14,7 +14,7 @@ Psychological and psychiatric terms to avoid.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import preferred_forms_check_opti
 
@@ -29,7 +29,7 @@ examples_fail = [
 ]
 
 
-def check_lie_detector_test(text: str) -> list[ResultCheck]:
+def check_lie_detector_test(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "psychology.lie_detector"
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
@@ -42,7 +42,7 @@ def check_lie_detector_test(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_p_equals_zero(text: str) -> list[ResultCheck]:
+def check_p_equals_zero(text: str) -> list[CheckResult]:
     """Check for p = 0.000."""
     err = "psychology.p_equals_zero"
     msg = "Unless p really equals zero, you should use more decimal places."
@@ -56,7 +56,7 @@ def check_p_equals_zero(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_mental_telepathy(text: str) -> list[ResultCheck]:
+def check_mental_telepathy(text: str) -> list[CheckResult]:
     """Check for 'mental telepathy'."""
     err = "psychology.mental_telepathy"
     msg = "This is redundant because all purported telepathy is mental."

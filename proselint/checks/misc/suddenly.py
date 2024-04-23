@@ -27,7 +27,7 @@ shift in emotional calibration.
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 from proselint.checks import limit_results
 
@@ -41,7 +41,7 @@ examples_fail = [
 
 
 @limit_results(3)
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"
     msg = "Suddenly is nondescript, slows the action, and warns your reader."

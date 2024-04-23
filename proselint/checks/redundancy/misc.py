@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 from proselint.checks import preferred_forms_check_regex
 
@@ -21,7 +21,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "redundancy.wallace"
     msg = "Redundancy. Use '{}' instead of '{}'."
@@ -34,7 +34,7 @@ def check(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_garner(text: str) -> list[ResultCheck]:
+def check_garner(text: str) -> list[CheckResult]:
     """Suggest the preferred forms.
 
     source:     Garner's Modern American Usage
@@ -143,7 +143,7 @@ def check_garner(text: str) -> list[ResultCheck]:
     return ret1 + ret2
 
 
-def check_nordquist(text: str) -> list[ResultCheck]:
+def check_nordquist(text: str) -> list[CheckResult]:
     """Suggest the preferred forms.
 
     source:     Richard Nordquist
@@ -167,7 +167,7 @@ def check_nordquist(text: str) -> list[ResultCheck]:
     return ret1 + ret2
 
 
-def check_atd_1(text: str) -> list[ResultCheck]:
+def check_atd_1(text: str) -> list[CheckResult]:
     """Check for redundancies from After the Deadline.
 
     NOTE: this was one of the slowest Checks,
@@ -380,7 +380,7 @@ def check_atd_1(text: str) -> list[ResultCheck]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-def check_atd_2(text: str) -> list[ResultCheck]:
+def check_atd_2(text: str) -> list[CheckResult]:
     """Check for redundancies from After the Deadline.
 
     NOTE: this was one of the slowest Checks,

@@ -16,7 +16,7 @@ Associated Press have also adopted this style guide.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
@@ -31,7 +31,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest preferred forms given the reference document."""
     err = "lgbtq.terms.glaad"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."

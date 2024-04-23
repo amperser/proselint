@@ -47,7 +47,7 @@ structure.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 from proselint.checks import preferred_forms_check_regex
 
@@ -63,7 +63,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.composition.strunk_white"
     msg = "Try '{}' instead of '{}'."
@@ -71,7 +71,7 @@ def check(text: str) -> list[ResultCheck]:
     items: dict[str, str] = {
         # Put statements in positive form
         "not honest": "dishonest",
-        "not important": "trifling",
+        "not important": "unimportant",
         "did not remember": "forgot",
         "did not have much confidence in": "distrusted",
         # Omit needless words

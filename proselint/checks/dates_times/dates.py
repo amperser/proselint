@@ -17,7 +17,7 @@ from __future__ import annotations
 import calendar
 
 from proselint.checks import Pd
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -41,7 +41,7 @@ examples_fail = [
 ]
 
 
-def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:
+def check_decade_apostrophes_short(text: str) -> list[CheckResult]:
     """Check the text for dates of the form X0's."""
     err = "dates_times.dates"
     msg = "Apostrophes aren't needed for decades."
@@ -49,7 +49,7 @@ def check_decade_apostrophes_short(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, excluded_topics=["50 Cent"])
 
 
-def check_decade_apostrophes_long(text: str) -> list[ResultCheck]:
+def check_decade_apostrophes_long(text: str) -> list[CheckResult]:
     """Check the text for dates of the form XXX0's."""
     err = "dates_times.dates"
     msg = "Apostrophes aren't needed for decades."
@@ -57,7 +57,7 @@ def check_decade_apostrophes_long(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_dash_and_from(text: str) -> list[ResultCheck]:
+def check_dash_and_from(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a date range, write 'from X to Y'."
@@ -65,7 +65,7 @@ def check_dash_and_from(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_month_year_comma(text: str) -> list[ResultCheck]:
+def check_month_year_comma(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a month and year, no comma is needed."
@@ -74,7 +74,7 @@ def check_month_year_comma(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg, padding=Pd.disabled)
 
 
-def check_month_of_year(text: str) -> list[ResultCheck]:
+def check_month_of_year(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "dates_times.dates"
     msg = "When specifying a month and year, 'of' is unnecessary."

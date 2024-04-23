@@ -14,7 +14,7 @@ Archaism.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -29,7 +29,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.illogic"
     msg = "'{}' is illogical."
@@ -49,7 +49,7 @@ def check(text: str) -> list[ResultCheck]:
     return existence_check(text, illogics, err, msg)
 
 
-def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
+def check_coin_a_phrase_from(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
@@ -57,7 +57,7 @@ def check_coin_a_phrase_from(text: str) -> list[ResultCheck]:
     return existence_check(text, items, err, msg)
 
 
-def check_without_your_collusion(text: str) -> list[ResultCheck]:
+def check_without_your_collusion(text: str) -> list[CheckResult]:
     """Check the textself."""
     err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."

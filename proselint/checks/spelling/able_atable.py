@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import preferred_forms_check_opti
 
 examples_pass = [
@@ -14,7 +14,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """-able vs. -atable."""
     err = "spelling.able_atable"
     msg = "-able vs. -atable. '{}' is the preferred spelling."

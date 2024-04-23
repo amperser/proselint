@@ -16,7 +16,7 @@ Associated Press have also adopted this style guide.
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check
 
 examples_pass = [
@@ -29,7 +29,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[ResultCheck]:
+def check(text: str) -> list[CheckResult]:
     """Flag offensive words based on the GLAAD reference guide."""
     err = "lgbtq.offensive_terms.glaad"
     msg = "Offensive term. Remove it or consider the context."

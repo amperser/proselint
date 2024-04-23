@@ -13,7 +13,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import ResultCheck
+from proselint.checks import CheckResult
 from proselint.checks import existence_check_simple
 
 examples_pass = [
@@ -42,7 +42,7 @@ examples_fail = [
 ]
 
 
-def check_section(text: str) -> list[ResultCheck]:
+def check_section(text: str) -> list[CheckResult]:
     """can have false positives after abbreviations"""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.newline"
@@ -58,7 +58,7 @@ def check_section(text: str) -> list[ResultCheck]:
     return existence_check_simple(text, regex, err, msg)
 
 
-def check_sentence(text: str) -> list[ResultCheck]:
+def check_sentence(text: str) -> list[CheckResult]:
     """can have false positives after abbreviations"""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.sentence"
@@ -85,7 +85,7 @@ def check_sentence(text: str) -> list[ResultCheck]:
     return existence_check_simple(text, regex, err, msg, exceptions=exceptions)
 
 
-def check_single_digit(text: str) -> list[ResultCheck]:
+def check_single_digit(text: str) -> list[CheckResult]:
     """can have false positives after abbreviations"""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.single_digit"
