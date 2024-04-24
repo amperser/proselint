@@ -1,4 +1,5 @@
-"""Template for new checks
+"""
+Template for new checks.
 
 ---
 layout:     post
@@ -10,20 +11,19 @@ categories: writing
 ---
 
 Note:
-
+----
 - this is just a small example / template
 - there are more lint-checks available in the parent-dir/__init__.py
-- check-fn must at least begin with "check" to be found & used
+- check function must begin with "check" to be found & used
     - so check() & check_xyz() are fine
-- the _pass and _fail examples at the start are part of the unittests and get checked
-    - this mixed approach is unconventional, but maintaining much easier
-    - they are now mandatory for each check-file
+- the _pass and _fail examples at the start are part of unit tests
+    - this mixed approach is unconventional, but makes maintenance easier
+    - they are now mandatory for each check file
 
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

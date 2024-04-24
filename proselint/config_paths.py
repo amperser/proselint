@@ -1,3 +1,5 @@
+"""Config paths used in proselint."""
+
 import os
 from pathlib import Path
 
@@ -19,7 +21,7 @@ config_global_path = Path("/etc/proselintrc")
 config_xdg_path = _get_xdg_path("XDG_CONFIG_HOME", user_path / ".config")
 
 config_user_paths = [
-    # highest prio is user provided path then as followed
+    # path priority is user provided path first, then as follows
     cwd_path / ".proselintrc.json",
     config_xdg_path / "proselint/config.json",
     user_path / ".proselintrc.json",

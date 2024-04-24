@@ -1,4 +1,5 @@
-"""Mixed one vs. two spaces after a period.
+"""
+Mixed one vs. two spaces after a period.
 
 ---
 layout:     post
@@ -15,8 +16,7 @@ a period, in the same document.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import consistency_check
+from proselint.checks import CheckResult, consistency_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

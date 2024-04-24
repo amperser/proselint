@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # direct text input
     results = plt.lint("This sentence contains a clear as mud error")
 
-    # result is a list of LintResult tagged tuples with all essential data included
+    # result is a list of LintResult named tuples with all essential data included
     print("\n## Custom Error-Printing")
     for item in results:
         print(f"{item.line}:{item.column}: {item.message}")

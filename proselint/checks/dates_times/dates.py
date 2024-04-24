@@ -1,4 +1,5 @@
-"""Dates.
+"""
+Dates.
 
 ---
 layout:     post
@@ -16,9 +17,7 @@ from __future__ import annotations
 
 import calendar
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, Pd, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -37,7 +36,8 @@ examples_fail = [
     "It happened from 2000-2005.",
     "It happened in August, 2008.",
     "It happened in August of 2008.",
-    "The 50's were swell." "From 1999-2002, Sally served as chair of the committee.",
+    "The 50's were swell."
+    "From 1999-2002, Sally served as chair of the committee.",
 ]
 
 
@@ -70,7 +70,7 @@ def check_month_year_comma(text: str) -> list[CheckResult]:
     err = "dates_times.dates"
     msg = "When specifying a month and year, no comma is needed."
     items = [r"(?:" + "|".join(calendar.month_name[1:]) + r"), \d{3,}"]
-    # note: strangely month_name[0] is ""
+    # NOTE: strangely month_name[0] is ""
     return existence_check(text, items, err, msg, padding=Pd.disabled)
 
 
@@ -79,5 +79,5 @@ def check_month_of_year(text: str) -> list[CheckResult]:
     err = "dates_times.dates"
     msg = "When specifying a month and year, 'of' is unnecessary."
     items = [r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"]
-    # note: strangely month_name[0] is ""
+    # NOTE: strangely month_name[0] is ""
     return existence_check(text, items, err, msg, padding=Pd.disabled)

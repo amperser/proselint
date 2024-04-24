@@ -9,20 +9,16 @@ import subprocess  # noqa: S404
 import sys
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING
-from typing import Optional
-from typing import Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import click
 
 from proselint.tools import print_to_console
 
 from . import tools
-from .config_base import Output
-from .config_base import proselint_base
+from .config_base import Output, proselint_base
 from .config_paths import demo_file
-from .logger import log
-from .logger import set_verbosity
+from .logger import log, set_verbosity
 from .memoizer import cache
 from .version import __version__
 
@@ -34,11 +30,12 @@ base_url = "proselint.com/"
 
 
 def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
+    """Exit proselint with a message instead of crashing out."""
     log.warning("Exiting!")
     sys.exit(0)
 
 
-def run_benchmark(corpus: str = "0.1.0") -> float:
+def run_benchmark(_corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     # force a clean slate
     cache.clear()
@@ -91,9 +88,13 @@ def run_benchmark(corpus: str = "0.1.0") -> float:
     help="Override config to change format.",
 )
 @click.option("--dump-config", is_flag=True, help="Prints current config.")
-@click.option("--dump-default-config", is_flag=True, help="Prints default config.")
+@click.option(
+    "--dump-default-config", is_flag=True, help="Prints default config."
+)
 @click.option("--version", is_flag=True)
-@click.argument("paths", nargs=-1, type=click.Path(exists=True, resolve_path=True))
+@click.argument(
+    "paths", nargs=-1, type=click.Path(exists=True, resolve_path=True)
+)
 def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
     paths: Union[list[Path], Path, None],
     config: Optional[Path] = None,
@@ -103,10 +104,11 @@ def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
     benchmark: bool = False,
     demo: bool = False,
     dump_config: bool = False,  # TODO: this should be a subcommand
-    dump_default_config: bool = False,  # TODO: this should be a switch in dump-cmd
+    dump_default_config: bool = False,  # TODO: this should be a switch in dump
     version: bool = False,
-):
-    """Create the CLI for proselint, a linter for prose."""
+) -> None:
+    """proselint, a linter for prose."""
+    # NOTE: the above determines the CLI help message
     signal.signal(signal.SIGTERM, exit_gracefully)
     signal.signal(signal.SIGINT, exit_gracefully)
 

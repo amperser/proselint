@@ -1,4 +1,5 @@
-"""Checks that links are viable.
+"""
+Checks that links are viable.
 
 ---
 layout:     post

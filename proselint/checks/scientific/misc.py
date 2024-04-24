@@ -1,4 +1,5 @@
-"""Scientific writing.
+"""
+Scientific writing.
 
 ---
 layout:     post
@@ -16,13 +17,15 @@ from __future__ import annotations
 
 import re
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import consistency_check
-from proselint.checks import existence_check
-from proselint.checks import existence_check_simple
-from proselint.checks import preferred_forms_check_opti
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    consistency_check,
+    existence_check,
+    existence_check_simple,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -46,13 +49,13 @@ examples_fail = [
 
 
 def check_num_unit(text: str) -> list[CheckResult]:
-    """Check numbers with units"""
+    """Check numbers with units."""
     # TODO: add more than the SI-Units
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "scientific.misc.num_unit"
     msg = (
-        "In scientific writings there is a non-breaking space (U+00A0, ~ in latex) "
-        "between number and its unit, here '{}'."
+        "In scientific writing there is a non-breaking space "
+        "(U+00A0, ~ in latex) between a number and its unit, here '{}'."
     )
     regex = (
         r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
@@ -64,10 +67,10 @@ def check_num_unit(text: str) -> list[CheckResult]:
 
 
 def check_emotion(text: str) -> list[CheckResult]:
-    """avoid the following words"""
+    """Avoid the following words."""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.emotion"
-    msg = "Scientific writing should not contain emotionally laden terms like '{}'"
+    msg = "Scientific writing should not use emotionally laden terms like '{}'"
     items = [
         "ridiculous",
         "unfortunately",
@@ -78,7 +81,7 @@ def check_emotion(text: str) -> list[CheckResult]:
 
 
 def check_weasel(text: str) -> list[CheckResult]:
-    """avoid the following words"""
+    """Avoid the following words."""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "scientific.misc.weasel"
     msg = "Scientific writing should not build on uncertainty like '{}'"
@@ -87,7 +90,7 @@ def check_weasel(text: str) -> list[CheckResult]:
 
 
 def check_conversation(text: str) -> list[CheckResult]:
-    """avoid the following words"""
+    """Avoid the following words."""
     # src = https://www2.spsc.tugraz.at/www-archive/downloads/DoesandDonts%20in%20scientific%20writing%20reisenhofer%20tumfart.pdf
     err = "scientific.misc.conversation"
     msg = "Scientific writing should not chatter / converse like '{}'"
@@ -96,7 +99,7 @@ def check_conversation(text: str) -> list[CheckResult]:
 
 
 def check_wrong(text: str) -> list[CheckResult]:
-    """avoid the following words"""
+    """Avoid the following words."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.wrong"
     msg = "Avoid technically wrong terms like '{}'"
@@ -105,7 +108,7 @@ def check_wrong(text: str) -> list[CheckResult]:
 
 
 def check_avoid_misc(text: str) -> list[CheckResult]:
-    """avoid the following words"""
+    """Avoid the following words."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.avoid"
     msg = "Scientific writing should avoid terms like '{}'"
@@ -114,10 +117,11 @@ def check_avoid_misc(text: str) -> list[CheckResult]:
 
 
 def check_preferred(text: str) -> list[CheckResult]:
+    """Check the preferred forms."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
     err = "scientific.misc.preference"
     msg = (
-        "In scientific writing some terms are less preferred or wrong. "
+        "In scientific writing some terms are avoided or incorrect. "
         "Consider using '{}' instead of '{}'."
     )
 
@@ -188,6 +192,7 @@ def check_preferred(text: str) -> list[CheckResult]:
 
 
 def check_this_vs_those(text: str) -> list[CheckResult]:
+    """Check the usage of "this" and "those"."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L812
     # TODO: magnet for false positives -> remove? seems niche
     err = "scientific.misc.this_vs_those"
@@ -201,7 +206,9 @@ def check_this_vs_those(text: str) -> list[CheckResult]:
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results: list[CheckResult] = []
-    for _m in re.finditer(r"\b(this +\w+s(\s\w+)?)\b", text, flags=re.IGNORECASE):
+    for _m in re.finditer(
+        r"\b(this +\w+s(\s\w+)?)\b", text, flags=re.IGNORECASE
+    ):
         _res = _m.group(0).strip().lower()
         if any(re.finditer(expt_regex, _res)):
             continue
@@ -218,7 +225,8 @@ def check_this_vs_those(text: str) -> list[CheckResult]:
 
 
 def check_we_or_i(text: str) -> list[CheckResult]:
-    # src = https://www.sciencewrites.org/dos-and-donts
+    """Check for consistency."""
+    # src = https://www.sciencewrites.org/audience
     err = "scientific.misc.we_or_i"
     msg = "Decide if you alone ('{}') or a team ('{}') has written the report"
 

@@ -1,4 +1,5 @@
-"""find repeated beginnings of sections, sentences,
+"""
+Find repeated beginnings of sections and sentences.
 
 ---
 layout:     post
@@ -13,12 +14,11 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
-    """I like to tell you something:
+    """I want to tell you something:
 I am a fan of superman.""",
 ]
 
@@ -30,7 +30,7 @@ I am a fan of superman.""",
 
 
 def check_sentence(text: str) -> list[CheckResult]:
-    """can have false positives after abbreviations"""
+    """Can have false positives after abbreviations."""
     err = "misc.monotonic.sentence"
     msg = (
         "It is bad style to open consecutive sentences with the same word, "
@@ -39,7 +39,7 @@ def check_sentence(text: str) -> list[CheckResult]:
 
     regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
     # matches identical words starting uppercase after either newline or .!?
-    # note: can't be padded without modification -> because of \2
+    # NOTE: can't be padded without modification -> because of \2
     return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 

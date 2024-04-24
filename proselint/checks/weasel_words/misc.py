@@ -1,4 +1,5 @@
-"""Weasel words.
+"""
+Weasel words.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -30,7 +30,9 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """
-    source: https://en.wikipedia.org/wiki/Weasel_word
+    Check the source for weasel words.
+
+    Definition: https://en.wikipedia.org/wiki/Weasel_word
     """
     error_code = "weasel_words.misc"
     msg = "Weasel words aka. anonymous authority present ({})."

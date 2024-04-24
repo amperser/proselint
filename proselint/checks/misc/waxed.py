@@ -1,4 +1,5 @@
-"""Waxed lyrical.
+"""
+Waxed lyrical.
 
 ---
 layout:     post
@@ -19,8 +20,7 @@ from __future__ import annotations
 
 import re
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -65,7 +65,9 @@ def check(text: str) -> list[CheckResult]:
     # NOTE: python automatically caches this calculation for reruns
     #       check with benchmark_checks.py
     items = {
-        f"{word} {pair[1]}": f"{word} {pair[0]}" for pair in modifiers for word in waxes
+        f"{word} {pair[1]}": f"{word} {pair[0]}"
+        for pair in modifiers
+        for word in waxes
     }
 
     return preferred_forms_check_opti(text, items, err, msg)

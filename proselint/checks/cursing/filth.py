@@ -1,4 +1,5 @@
-"""Filthy words.
+"""
+Filthy words.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Filthy words.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -27,7 +27,10 @@ examples_fail = ["Bad shit in this phrase."]
 def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.filth"
-    msg = "Nobody ever tells you this as a kid, but you're supposed to avoid this word."
+    msg = (
+        "Nobody ever tells you this as a kid, "
+        "but you're supposed to avoid this word."
+    )
 
     items = [
         "shit",

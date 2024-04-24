@@ -1,4 +1,5 @@
-"""Commercialese.
+"""
+Commercialese.
 
 ---
 layout:     post
@@ -14,10 +15,12 @@ Commercialese.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    existence_check,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -64,9 +67,8 @@ def check(text: str) -> list[CheckResult]:
 
 
 def check_abbrev(text: str) -> list[CheckResult]:
-    """
-    source: https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm
-    """
+    """Check for abbreviations."""
+    # src = "https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm"
     err = "misc.commercialese.abbreviations"
     msg = "'{}' is commercialese. Depending on audience switch to {}"
 

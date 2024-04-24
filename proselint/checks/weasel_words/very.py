@@ -1,4 +1,5 @@
-"""Very.
+"""
+Very.
 
 ---
 layout:     post
@@ -15,9 +16,7 @@ delete it and the writing will be just as it should be.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import limit_results
+from proselint.checks import CheckResult, existence_check, limit_results
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

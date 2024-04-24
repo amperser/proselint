@@ -1,4 +1,5 @@
-"""Checks for acceptable spacing around punctuation.
+"""
+Checks for acceptable spacing around punctuation.
 
 ---
 layout:     post
@@ -15,8 +16,7 @@ Checks for acceptable spacing around punctuation.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -54,12 +54,9 @@ def check_end_punctuation_spacing(text: str) -> list[CheckResult]:
 
 
 def check_general_spacing(text: str) -> list[CheckResult]:
-    """Checks for acceptable space behind
-    , " ; : '
-    which should be no more than 1.
-    """
+    """Check that punctuation spacing (,";:') is no more than 1."""
     # comma is slightly more complex, consider the number 1,000
-    # note: this can be faulty - the previous implementation was far off / defective
+    # NOTE: this can break - the previous implementation was defective
     err = "punctuation.spacing.separators"
     msg = 'Unacceptable number of spaces behind ";: (must be 1 or less).'
     pattern = r"""[,;\:\"'][ ]{2,}"""

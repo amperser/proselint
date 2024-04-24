@@ -1,4 +1,5 @@
-"""Comparing uncomparables.
+"""
+Comparing uncomparables.
 
 ---
 layout:     post
@@ -47,8 +48,7 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -66,7 +66,8 @@ examples_fail = [
 ]
 
 
-def compile_uncomparables() -> list:
+def compile_uncomparables() -> list[str]:
+    """Compile a list of uncomparables."""
     comparators = [
         "most",
         "more",
@@ -136,7 +137,8 @@ items = compile_uncomparables()
 
 
 def check_1(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
@@ -148,7 +150,8 @@ def check_1(text: str) -> list[CheckResult]:
 
 
 def check_2(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization

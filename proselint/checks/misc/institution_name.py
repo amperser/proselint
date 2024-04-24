@@ -1,4 +1,5 @@
-"""Common errors with institution names.
+"""
+Common errors with institution names.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Institution names.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -27,7 +27,8 @@ examples_fail = [
 
 
 def check_vtech(text: str) -> list[CheckResult]:
-    """Suggest the correct name.
+    """
+    Suggest the correct name.
 
     source: Virginia Tech Division of Student Affairs
     source_url: http://bit.ly/2en1zbv
@@ -36,8 +37,8 @@ def check_vtech(text: str) -> list[CheckResult]:
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
     items: dict[str, str] = {
-        "Virginia Polytechnic and State University": "Virginia Polytechnic Institute "
-        "and State University"
+        "Virginia Polytechnic and State University": "Virginia Polytechnic "
+        "Institute and State University"
     }
 
     return preferred_forms_check_opti(text, items, err, msg)

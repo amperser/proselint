@@ -1,4 +1,5 @@
-"""Currency.
+"""
+Currency.
 
 ---
 layout:     post
@@ -14,9 +15,7 @@ Symbols.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, Pd, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

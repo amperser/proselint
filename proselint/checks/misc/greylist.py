@@ -1,4 +1,5 @@
-"""Use of greylisted words.
+"""
+Use of greylisted words.
 
 ---
 layout:     post
@@ -34,8 +35,7 @@ grammatical subject.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

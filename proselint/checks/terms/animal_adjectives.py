@@ -1,4 +1,5 @@
-"""Animal adjectives.
+"""
+Animal adjectives.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Animal words.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

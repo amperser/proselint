@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import limit_results
-from proselint.checks import preferred_forms_check_opti
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    existence_check,
+    limit_results,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -20,7 +22,8 @@ examples_fail = [
 
 @limit_results(1)
 def check_bottleneck(text: str) -> list[CheckResult]:
-    """Avoid mixing metaphors about bottles and their necks.
+    """
+    Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
     source_url: http://bit.ly/1CQPH61
@@ -41,7 +44,8 @@ def check_bottleneck(text: str) -> list[CheckResult]:
 
 
 def check_misc(text: str) -> list[CheckResult]:
-    """Avoid mixing metaphors.
+    """
+    Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY

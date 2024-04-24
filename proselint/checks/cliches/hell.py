@@ -1,4 +1,5 @@
-"""Too much yelling.
+"""
+Too much yelling.
 
 ---
 layout:     post
@@ -14,9 +15,7 @@ Never use the phrase 'all hell broke loose'.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import limit_results
+from proselint.checks import CheckResult, existence_check, limit_results
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

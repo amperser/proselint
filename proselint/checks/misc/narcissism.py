@@ -1,4 +1,5 @@
-"""Professional narcissism.
+"""
+Professional narcissism.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Points out academic narcissism.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

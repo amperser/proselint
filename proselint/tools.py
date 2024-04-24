@@ -7,27 +7,22 @@ import copy
 import json
 import os
 import sys
-from concurrent.futures import Executor
-from concurrent.futures import Future
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import Executor, Future, ProcessPoolExecutor
 from pathlib import Path
-from typing import Callable
-from typing import NamedTuple
-from typing import Optional
-from typing import Union
+from typing import Callable, NamedTuple, Optional, Union
 from warnings import showwarning as warn
 
 from . import config_base
-from .checks import get_checks
-from .checks import run_check
+from .checks import get_checks, run_check
 from .config_base import Output
-from .config_paths import config_global_path
-from .config_paths import config_user_paths
+from .config_paths import config_global_path, config_user_paths
 from .logger import log
 from .memoizer import cache
 
 
 class LintResult(NamedTuple):
+    """A lint result."""
+
     # allows access by name and export ._asdict()
     # NOTE: const after instantiation & trouble with pickling
     check: str
@@ -51,14 +46,13 @@ def _deepmerge_dicts(
     base: dict,
     overrides: dict,
 ) -> dict:
-    """Deep merge dictionaries, second dict will take priority.
+    """Merge dictionaries recursively. `overrides` takes priority."""
     # Note: this could be faster, just sum dicts -> not relevant here
-    """
     result = copy.deepcopy(base)
 
     for key, value in overrides.items():
         if isinstance(value, dict):
-            result[key] = _deepmerge_dicts(result.get(key) or {}, value)
+            result[key] = _deepmerge_dicts(result.get(key, {}), value)
         else:
             result[key] = value
 
@@ -82,7 +76,7 @@ def load_options(
         # place provided config as highest user input
         if not config_file_path.is_file():
             raise FileNotFoundError(
-                f"Provided config-file {config_file_path} does not exist"
+                f"Given config path {config_file_path} does not exist"
             )
         config_user_paths.insert(0, config_file_path)
 
@@ -93,7 +87,7 @@ def load_options(
             user_options = json.load(path.open())
             break
         path_old = path.with_suffix("")
-        if path_old.is_file() and path.suffix:  # equals 'suffix != ""'
+        if path_old.is_file() and path.suffix:
             warn(
                 f"Found {path_old} instead of a JSON file. Rename to {path}.",
                 DeprecationWarning,
@@ -146,10 +140,16 @@ def lint(
     _checks: Optional[list[Callable]] = None,
     _exe: Optional[Executor] = None,
 ) -> list[LintResult]:
-    """Run the linter on the input file.
+    """
+    Run the linter on the input file.
 
-    arguments:
+    Arguments:
+    ---------
+        content: content to lint
+        config: lint configuration (mostly which checks to enable)
+        source_name: file path
         allow_futures: skip the internal memoizer, has to be done later manually
+
     """
     if not isinstance(content, str):
         raise ValueError("linter expects a string as content")
@@ -183,10 +183,11 @@ def lint(
             log.debug("[Lint] created inner Executor for parallelization")
         else:
             log.debug("[Lint] used outer Executor for parallelization")
-        # NOTE: ThreadPoolExecutor is only concurrent, but not multi-cpu processed
+        # NOTE: ThreadPoolExecutor is concurrent, but not multi-cpu
         # NOTE: .map() is build on .submit(), harder to use here, same speed
         futures = [
-            _exe.submit(run_check, check, content, source_name) for check in _checks
+            _exe.submit(run_check, check, content, source_name)
+            for check in _checks
         ]
         if allow_futures:
             cache.name_to_key[source_name] = memoizer_key
@@ -207,9 +208,11 @@ def lint(
 
 
 def fetch_results(
-    futures: Union[list[Future], list[LintResult]], config: dict, source_name: str
+    futures: Union[list[Future], list[LintResult]],
+    config: dict,
+    source_name: str,
 ) -> list[LintResult]:
-    """fetch result from futures, needed when working with multiprocessing"""
+    """Fetch a result from futures (required for multiprocessing)."""
     if len(futures) > 0 and isinstance(futures[0], Future):
         _errors = [_e for _ft in futures for _e in _ft.result()]
         _errors = sorted(
@@ -227,7 +230,7 @@ def lint_path(
     paths: Union[Path, list[Path]],
     config: Optional[dict] = None,
 ) -> dict[Path, list[LintResult]]:
-    """Lint path with files or point to specific file"""
+    """Lint a path with files or a specific file."""
     # Expand the list of directories and files.
     filepaths = extract_files(paths)
 
@@ -252,7 +255,9 @@ def lint_path(
                 with file.open(encoding="utf-8", errors="replace") as _fh:
                     content = _fh.read()
             except Exception:
-                log.exception("[LintPath] Error opening '%s' -> will skip", file.name)
+                log.exception(
+                    "[LintPath] Error opening '%s' -> will skip", file.name
+                )
                 continue
             results[file] = lint(
                 content,
@@ -279,27 +284,14 @@ def lint_path(
 
 
 def convert_to_json(
+    # FIXME: incorrect type (not enough args for dict, too many for list)
     results: Union[dict[list[str, LintResult]], list[LintResult]],
 ) -> str:
-    """Convert the errors to JSON.
+    """
+    Convert the errors to JSON.
 
-    Note: old items was just a list, now it's a named tuple with the names as below
-
-    out = [
-        {
-            "check": item[0],
-            "message": item[1],
-            "source": item[2],
-            "line": item[3],
-            "column": item[4],
-            "start": item[5],
-            "end": item[6],
-            "extent": item[7],
-            "severity": item[8],
-            "replacements": item[9],
-        }
-        for item in items
-    ]
+    Note: previously this used a list, now it uses a dictionary with the
+    same format as `LintResult`.
     """
     if isinstance(results, dict):
         out = [_rl.to_json() for _res in results.values() for _rl in _res]
@@ -307,7 +299,9 @@ def convert_to_json(
         # assumed list
         out = [_rl._asdict() for _rl in results]
 
-    return json.dumps({"status": "success", "data": {"errors": out}}, sort_keys=True)
+    return json.dumps(
+        {"status": "success", "data": {"errors": out}}, sort_keys=True
+    )
 
 
 def print_to_console(  # noqa: PLR0912
@@ -326,7 +320,7 @@ def print_to_console(  # noqa: PLR0912
 
     if not isinstance(results, (list, dict)):
         log.error(
-            "[OutputError] no list or provided "
+            "[OutputError] no list or dictionary provided "
             "(guess: results of lint_path() need to be extracted first)"
         )
         return
@@ -344,12 +338,18 @@ def print_to_console(  # noqa: PLR0912
                     if out_fmt == Output.compact:
                         _source = _file.name
                     else:
-                        _source = _file.absolute().as_uri()
                         # TODO: would be nice to supress "file:///"
                         # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+                        # could consider using as_posix for this?
+                        _source = _file.absolute().as_uri()
                 elif out_fmt == Output.compact:
                     _source = ""
 
                 log.info(
-                    "%s:%d:%d: %s %s", _source, _e.line, _e.column, _e.check, _e.message
+                    "%s:%d:%d: %s %s",
+                    _source,
+                    _e.line,
+                    _e.column,
+                    _e.check,
+                    _e.message,
                 )

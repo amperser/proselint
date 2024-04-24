@@ -1,4 +1,5 @@
-"""Not guilty beyond a reasonable doubt.
+"""
+Not guilty beyond a reasonable doubt.
 
 ---
 layout:     post
@@ -24,8 +25,7 @@ Not guilty beyond a reasonable doubt
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

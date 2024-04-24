@@ -1,4 +1,5 @@
-"""Words the NFL won't print on a jersey.
+"""
+Words the NFL won't print on a jersey.
 
 ---
 layout:     post
@@ -14,11 +15,12 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, Pd, existence_check
 
-examples_pass = ["Smoke phrase with nothing flagged.", "get your axsysz over here."]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "get your axsysz over here.",
+]
 
 examples_fail = [
     "The QB is named ball licker.",

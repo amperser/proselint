@@ -1,4 +1,6 @@
-"""Compute the lintscore on the corpus.
+"""
+Compute the linter's score on the corpus.
+
 NOTE: relic, probably broken
 """
 
@@ -13,8 +15,9 @@ from .logger import log
 from .tools import lint_path
 
 
-def score(check=None):
-    """Compute the linter's score on the corpus.
+def score(check=None):  # noqa: ANN001, ANN201, ARG001
+    """
+    Compute the linter's score on the corpus.
 
     Proselint's score reflects the desire to have a linter that catches many
     errors, but which takes false alarms seriously. It is better not to say

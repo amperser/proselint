@@ -5,6 +5,8 @@ from enum import IntEnum
 
 
 class Output(IntEnum):
+    """Control linter output format."""
+
     full = default = 0
     json = 1
     compact = 2
@@ -12,12 +14,13 @@ class Output(IntEnum):
 
     @classmethod
     def names(cls) -> list[str]:
+        """Return the names of output levels."""
         return [_e.name for _e in cls]
 
 
 proselint_base: dict = {
     "max_errors": 1000,
-    "parallelize": True,  # note: has some overhead, noticeable for small content
+    "parallelize": True,  # NOTE: has overhead, noticeable for small content
     "output_format": Output.compact.name,
     "checks": {
         "airlinese.misc": True,

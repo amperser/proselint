@@ -1,4 +1,5 @@
-"""All the checks are organized into modules and placed in subdirectories.
+"""
+All the checks are organized into modules and placed in subdirectories.
 
 This file contains:
 - a function set used by the linter
@@ -14,14 +15,14 @@ import functools
 import importlib
 import re
 from enum import Enum
-from typing import Callable
-from typing import NamedTuple
-from typing import Optional
+from typing import Callable, NamedTuple, Optional
 
 from proselint.logger import log
 
 
 class CheckResult(NamedTuple):
+    """A check result."""
+
     start_pos: int
     end_pos: int
     check: str
@@ -35,7 +36,9 @@ class CheckResult(NamedTuple):
 
 
 def get_checks(options: dict) -> list[Callable[[str, str], list[CheckResult]]]:
-    """Extract the checks.
+    """
+    Extract the checks.
+
     All check function names must start with `check`, e.g. `check_xyz`
     """
     # TODO: benchmark consecutive runs of this fn
@@ -46,25 +49,30 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[CheckResult]]]:
 
     for check_name in check_names:
         try:
-            module = importlib.import_module(f".{check_name}", "proselint.checks")
+            module = importlib.import_module(
+                f".{check_name}", "proselint.checks"
+            )
         except ModuleNotFoundError:
             log.exception(
-                f"requested config-flag '{check_name}' not found in proselint.checks",
+                f"Requested flag '{check_name}' not found in proselint.checks",
             )
             continue
-        checks += [getattr(module, d) for d in dir(module) if re.match(r"^check", d)]
+        checks += [
+            getattr(module, d) for d in dir(module) if re.match(r"^check", d)
+        ]
 
     log.debug("Collected %d checks to run", len(checks))
     return checks
 
 
 def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
+    """Run a check on the source."""
     errors = []
     results: list[CheckResult] = _check(_text)
     for _r in results:
         (line, column) = get_line_and_column(_text, _r.start_pos)
         if not is_quoted(_r.start_pos, _text):
-            # note:
+            # NOTE:
             #    - switch to 1based counting -> +1 for line, column, start, end
             #    - padding was added to text -> -1 for all except column
             #    - +1 -1 cancel out
@@ -86,9 +94,11 @@ def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
 
 
 def get_line_and_column(text: str, position: int) -> tuple[int, int]:
-    """Return the line number and column of a position in a string.
+    """
+    Return the line number and column of a position in a string.
+
     implementation: ~10x faster than v1, but still splits
-    Note: could be further optimized, but it's not worth it atm
+    NOTE: could be further optimized, but it's not worth it atm
           pre-analyze with lookup-table, list with line-start-positions
     """
     # TODO: test this fn
@@ -98,11 +108,15 @@ def get_line_and_column(text: str, position: int) -> tuple[int, int]:
 
 @functools.lru_cache
 def find_quoted_ranges(_text: str) -> list[tuple[int, int]]:
-    # FIXME: optimize - use regex or produce a 1-dimensional array or lookup table
+    """Find the range of a quote pair."""
+
+    # FIXME: optimize - use regex or produce a 1-dimensional array or lookup
+    # table
     def matching(quotemark1: str, quotemark2: str) -> bool:
         straight = "\"'"
         curly = "“”"
-        # TODO: extend! straight Q should match (q1==q2) and curly shouldn't (q1!=q2)
+        # TODO: extend! straight Q should match (q1==q2)
+        # and curly shouldn't (q1!=q2)
         return (quotemark1 in straight and quotemark2 in straight) or (
             quotemark1 in curly and quotemark2 in curly
         )
@@ -148,6 +162,8 @@ def is_quoted(position: int, text: str) -> bool:
 #   for all use-cases
 # - test with tools like https://regex101.com/ and optimize for low step-count
 class Pd(str, Enum):
+    """Helper for padding."""
+
     disabled = r"{}"
     # choose for checks with custom regex
 
@@ -175,7 +191,9 @@ def consistency_check(  # noqa: PLR0913, PLR0917
     ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
 ) -> list[CheckResult]:
-    """Build a consistency checker for the given `word_pairs`.
+    """
+    Build a consistency checker for the given `word_pairs`.
+
     Note: offset-usage corrects for pre-added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
@@ -213,7 +231,9 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
 ) -> list[CheckResult]:
-    """Build a checker that suggests the preferred form.
+    """
+    Build a checker that suggests the preferred form.
+
     Note: offset-usage corrects for manually added padding-chars
     """
     flags = re.IGNORECASE if ignore_case else 0
@@ -238,7 +258,8 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
     ]
 
 
-# TODO: test will all provided entries and check if not-None replacement gets returned
+# TODO: test will all provided entries and check if not-None replacement gets
+# returned
 def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
     text: str,
     items: dict[str, str],
@@ -248,7 +269,9 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
 ) -> list[CheckResult]:
-    """Build a checker that suggests the preferred form.
+    """
+    Build a checker that suggests the preferred form.
+
     The provided items can't contain active regex
     -> use normal preferred_forms_check() for that
 
@@ -298,7 +321,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     padding: Pd = Pd.words_in_txt,
     dotall: bool = False,
     excluded_topics: Optional[list] = None,
-    exceptions=(),
+    exceptions: tuple = (),
 ) -> list[CheckResult]:
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
@@ -329,7 +352,9 @@ def existence_check(  # noqa: PLR0913, PLR0917
     rx = padding.format(re_items)
     for m in re.finditer(rx, text, flags=flags):
         txt = m.group(0).strip()
-        if any(re.search(exception, txt, flags=flags) for exception in exceptions):
+        if any(
+            re.search(exception, txt, flags=flags) for exception in exceptions
+        ):
             continue
         errors.append(
             CheckResult(
@@ -340,7 +365,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
                 replacements=None,
             ),
         )
-        # TODO: group(1) offers word already without padding (when turned inside out)
+        # TODO: group(1) already offers padless word (when turned inside out)
     return errors
 
 
@@ -351,9 +376,11 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
     msg: str,
     ignore_case: bool = True,
     unicode: bool = True,
-    exceptions=(),
+    exceptions: tuple = (),
 ) -> list[CheckResult]:
-    """Build a checker for single patters.
+    """
+    Build a checker for single patterns.
+
     in comparison to existence_check:
         - does not work on lists
         - has no padding & offset
@@ -374,7 +401,8 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
         )
         for _m in re.finditer(pattern, text, flags=flags)
         if not any(
-            re.search(exception, _m.group(0), flags=flags) for exception in exceptions
+            re.search(exception, _m.group(0), flags=flags)
+            for exception in exceptions
         )
     ]
 
@@ -408,7 +436,7 @@ def topics(text: str) -> list[str]:
     return [t[0] for t in ts if t[1] > 0.95]
 
 
-def context(text, position, level="paragraph"):
+def context(_text: str, _position: int, level: str = "paragraph") -> str:
     """Get sentence or paragraph that surrounds the given position."""
     if level == "sentence":  # noqa: SIM114
         pass
@@ -424,7 +452,8 @@ def context(text, position, level="paragraph"):
 
 
 def detect_language(text: str) -> str:
-    # TODO: add language to text.metadata, some checks are independent from language
+    """Detect the source language."""
+    # TODO: add language to text.metadata, some checks are language agnostic
     lang_regex = {
         # latin script, sorted by number of native speakers
         # https://en.wikipedia.org/wiki/List_of_languages_by_number_of_native_speakers
@@ -450,13 +479,13 @@ def detect_language(text: str) -> str:
 
 
 def limit_results(value: int) -> Callable:
-    """A check decorator that truncates error output to a specified threshold."""
+    """Decorate a check to truncate error output to a specified threshold."""
     if value < 0:
         raise ValueError("Value for @limit_results() must be >= 0")
 
-    def wrapper(fn):
+    def wrapper(fn: Callable) -> Callable:
         @functools.wraps(fn)
-        def wrapped(*args, **kwargs):
+        def wrapped(*args: list, **kwargs: dict) -> list[CheckResult]:
             return _truncate_errors(fn(*args, **kwargs), value)
 
         return wrapped
@@ -468,8 +497,10 @@ def _truncate_errors(
     errors: list[CheckResult],
     limit: int,
 ) -> list[CheckResult]:
-    """Truncates a list of errors to a given threshold.
-    This also notes how many times the error was encountered prior to truncation.
+    """
+    Truncate a list of errors to a given threshold.
+
+    This also notes how many times the error was raised prior to truncation.
     """
     if len(errors) > limit:
         e0 = errors[0]
@@ -494,13 +525,13 @@ def _truncate_errors(
 
 
 def ppm_threshold(threshold: float) -> Callable:
-    """A check decorator that errors if the PPM threshold is surpassed."""
+    """Decorate a check to error if the PPM threshold is surpassed."""
     if threshold < 0:
         raise ValueError("Value for @ppm_threshold() must be >= 0")
 
-    def wrapped(fn):
+    def wrapped(fn: Callable) -> Callable:
         @functools.wraps(fn)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: list, **kwargs: dict) -> list[CheckResult]:
             _len = 0  # neutral element
             if "text" in kwargs:
                 _len = len(kwargs["text"])
@@ -516,7 +547,7 @@ def ppm_threshold(threshold: float) -> Callable:
 def _threshold_check(
     errors: list[CheckResult], threshold: float, length: int
 ) -> list[CheckResult]:
-    """Returns an error if the specified PPM threshold is surpassed."""
+    """Return an error if the specified PPM threshold is surpassed."""
     if length > 0:
         errcount = len(errors)
         # statistics only work with big numbers, so add some workarounds

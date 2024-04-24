@@ -1,4 +1,5 @@
-"""Password in plain text.
+"""
+Password in plain text.
 
 ---
 layout:     post
@@ -13,9 +14,7 @@ Don't put pass
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, Pd, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -42,4 +41,6 @@ def check(text: str) -> list[CheckResult]:
         rf"^password{_regex}",
     ]
 
-    return existence_check(text, items, err, msg, ignore_case=True, padding=Pd.disabled)
+    return existence_check(
+        text, items, err, msg, ignore_case=True, padding=Pd.disabled
+    )

@@ -1,4 +1,5 @@
-"""Elementary Rules of Usage.
+"""
+Elementary Rules of Usage.
 
 ---
 layout:     post
@@ -47,9 +48,11 @@ structure.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -86,7 +89,7 @@ def check(text: str) -> list[CheckResult]:
         "owing to the fact that": "because / since",
         "in spite of the fact that": "although / though",
         "call your attention to the fact that": "remind you / notify you",
-        "I was unaware of the fact that": "I did not know that / I was unaware that",
+        "was unaware of the fact that": "did not know that / was unaware that",
         "not succeed": "fail",
         "the fact that i had arrived": "my arrival",
     }

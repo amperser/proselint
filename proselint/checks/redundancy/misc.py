@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -35,7 +37,8 @@ def check(text: str) -> list[CheckResult]:
 
 
 def check_garner(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
@@ -144,7 +147,8 @@ def check_garner(text: str) -> list[CheckResult]:
 
 
 def check_nordquist(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     source:     Richard Nordquist
     source_url: http://grammar.about.com/bio/Richard-Nordquist-22176.htm
@@ -168,7 +172,8 @@ def check_nordquist(text: str) -> list[CheckResult]:
 
 
 def check_atd_1(text: str) -> list[CheckResult]:
-    """Check for redundancies from After the Deadline.
+    """
+    Check for redundancies from After the Deadline.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
@@ -381,7 +386,8 @@ def check_atd_1(text: str) -> list[CheckResult]:
 
 
 def check_atd_2(text: str) -> list[CheckResult]:
-    """Check for redundancies from After the Deadline.
+    """
+    Check for redundancies from After the Deadline.
 
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
@@ -575,6 +581,8 @@ def check_atd_2(text: str) -> list[CheckResult]:
     ret1 = preferred_forms_check_opti(text, items, err, msg)
 
     items_regex: dict[str, str] = {r"\band etc\.": "etc."}
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg, padding=Pd.disabled)
+    ret2 = preferred_forms_check_regex(
+        text, items_regex, err, msg, padding=Pd.disabled
+    )
 
     return ret1 + ret2

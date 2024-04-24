@@ -1,4 +1,5 @@
-"""Incorrect capitalization.
+"""
+Incorrect capitalization.
 
 ---
 layout:     post
@@ -14,10 +15,12 @@ Incorrect capitalization.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check_simple
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    existence_check_simple,
+    preferred_forms_check_opti,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

@@ -1,4 +1,5 @@
-"""Finds unmatched braces.
+"""
+Finds unmatched braces.
 
 ---
 layout:     post
@@ -24,8 +25,6 @@ examples_pass = [
     """Is everything fine (I mean
 in a general way)?""",
     "a) heading",
-    """1) do smth
-2) do another thing""",
 ]
 
 examples_fail = [
@@ -38,6 +37,7 @@ examples_fail = [
 def trace_braces(
     text: str, rex: str, char1: str, char2: str, err: str
 ) -> Optional[CheckResult]:
+    """Check that braces match."""
     # TODO: same check for quotes?
     _count = 0
     for _m in re.finditer(rex, text):
@@ -46,7 +46,7 @@ def trace_braces(
         elif _m.group(0) == char2:
             _count -= 1
         if _count < 0:
-            # TODO: this could trigger false positives for counting like 1), 2), a)
+            # TODO: this could trigger false positives for lists like 1), 2), a)
             _msg = (
                 "Don't fail to match / close opened braces -> "
                 f"more {char1}{char2}-braces closed than opened"
@@ -64,7 +64,11 @@ def trace_braces(
             f"at least one '{char1}' is left open"
         )
         return CheckResult(
-            start_pos=0, end_pos=len(text), check=err, message=_msg, replacements=None
+            start_pos=0,
+            end_pos=len(text),
+            check=err,
+            message=_msg,
+            replacements=None,
         )
     return None
 

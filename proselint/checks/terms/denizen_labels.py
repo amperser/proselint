@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -15,7 +14,8 @@ examples_fail = [
 
 
 def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
@@ -71,7 +71,8 @@ def check(text: str) -> list[CheckResult]:
 
 
 def check_denizen_labels_norris(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     source:     Mary Norris
     source_url: http://nyr.kr/1rGienj

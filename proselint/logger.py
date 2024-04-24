@@ -1,4 +1,5 @@
-"""Advanced substitute for print()
+"""
+Advanced substitute for print().
 
 short reminder for format-strings:
 %s    string
@@ -32,6 +33,7 @@ logging.basicConfig(format="%(message)s")
 
 
 def set_verbosity(debug: bool = False) -> None:
+    """Set the logger's verbose mode."""
     if debug:
         log.setLevel(logging.DEBUG)
         logging.basicConfig(format="%(name)s %(levelname)s: %(message)s")
@@ -45,4 +47,5 @@ def set_verbosity(debug: bool = False) -> None:
 
 
 def get_verbosity() -> bool:
+    """Check if the logger is in verbose mode."""
     return log.level == logging.DEBUG

@@ -1,4 +1,5 @@
-"""Phrasal adjectives.
+"""
+Phrasal adjectives.
 
 ---
 layout:     post
@@ -14,11 +15,13 @@ Phrasal adjectives.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check_opti
-from proselint.checks import preferred_forms_check_regex
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    existence_check,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -41,7 +44,9 @@ def check_ly(text: str) -> list[CheckResult]:
 
     items = [r"\s[^\s-]+ly-"]
 
-    return existence_check(text, items, err, msg, padding=Pd.disabled, offset=(1, 0))
+    return existence_check(
+        text, items, err, msg, padding=Pd.disabled, offset=(1, 0)
+    )
 
 
 def check(text: str) -> list[CheckResult]:

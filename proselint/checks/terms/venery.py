@@ -1,4 +1,5 @@
-"""Names for groups of animals.
+"""
+Names for groups of animals.
 
 ---
 layout:     post
@@ -16,8 +17,7 @@ from __future__ import annotations
 
 import re
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",

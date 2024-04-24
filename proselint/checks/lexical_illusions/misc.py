@@ -1,4 +1,5 @@
-"""Lexical illusions.
+"""
+Lexical illusions.
 
 ---
 layout:     post
@@ -15,8 +16,7 @@ and this happens most often between line breaks.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -49,7 +49,7 @@ def check_repetitions(text: str) -> list[CheckResult]:
     msg = "There's a lexical illusion in '{}' - one or more words are repeated."
     # check for repetition of 1 to 4 words
     regex = r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b"
-    # note: this can't be padded without mod -> \1
+    # NOTE: this can't be padded without mod -> \1
     exceptions = [r"^had had$", r"^that that$"]
     return existence_check_simple(
         text,

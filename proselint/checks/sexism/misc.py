@@ -1,4 +1,5 @@
-"""Sexism.
+"""
+Sexism.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Points out sexist language.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -36,6 +36,7 @@ def check_sexism(text: str) -> list[CheckResult]:
     err = "sexism.misc"
     msg = "Gender bias. Use '{}' instead of '{}'."
 
+    # TODO: actress, postman
     items: dict[str, str] = {
         "anchorman": "anchor",
         "anchorwoman": "anchor",
@@ -79,6 +80,7 @@ def check_sexism(text: str) -> list[CheckResult]:
 
 
 def check_preferred_form(text: str) -> list[CheckResult]:
+    """Suggest the preferred forms."""
     err = "sexism.misc"
     msg = "Not a preferred form. Use '{}' instead of '{}'."
 

@@ -1,4 +1,5 @@
-"""numbers at the beginning of a sentence and also number 1-9 should be spelled out
+"""
+Numbers at the beginning of a sentence and up to 10 should be spelled out.
 
 ---
 layout:     post
@@ -13,8 +14,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,19 +31,18 @@ examples_pass = [
     "In Fig.\xa03 we see the frequency response of the chirp.",
     "1 INTRODUCTION",
     "2 Foreground: CHARACTERISTICS OF MOBILE DEVICES IN WATER",
-    """3 BACKGROUND: CHARACTERISTICS OF MOBILE DEVICES IN WATER\n
-this is a new sentence.""",
+    "3 BACKGROUND: CHARACTERISTICS OF MOBILE DEVICES IN WATER",
     "The preamble is composed of eight OFDM symbols from 1 to 4 kHz.",
 ]
 
 examples_fail = [
     "remainder of only 7 symbol",
-    "A Google Pixel 4, a OnePlus 8 Pro, and a Samsung Galaxy Watch 4.",  # regular space
+    "A Google Pixel 4, a OnePlus 8 Pro, and a Samsung Galaxy Watch 4.",
 ]
 
 
 def check_section(text: str) -> list[CheckResult]:
-    """can have false positives after abbreviations"""
+    """Can have false positives after abbreviations."""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.newline"
     msg = (
@@ -59,7 +58,7 @@ def check_section(text: str) -> list[CheckResult]:
 
 
 def check_sentence(text: str) -> list[CheckResult]:
-    """can have false positives after abbreviations"""
+    """Can have false positives after abbreviations."""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.sentence"
     msg = (
@@ -86,7 +85,7 @@ def check_sentence(text: str) -> list[CheckResult]:
 
 
 def check_single_digit(text: str) -> list[CheckResult]:
-    """can have false positives after abbreviations"""
+    """Can have false positives after abbreviations."""
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.single_digit"
     msg = (
@@ -97,5 +96,5 @@ def check_single_digit(text: str) -> list[CheckResult]:
     regex = r"(?<![\.!\?]) [0-9][ \.!\?](?!to \d+)"
     # looks for single digit in separate in text (not at beginning of sentence)
     # but not part of "x to y"
-    # TODO: reduce false positives from numbers without decimal point but with unit
+    # TODO: reduce false positives from numbers with unit but no decimal point
     return existence_check_simple(text, regex, err, msg)

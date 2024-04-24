@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
+from proselint.checks import CheckResult, existence_check
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -35,7 +34,8 @@ examples_fail = [
 
 
 def check_cliches_garner(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
@@ -128,7 +128,8 @@ def check_cliches_garner(text: str) -> list[CheckResult]:
 
 
 def check_cliches_write_good_a_to_c(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
@@ -297,7 +298,8 @@ def check_cliches_write_good_a_to_c(text: str) -> list[CheckResult]:
 
 
 def check_cliches_write_good_d_to_j(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
@@ -483,7 +485,8 @@ def check_cliches_write_good_d_to_j(text: str) -> list[CheckResult]:
 
 
 def check_cliches_write_good_k_to_o(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
@@ -652,7 +655,8 @@ def check_cliches_write_good_k_to_o(text: str) -> list[CheckResult]:
 
 
 def check_cliches_write_good_p_to_s(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
       so it was segmented to even the load for parallelization
@@ -788,7 +792,8 @@ def check_cliches_write_good_p_to_s(text: str) -> list[CheckResult]:
 
 
 def check_cliches_write_good_t_to_z(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
@@ -910,7 +915,8 @@ def check_cliches_write_good_t_to_z(text: str) -> list[CheckResult]:
 
 
 def check_cliches_gnu_diction(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     source:     GNU diction
     source_url: https://directory.fsf.org/wiki/Diction
@@ -952,7 +958,8 @@ def check_cliches_gnu_diction(text: str) -> list[CheckResult]:
 
 
 def check_cliches_nigel(text: str) -> list[CheckResult]:
-    """Check the text.
+    """
+    Check the text.
 
     source:     Nigel Ree's Dictionary of Cliches
     source_url: bit.ly/3sL091j

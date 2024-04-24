@@ -1,4 +1,5 @@
-"""Needless variants.
+"""
+Needless variants.
 
 ---
 layout:     post
@@ -14,8 +15,7 @@ Points out use of needless variants.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -27,7 +27,8 @@ examples_fail = [
 
 
 def check_1(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization
@@ -212,7 +213,8 @@ def check_1(text: str) -> list[CheckResult]:
 
 
 def check_2(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms.
+    """
+    Suggest the preferred forms.
 
     NOTE: this was one of the slowest Checks,
           so it was segmented to even the load for parallelization

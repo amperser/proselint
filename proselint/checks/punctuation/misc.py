@@ -1,4 +1,5 @@
-"""Punctuation.
+"""
+Punctuation.
 
 ---
 layout:     post
@@ -14,10 +15,12 @@ Dates.
 """
 from __future__ import annotations
 
-from proselint.checks import Pd
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import existence_check_simple
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    existence_check,
+    existence_check_simple,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -45,11 +48,12 @@ def check_garner(text: str) -> list[CheckResult]:
 
 
 def check_lower_case_after_punctuation(text: str) -> list[CheckResult]:
-    """can have false positives after abbreviations"""
+    """Check the text."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
     err = "punctuation.misc.lower_case"
     msg = "Is the lower case letter correct after the punctuation? here '{}'."
     regex = r"\b[a-z]+[\.!\?]\s+[a-z]+\b"
+    # TODO: this can have false positives after abbreviations
     exceptions = [
         r"al\.",
         r"lat\.",
@@ -68,11 +72,13 @@ def check_lower_case_after_punctuation(text: str) -> list[CheckResult]:
     )
 
 
+# TODO: determine validity of this
 def check_comma_digits(text: str) -> list[CheckResult]:
+    """Check for commas in digits."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    # note: tnt has also check for german numbers, not implemented here
+    # NOTE: tnt also checks for German numbers, not implemented here
     err = "punctuation.misc.comma_digits"
-    msg = "In English ',' is used as decimal separator."
+    msg = "In English ',' is used as a decimal separator."
     regex = Pd.words_in_txt.value.format(r"\d+,\d+")
     # NOTE: intentional words_in_txt
 

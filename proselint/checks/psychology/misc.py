@@ -1,4 +1,5 @@
-"""Psychological and psychiatric terms to avoid.
+"""
+Psychological and psychiatric terms to avoid.
 
 ---
 layout:     post
@@ -14,9 +15,11 @@ Psychological and psychiatric terms to avoid.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult
-from proselint.checks import existence_check
-from proselint.checks import preferred_forms_check_opti
+from proselint.checks import (
+    CheckResult,
+    existence_check,
+    preferred_forms_check_opti,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
