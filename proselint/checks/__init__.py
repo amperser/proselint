@@ -102,8 +102,11 @@ def get_line_and_column(text: str, position: int) -> tuple[int, int]:
           pre-analyze with lookup-table, list with line-start-positions
     """
     # TODO: test this fn
+    # NOTE: fixes a special case where IndexError would occur for position = 0
+    if position == 0:
+        return (0, 0)
     _t = text[:position].splitlines(True)
-    return len(_t) - 1, len(_t[-1])
+    return (len(_t) - 1, len(_t[-1]))
 
 
 @functools.lru_cache
