@@ -245,7 +245,7 @@ def lint_path(
         # Use stdin if no paths were specified
         log.info("No path specified -> will read from <stdin>")
         content = sys.stdin.read()
-        results["<stdin>"] = lint(content, config=config, _checks=checks)
+        results[Path("<stdin>")] = lint(content, config=config, _checks=checks)
     else:
         # offer "outer" executor, to make multiprocessing more effective
         exe = ProcessPoolExecutor() if config["parallelize"] else None
