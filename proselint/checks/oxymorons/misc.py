@@ -31,7 +31,6 @@ def check(text):
         "completely obsolescent",
         "generally always",
         "usually always",
-        "increasingly less",
         "build down",
         "conspicuous absence",
         "exact estimate",
