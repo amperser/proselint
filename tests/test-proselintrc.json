@@ -85,7 +85,7 @@
         "uncomparables.misc"            : false,
         "weasel_words.misc"             : true,
         "weasel_words.very"             : true,
-        "reverse_existence.top1000"     : false,
-        "reverse_existence.elementary"  : false
+        "restricted.top1000"            : false,
+        "restricted.elementary"         : false
     }
 }

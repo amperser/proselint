@@ -1,12 +1,12 @@
 """Tests reverse existence for elementary and check."""
 
-from proselint.checks.reverse_existence import elementary as chk
+from proselint.checks.restricted import elementary as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for reverse_existence.elementary."""
+    """The test class for restricted.elementary."""
 
     __test__ = True
 
@@ -16,7 +16,7 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for reverse_existence.elementary."""
+        """Basic smoke test for restricted.elementary."""
         assert self.passes("""A boy and his goat went to a farm.""")
         assert self.passes("""I am tired.""")
         assert self.passes("""Water make up your body.""")
