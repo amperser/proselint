@@ -365,24 +365,50 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     return errors
 
 
-def reverse_existence_check(text, list, err, msg):
-    """Build a checker that prohibits words outside of a set."""
-    # clean the text of punctuation and lowercasing words in the string
-    cleaned_text = re.sub(r"[^a-zA-Z0-9 ]+", "", text)
-    cleaned_text = re.sub(r'[^\w\s]', '', cleaned_text)
-    cleaned_list = cleaned_text.strip().split()
-    cleaned_list = [x.casefold() for x in cleaned_list]
-    lowercase_list = [x.casefold() for x in list]
+def _case_sensitive_allowed_word(permitted: set[str], match: re.Match):
+    """Determine if a match object result is in a set of strings."""
+    matched = match.string[match.start():match.end()]
+    return matched in permitted
 
-    # get a list of all words that should not be in the string
-    words_not_in_list = set(cleaned_list) - set(lowercase_list)
-    words_not_in_list = [w for w in words_not_in_list]
 
-    # reuse existence check to get the location
-    # containing the prohibited words
-    if(len(words_not_in_list) == 0):
-        return []
-    return existence_check(text, words_not_in_list, err, msg)
+def _case_insensitive_allowed_word(permitted: set[str], match: re.Match):
+    """Determine if a match object result is in a set, ignoring case."""
+    matched = match.string[match.start():match.end()].lower()
+    return matched in permitted
+
+
+def reverse_existence_check(
+        text, list, err, msg, ignore_case=True, offset=0
+        ):
+    """Find all words in ``text`` that aren't on the ``list``."""
+    if ignore_case:
+        permitted = set([word.lower() for word in list])
+        allowed_word = functools.partial(
+            _case_insensitive_allowed_word, permitted)
+    else:
+        permitted = set(list)
+        allowed_word = functools.partial(
+            _case_sensitive_allowed_word, permitted
+        )
+
+    # Match all 3+ character words that contain a hyphen or apostrophe
+    # only in the middle (not as the first or last character)
+    tokenizer = re.compile(r"\w[\w'-]+\w")
+
+    # Ignore any that contain numerals
+    exclusions = re.compile(r'[0-9]')
+
+    errors = [(
+        m.start() + 1 + offset,
+        m.end() + offset,
+        err,
+        msg.format(m.string[m.start():m.end()]),
+        None)
+        for m in tokenizer.finditer(text)
+        if not exclusions.search(m.string[m.start():m.end()])
+        and not allowed_word(m)
+    ]
+    return errors
 
 
 def max_errors(limit):
