@@ -377,10 +377,7 @@ def reverse_existence_check(
         text, list, err, msg, ignore_case=True, offset=0
         ):
     """Find all words in ``text`` that aren't on the ``list``."""
-    if ignore_case:
-        permitted = set([word.lower() for word in list])
-    else:
-        permitted = set(list)
+    permitted = set([word.lower() for word in list] if ignore_case else list)
     allowed_word = functools.partial(
         _allowed_word, permitted, ignore_case=ignore_case)
 
