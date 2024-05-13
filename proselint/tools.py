@@ -365,7 +365,7 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     return errors
 
 
-def _allowed_word(permitted: set[str], match: re.Match, /, ignore_case=True):
+def _allowed_word(permitted, match: re.Match, /, ignore_case=True):
     """Determine if a match object result is in a set of strings."""
     matched = match.string[match.start():match.end()]
     if ignore_case:
