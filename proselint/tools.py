@@ -374,8 +374,8 @@ def _allowed_word(permitted, match: re.Match, /, ignore_case=True):
 
 
 def reverse_existence_check(
-        text, list, err, msg, ignore_case=True, offset=0
-        ):
+    text, list, err, msg, ignore_case=True, offset=0
+):
     """Find all words in ``text`` that aren't on the ``list``."""
     permitted = set([word.lower() for word in list] if ignore_case else list)
     allowed_word = functools.partial(
@@ -386,17 +386,21 @@ def reverse_existence_check(
     tokenizer = re.compile(r"\w[\w'-]+\w")
 
     # Ignore any that contain numerals
-    exclusions = re.compile(r'[0-9]')
+    exclusions = re.compile(r'\d')
 
     errors = [
-        (m.start() + 1 + offset,
-         m.end() + offset,
-         err,
-         msg.format(m.string[m.start():m.end()]),
-         None)
+        (
+            m.start() + 1 + offset,
+            m.end() + offset,
+            err,
+            msg.format(m.string[m.start():m.end()]),
+            None
+        )
         for m in tokenizer.finditer(text)
-        if not exclusions.search(m.string[m.start():m.end()])
+        if (
+            not exclusions.search(m.string[m.start():m.end()])
             and not allowed_word(m)
+        )
     ]
     return errors
 
