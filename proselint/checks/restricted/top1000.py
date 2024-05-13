@@ -12,7 +12,6 @@ categories: writing/app
 Top 1000.
 
 """
-import csv
 try:
     from importlib.resources import files
 except ImportError:
@@ -24,12 +23,7 @@ from proselint.tools import memoize, reverse_existence_check
 _CSV_PATH = 'checks/restricted/top1000.csv'
 
 with files(proselint).joinpath(_CSV_PATH).open('r') as data:
-    reader = csv.reader(data)
-    wordlist = list()
-    for row in reader:
-        wordlist.extend(row)
-
-TOP1000_WORDS = wordlist
+    TOP1000_WORDS = data.read().split()
 
 
 @memoize

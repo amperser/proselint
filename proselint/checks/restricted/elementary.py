@@ -12,7 +12,6 @@ categories: writing
 Elementary
 
 """
-import csv
 try:
     from importlib.resources import files
 except ImportError:
@@ -23,12 +22,7 @@ from proselint.tools import memoize, reverse_existence_check
 
 _CSV_PATH = 'checks/restricted/elementary.csv'
 with files(proselint).joinpath(_CSV_PATH).open('r') as data:
-    reader = csv.reader(data)
-    wordlist = list()
-    for row in reader:
-        wordlist.extend(row)
-
-ELEMENTARY_WORDS = wordlist
+    ELEMENTARY_WORDS = data.read().split()
 
 
 @memoize
