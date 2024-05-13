@@ -30,6 +30,6 @@ with files(proselint).joinpath(_CSV_PATH).open('r') as data:
 def check(text):
     """Check the text."""
     err = "restricted.top1000"
-    msg = "'{}' is not in the top 1,000 most popular words."
+    msg = "'{}' is not in the top 1000 most common words."
 
     return reverse_existence_check(text, TOP1000_WORDS, err, msg)
