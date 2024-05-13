@@ -24,7 +24,9 @@ from proselint.tools import memoize, reverse_existence_check
 _CSV_PATH = 'checks/restricted/elementary.csv'
 with files(proselint).joinpath(_CSV_PATH).open('r') as data:
     reader = csv.reader(data)
-    wordlist = list(reader).pop()
+    wordlist = list()
+    for row in reader:
+        wordlist.extend(row)
 
 ELEMENTARY_WORDS = wordlist
 

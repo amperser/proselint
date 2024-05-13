@@ -22,9 +22,12 @@ import proselint
 from proselint.tools import memoize, reverse_existence_check
 
 _CSV_PATH = 'checks/restricted/top1000.csv'
+
 with files(proselint).joinpath(_CSV_PATH).open('r') as data:
     reader = csv.reader(data)
-    wordlist = list(reader).pop()
+    wordlist = list()
+    for row in reader:
+        wordlist.extend(row)
 
 TOP1000_WORDS = wordlist
 
