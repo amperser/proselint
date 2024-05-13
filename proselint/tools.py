@@ -391,15 +391,15 @@ def reverse_existence_check(
     # Ignore any that contain numerals
     exclusions = re.compile(r'[0-9]')
 
-    errors = [(
-        m.start() + 1 + offset,
-        m.end() + offset,
-        err,
-        msg.format(m.string[m.start():m.end()]),
-        None)
+    errors = [
+        (m.start() + 1 + offset,
+         m.end() + offset,
+         err,
+         msg.format(m.string[m.start():m.end()]),
+         None)
         for m in tokenizer.finditer(text)
         if not exclusions.search(m.string[m.start():m.end()])
-        and not allowed_word(m)
+            and not allowed_word(m)
     ]
     return errors
 
