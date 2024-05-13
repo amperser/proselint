@@ -365,15 +365,11 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     return errors
 
 
-def _case_sensitive_allowed_word(permitted: set[str], match: re.Match):
+def _allowed_word(permitted: set[str], match: re.Match, /, ignore_case=True):
     """Determine if a match object result is in a set of strings."""
     matched = match.string[match.start():match.end()]
-    return matched in permitted
-
-
-def _case_insensitive_allowed_word(permitted: set[str], match: re.Match):
-    """Determine if a match object result is in a set, ignoring case."""
-    matched = match.string[match.start():match.end()].lower()
+    if ignore_case:
+        return matched.lower() in permitted
     return matched in permitted
 
 
@@ -383,13 +379,10 @@ def reverse_existence_check(
     """Find all words in ``text`` that aren't on the ``list``."""
     if ignore_case:
         permitted = set([word.lower() for word in list])
-        allowed_word = functools.partial(
-            _case_insensitive_allowed_word, permitted)
     else:
         permitted = set(list)
-        allowed_word = functools.partial(
-            _case_sensitive_allowed_word, permitted
-        )
+    allowed_word = functools.partial(
+        _allowed_word, permitted, ignore_case=ignore_case)
 
     # Match all 3+ character words that contain a hyphen or apostrophe
     # only in the middle (not as the first or last character)
