@@ -28,7 +28,6 @@ in a general way)?""",
 ]
 
 examples_fail = [
-    "This is the famous first line.",
     "Counting (to two) is hard (for me.",
     "there might be an error).",
 ]

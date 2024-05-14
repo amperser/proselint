@@ -1,4 +1,5 @@
-""" Benchmark Checks
+"""
+Benchmark Checks
 
 goal: find slowest ones, equalize them a bit
 

@@ -56,7 +56,9 @@ def check_email():
         u.fetch()
 
         signature = (
-            u.fr.decode("utf-8") + u.subject.decode("utf-8") + u.body.decode("utf-8")
+            u.fr.decode("utf-8")
+            + u.subject.decode("utf-8")
+            + u.body.decode("utf-8")
         )
 
         _hash = hashlib.sha256(signature.encode("utf-8")).hexdigest()

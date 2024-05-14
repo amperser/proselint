@@ -2,8 +2,7 @@
 
 import ast
 import os
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 project_path = Path(__file__).parent.parent

@@ -3,9 +3,7 @@
 import os
 
 import redis
-from rq import Connection
-from rq import Queue
-from rq import Worker
+from rq import Connection, Queue, Worker
 
 listen = ["high", "default", "low"]
 

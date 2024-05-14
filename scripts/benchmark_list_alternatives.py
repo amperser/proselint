@@ -1,5 +1,4 @@
-from collections import deque
-from collections import namedtuple
+from collections import deque, namedtuple
 from dataclasses import dataclass
 from timeit import timeit
 from typing import NamedTuple
@@ -102,7 +101,9 @@ _dur = timeit(
     stmt="el.append(x)", setup="el = deque()", globals=locals(), number=100_000
 )
 print(f"dq_app took {_dur * 1000:.2f} ms")
-_dur = timeit(stmt="el.append(x)", setup="el = []", globals=locals(), number=100_000)
+_dur = timeit(
+    stmt="el.append(x)", setup="el = []", globals=locals(), number=100_000
+)
 print(f"dq_app took {_dur * 1000:.2f} ms")
 
 print("############# extend with extend(iterable)")
@@ -111,5 +112,7 @@ _dur = timeit(
     stmt="el.extend(x)", setup="el = deque()", globals=locals(), number=100_000
 )
 print(f"dq_app took {_dur * 1000:.2f} ms")
-_dur = timeit(stmt="el.extend(x)", setup="el = []", globals=locals(), number=100_000)
+_dur = timeit(
+    stmt="el.extend(x)", setup="el = []", globals=locals(), number=100_000
+)
 print(f"dq_app took {_dur * 1000:.2f} ms")

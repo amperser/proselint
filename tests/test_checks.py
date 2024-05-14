@@ -23,7 +23,8 @@ def is_check(file_path: Path) -> bool:
 
 
 def get_check_files() -> list[Path]:
-    """traverses through all subdirs and selects
+    """
+    traverses through all subdirs and selects
     .py-files that are in a module (have an __init__.py) and are
     not in "template"-dir
     """
@@ -36,13 +37,15 @@ def get_check_files() -> list[Path]:
             file_path = root_path / _file
             if is_check(file_path):
                 if not (file_path.parent / "__init__.py").exists():
-                    raise FileNotFoundError("Check-Directory is missing '__init__.py'")
+                    raise FileNotFoundError(
+                        "Check-Directory is missing '__init__.py'"
+                    )
                 results.append(file_path)
     return results
 
 
 def get_module_names() -> list[str]:
-    """transform file-list to importable module names"""
+    """Transform file-list to importable module names"""
     result = []
     for _file in get_check_files():
         path_relative = _file.relative_to(proselint.path)
@@ -57,7 +60,8 @@ def get_module_names() -> list[str]:
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
-    """this checks multiple things:
+    """
+    this checks multiple things:
     - successful import of check
     - example_fail and _pass present in file
     - both example-lists with at least one entry
@@ -69,22 +73,32 @@ def test_check(module_name: str) -> None:
     except ModuleNotFoundError as _xpt:
         raise ImportError(f"Is {module_name} broken?") from _xpt
 
-    checks = {d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)}
+    checks = {
+        d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
+    }
 
     if not hasattr(module, "examples_pass"):
         raise AttributeError(f"'examples_pass' missing in {module_name}")
-    if not isinstance(module.examples_pass, list) or len(module.examples_pass) < 1:
+    if (
+        not isinstance(module.examples_pass, list)
+        or len(module.examples_pass) < 1
+    ):
         # TODO: raise to two as min
         raise ValueError(
             f"The examples_pass-list must have >=1 entry for testing in {module_name}"
         )
     for example in module.examples_pass:
         for _name, _check in checks.items():  # not-any config
-            assert _check(example) == [], f"false positive - {_name}('{example}')"
+            assert (
+                _check(example) == []
+            ), f"false positive - {_name}('{example}')"
 
     if not hasattr(module, "examples_fail"):
         raise AttributeError(f"'examples_fail' missing in {module_name}")
-    if not isinstance(module.examples_fail, list) or len(module.examples_fail) < 1:
+    if (
+        not isinstance(module.examples_fail, list)
+        or len(module.examples_fail) < 1
+    ):
         raise ValueError(
             f"The examples_fail-list must have >=1 entry for testing in {module_name}"
         )

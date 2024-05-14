@@ -8,8 +8,7 @@ import pytest
 import rstr
 
 import proselint
-from proselint.checks import Pd
-from proselint.checks import CheckResult
+from proselint.checks import CheckResult, Pd
 from tests.test_checks import get_module_names
 
 
@@ -130,9 +129,13 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
         mock_preferred_forms_check_regex,
     )
     monkeypatch.setattr(
-        proselint.checks, "preferred_forms_check_opti", mock_preferred_forms_check_opti
+        proselint.checks,
+        "preferred_forms_check_opti",
+        mock_preferred_forms_check_opti,
     )
-    monkeypatch.setattr(proselint.checks, "existence_check", mock_existence_check)
+    monkeypatch.setattr(
+        proselint.checks, "existence_check", mock_existence_check
+    )
     monkeypatch.setattr(
         proselint.checks, "existence_check_simple", mock_existence_check_simple
     )
@@ -142,7 +145,9 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
     except ModuleNotFoundError as _xpt:
         raise ImportError(f"Is {module_name} broken?") from _xpt
 
-    checks = {d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)}
+    checks = {
+        d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
+    }
 
     examples: list[CheckResult] = []
     for check in checks.values():  # any-config
@@ -158,4 +163,6 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
         errors: list = []
         for check in checks.values():
             errors.extend(check(_xmp))
-        assert len(errors) > 0, f"False negative for {module_name} processing '{_xmp}'"
+        assert (
+            len(errors) > 0
+        ), f"False negative for {module_name} processing '{_xmp}'"

@@ -41,13 +41,19 @@ log.info("u0a link: %s", file_str)
 file_str = f"\u001b]8;;{file_path.absolute().as_uri()}\u001b\\{file_path.name}\u001b]8;;\u001b\\"
 log.info("u0b link: %s", file_str)
 
-file_str = f"\x1b]8;;{file_path.absolute().as_posix()}\a{file_path.name}\x1b]8;;\a"
+file_str = (
+    f"\x1b]8;;{file_path.absolute().as_posix()}\a{file_path.name}\x1b]8;;\a"
+)
 log.info("x1a link: %s", file_str)
 
-file_str = f"\x1b]8;;{file_path.absolute().as_uri()}\a{file_path.name}\x1b]8;;\a"
+file_str = (
+    f"\x1b]8;;{file_path.absolute().as_uri()}\a{file_path.name}\x1b]8;;\a"
+)
 log.info("x1b link: %s", file_str)
 
-file_str = f"\x1b]8;;{file_path.absolute().as_uri()}\a{file_path.name}\x1b]8;;\a"
+file_str = (
+    f"\x1b]8;;{file_path.absolute().as_uri()}\a{file_path.name}\x1b]8;;\a"
+)
 log.info("x1b link: %s", file_str)
 
 log.info("\n################ rich links and more")

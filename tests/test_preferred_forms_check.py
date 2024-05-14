@@ -9,8 +9,13 @@ def test_preferred_forms_check():
     items: dict[str, str] = {r"utilize": "use"}
     err = "error message"
     msg = "use the preferred form"
-    assert preferred_forms_check_regex("We utilize this tech", items, err, msg) != []
-    assert preferred_forms_check_regex("We use this tech", items, err, msg) == []
+    assert (
+        preferred_forms_check_regex("We utilize this tech", items, err, msg)
+        != []
+    )
+    assert (
+        preferred_forms_check_regex("We use this tech", items, err, msg) == []
+    )
 
 
 def test_preferred_forms_check_capitalization():

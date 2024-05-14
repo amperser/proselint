@@ -201,8 +201,11 @@ def check_this_vs_those(text: str) -> list[CheckResult]:
         "this results in",
         r"this \w+ss\b",
         r"this is\b",
-        r"this (agrees|allows|cancels|corresponds|enables|ensures|explains|has)",
-        r"this (hypothesis|involves|indicates|leads|reduces|shows|suggests|thesis)",
+        (
+            r"this (agrees|allows|cancels|corresponds|enables|ensures|explains"
+            r"|has|hypothesis|involves|indicates|leads|reduces|shows|suggests"
+            r"|thesis)"
+        )
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results: list[CheckResult] = []

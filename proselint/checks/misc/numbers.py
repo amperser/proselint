@@ -46,8 +46,8 @@ def check_section(text: str) -> list[CheckResult]:
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.newline"
     msg = (
-        "It is untidy to open sentences with a number-digit, "
-        "here '{}' -> spell it out or reword (num with unit or decimal places)."
+        "It is untidy to open sentences with a digit here '{}'. Spell it out, "
+        "add a unit, or use decimal places."
     )
     regex = r"^\d+(?:\.\d+)?\s[^\v\r\n\.!\?]{7,}[\.!\?]"
     # - starts with newline
@@ -62,8 +62,8 @@ def check_sentence(text: str) -> list[CheckResult]:
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.sentence"
     msg = (
-        "It is untidy to open sentences with a number-digit, "
-        "here '{}' -> spell it out or reword (num with unit or decimal places)."
+        "It is untidy to open sentences with a digit here '{}'. Spell it out, "
+        "add a unit, or use decimal places."
     )
     # regex = r"[\.!\?]\s[0-9]+[\.\s]"  # too many false positive
     regex = r"\b\w+[\.!\?] \d+(?:\.\d+)?\s[^\v\.!\?]{7,}[\.!\?]"
@@ -89,9 +89,9 @@ def check_single_digit(text: str) -> list[CheckResult]:
     # src = https://www.sciencewrites.org/dos-and-donts
     err = "misc.numbers.single_digit"
     msg = (
-        "It is bad style to use single digit numbers as numerals, "
-        "here '{}' -> spell it out or "
-        "use non-break space (U+00A0) if its part of a name."
+        "It is bad style to use single-digit numbers as numerals "
+        "here '{}'. Spell it out or use a non-breaking space (U+00A0) if it is "
+        "part of a name."
     )
     regex = r"(?<![\.!\?]) [0-9][ \.!\?](?!to \d+)"
     # looks for single digit in separate in text (not at beginning of sentence)

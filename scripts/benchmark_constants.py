@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from functools import cached_property
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from timeit import timeit
 
 # LEARNING:

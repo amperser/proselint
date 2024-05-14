@@ -28,7 +28,9 @@ scripts = [
 @pytest.mark.parametrize("file", scripts)
 def test_scripts(project_path: Path, file) -> None:
     subprocess.run(
-        [sys.executable, (project_path / file).as_posix()], shell=True, check=True
+        [sys.executable, (project_path / file).as_posix()],
+        shell=True,
+        check=True,
     )
 
 
@@ -40,5 +42,7 @@ examples = [
 @pytest.mark.parametrize("file", examples)
 def test_examples(project_path: Path, file) -> None:
     subprocess.run(
-        [sys.executable, (project_path / file).as_posix()], shell=True, check=True
+        [sys.executable, (project_path / file).as_posix()],
+        shell=True,
+        check=True,
     )

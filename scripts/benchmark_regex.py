@@ -31,7 +31,10 @@ _dur = timeit(
 print(f"{_dur * 1000:.3f} ms -> re.find()")
 
 _dur = timeit(
-    "_e = regex_pat.findall(text)", setup=setup, globals=locals(), number=100_000
+    "_e = regex_pat.findall(text)",
+    setup=setup,
+    globals=locals(),
+    number=100_000,
 )
 print(f"{_dur * 1000:.3f} ms -> pattern.find()")
 

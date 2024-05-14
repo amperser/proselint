@@ -6,13 +6,8 @@ import hashlib
 from functools import wraps
 from urllib.parse import unquote
 
-from flask import Flask
-from flask import Response
-from flask import jsonify
-from flask import make_response
-from flask import request
-from flask_cors import CORS
-from flask_cors import cross_origin
+from flask import Flask, Response, jsonify, make_response, request
+from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from rq import Queue
 
@@ -37,7 +32,9 @@ def worker_function(text: str) -> list[LintResult]:
 @app.errorhandler(429)
 def ratelimit_handler(e):
     """Inform user that the rate limit has been exceeded."""
-    return make_response(jsonify(status="error", message="Rate limit exceeded."), 429)
+    return make_response(
+        jsonify(status="error", message="Rate limit exceeded."), 429
+    )
 
 
 def check_auth(username, password):
@@ -114,7 +111,9 @@ def lint():
         job = q.fetch_job(request.values["job_id"])
 
         if not job:
-            return jsonify(status="error", message="No job with requested job_id."), 404
+            return jsonify(
+                status="error", message="No job with requested job_id."
+            ), 404
 
         if job.return_value() is None:
             return jsonify(status="error", message="Job is not yet ready."), 202

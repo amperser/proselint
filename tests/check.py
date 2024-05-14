@@ -17,7 +17,9 @@ def assert_error(check: str, text: str, n: int = 1):
 class Check:
     """All tests inherit from Check."""
 
-    def wpe_too_high(self, check: Callable) -> None:  # TODO is this salvageable?
+    def wpe_too_high(
+        self, check: Callable
+    ) -> None:  # TODO is this salvageable?
         """Check whether the check is too noisy."""
         min_wpe = 50
 

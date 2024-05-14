@@ -1,4 +1,5 @@
-""" Benchmark different levels of access
+"""
+Benchmark different levels of access
 - proselint executable, lint_path(), lint() -> each a level lower
 
 learnings:
@@ -69,7 +70,9 @@ if __name__ == "__main__":
             )
             print(f"{_name} took {t1 * 1e3:4.3f} ms -> run{_i}")
 
-    print(f"\n############# proselint(demo.md) - parallel, {_os}, {_num_checks} checks")
+    print(
+        f"\n############# proselint(demo.md) - parallel, {_os}, {_num_checks} checks"
+    )
 
     cmds = {
         "parallel": ["proselint", file_path.as_posix(), "-o", "compact"],

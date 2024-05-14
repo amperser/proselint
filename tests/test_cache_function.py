@@ -5,7 +5,7 @@ from proselint import memoizer
 
 
 def test_speed():
-    """compare uncached vs cached reads"""
+    """Compare uncached vs cached reads"""
     repetitions = 2
 
     demo_path = proselint.path / "demo.md"
@@ -41,7 +41,7 @@ def test_speed():
 
 
 def test_consistency():
-    """compare result-count"""
+    """Compare result-count"""
     demo_path = proselint.path / "demo.md"
     demo_fh = demo_path.open(encoding="utf-8", errors="replace")
     demo_str = demo_fh.read()
