@@ -86,6 +86,8 @@ default = {
         "typography.symbols": True,
         "uncomparables.misc": True,
         "weasel_words.misc": True,
-        "weasel_words.very": True
+        "weasel_words.very": True,
+        "restricted.top1000": False,
+        "restricted.elementary": False,
     }
 }

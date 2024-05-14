@@ -365,6 +365,46 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
     return errors
 
 
+def _allowed_word(permitted, match: re.Match, /, ignore_case=True):
+    """Determine if a match object result is in a set of strings."""
+    matched = match.string[match.start():match.end()]
+    if ignore_case:
+        return matched.lower() in permitted
+    return matched in permitted
+
+
+def reverse_existence_check(
+    text, list, err, msg, ignore_case=True, offset=0
+):
+    """Find all words in ``text`` that aren't on the ``list``."""
+    permitted = set([word.lower() for word in list] if ignore_case else list)
+    allowed_word = functools.partial(
+        _allowed_word, permitted, ignore_case=ignore_case)
+
+    # Match all 3+ character words that contain a hyphen or apostrophe
+    # only in the middle (not as the first or last character)
+    tokenizer = re.compile(r"\w[\w'-]+\w")
+
+    # Ignore any that contain numerals
+    exclusions = re.compile(r'\d')
+
+    errors = [
+        (
+            m.start() + 1 + offset,
+            m.end() + offset,
+            err,
+            msg.format(m.string[m.start():m.end()]),
+            None
+        )
+        for m in tokenizer.finditer(text)
+        if (
+            not exclusions.search(m.string[m.start():m.end()])
+            and not allowed_word(m)
+        )
+    ]
+    return errors
+
+
 def max_errors(limit):
     """Decorate a check to truncate error output to a specified limit."""
     def wrapper(f):
