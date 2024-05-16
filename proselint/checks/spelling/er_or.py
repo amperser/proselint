@@ -31,7 +31,6 @@ def check(text):
         ["mortgagor",           ["mortgager"]],
         ["persecutor",          ["persecuter"]],
         ["promoter",            ["promotor"]],
-        ["promoter",            ["promotor"]],
         ["purveyor",            ["purveyer"]],
         ["requester",           ["requestor"]],
         ["reviser",             ["revisor"]],
