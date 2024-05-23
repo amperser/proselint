@@ -5,13 +5,12 @@ from __future__ import annotations
 import json
 import os
 import signal
+import stat
 import subprocess  # noqa: S404
 import sys
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional, Union
-
-import click
+from typing import TYPE_CHECKING
 
 from proselint.tools import print_to_console
 
@@ -35,7 +34,7 @@ def exit_gracefully(_signum: int, _frame: FrameType | None) -> None:
     sys.exit(0)
 
 
-def run_benchmark(_corpus: str = "0.1.0") -> float:
+def run_benchmark(_corpus: str = "0.1.0") -> None:
     """Measure timing performance on the named corpus."""
     # force a clean slate
     cache.clear()
@@ -61,105 +60,17 @@ def run_benchmark(_corpus: str = "0.1.0") -> float:
         "Note: this has full CLI-Overhead, "
         "to compare linting-performance run 'proselint --demo'",
     )
-    return duration
+    sys.exit(0)
 
 
-@click.command(context_settings=CONTEXT_SETTINGS)
-@click.option(
-    "--config",
-    is_flag=False,
-    type=click.Path(exists=True, dir_okay=False, resolve_path=True),
-    help="Path to configuration file.",
-)
-@click.option(
-    "--verbose",
-    "-v",
-    is_flag=True,
-    help="Give verbose output.",
-)
-@click.option("--clean", "-c", is_flag=True, help="Clear the cache and exit.")
-@click.option("--benchmark", "-b", is_flag=True, help="Time on a corpus.")
-@click.option("--demo", is_flag=True, help="Run over demo file.")
-@click.option(
-    "--output-format",
-    "-o",
-    type=click.Choice(Output.names()),
-    default=None,
-    help="Override config to change format.",
-)
-@click.option("--dump-config", is_flag=True, help="Prints current config.")
-@click.option(
-    "--dump-default-config", is_flag=True, help="Prints default config."
-)
-@click.option("--version", is_flag=True)
-@click.argument(
-    "paths", nargs=-1, type=click.Path(exists=True, resolve_path=True)
-)
-def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
-    paths: Union[list[Path], Path, None],
-    config: Optional[Path] = None,
-    clean: bool = False,  # TODO: this should be a subcommand
-    verbose: bool = False,
-    output_format: Optional[str] = None,
-    benchmark: bool = False,
-    demo: bool = False,
-    dump_config: bool = False,  # TODO: this should be a subcommand
-    dump_default_config: bool = False,  # TODO: this should be a switch in dump
-    version: bool = False,
-) -> None:
-    """proselint, a linter for prose."""
-    # NOTE: the above determines the CLI help message
-    signal.signal(signal.SIGTERM, exit_gracefully)
-    signal.signal(signal.SIGINT, exit_gracefully)
-
-    if verbose:
-        set_verbosity(True)
-
-    if version:
-        click.echo("Proselint v%s" % __version__)
-        log.debug("Python    v%s", sys.version)
-        log.debug("Click     v%s", click.__version__)
-        sys.exit(0)
-
-    if clean:
-        cache.clear()
-        sys.exit(0)
-
-    if dump_default_config:
-        click.echo(json.dumps(proselint_base, sort_keys=True, indent=4))
-        sys.exit(0)
-
-    if isinstance(config, str):
-        config = Path(config)
-    config = tools.load_options(config)
-
-    if dump_config:
-        click.echo(json.dumps(config, sort_keys=True, indent=4))
-        sys.exit(0)
-
-    if output_format in Output.names():
-        config["output_format"] = output_format
-    elif verbose:
-        config["output_format"] = Output.full.name
-
-    if benchmark:
-        run_benchmark()
-        sys.exit(0)
-
+def check(config: dict, paths: list[Path], demo: bool) -> None:
+    """Run proselint on given files and directories (default)."""
     # Use the demo file by default.
     if demo:
         log.info("Demo-mode activated")
         paths = [demo_file]
 
     # prepare list
-    if paths is None:
-        paths = []
-    if isinstance(paths, str):
-        paths = [Path(paths)]
-    if isinstance(paths, Path):
-        paths = [paths]
-    if isinstance(paths, (list, tuple)):
-        paths = [Path(path) for path in paths]
     log.debug("Paths to lint: %s", paths)
 
     ts_start = time.time()
@@ -179,6 +90,138 @@ def proselint(  # noqa: PLR0912, PLR0913, PLR0917, C901
         tools.last_char_count / 1024,
     )
     sys.exit(error_sum)  # Return an exit code
+
+
+def clean() -> None:
+    """Clear the cache and exit."""
+    cache.clear()
+
+
+def dump_config(config: dict, default: bool) -> None:
+    """Display the current or default configuration."""
+    log.info(
+        json.dumps(
+            proselint_base if default else config,
+            sort_keys=True,
+            indent=4,
+        )
+    )
+
+
+def checked_path(
+    path_unfiltered: str,
+    resolve: bool = False,
+    accept_file: bool = True,
+    accept_dir: bool = True,
+) -> Path:
+    """Check a path string for specified conditions, and return a Path."""
+    if resolve:
+        path_unfiltered = os.path.realpath(path_unfiltered)
+    try:
+        stat_res = os.stat(path_unfiltered)  # noqa: PTH116
+    except OSError:
+        raise Exception() from None
+
+    if not accept_file and stat.S_ISREG(stat_res.st_mode):
+        raise Exception()
+    if not accept_dir and stat.S_ISDIR(stat_res.st_mode):
+        raise Exception()
+    return Path(path_unfiltered)
+
+
+def parse_args(
+    args: list[str],
+    commands: list[str],
+    flags: list[str],
+    inputs: list[str],
+    shorts: dict[str, str] | None = None,
+) -> tuple[str | None, list[str], dict[str, str], list[str]]:
+    """
+    Parse arguments into a subcommand, flag series, and input series.
+
+    Includes optional handling for short forms (like -h instead of --help).
+    """
+    if shorts is None:
+        shorts = {}
+    subcommand = None
+    flags_collected = []
+    inputs_collected = {}
+    args_collected = []
+    for idx, arg in enumerate(args):
+        # handle shorts
+        if arg in shorts:
+            arg = shorts[arg]  # noqa: PLW2901
+
+        if arg in commands and subcommand is None:
+            subcommand = arg
+            continue
+        if arg in flags:
+            flags_collected.append(arg)
+            continue
+        if arg in inputs:
+            inputs_collected[arg] = args[idx + 1]
+            args.pop(idx + 1)
+            continue
+        args_collected.append(arg)
+    return (subcommand, flags_collected, inputs_collected, args_collected)
+
+
+def proselint() -> None:
+    """proselint, a linter for prose."""
+    signal.signal(signal.SIGTERM, exit_gracefully)
+    signal.signal(signal.SIGINT, exit_gracefully)
+
+    args = sys.argv[1:]
+
+    commands = ["benchmark", "check", "clean", "dump-config"]
+    flags = ["--verbose", "--help", "--version", "--default", "--demo"]
+    inputs = ["--config", "--output-format"]
+    shorts = {
+        "-c": "--config",
+        "-o": "--output-format",
+        "-v": "--verbose",
+        "-h": "--help",
+    }
+
+    subcommand, flags_collected, inputs_collected, args_collected = parse_args(
+        args, commands, flags, inputs, shorts
+    )
+
+    verbose = "--verbose" in flags_collected
+
+    set_verbosity(verbose)
+
+    if "--help" in flags_collected:
+        # TODO: create help
+        pass
+
+    if "--version" in flags_collected:
+        log.info("Proselint %s", __version__)
+        log.debug("Python %s", sys.version)
+        sys.exit(0)
+
+    config = inputs_collected.get("--config", None)
+    config = tools.load_options(
+        checked_path(config, resolve=True, accept_dir=False)
+        if config is not None
+        else None
+    )
+
+    output_format = inputs_collected.get("--output-format", None)
+    if output_format in Output.names():
+        config["output_format"] = output_format
+    elif verbose:
+        config["output_format"] = Output.full.name
+
+    if subcommand == "benchmark":
+        run_benchmark()
+    elif subcommand == "clean":
+        clean()
+    elif subcommand == "dump-config":
+        dump_config(config, "--default" in flags_collected)
+    else:
+        paths = [checked_path(x, resolve=True) for x in args_collected]
+        check(config, paths, "--demo" in flags_collected)
 
 
 if __name__ == "__main__":
