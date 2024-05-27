@@ -77,7 +77,6 @@ def check(text: str) -> list[CheckResult]:
         "enclosed herein",
         "inforce",
         "ex postfacto",
-        "foreclose from",
         "forewent",
         "for ever",
         # "designer", when used to mean a plotter against Christ

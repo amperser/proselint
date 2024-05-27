@@ -14,6 +14,7 @@ from __future__ import annotations
 import functools
 import importlib
 import re
+import string
 from enum import Enum
 from typing import Callable, NamedTuple, Optional
 
@@ -407,6 +408,69 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
             re.search(exception, _m.group(0), flags=flags)
             for exception in exceptions
         )
+    ]
+
+
+def _has_digits(text: str) -> bool:
+    """
+    Determine if a string contains digits.
+
+    This is used in reverse_existence_check due to being nearly three times as
+    fast as the previous regex implementation, which is called on every result.
+    """
+    # TODO: confirm below, generator expressions should not do this, but
+    # benchmarks show any() as being slower
+
+    # loop instead of any() is used for performance - any iterates again after
+    # results are generated, instead of just iterating once
+    for char in text:  # noqa: SIM110
+        if char in string.digits:
+            return True
+    return False
+
+
+def _allowed_word(
+    permitted: set[str], match: re.Match, ignore_case: bool = True
+) -> bool:
+    """Determine if a match object result is in a set of strings."""
+    matched = match.group(0)
+    if ignore_case:
+        return matched.lower() in permitted
+    return matched in permitted
+
+
+def reverse_existence_check(  # noqa: PLR0913, PLR0917
+    text: str,
+    allowed: list[str],
+    err: str,
+    msg: str,
+    ignore_case: bool = True,
+    offset: tuple[int, int] = (0, 0),
+) -> list[CheckResult]:
+    """Find all words in `text` that aren't in the list of `allowed` words."""
+    permitted = set(
+        [word.lower() for word in allowed] if ignore_case else allowed
+    )
+    allowed_word = functools.partial(
+        _allowed_word, permitted, ignore_case=ignore_case
+    )
+
+    # TODO: benchmark performance of this and _has_digits compared with
+    # excluding digits from results in the first place
+    # Match all 3+ character words that contain a hyphen or apostrophe
+    # only in the middle (not as the first or last character)
+    tokenizer = re.compile(r"\w[\w'-]+\w")
+
+    return [
+        CheckResult(
+            start_pos=m.start() + 1 + offset[0],
+            end_pos=m.end() + offset[1],
+            check=err,
+            message=msg.format(m.group(0)),
+            replacements=None,
+        )
+        for m in tokenizer.finditer(text)
+        if not _has_digits(m.group(0)) and not allowed_word(m)
     ]
 
 

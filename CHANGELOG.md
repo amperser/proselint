@@ -1,5 +1,6 @@
 # Change Log
 
+<<<<<<< HEAD
 ## [proselint@0.16.0](https://github.com/amperser/proselint/compare/0.15.0...0.16.0)
 
 - remove memoize-wrapper as it adds a level of complexity to a user-interface
@@ -140,7 +141,7 @@ parallel took 2245.927 ms -> run0
 parallel took 2456.038 ms -> run1
 ```
 
-## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.13.0...0.15.0)
+## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.14.0...0.15.0)
 
 ### Biggest Changes
 
@@ -265,6 +266,17 @@ Proselint-modernized
 	- break up the slowest checks to balance the load
 - optimizations were done with profiling and benchmarking
 - overhaul controling output-format by cli
+
+## [proselint@0.14.0](https://github.com/amperser/proselint/compare/0.13.0...0.14.0)
+
+### Bug Fixes
+
+- now loads the default configuration if none is provided ([#1246](https://github.com/amperser/proselint/pull/1246))
+- added support for hyphens in `lexical_illusions` ([#1344](https://github.com/amperser/proselint/pull/1344))
+
+### Features
+
+- additional spelling checks `ally_ly`, `ance_ence`, `ely_ly` and `ve_of` ([#1266](https://github.com/amperser/proselint/pull/1266))
 
 ## [proselint@0.13.0](https://github.com/amperser/proselint/compare/0.12.0...0.13.0)
 

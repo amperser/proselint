@@ -42,7 +42,6 @@ def check(text: str) -> list[CheckResult]:
         "completely obsolescent",
         "generally always",
         "usually always",
-        "increasingly less",
         "build down",
         "conspicuous absence",
         "exact estimate",

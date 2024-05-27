@@ -283,6 +283,8 @@ def lint_path(
     return results
 
 
+
+
 def convert_to_json(
     # FIXME: incorrect type (not enough args for dict, too many for list)
     results: Union[dict[list[str, LintResult]], list[LintResult]],
