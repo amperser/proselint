@@ -24,6 +24,18 @@ except ImportError:
 import proselint
 from proselint.checks import CheckResult, reverse_existence_check
 
+examples_pass = [
+    "A boy and his goat went to a farm.",
+    "I am tired.",
+    "Your body is made of water.",
+]
+
+examples_fail = [
+    "Cells make up your body.",
+    "I love clowns.",
+    "I hate cells and clowns.",
+]
+
 _CSV_PATH = "checks/restricted/elementary.csv"
 with files(proselint).joinpath(_CSV_PATH).open("r") as data:
     ELEMENTARY_WORDS = data.read().split()

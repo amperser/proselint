@@ -24,6 +24,18 @@ except ImportError:
 import proselint
 from proselint.checks import CheckResult, reverse_existence_check
 
+examples_pass = [
+    "I am blonde.",
+    "I'm gonna listen to music tonight.",
+    "I will go to sleep because I have school.",
+]
+
+examples_fail = [
+    "I am tired.",
+    "I hate broccoli.",
+    "I am tired and hate broccoli.",
+]
+
 _CSV_PATH = "checks/restricted/top1000.csv"
 
 with files(proselint).joinpath(_CSV_PATH).open("r") as data:
