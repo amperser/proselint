@@ -1,9 +1,9 @@
 """Test the topic detector tool."""
 
-from proselint.tools import topics
+from proselint.checks import topics
 
 
-def test_50_Cent_detector_on_topic():
+def test_50_cent_detector_on_topic():
     """Check precision of the 50 Cent topic-detector."""
     text = """With the aid of Eminem and Dr. Dre (who produced his first
            major-label album, Get Rich or Die Tryin'), Jackson became one

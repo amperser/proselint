@@ -1,30 +1,42 @@
-"""Tense present.
+"""
+Tense present.
 
 ---
 layout:     post
 source:     DFW's Tense Present
 source_url: http://bit.ly/1c85lgR
 title:      Tense present
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Archaism.
 
 """
-import re
+from __future__ import annotations
 
-from proselint.tools import memoize
+from proselint.checks import CheckResult, Pd, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "I did it by accident honestly.",
+]
+
+examples_fail = [
+    "I did it on accident honestly.",
+    "I did it On accident honestly.",
+    "Told you something between you and i.",
+    "Told you something between you and I.",
+    "I feel nauseous.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.tense_present"
-    msg = r"'{}'."
+    msg = "'{}'."
 
-    illogics = [
-        r"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+    items1 = [
         "between you and I",
         "on accident",
         "somewhat of a",
@@ -36,16 +48,26 @@ def check(text):
         # "and so",
         r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
     ]
+    ret1 = existence_check(
+        text,
+        items1,
+        err,
+        msg,
+        ignore_case=True,
+        string=True,
+    )
 
-    errors = []
-    for i in illogics:
-        for m in re.finditer(fr"\s{i}\s", text, flags=re.U | re.I):
-            txt = m.group(0).strip()
-            errors.append((
-                m.start() + 1,
-                m.end(),
-                err,
-                msg.format(txt),
-                None))
+    items2 = [
+        r"\bup to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+    ]
+    ret2 = existence_check(
+        text,
+        items2,
+        err,
+        msg,
+        ignore_case=True,
+        string=True,
+        padding=Pd.disabled,
+    )
 
-    return errors
+    return ret1 + ret2

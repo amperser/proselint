@@ -1,76 +1,94 @@
-"""Names for groups of animals.
+"""
+Names for groups of animals.
 
 ---
 layout:     post
 source:     Oxford Dictionaries
 source_url: http://www.oxforddictionaries.com/words/what-do-you-call-a-group-of
 title:      Names for groups of animals
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Names for groups of animals.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+import re
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "There was a congregation of alligators.",
+    "There was a wisdom of wombats.",
+]
+
+examples_fail = [
+    "There was a group of alligators.",
+    "There was a bunch of wombats.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "oxford.venery_terms"
+    if not any(re.finditer("(?:group|bunch) ", text, flags=re.IGNORECASE)):
+        return []
+
+    err = "terms.venery.oxford"
     msg = "The venery term is '{}'."
 
     term_list = [
-        ["alligators",   "congregation"],
-        ["antelopes",    "herd"],
-        ["baboons",      "troop"],
-        ["badgers",      "cete"],
-        ["bats",         "colony"],
-        ["bears",        "sloth"],
-        ["buffalo",      "herd"],
-        ["bullfinches",  "bellowing"],
-        ["caribou",      "herd"],
-        ["cats",         "glaring"],
+        ["alligators", "congregation"],
+        ["antelopes", "herd"],
+        ["baboons", "troop"],
+        ["badgers", "cete"],
+        ["bats", "colony"],
+        ["bears", "sloth"],
+        ["buffalo", "herd"],
+        ["bullfinches", "bellowing"],
+        ["caribou", "herd"],
+        ["cats", "glaring"],
         ["caterpillars", "army"],
-        ["cockroaches",  "intrusion"],
-        ["coyotes",      "pack"],
-        ["crows",        "murder"],
-        ["dogs",         "pack"],
-        ["eagles",       "convocation"],
-        ["emus",         "mob"],
-        ["flamingos",    "stand"],
-        ["frogs",        "army"],
-        ["goldfinches",  "charm"],
-        ["gorillas",     "band"],
-        ["guineafowl",   "rasp"],
-        ["hedgehogs",    "array"],
-        ["herons",       "siege"],
-        ["hogs",         "parcel"],
-        ["hyenas",       "cackle"],
-        ["ibex",         "herd"],
-        ["iguanas",      "mess"],
-        ["lions",        "pride"],
-        ["locusts",      "plague"],
-        ["mackerel",     "shoal"],
-        ["mares",        "stud"],
-        ["minnows",      "shoal"],
-        ["moose",        "herd"],
-        ["mosquitoes",   "scourge"],
+        ["cockroaches", "intrusion"],
+        ["coyotes", "pack"],
+        ["crows", "murder"],
+        ["dogs", "pack"],
+        ["eagles", "convocation"],
+        ["emus", "mob"],
+        ["flamingos", "stand"],
+        ["frogs", "army"],
+        ["goldfinches", "charm"],
+        ["gorillas", "band"],
+        ["guineafowl", "rasp"],
+        ["hedgehogs", "array"],
+        ["herons", "siege"],
+        ["hogs", "parcel"],
+        ["hyenas", "cackle"],
+        ["ibex", "herd"],
+        ["iguanas", "mess"],
+        ["lions", "pride"],
+        ["locusts", "plague"],
+        ["mackerel", "shoal"],
+        ["mares", "stud"],
+        ["minnows", "shoal"],
+        ["moose", "herd"],
+        ["mosquitoes", "scourge"],
         ["nightingales", "watch"],
-        ["oysters",      "bed"],
-        ["partridges",   "covey"],
-        ["pelicans",     "pod"],
-        ["raccoons",     "gaze"],
-        ["ravens",       "unkindness"],
+        ["oysters", "bed"],
+        ["partridges", "covey"],
+        ["pelicans", "pod"],
+        ["raccoons", "gaze"],
+        ["ravens", "unkindness"],
         ["rhinoceroses", "crash"],
-        ["sea urchins",  "sea"],
-        ["starlings",    "murmuration"],
-        ["toads",        "knot"],
-        ["wombats",      "wisdom"],
-        ["woodcocks",    "fall"],
-        ["woodpeckers",  "descent"],
-        ["wrens",        "herd"],
+        ["sea urchins", "sea"],
+        ["starlings", "murmuration"],
+        ["toads", "knot"],
+        ["wombats", "wisdom"],
+        ["woodcocks", "fall"],
+        ["woodpeckers", "descent"],
+        ["wrens", "herd"],
     ]
 
     generic_terms = [
@@ -78,11 +96,12 @@ def check(text):
         "bunch",
     ]
 
-    list = []
-    for term_pair in term_list:
-        for generic in generic_terms:
-            wrong = f"a {generic} of {term_pair[0]}"
-            right = f"a {term_pair[1]} of {term_pair[0]}"
-            list += [[right, [wrong]]]
+    # NOTE: python automatically caches this calculation for reruns
+    #       check with benchmark_checks.py
+    items = {
+        f"{generic} of {term_pair[0]}": f"{term_pair[1]} of {term_pair[0]}"
+        for term_pair in term_list
+        for generic in generic_terms
+    }
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

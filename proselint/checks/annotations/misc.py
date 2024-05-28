@@ -1,27 +1,36 @@
-"""Annotation left in text.
+"""
+Annotation left in text.
 
 ---
 layout:     post
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
-title:      archaism
-date:       2014-06-10 12:31:19
+title:      annotations
+date:       2014-06-10
 categories: writing
 ---
 
 Annotation left in text.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "Add it to the to do list.",
+]
+
+examples_fail = ["Add it to the TODO list."]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "annotations.misc"
     msg = "Annotation left in text."
 
-    annotations = [
+    items = [
         "FIXME",
         "FIX ME",
         "TODO",
@@ -30,5 +39,4 @@ def check(text):
         "FIX THIS",
     ]
 
-    return existence_check(
-        text, annotations, err, msg, ignore_case=False, join=True)
+    return existence_check(text, items, err, msg, ignore_case=False)

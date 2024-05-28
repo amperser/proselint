@@ -1,28 +1,38 @@
-"""Filthy words.
+"""
+Filthy words.
 
 ---
 layout:     post
 source:     George Carlin
 source_url: https://youtu.be/kyBH5oNQOS0
 title:      filthy words
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Filthy words.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = ["Bad shit in this phrase."]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.filth"
-    msg = """Nobody ever tells you this as a kid, but you're supposed to avoid
-        this word."""
+    msg = (
+        "Nobody ever tells you this as a kid, "
+        "but you're supposed to avoid this word."
+    )
 
-    list = [
+    items = [
         "shit",
         "piss",
         "fuck",
@@ -35,4 +45,4 @@ def check(text):
         "twat",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)

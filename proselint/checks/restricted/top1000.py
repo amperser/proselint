@@ -1,4 +1,5 @@
-"""Check if the text contains only words in top 1000 most popular words.
+"""
+Check if the text contains only words in top 1000 most popular words.
 
 ---
 layout:     Website
@@ -12,22 +13,36 @@ categories: writing/app
 Top 1000.
 
 """
+
+from __future__ import annotations
+
 try:
     from importlib.resources import files
 except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.tools import memoize, reverse_existence_check
+from proselint.checks import CheckResult, reverse_existence_check
 
-_CSV_PATH = 'checks/restricted/top1000.csv'
+examples_pass = [
+    "I am blonde.",
+    "I'm gonna listen to music tonight.",
+    "I will go to sleep because I have school.",
+]
 
-with files(proselint).joinpath(_CSV_PATH).open('r') as data:
+examples_fail = [
+    "I am tired.",
+    "I hate broccoli.",
+    "I am tired and hate broccoli.",
+]
+
+_CSV_PATH = "checks/restricted/top1000.csv"
+
+with files(proselint).joinpath(_CSV_PATH).open("r") as data:
     TOP1000_WORDS = data.read().split()
 
 
-@memoize
-def check(text):
+def check_top1000(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "restricted.top1000"
     msg = "'{}' is not in the top 1000 most common words."

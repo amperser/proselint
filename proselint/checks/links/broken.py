@@ -1,28 +1,43 @@
-"""Checks that links are viable.
+"""
+Checks that links are viable.
 
 ---
 layout:     post
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
 title:      broken links
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Check that links are not broken.
 
 """
+from __future__ import annotations
+
+import asyncio
 import re
-import urllib.request as urllib_request  # for Python 3
-from socket import error as SocketError
+import urllib.request as ulr
 
-from proselint.tools import memoize
+from proselint.checks import CheckResult
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "General url short www.github.com should work",
+    "Url long insecure http://docs.python.org.",
+    "Long secure Url like https://en.wikipedia.org",
+]
+
+examples_fail = [
+    "You can't visit www.thiswebsitedoesreallynotexist.org now.",
+    "You can't visit http://www.thiswebsitedoesreallynotexist.org now.",
+    "You can't visit https://www.thiswebsitedoesreallynotexist.org now.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "links.valid"
+    err = "links.broken"
     msg = "Broken link: {}"
 
     regex = re.compile(
@@ -30,9 +45,10 @@ def check(text):
         |[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+
         |(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)
         |[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019\u21a9]))""",
-        re.U | re.X)
+        re.UNICODE | re.VERBOSE,
+    )  # TODO: update regex?
 
-    errors = []
+    results: list[CheckResult] = []
     for m in re.finditer(regex, text):
         url = m.group(0).strip()
 
@@ -40,20 +56,28 @@ def check(text):
             url = "http://" + url
 
         if is_broken_link(url):
-            errors.append((m.start(), m.end(), err, msg.format(url), None))
+            results.append(
+                CheckResult(
+                    start_pos=m.start(),
+                    end_pos=m.end(),
+                    check=err,
+                    message=msg.format(url),
+                    replacements=None,
+                )
+            )
+            asyncio.sleep(0.1)
 
-    return errors
+    return results
 
 
-@memoize
-def is_broken_link(url):
+def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
-        request = urllib_request.Request(
-            url, headers={'User-Agent': 'Mozilla/5.0'})
-        urllib_request.urlopen(request).read()
+        # TODO: update header?
+        request = ulr.Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
+        ulr.urlopen(request).read()  # noqa: S310
         return False
-    except urllib_request.URLError:
+    except ulr.URLError:
         return True
-    except SocketError:
+    except OSError:
         return True

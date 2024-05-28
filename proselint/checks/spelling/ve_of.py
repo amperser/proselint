@@ -1,19 +1,26 @@
 """-ve vs. -of."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "This could of been the third test.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """-ve vs. -of."""
     err = "spelling.ve_of"
     msg = "-ve vs. -of. '{}' is the preferred spelling."
 
-    preferences = [
-
-        ["could've", ["could of"]],
-        ["should've", ["should of"]],
-        ["would've", ["would of"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+    items: dict[str, str] = {
+        "could of": "could've",
+        "should of": "should've",
+        "would of": "would've",
+    }
+    return preferred_forms_check_opti(text, items, err, msg)

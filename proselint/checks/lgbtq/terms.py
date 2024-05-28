@@ -1,4 +1,5 @@
-"""GLAAD.
+"""
+GLAAD.
 
 ---
 layout:     post
@@ -14,25 +15,38 @@ makes more acceptable recommendations. TheNew York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "They were a gay couple.",
+    "Homosexual.",
+]
+
+examples_fail = [
+    "He was a homosexual man.",
+    "My sexual preference is for women.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest preferred forms given the reference document."""
-    err = "glaad.terms"
+    err = "lgbtq.terms.glaad"
     msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
 
-    list = [
-        ["gay man",            ["homosexual man"]],
-        ["gay men",            ["homosexual men"]],
-        ["lesbian",            ["homosexual woman"]],
-        ["lesbians",           ["homosexual women"]],
-        ["gay people",         ["homosexual people"]],
-        ["gay couple",         ["homosexual couple"]],
-        ["sexual orientation", ["sexual preference"]],
-        ["openly gay",         ["admitted homosexual", "avowed homosexual"]],
-        ["equal rights",       ["special rights"]]
-        ]
+    items: dict[str, str] = {
+        "homosexual man": "gay man",
+        "homosexual men": "gay men",
+        "homosexual woman": "lesbian",
+        "homosexual women": "lesbians",
+        "homosexual people": "gay people",
+        "homosexual couple": "gay couple",
+        "sexual preference": "sexual orientation",
+        "admitted homosexual": "openly gay",
+        "avowed homosexual": "openly gay",
+        "special rights": "equal rights",
+    }
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)

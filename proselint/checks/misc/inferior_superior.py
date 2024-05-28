@@ -1,29 +1,39 @@
-"""Inferior / Superior.
+"""
+Inferior / Superior.
 
 ---
 layout:     post
 source:     Fowler's Modern English Usage
 source_url: bit.ly/1YBG8QJ
 title:      Inferior / Superior
-date:       2016-03-10 17:27:37
+date:       2016-03-10
 categories: writing
 ---
 
 Corrects 'inferior/superior than' to 'inferior/superior to'.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "It was more inferior than the alternative.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.inferior_superior"
     msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."
 
-    preferences = [
-        ["inferior to",         ["inferior than"]],
-        ["superior to",         ["superior than"]],
-    ]
+    items: dict[str, str] = {
+        "inferior than": "inferior to",
+        "superior than": "superior to",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

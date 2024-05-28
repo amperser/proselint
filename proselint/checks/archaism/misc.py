@@ -1,22 +1,31 @@
-"""Archaism.
+"""
+Archaism.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      archaism
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "I want to sleep, and maybe dream.",
+]
+
+examples_fail = ["I want to sleep, perchance to dream."]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "archaism.misc"
     msg = "'{}' is archaic."
@@ -78,4 +87,4 @@ def check(text):
         # except in the sense “causing an abortion.”
     ]
 
-    return existence_check(text, archaisms, err, msg, join=True)
+    return existence_check(text, archaisms, err, msg)

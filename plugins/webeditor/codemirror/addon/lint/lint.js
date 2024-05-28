@@ -95,7 +95,7 @@ CodeMirror.validate = (function() {
 	  else
 		 updateLinting(cm, options.getAnnotations(cm.getValue()));
   }
-  
+
   function updateLinting(cm, annotationsNotSorted) {
     clearMarks(cm);
     var state = cm._lintState, options = state.options;
@@ -170,7 +170,7 @@ CodeMirror.validate = (function() {
       CodeMirror.off(cm.getWrapperElement(), "mouseover", cm._lintState.onMouseOver);
       delete cm._lintState;
     }
-    
+
     if (val) {
       var gutters = cm.getOption("gutters"), hasLintGutter = false;
       for (var i = 0; i < gutters.length; ++i) if (gutters[i] == GUTTER_ID) hasLintGutter = true;

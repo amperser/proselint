@@ -1,22 +1,32 @@
-"""Credit card number printed.
+"""
+Credit card number printed.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
 title:      credit card number printed
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Credit card number printed.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "My credit card number is 5555555555554444.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "security.credit_card"
     msg = "Don't put credit card numbers in plain text."

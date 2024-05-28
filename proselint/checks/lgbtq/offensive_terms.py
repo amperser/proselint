@@ -1,4 +1,5 @@
-"""GLAAD.
+"""
+GLAAD.
 
 ---
 layout:     post
@@ -14,16 +15,26 @@ raises an error marking them as offensive. The New York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "I once met a gay man.",
+]
+
+examples_fail = [
+    "I once met a fag.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Flag offensive words based on the GLAAD reference guide."""
-    err = "glaad.offensive_terms"
+    err = "lgbtq.offensive_terms.glaad"
     msg = "Offensive term. Remove it or consider the context."
 
-    list = [
+    items = [
         "fag",
         "faggot",
         "dyke",
@@ -32,9 +43,9 @@ def check(text):
         "gay agenda",
         "transvestite",
         "homosexual lifestyle",
-        "gay lifestyle"
+        "gay lifestyle",
         # homo - may create false positives without additional context
-        # FIXME use topic detetor to decide whether "homo" is offensive
+        # FIXME use topic detector to decide whether "homo" is offensive
     ]
 
-    return existence_check(text, list, err, msg, join=True, ignore_case=False)
+    return existence_check(text, items, err, msg, ignore_case=False)

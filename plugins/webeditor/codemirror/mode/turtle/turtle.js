@@ -40,11 +40,11 @@ CodeMirror.defineMode("turtle", function(config) {
         return "variable-3";
       } else {
 	     var word = stream.current();
-	
+
 	     if(keywords.test(word)) {
 			return "meta";
 	     }
-	
+
 	     if(ch >= "A" && ch <= "Z") {
 		    return "comment";
 		 } else {
@@ -119,7 +119,7 @@ CodeMirror.defineMode("turtle", function(config) {
           state.context.col = stream.column();
         }
       }
-      
+
       return style;
     },
 

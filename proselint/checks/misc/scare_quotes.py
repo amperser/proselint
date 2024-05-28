@@ -1,28 +1,38 @@
-"""Misuse of scare quotes.
+"""
+Misuse of scare quotes.
 
 ---
 layout:     post
 source:     Pinker's book on writing
 source_url: ???
 title:      misuse of scare quotes
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Points out misuse of scare quotes.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, Pd, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "What was the 'take-home message'?",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "pinker.scare_quotes"
+    err = "misc.scare_quotes.pinker"
     msg = "Misuse of 'scare quotes'. Delete them."
 
-    narcissism = [
-        "the 'take-home message'",
+    items = [
+        r"\bthe 'take-home message'\B",
     ]
 
-    return existence_check(text, narcissism, err, msg)
+    return existence_check(text, items, err, msg, padding=Pd.disabled)

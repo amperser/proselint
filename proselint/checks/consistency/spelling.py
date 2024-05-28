@@ -1,11 +1,12 @@
-"""Inconsistent spelling.
+"""
+Inconsistent spelling.
 
 ---
 layout:     post
 source:     Intelligent Editing Ltd.
 source_url: http://bit.ly/1x3hYj7
 title:      Inconsistent spelling
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
@@ -19,11 +20,22 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
-from proselint.tools import consistency_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, consistency_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "The centre for the arts is the art centre.",
+    "The center for the arts is the art center.",
+]
+
+examples_fail = [
+    "The centre of the arts is the art center.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "consistency.spelling"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."
@@ -43,5 +55,6 @@ def check(text):
         ["organising", "organizing"],
         ["recognise", "recognize"],
     ]
+    # TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
 
-    return consistency_check(text, word_pairs, err, msg)
+    return consistency_check(text, word_pairs, err, msg, ignore_case=True)

@@ -1,26 +1,28 @@
 """Check that the CLI returns the appropriate exit code."""
 
-from click.testing import CliRunner
+import sys
+from unittest.mock import patch
+
+import pytest
 
 from proselint.command_line import proselint
 
-from .check import Check
+
+def test_exit_code_demo() -> None:
+    """Ensure that linting the demo returns an exit code greater than 1."""
+    test_args = ["proselint", "--demo"]
+    with patch.object(sys, "argv", test_args), pytest.raises(
+        SystemExit
+    ) as excinfo:
+        proselint()
+    assert int(str(excinfo.value)) >= 1
 
 
-class TestExitCodes(Check):
-    """Test class for CLI exit codes"""
-
-    __test__ = True
-
-    def setUp(self):
-        self.runner = CliRunner()
-
-    def test_exit_code_demo(self):
-        """Ensure that linting the demo returns an exit code of 1."""
-        output = self.runner.invoke(proselint, "--demo")
-        assert output.exit_code == 1
-
-    def test_exit_code_version(self):
-        """Ensure that getting the version returns an exit code of 0."""
-        output = self.runner.invoke(proselint, "--version")
-        assert output.exit_code == 0
+def test_exit_code_version() -> None:
+    """Ensure that getting the version returns an exit code of 0."""
+    test_args = ["proselint", "--version"]
+    with patch.object(sys, "argv", test_args), pytest.raises(
+        SystemExit
+    ) as excinfo:
+        proselint()
+    assert int(str(excinfo.value)) == 0

@@ -1,22 +1,32 @@
-"""Chatspeak.
+"""
+Chatspeak.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
 title:      textese
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Chatspeak.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "BRB getting coffee.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.chatspeak"
     msg = "'{}' is chatspeak. Write it out."
@@ -44,7 +54,7 @@ def check(text):
         "THNX",
         "THX",
         "TTYL",
-        "XOXO"
+        "XOXO",
     ]
 
     return existence_check(text, words, err, msg)

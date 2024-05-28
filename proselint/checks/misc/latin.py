@@ -1,31 +1,41 @@
-"""Back-formations.
+"""
+Back-formations.
 
 ---
 layout:     post
 source:     The sense of style
 source_url: http://amzn.to/1EOUZ5g
 title:      back-formations
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Back-formations.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "And ceteris paribus, it was good.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "pinker.latin"
+    err = "misc.latin.pinker"
     msg = "Use English. '{}' is the preferred form."
 
-    list = [
-        ["other things being equal",          ["ceteris paribus"]],
-        ["among other things",                ["inter alia"]],
-        ["in and of itself",                  ["simpliciter"]],
-        ["having made the necessary changes", ["mutatis mutandis"]],
-    ]
+    items: dict[str, str] = {
+        "ceteris paribus": "other things being equal",
+        "inter alia": "among other things",
+        "simpliciter": "in and of itself",
+        "mutatis mutandis": "having made the necessary changes",
+    }
 
-    return preferred_forms_check(text, list, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

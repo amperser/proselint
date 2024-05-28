@@ -1,22 +1,35 @@
-"""Illogic.
+"""
+Illogic.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Illogic
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "We should preplan the trip.",
+    "To coin a phrase from him, No diggity",
+    "Not Without your collusion you won't'.",
+    "it fills a much-needed gap",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.illogic"
     msg = "'{}' is illogical."
@@ -24,36 +37,29 @@ def check(text):
     illogics = [
         "preplan",
         "more than .{1,10} all",
-        "appraisal valuations?",
+        "appraisal valuations?",  # singular & plural
         "(?:i|you|he|she|it|y'all|all y'all|you all|they) could care less",
         "least worst",
-        "much-needed gaps?",
-        "much-needed voids?",
+        "much-needed gaps?",  # singular & plural
+        "much-needed voids?",  # singular & plural
         "no longer requires oxygen",
         "without scarcely",
     ]
 
-    return existence_check(text, illogics, err, msg, offset=1)
+    return existence_check(text, illogics, err, msg)
 
 
-@memoize
-def check_coin_a_phrase_from(text):
+def check_coin_a_phrase_from(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.illogic.coin"
     msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
-
-    regex = "to coin a phrase from"
-
-    return existence_check(text, [regex], err, msg, offset=1)
+    items = ["to coin a phrase from"]
+    return existence_check(text, items, err, msg)
 
 
-@memoize
-def check_without_your_collusion(text):
+def check_without_your_collusion(text: str) -> list[CheckResult]:
     """Check the textself."""
     err = "misc.illogic.collusion"
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
-
-    regex = "without your collusion"
-
-    return existence_check(
-        text, [regex], err, msg, require_padding=False, offset=-1)
+    items = ["without your collusion"]
+    return existence_check(text, items, err, msg)

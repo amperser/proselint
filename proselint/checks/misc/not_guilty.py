@@ -1,11 +1,12 @@
-"""Not guilty beyond a reasonable doubt.
+"""
+Not guilty beyond a reasonable doubt.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Not guilty beyond a reasonable doubt.
-date:       2016-03-09 15:50:31
+date:       2016-03-09
 categories: writing
 ---
 
@@ -22,11 +23,20 @@ Not guilty beyond a reasonable doubt
 """
 
 
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "She is not guilty beyond a reasonable doubt.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.not_guilty"
     msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."

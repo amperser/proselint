@@ -50,7 +50,7 @@ def readints(prompt)
     print prompt
     line = readline.chomp
     raise EOFError.new if line == 'quit' # You can also use a real EOF.
-            
+
     # Go through each item on the line, converting each one and adding it
     # to retval.
     retval = [ ]
@@ -99,16 +99,16 @@ def polystr(p)
     result = (if p[0][0] < 0 then "-" else "" end) + term_to_str(*p[0])
 
     # Convert the rest of the terms, in each case adding the appropriate
-    # + or - separating them.  
+    # + or - separating them.
     for term in p[1...p.length]
         # Add the separator then the rep. of the term.
-        result += (if term[0] < 0 then " - " else " + " end) + 
+        result += (if term[0] < 0 then " - " else " + " end) +
                 term_to_str(*term)
     end
 
     return result
 end
-        
+
 #
 # Run until some kind of endfile.
 begin

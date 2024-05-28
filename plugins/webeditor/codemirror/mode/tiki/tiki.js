@@ -8,13 +8,13 @@ CodeMirror.defineMode('tiki', function(config) {
 				}
 				stream.next();
 			}
-			
+
 			if (returnTokenizer) state.tokenize = returnTokenizer;
-			
+
 			return style;
 		};
 	}
-	
+
 	function inLine(style) {
 		return function(stream, state) {
 			while(!stream.eol()) {
@@ -24,16 +24,16 @@ CodeMirror.defineMode('tiki', function(config) {
 			return style;
 		};
 	}
-	
+
 	function inText(stream, state) {
 		function chain(parser) {
 			state.tokenize = parser;
 			return parser(stream, state);
 		}
-		
+
 		var sol = stream.sol();
 		var ch = stream.next();
-		
+
 		//non start of line
 		switch (ch) { //switch is generally much faster than if, so it is used here
 			case "{": //plugin
@@ -69,7 +69,7 @@ CodeMirror.defineMode('tiki', function(config) {
 					return chain(inBlock("comment", "||"));
 				}
 				break;
-			case "-": 
+			case "-":
 				if (stream.eat("=")) {//titleBar
 					return chain(inBlock("header string", "=-", inText));
 				} else if (stream.eat("-")) {//deleted
@@ -95,7 +95,7 @@ CodeMirror.defineMode('tiki', function(config) {
 				}
 				break;
 		}
-		
+
 		//start of line types
 		if (sol) {
 			switch (ch) {
@@ -119,11 +119,11 @@ CodeMirror.defineMode('tiki', function(config) {
 					break;
 			}
 		}
-		
+
 		//stream.eatWhile(/[&{]/); was eating up plugins, turned off to act less like html and more like tiki
 		return null;
 	}
-	
+
 	var indentUnit = config.indentUnit;
 
 	// Return variables for tokenizers
@@ -131,7 +131,7 @@ CodeMirror.defineMode('tiki', function(config) {
 	function inPlugin(stream, state) {
 		var ch = stream.next();
 		var peek = stream.peek();
-		
+
 		if (ch == "}") {
 			state.tokenize = inText;
 			//type = ch == ")" ? "endPlugin" : "selfclosePlugin"; inPlugin
@@ -140,18 +140,18 @@ CodeMirror.defineMode('tiki', function(config) {
 			return "bracket";
 		} else if (ch == "=") {
 			type = "equals";
-			
+
 			if (peek == ">") {
 				ch = stream.next();
 				peek = stream.peek();
 			}
-			
+
 			//here we detect values directly after equal character with no quotes
 			if (!/[\'\"]/.test(peek)) {
 				state.tokenize = inAttributeNoQuote();
 			}
 			//end detect values
-			
+
 			return "operator";
 		} else if (/[\'\"]/.test(ch)) {
 			state.tokenize = inAttribute(ch);
@@ -173,7 +173,7 @@ CodeMirror.defineMode('tiki', function(config) {
 			return "string";
 		};
 	}
-	
+
 	function inAttributeNoQuote() {
 		return function(stream, state) {
 			while (!stream.eol()) {
@@ -192,7 +192,7 @@ CodeMirror.defineMode('tiki', function(config) {
 	function pass() {
 		for (var i = arguments.length - 1; i >= 0; i--) curState.cc.push(arguments[i]);
 	}
-	
+
 	function cont() {
 		pass.apply(null, arguments);
 		return true;
@@ -208,7 +208,7 @@ CodeMirror.defineMode('tiki', function(config) {
 			noIndent: noIndent
 		};
 	}
-	
+
 	function popContext() {
 		if (curState.context) curState.context = curState.context.prev;
 	}
@@ -233,7 +233,7 @@ CodeMirror.defineMode('tiki', function(config) {
 		}
 		else return cont();
 	}
-	
+
 	function endplugin(startOfLine) {
 		return function(type) {
 			if (
@@ -245,7 +245,7 @@ CodeMirror.defineMode('tiki', function(config) {
 			return cont();
 		};
 	}
-	
+
 	function endcloseplugin(err) {
 		return function(type) {
 			if (err) setStyle = "error";

@@ -1,29 +1,37 @@
-"""Hyperbolic language.
+"""
+Hyperbolic language.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
 title:      hyperbolic language
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Hyperbolic language.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, Pd, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = ["So exaggerated!!!", "really??"]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "hyperbolic.misc"
+    err = "hyperbole.misc"
     msg = "'{}' is hyperbolic."
 
     words = [
         r"[a-z]*[!]{2,}",
-        r"[a-z]*\?{2,}"
+        r"[a-z]*\?{2,}",
     ]
 
-    return existence_check(text, words, err, msg)
+    return existence_check(text, words, err, msg, padding=Pd.disabled)

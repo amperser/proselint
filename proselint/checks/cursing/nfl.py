@@ -1,27 +1,43 @@
-"""Words the NFL won't print on a jersey.
+"""
+Words the NFL won't print on a jersey.
 
 ---
 layout:     post
 source:     The National Football League
 source_url: http://bit.ly/1ISK0rb
 title:      words the NFL won't print on a jersey
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Words the NFL won't print on a jersey.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, Pd, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "get your axsysz over here.",
+]
+
+examples_fail = [
+    "The QB is named ball licker.",
+    "The difference between femme and famme.",
+    "Interracial is the word.",
+    "you jackass, be funny.",
+    "To rent a fuck or not to rent a fuck.",
+    "get your a.s.s. over here.",
+]
 
 
-@memoize
-def check(text):
+def check_a_to_e(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "cursing.nfl"
     msg = "The NFL won't print this word on a jersey."
 
-    list = [
+    items = [
         "420",
         "666",
         "2 on 1",
@@ -34,7 +50,6 @@ def check(text):
         "4twenty",
         "60 nine",
         "60nine",
-        "a.s.s.",
         "anal",
         "anal annie",
         "anal sex",
@@ -380,9 +395,17 @@ def check(text):
         "erection",
         "evl",
         "excrement",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_f_to_h(text: str) -> list[CheckResult]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "f toyota",
-        "f.i.n.e.",
-        "f.u.c.k.",
         "face fucker",
         "facefucker",
         "faggot",
@@ -597,6 +620,16 @@ def check(text):
         "hottotrot",
         "hussy",
         "hustler",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_i_to_p(text: str) -> list[CheckResult]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "i love beer",
         "i luv beer",
         "id ten t",
@@ -867,6 +900,16 @@ def check(text):
         "pussypounder",
         "putt pirate",
         "pwt",
+    ]
+    return existence_check(text, items, err, msg)
+
+
+def check_q_to_z(text: str) -> list[CheckResult]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
         "queef",
         "queer",
         "quickie",
@@ -1176,7 +1219,20 @@ def check(text):
         "wuutang",
         "xxx",
         "yellow man",
-        "yellowman"
+        "yellowman",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)
+
+
+def check_abb(text: str) -> list[CheckResult]:
+    """Check the text."""
+    err = "cursing.nfl"
+    msg = "The NFL won't print this word on a jersey."
+
+    items = [
+        r"a\.s\.s\.",
+        r"f\.i\.n\.e\.",
+        r"f\.u\.c\.k\.",
+    ]
+    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)

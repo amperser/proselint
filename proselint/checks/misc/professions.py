@@ -1,30 +1,39 @@
-"""Profession.
+"""
+Profession.
 
 ---
 layout:     post
 source:
 source_url:
 title:      Professions
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Professions.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I really need a shoe repair guy.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "misc.professions"
-    msg = "'{}' is the name of that job."
+    msg = "'{}' is the name of that job, not '{}'"
 
-    preferences = [
+    items: dict[str, str] = {
+        "shoe repair guy": "cobbler",
+        "geometrist": "geometer",
+    }
 
-        ["cobbler",    ["shoe repair guy"]],
-        ["geometer",   ["geometrist"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)

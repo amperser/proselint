@@ -1,22 +1,31 @@
-"""Cliches.
+"""
+Jargon.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
-title:      a vs. an
-date:       2014-06-10 12:31:19
+title:      Jargon
+date:       2014-06-10
 categories: writing
 ---
 
-Cliches are cliché.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I agree it's in the affirmative.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "jargon.misc"
     msg = "'{}' is jargon. Can you replace it with something more standard?"
@@ -30,4 +39,4 @@ def check(text):
         "disincentivize",
     ]
 
-    return existence_check(text, jargon, err, msg, join=True)
+    return existence_check(text, jargon, err, msg)

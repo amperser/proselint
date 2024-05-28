@@ -1,20 +1,36 @@
 """Mixed metaphors."""
 
-from proselint.tools import (existence_check, max_errors, memoize,
-                             preferred_forms_check)
+from __future__ import annotations
+
+from proselint.checks import (
+    CheckResult,
+    existence_check,
+    limit_results,
+    preferred_forms_check_opti,
+    preferred_forms_check_regex,
+)
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "The project produced a huge bottleneck.",
+    "Writing tests is not rocket surgery.",
+]
 
 
-@max_errors(1)
-@memoize
-def check_bottleneck(text):
-    """Avoid mixing metaphors about bottles and their necks.
+@limit_results(1)
+def check_bottleneck(text: str) -> list[CheckResult]:
+    """
+    Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
     source_url: http://bit.ly/1CQPH61
     """
     err = "mixed_metaphors.misc.bottleneck"
     msg = "Mixed metaphor — bottles with big necks are easy to pass through."
-    list = [
+    items = [
         "biggest bottleneck",
         "big bottleneck",
         "large bottleneck",
@@ -24,26 +40,30 @@ def check_bottleneck(text):
         "massive bottleneck",
     ]
 
-    return existence_check(text, list, err, msg)
+    return existence_check(text, items, err, msg)
 
 
-@memoize
-def check_misc(text):
-    """Avoid mixing metaphors.
+def check_misc(text: str) -> list[CheckResult]:
+    """
+    Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
     """
-    err = "mixed_metaphors.misc.misc"
+    err = "mixed_metaphors.misc"
     msg = "Mixed metaphor. Try '{}'."
 
-    preferences = [
+    items: dict[str, str] = {
+        "cream rises to the crop": "cream rises to the top",
+        "button your seatbelts": "fasten your seatbelts",
+        "a minute to decompose": "a minute to decompress",
+        "not rocket surgery": "not rocket science",
+    }
+    ret1 = preferred_forms_check_opti(text, items, err, msg)
 
-        ["cream rises to the top",    ["cream rises to the crop"]],
-        ["fasten your seatbelts",     ["button your seatbelts"]],
-        ["a minute to decompress",    ["a minute to decompose"]],
-        ["sharpest tool in the shed", ["sharpest marble in the (shed|box)"]],
-        ["not rocket science",        ["not rocket surgery"]],
-    ]
+    items_regex: dict[str, str] = {
+        r"sharpest marble in the (shed|box)": "sharpest tool in the shed",
+    }
+    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return ret1 + ret2

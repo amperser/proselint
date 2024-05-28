@@ -1,22 +1,32 @@
-"""Bureaucratese.
+"""
+Bureaucratese.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      bureaucratese
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Bureaucratese.
 
 """
-from proselint.tools import existence_check, memoize
+from __future__ import annotations
+
+from proselint.checks import CheckResult, existence_check
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "I hope the report meets with your approval.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.bureaucratese"
     msg = "'{}' is bureaucratese."
@@ -26,4 +36,4 @@ def check(text):
         "meets with your approval",
     ]
 
-    return existence_check(text, bureaucratese, err, msg, join=True)
+    return existence_check(text, bureaucratese, err, msg)

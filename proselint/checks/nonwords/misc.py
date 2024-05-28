@@ -1,62 +1,72 @@
-"""Nonwords.
+"""
+Nonwords.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      nonwords
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Nonwords.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
+
+from proselint.checks import CheckResult, preferred_forms_check_opti
+
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "The test was good irregardless.",
+]
 
 
-@memoize
-def check(text):
+def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     err = "nonwords.misc"
     msg = "Nonword, try '{}'."
 
-    preferences = [
-
-        ["doubtless' or 'undoubtedly",   ["doubtlessly"]],
-        ["analysis",                     ["analyzation"]],
-        ["annoyance",                    ["annoyment"]],
-        ["confirmand",                   ["confirmant"]],
-        ["confirmands",                  ["confirmants"]],
-        ["converse",                     ["conversate"]],
-        ["cranded",                      ["crained"]],
-        ["disbursement' or 'dispersal",  ["dispersement"]],
-        ["discomfort' or 'discomfiture", ["discomforture"]],
-        ["effrontery",                   ["affrontery"]],
-        ["forbearance",                  ["forebearance"]],
-        ["improper",                     ["improprietous"]],
-        ["inclement",                    ["inclimate"]],
-        ["relatively low price' or 'affordability", ["relative inexpense"]],
-        ["inimical",                     ["inimicable"]],
-        ["regardless",                   ["irregardless"]],
-        ["minimize",                     ["minimalize"]],
-        ["minimized",                    ["minimalized"]],
-        ["minimizes",                    ["minimalizes"]],
-        ["minimizing",                   ["minimalizing"]],
+    # NOTE: or-variants have outer quotes omitted for later quoting
+    items: dict[str, str] = {
+        "doubtlessly": "doubtless' or 'undoubtedly",
+        "analyzation": "analysis",
+        "annoyment": "annoyance",
+        "confirmant": "confirmand",
+        "confirmants": "confirmands",
+        "conversate": "converse",
+        "crained": "cranded",
+        "dispersement": "disbursement' or 'dispersal",
+        "discomforture": "discomfort' or 'discomfiture",
+        "affrontery": "effrontery",
+        "forebearance": "forbearance",
+        "improprietous": "improper",
+        "inclimate": "inclement",
+        "relative inexpense": "relatively low price' or 'affordability",
+        "inimicable": "inimical",
+        "irregardless": "regardless",
+        "minimalize": "minimize",
+        "minimalized": "minimized",
+        "minimalizes": "minimizes",
+        "minimalizing": "minimizing",
         # muchly
-        ["optimize",                     ["optimalize"]],
-        ["paralysis",                    ["paralyzation"]],
-        ["pettifog",                     ["pettifogger"]],
-        ["proper",                       ["proprietous"]],
-        ["quell' or 'quash",             ["squelch"]],
-        ["seldom",                       ["seldomly"]],
+        "optimalize": "optimize",
+        "paralyzation": "paralysis",
+        "pettifogger": "pettifog",
+        "proprietous": "proper",
+        "squelch": "quell' or 'quash",
+        "seldomly": "seldom",
         # slinged
-        ["thus",                         ["thusly"]],
-        ["categorically",                ["uncategorically"]],
-        ["undoubtedly' or 'indubitably", ["undoubtably"]],
-        ["unequivocal",                  ["unequivocable"]],
-        ["mercilessly",                  ["unmercilessly"]],
-        ["unrelentingly' or relentlessly", ["unrelentlessly"]],
-    ]
+        "thusly": "thus",
+        "uncategorically": "categorically",
+        "undoubtably": "undoubtedly' or 'indubitably",
+        "unequivocable": "unequivocal",
+        "unmercilessly": "mercilessly",
+        "unrelentlessly": "unrelentingly' or relentlessly",
+    }
 
-    return preferred_forms_check(text, preferences, err, msg)
+    return preferred_forms_check_opti(text, items, err, msg)
