@@ -59,7 +59,7 @@ def get_checks(options: dict) -> list[Callable[[str, str], list[CheckResult]]]:
             )
             continue
         checks += [
-            getattr(module, d) for d in dir(module) if re.match(r"^check", d)
+            getattr(module, d) for d in dir(module) if d.startswith("check")
         ]
 
     log.debug("Collected %d checks to run", len(checks))
