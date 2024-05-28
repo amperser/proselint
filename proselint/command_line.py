@@ -95,6 +95,7 @@ def check(config: dict, paths: list[Path], demo: bool) -> None:
 def clean() -> None:
     """Clear the cache and exit."""
     cache.clear()
+    sys.exit(0)
 
 
 def dump_config(config: dict, default: bool) -> None:
@@ -106,6 +107,7 @@ def dump_config(config: dict, default: bool) -> None:
             indent=4,
         )
     )
+    sys.exit(0)
 
 
 def checked_path(
@@ -120,12 +122,12 @@ def checked_path(
     try:
         stat_res = os.stat(path_unfiltered)  # noqa: PTH116
     except OSError:
-        raise Exception() from None
+        raise FileNotFoundError(path_unfiltered)
 
     if not accept_file and stat.S_ISREG(stat_res.st_mode):
-        raise Exception()
+        raise OSError("files not permitted, found file %s", path_unfiltered)
     if not accept_dir and stat.S_ISDIR(stat_res.st_mode):
-        raise Exception()
+        raise OSError("dirs not permitted, found dir %s", path_unfiltered)
     return Path(path_unfiltered)
 
 

@@ -1,22 +1,23 @@
 """Check that the CLI can handle invalid characters."""
-
+import sys
+from unittest.mock import patch
 from pathlib import Path
 
-from click.testing import CliRunner
+import pytest
 
 from proselint.command_line import proselint
-from tests.conftest import print_invoke_return
 
 CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
 
 
-def test_invalid_characters():
+def test_invalid_characters(capsys: pytest.CaptureFixture):
     """Ensure that invalid characters do not break proselint."""
-    runner = CliRunner()
-
-    result = runner.invoke(proselint, CHAR_FILE.as_posix())
-    print_invoke_return(result)
-
-    assert result.exit_code == 0
-    assert "UnicodeDecodeError" not in result.stdout
-    assert "FileNotFoundError" not in result.stdout
+    test_args = ["proselint", CHAR_FILE.as_posix()]
+    with patch.object(sys, "argv", test_args), pytest.raises(
+        SystemExit
+    ) as exc_info:
+        proselint()
+    assert int(str(exc_info.value)) == 0
+    captured = capsys.readouterr()
+    assert "UnicodeDecodeError" not in captured.err
+    assert "FileNotFoundError" not in captured.err
