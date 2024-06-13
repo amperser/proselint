@@ -3,4 +3,5 @@
   description: This hook checks language usage and style in text files.
   entry: proselint
   language: python
+  require_serial: true
   types: [text]
