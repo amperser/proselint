@@ -72,15 +72,21 @@ class CheckRegistry:
         # ]
         checks = []
         for key, enabled in self._enabled.items():
-            if enabled and key in self._checks:
-                log.debug("Adding check %s", key)
-                checks.append(self._checks[key])
+            if enabled:
+                if key in self._checks:
+                    log.debug("Adding check %s", key)
+                    checks.append(self._checks[key])
+                else:
+                    partials = [
+                        x
+                        for x in self._checks.keys()
+                        if x.startswith(key)
+                    ]
+                    log.debug("Found partials for %s: %s", key, partials)
+                    checks.extend([self._checks[x] for x in partials])
             else:
                 log.debug(
-                    "Skipping check %s. Potential partials: %s",
-                    key,
-                    [x for x in self._checks.keys() if key in x],
-                )
+                    "Skipping check %s.", key)
         log.debug("Collected %d enabled checks to run.", len(checks))
         return checks
 

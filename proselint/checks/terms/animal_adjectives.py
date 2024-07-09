@@ -28,7 +28,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "terms.animal_labels.garner"
+    err = "terms.animal_adjectives.garner"
     msg = "There's a word for this: '{}'."
 
     items: dict[str, str] = {
@@ -83,4 +83,4 @@ def check(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-registry.register("terms.animal_labels.garner", check)
+registry.register("terms.animal_adjectives.garner", check)

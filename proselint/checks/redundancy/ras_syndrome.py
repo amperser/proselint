@@ -15,7 +15,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "redundancy.ras.garner"
+    err = "redundancy.ras_syndrome.garner"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
 
     items: dict[str, str] = {
@@ -45,4 +45,4 @@ def check(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-registry.register("redundancy.ras.garner", check)
+registry.register("redundancy.ras_syndrome.garner", check)

@@ -27,4 +27,4 @@ def check(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-registry.register("ance_ence", check)
+registry.register("spelling.ance_ence", check)
