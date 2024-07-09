@@ -16,7 +16,7 @@ Checks for acceptable spacing around punctuation.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -77,3 +77,11 @@ def check_whitespace_inbetween(text: str) -> list[CheckResult]:
     msg = "Multiple spaces, that would be ugly in Word or LibreOffice."
     pattern = r"\b[ ]{2,}\b"
     return existence_check_simple(text, pattern, err, msg)
+
+
+registry.register_many({
+    "punctuation.spacing.end_punctuation": check_end_punctuation_spacing,
+    "punctuation.spacing.separators": check_general_spacing,
+    "punctuation.whitespace_before": check_whitespace_before,
+    "punctuation.whitespace_inbetween": check_whitespace_inbetween,
+})

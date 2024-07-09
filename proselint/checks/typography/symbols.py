@@ -14,6 +14,7 @@ from proselint.checks import (
     existence_check,
     existence_check_simple,
     limit_results,
+    registry,
 )
 
 examples_pass = [
@@ -81,13 +82,14 @@ def check_trademark_symbol(text: str) -> list[CheckResult]:
 @limit_results(3)
 def check_registered_trademark_symbol(text: str) -> list[CheckResult]:
     """Use the registered trademark symbol instead of (R)."""
-    err = "typography.symbols.trademark"
+    err = "typography.symbols.registered"
     msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
     regex = r"\([rR]\)\B"
 
     return existence_check(text, [regex], err, msg, padding=Pd.disabled)
 
 
+# FIXME: this check is repeated elsewhere
 @limit_results(3)
 def check_sentence_spacing(text: str) -> list[CheckResult]:
     """Use no more than two spaces after a period."""
@@ -140,3 +142,15 @@ def check_apostrophes(text: str) -> list[CheckResult]:
         )
     )
     return results
+
+
+registry.register_many({
+    "typography.symbols.ellipsis": check_ellipsis,
+    "typography.symbols.copyright": check_copyright_symbol,
+    "typography.symbols.trademark": check_trademark_symbol,
+    "typography.symbols.registered": check_registered_trademark_symbol,
+    "typography.symbols.sentence_spacing": check_sentence_spacing,
+    "typography.symbols.multiplication_symbol": check_multiplication_symbol,
+    "typography.symbols.curly_quotes": check_curly_quotes,
+    "typography.symbols.apostrophes": check_apostrophes,
+})

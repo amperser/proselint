@@ -15,7 +15,7 @@ From whence it came.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -32,3 +32,6 @@ def check(text: str) -> list[CheckResult]:
     msg = "The 'from' in 'from whence' is not needed."
 
     return existence_check(text, ["from whence"], err, msg)
+
+
+registry.register("misc.whence", check)

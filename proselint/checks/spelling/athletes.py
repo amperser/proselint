@@ -19,6 +19,7 @@ from proselint.checks import (
     CheckResult,
     preferred_forms_check_opti,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -61,3 +62,6 @@ def check(text: str) -> list[CheckResult]:
     ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
 
     return ret1 + ret2
+
+
+registry.register("spelling.athletes", check)

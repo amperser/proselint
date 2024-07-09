@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import calendar
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -81,3 +81,12 @@ def check_month_of_year(text: str) -> list[CheckResult]:
     items = [r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"]
     # NOTE: strangely month_name[0] is ""
     return existence_check(text, items, err, msg, padding=Pd.disabled)
+
+
+registry.register_many({
+    "dates_times.dates.apostrophes_short": check_decade_apostrophes_short,
+    "dates_times.dates.apostrophes_long": check_decade_apostrophes_long,
+    "dates_times.dates.from_dash": check_dash_and_from,
+    "dates_times.dates.month_year_comma": check_month_year_comma,
+    "dates_times.dates.month_of_year": check_month_of_year,
+})

@@ -25,7 +25,7 @@ Not guilty beyond a reasonable doubt
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -43,3 +43,6 @@ def check(text: str) -> list[CheckResult]:
     regex = r"not guilty beyond (a |any )?reasonable doubt"
 
     return existence_check(text, [regex], err, msg)
+
+
+registry.register("misc.not_guilty", check)

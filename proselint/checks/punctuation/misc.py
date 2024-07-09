@@ -20,6 +20,7 @@ from proselint.checks import (
     Pd,
     existence_check,
     existence_check_simple,
+    registry,
 )
 
 examples_pass = [
@@ -83,3 +84,10 @@ def check_comma_digits(text: str) -> list[CheckResult]:
     # NOTE: intentional words_in_txt
 
     return existence_check_simple(text, regex, err, msg)
+
+
+registry.register_many({
+    "punctuation.misc.garner": check_garner,
+    "punctuation.misc.lower_case": check_lower_case_after_punctuation,
+    "punctuation.misc.comma_digits": check_comma_digits,
+})

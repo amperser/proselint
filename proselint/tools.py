@@ -13,7 +13,7 @@ from typing import Callable, NamedTuple, Optional, Union
 from warnings import showwarning as warn
 
 from . import config_base
-from .checks import get_checks, run_check
+from .checks import registry, run_check
 from .config_base import Output
 from .config_paths import config_global_path, config_user_paths
 from .logger import log
@@ -157,7 +157,8 @@ def lint(
     if not isinstance(config, dict):
         config = config_base.proselint_base
     if _checks is None:
-        _checks = get_checks(config)
+        registry.populate_enabled(config["checks"])
+        _checks = registry.get_all_enabled()
 
     memoizer_key = cache.calculate_key(content, _checks)
     # TODO: filename enables more elegant 2d-dict
@@ -236,7 +237,8 @@ def lint_path(
 
     if not isinstance(config, dict):
         config = config_base.proselint_base
-    checks = get_checks(config)
+    registry.populate_enabled(config["checks"])
+    checks = registry.get_all_enabled()
 
     results = {}
     chars = 0

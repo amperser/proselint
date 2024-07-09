@@ -15,7 +15,12 @@ Points out misspellings.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, preferred_forms_check_opti
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    preferred_forms_check_opti,
+    registry,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -177,3 +182,10 @@ def check_special(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(
         text, items, err, msg, padding=Pd.sep_in_txt
     )
+
+
+# TODO: identify correct names for these, or merge them
+registry.register_many({
+    "spelling.misc.1": check,
+    "spelling.misc.2": check_special
+})

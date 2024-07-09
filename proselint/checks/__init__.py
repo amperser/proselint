@@ -12,7 +12,6 @@ This submodule is thread safe.
 from __future__ import annotations
 
 import functools
-import importlib
 import re
 import string
 from enum import Enum
@@ -36,34 +35,57 @@ class CheckResult(NamedTuple):
 ###############################################################################
 
 
-def get_checks(options: dict) -> list[Callable[[str, str], list[CheckResult]]]:
-    """
-    Extract the checks.
+Check = Callable[[str], list[CheckResult]]
 
-    All check function names must start with `check`, e.g. `check_xyz`
-    """
-    # TODO: benchmark consecutive runs of this fn
-    #       the check list generated from config should be static
-    #       and only generated once per lint-run
-    checks = []
-    check_names = [key for (key, val) in options["checks"].items() if val]
 
-    for check_name in check_names:
-        try:
-            module = importlib.import_module(
-                f".{check_name}", "proselint.checks"
-            )
-        except ModuleNotFoundError:
-            log.exception(
-                f"Requested flag '{check_name}' not found in proselint.checks",
-            )
-            continue
-        checks += [
-            getattr(module, d) for d in dir(module) if d.startswith("check")
-        ]
+class CheckRegistry:
+    _checks: dict[str, Check]
+    _enabled: Optional[dict[str, bool]]
 
-    log.debug("Collected %d checks to run", len(checks))
-    return checks
+    def __init__(self) -> None:
+        self._checks = {}
+        self._enabled = None
+
+    def register(self, key: str, check: Check) -> None:
+        self._checks[key] = check
+
+    def register_many(self, checks: dict[str, Check]) -> None:
+        self._checks = {**self._checks, **checks}
+
+    def populate_enabled(self, enabled: dict[str, bool]) -> None:
+        self._enabled = enabled
+
+    def get_all(self) -> list[Check]:
+        checks = list(self._checks.values())
+        log.debug("Collected %d checks to run.", len(checks))
+        return checks
+
+    def get_all_enabled(self) -> list[Check]:
+        if not self._enabled:
+            return []
+
+        # TODO: replace with the following once everything is in place
+        # checks = [
+        #     self._checks[key]
+        #     for key, enabled in self._enabled.items()
+        #     if enabled and key in self._checks
+        # ]
+        checks = []
+        for key, enabled in self._enabled.items():
+            if enabled and key in self._checks:
+                log.debug("Adding check %s", key)
+                checks.append(self._checks[key])
+            else:
+                log.debug(
+                    "Skipping check %s. Potential partials: %s",
+                    key,
+                    [x for x in self._checks.keys() if key in x],
+                )
+        log.debug("Collected %d enabled checks to run.", len(checks))
+        return checks
+
+
+registry = CheckRegistry()
 
 
 def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
@@ -626,3 +648,46 @@ def _threshold_check(
         if ppm > threshold:
             return [errors[0]]
     return []
+
+
+# TODO: this is diabolical. restructure modules to avoid having this down here.
+# this is caused by circular referencing. it would be better to have the
+# registry elsewhere.
+from proselint.checks import (
+    airlinese,
+    archaism,
+    cliches,
+    consistency,
+    corporate_speak,
+    cursing,
+    dates_times,
+    hedging,
+    hyperbole,
+    jargon,
+    lexical_illusions,
+    lgbtq,
+    links,
+    malapropisms,
+    misc,
+    mixed_metaphors,
+    mondegreens,
+    needless_variants,
+    nonwords,
+    oxymorons,
+    psychology,
+    punctuation,
+    redundancy,
+    restricted,
+    scientific,
+    security,
+    sexism,
+    skunked_terms,
+    spelling,
+    terms,
+    typography,
+    uncomparables,
+    weasel_words,
+)
+from proselint.checks import (
+    annotations as ann,
+)

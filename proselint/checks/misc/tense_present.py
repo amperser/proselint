@@ -15,7 +15,7 @@ Archaism.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -71,3 +71,6 @@ def check(text: str) -> list[CheckResult]:
     )
 
     return ret1 + ret2
+
+
+registry.register("misc.tense_present", check)

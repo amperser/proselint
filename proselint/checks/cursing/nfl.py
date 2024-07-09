@@ -15,7 +15,7 @@ Words the NFL won't print on a jersey.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -1236,3 +1236,12 @@ def check_abb(text: str) -> list[CheckResult]:
         r"f\.u\.c\.k\.",
     ]
     return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
+
+
+registry.register_many({
+    "cursing.nfl.a_to_e": check_a_to_e,
+    "cursing.nfl.f_to_h": check_f_to_h,
+    "cursing.nfl.i_to_p": check_i_to_p,
+    "cursing.nfl.q_to_z": check_q_to_z,
+    "cursing.nfl.abb": check_abb
+})

@@ -15,7 +15,7 @@ Archaism.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -63,3 +63,10 @@ def check_without_your_collusion(text: str) -> list[CheckResult]:
     msg = "It's impossible to defraud yourself. Try 'aquiescence'."
     items = ["without your collusion"]
     return existence_check(text, items, err, msg)
+
+
+registry.register_many({
+    "misc.illogic": check,
+    "misc.illogic.coin": check_coin_a_phrase_from,
+    "misc.illogic.collusion": check_without_your_collusion,
+})

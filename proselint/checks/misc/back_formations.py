@@ -15,7 +15,7 @@ Back-formations.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -34,3 +34,6 @@ def check(text: str) -> list[CheckResult]:
     items = {"improprietous": "improper"}
 
     return preferred_forms_check_opti(text, items, err, msg)
+
+
+registry.register("misc.back_formations", check)

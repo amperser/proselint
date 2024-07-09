@@ -19,7 +19,7 @@ import asyncio
 import re
 import urllib.request as ulr
 
-from proselint.checks import CheckResult
+from proselint.checks import CheckResult, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -81,3 +81,6 @@ def is_broken_link(url: str) -> bool:
         return True
     except OSError:
         return True
+
+
+registry.register("links.broken", check)

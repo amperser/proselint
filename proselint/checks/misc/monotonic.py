@@ -14,7 +14,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -43,4 +43,5 @@ def check_sentence(text: str) -> list[CheckResult]:
     return existence_check_simple(text, regex, err, msg, ignore_case=False)
 
 
+registry.register("misc.monotonic.sentence", check_sentence)
 # TODO: check same line/section-beginning

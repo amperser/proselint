@@ -21,6 +21,7 @@ from proselint.checks import (
     existence_check,
     limit_results,
     ppm_threshold,
+    registry,
 )
 
 examples_pass = [
@@ -40,7 +41,7 @@ examples_fail = [
 @limit_results(1)
 def check_repeated_exclamations(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "typography.exclamation.leonard"
+    err = "typography.exclamation.leonard.repeated"
     msg = "Stop yelling. Keep your exclamation points under control."
 
     items = [r"[\!]\s*?[\!]{1,}"]
@@ -65,3 +66,9 @@ def check_exclamations_ppm(text: str) -> list[CheckResult]:
     items = [r"\w!"]
 
     return existence_check(text, items, err, msg, padding=Pd.disabled)
+
+
+registry.register_many({
+    "typography.exclamation.leonard.repeated": check_repeated_exclamations,
+    "typography.exclamation.leonard.30ppm": check_exclamations_ppm,
+})

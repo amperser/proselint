@@ -14,7 +14,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -98,3 +98,10 @@ def check_single_digit(text: str) -> list[CheckResult]:
     # but not part of "x to y"
     # TODO: reduce false positives from numbers with unit but no decimal point
     return existence_check_simple(text, regex, err, msg)
+
+
+registry.register_many({
+    "misc.numbers.newline": check_section,
+    "misc.numbers.sentence": check_section,
+    "misc.numbers.single_digit": check_single_digit
+})

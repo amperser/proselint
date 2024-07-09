@@ -15,7 +15,7 @@ Points out sexist language.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -95,3 +95,10 @@ def check_preferred_form(text: str) -> list[CheckResult]:
         "mailperson": "mail carrier",
     }
     return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
+
+
+# TODO: identify correct names for these, or merge them
+registry.register_many({
+    "sexism.misc.1": check_sexism,
+    "sexism.misc.2": check_preferred_form,
+})

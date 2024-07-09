@@ -15,7 +15,7 @@ Avoid these cases of business jargon.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -61,3 +61,6 @@ def check(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, items, err, msg, ignore_case=True)
+
+
+registry.register("corporate_speak.misc", check)

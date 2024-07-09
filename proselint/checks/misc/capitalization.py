@@ -20,6 +20,7 @@ from proselint.checks import (
     Pd,
     existence_check_simple,
     preferred_forms_check_opti,
+    registry,
 )
 
 examples_pass = [
@@ -143,3 +144,13 @@ def check_roman_numerals(text: str) -> list[CheckResult]:
         if any(_letter in _item for _letter in "mdclxvi"):
             results_valid.append(_res)
     return results_valid
+
+
+registry.register_many({
+    "misc.capitalization.terms": check_terms,
+    "misc.capitalization.seasons": check_seasons,
+    "misc.capitalization.months": check_months,
+    "misc.capitalization.days": check_days,
+    "misc.capitalization.roman_num.ww": check_roman_war,
+    "misc.capitalization.roman_num": check_roman_numerals,
+})

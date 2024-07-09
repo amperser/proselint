@@ -8,6 +8,7 @@ from proselint.checks import (
     limit_results,
     preferred_forms_check_opti,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -67,3 +68,9 @@ def check_misc(text: str) -> list[CheckResult]:
     ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
 
     return ret1 + ret2
+
+
+registry.register_many({
+    "mixed_metaphors.misc.bottleneck": check_bottleneck,
+    "mixed_metaphors.misc": check_misc,
+})

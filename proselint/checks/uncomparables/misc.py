@@ -48,7 +48,7 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -160,3 +160,9 @@ def check_2(text: str) -> list[CheckResult]:
     msg = "Comparison of an uncomparable: '{}' is not comparable."
 
     return existence_check(text, items[round(len(items) / 2) :], err, msg)
+
+
+registry.register_many({
+    "uncomparables.misc.1": check_1,
+    "uncomparables.misc.2": check_2,
+})

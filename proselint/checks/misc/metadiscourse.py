@@ -15,7 +15,7 @@ Points out metadiscourse.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -28,7 +28,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "misc.metadiscourse.pinker"
+    err = "misc.metadiscourse"
     msg = "Excessive metadiscourse."
 
     metadiscourse = [
@@ -40,3 +40,6 @@ def check(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, metadiscourse, err, msg)
+
+
+registry.register("misc.metadiscourse", check)

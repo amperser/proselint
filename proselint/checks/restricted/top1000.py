@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckResult, reverse_existence_check
+from proselint.checks import CheckResult, registry, reverse_existence_check
 
 examples_pass = [
     "I am blonde.",
@@ -48,3 +48,6 @@ def check_top1000(text: str) -> list[CheckResult]:
     msg = "'{}' is not in the top 1000 most common words."
 
     return reverse_existence_check(text, TOP1000_WORDS, err, msg)
+
+
+registry.register("restricted.top1000", check_top1000)

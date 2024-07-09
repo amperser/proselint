@@ -15,7 +15,7 @@ Paragraphs should not start with certain bad words.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -42,3 +42,6 @@ def check(text: str) -> list[CheckResult]:
     return existence_check(
         text, [regex], err, msg, ignore_case=False, padding=Pd.disabled
     )
+
+
+registry.register("misc.but", check)

@@ -13,7 +13,7 @@ categories: writing
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -68,7 +68,7 @@ def check_midnight_noon(text: str) -> list[CheckResult]:
 
 def check_redundancy(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "dates_times.am_pm.midnight_noon"
+    err = "dates_times.am_pm.redundancy"
     msg = "'a.m.' is always morning; 'p.m.' is always night."
 
     items = [
@@ -79,3 +79,11 @@ def check_redundancy(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, items, err, msg, padding=Pd.disabled)
+
+
+registry.register_many({
+    "dates_times.am_pm.lowercase_periods": check_lowercase_periods,
+    "dates_times.am_pm.spacing": check_spacing,
+    "dates_times.am_pm.midnight_noon": check_midnight_noon,
+    "dates_times.am_pm.redundancy": check_redundancy,
+})

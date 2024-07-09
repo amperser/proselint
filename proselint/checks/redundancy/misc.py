@@ -7,6 +7,7 @@ from proselint.checks import (
     Pd,
     preferred_forms_check_opti,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -586,3 +587,12 @@ def check_atd_2(text: str) -> list[CheckResult]:
     )
 
     return ret1 + ret2
+
+
+registry.register_many({
+    "redundancy.garner": check_garner,
+    "redundancy.wallace": check,
+    "redundancy.nordquist": check_nordquist,
+    "redundancy.after_the_deadline.1": check_atd_1,
+    "redundancy.after_the_deadline.2": check_atd_2,
+})

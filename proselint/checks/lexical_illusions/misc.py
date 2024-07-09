@@ -16,7 +16,7 @@ and this happens most often between line breaks.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple
+from proselint.checks import CheckResult, existence_check_simple, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -45,7 +45,7 @@ examples_fail = [
 def check_repetitions(text: str) -> list[CheckResult]:
     """Check the text."""
     # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
-    err = "lexical_illusions.misc.tnt"
+    err = "lexical_illusions.misc"
     msg = "There's a lexical illusion in '{}' - one or more words are repeated."
     # check for repetition of 1 to 4 words
     regex = r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b"
@@ -58,3 +58,6 @@ def check_repetitions(text: str) -> list[CheckResult]:
         msg,
         exceptions=exceptions,
     )
+
+
+registry.register("lexical_illusions.misc", check_repetitions)

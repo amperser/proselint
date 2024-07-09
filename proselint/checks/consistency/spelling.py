@@ -22,7 +22,7 @@ spellings in the same document.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, consistency_check
+from proselint.checks import CheckResult, consistency_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -58,3 +58,6 @@ def check(text: str) -> list[CheckResult]:
     # TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
 
     return consistency_check(text, word_pairs, err, msg, ignore_case=True)
+
+
+registry.register("consistency.spelling", check)

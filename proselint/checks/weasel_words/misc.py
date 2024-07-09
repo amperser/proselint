@@ -15,7 +15,7 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -53,3 +53,6 @@ def check(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, items, error_code, msg)
+
+
+registry.register("weasel_words.misc", check)

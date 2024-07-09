@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckResult, reverse_existence_check
+from proselint.checks import CheckResult, registry, reverse_existence_check
 
 examples_pass = [
     "A boy and his goat went to a farm.",
@@ -47,3 +47,6 @@ def check_elementary(text: str) -> list[CheckResult]:
     msg = "'{}' is not a word kids learn in elementary school."
 
     return reverse_existence_check(text, ELEMENTARY_WORDS, err, msg)
+
+
+registry.register("restricted.elementary", check_elementary)

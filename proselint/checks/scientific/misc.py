@@ -25,6 +25,7 @@ from proselint.checks import (
     existence_check_simple,
     preferred_forms_check_opti,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -242,3 +243,15 @@ def check_we_or_i(text: str) -> list[CheckResult]:
 # TODO: skipped in TNT:
 #       - L812 this vs those
 #     - deg C or deg K is old, deg not used anymore
+
+registry.register_many({
+    "scientific.misc.num_unit": check_num_unit,
+    "scientific.misc.emotion": check_emotion,
+    "scientific.misc.weasel": check_weasel,
+    "scientific.misc.conversation": check_conversation,
+    "scientific.misc.wrong": check_wrong,
+    "scientific.misc.avoid": check_avoid_misc,
+    "scientific.misc.preference": check_preferred,
+    "scientific.misc.this_vs_those": check_this_vs_those,
+    "scientific.misc.we_or_i": check_we_or_i,
+})

@@ -52,6 +52,7 @@ from proselint.checks import (
     CheckResult,
     preferred_forms_check_opti,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -68,7 +69,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "misc.composition.strunk_white"
+    err = "misc.composition"
     msg = "Try '{}' instead of '{}'."
 
     items: dict[str, str] = {
@@ -102,3 +103,6 @@ def check(text: str) -> list[CheckResult]:
     ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
 
     return ret1 + ret2
+
+
+registry.register("misc.composition", check)

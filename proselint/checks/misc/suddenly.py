@@ -27,7 +27,13 @@ shift in emotional calibration.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, limit_results
+from proselint.checks import (
+    CheckResult,
+    Pd,
+    existence_check,
+    limit_results,
+    registry,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -53,3 +59,6 @@ def check(text: str) -> list[CheckResult]:
         padding=Pd.disabled,
         ignore_case=False,
     )
+
+
+registry.register("misc.suddenly", check)

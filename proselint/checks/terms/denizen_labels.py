@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti
+from proselint.checks import CheckResult, preferred_forms_check_opti, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -103,3 +103,9 @@ def check_denizen_labels_norris(text: str) -> list[CheckResult]:
     }
 
     return preferred_forms_check_opti(text, items, err, msg)
+
+
+registry.register_many({
+    "terms.denizen_labels.garner": check,
+    "terms.denizen_labels.norris": check_denizen_labels_norris,
+})

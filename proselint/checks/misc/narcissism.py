@@ -15,7 +15,7 @@ Points out academic narcissism.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -29,7 +29,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "misc.narcissism.pinker"
+    err = "misc.narcissism"
     msg = "Professional narcissism. Talk about the subject, not its study."
 
     narcissism = [
@@ -37,3 +37,6 @@ def check(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, narcissism, err, msg)
+
+
+registry.register("misc.narcissism", check)

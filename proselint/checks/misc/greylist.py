@@ -35,7 +35,7 @@ grammatical subject.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -51,7 +51,7 @@ examples_fail = [
 
 def check(text: str) -> list[CheckResult]:
     """Check the text."""
-    err = "misc.greylist.strunk_white"
+    err = "misc.greylist"
     msg = "Use of '{}'. {}"
 
     bad_words = {
@@ -70,3 +70,6 @@ def check(text: str) -> list[CheckResult]:
             ),
         )
     return results
+
+
+registry.register("misc.greylist", check)

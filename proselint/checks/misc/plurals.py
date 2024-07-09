@@ -19,6 +19,7 @@ from proselint.checks import (
     CheckResult,
     existence_check,
     preferred_forms_check_opti,
+    registry,
 )
 
 examples_pass = [
@@ -50,3 +51,9 @@ def check_kudos(text: str) -> list[CheckResult]:
     msg = "Kudos is singular."
 
     return existence_check(text, ["many kudos"], err, msg)
+
+
+registry.register_many({
+    "misc.plurals.misc": check,
+    "misc.plurals.kudos": check_kudos
+})

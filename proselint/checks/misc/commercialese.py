@@ -20,6 +20,7 @@ from proselint.checks import (
     Pd,
     existence_check,
     preferred_forms_check_regex,
+    registry,
 )
 
 examples_pass = [
@@ -83,3 +84,9 @@ def check_abbrev(text: str) -> list[CheckResult]:
     return preferred_forms_check_regex(
         text, items_regex, err, msg, padding=Pd.sep_in_txt
     )
+
+
+registry.register_many({
+    "misc.commercialiese": check,
+    "misc.commercialese.abbreviations": check_abbrev,
+})

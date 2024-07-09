@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check
+from proselint.checks import CheckResult, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -1119,3 +1119,15 @@ def check_cliches_nigel(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, cliches, err, msg, ignore_case=True)
+
+
+registry.register_many({
+    "cliches.garner": check_cliches_garner,
+    "cliches.write_good.a_to_c": check_cliches_write_good_a_to_c,
+    "cliches.write_good.d_to_j": check_cliches_write_good_d_to_j,
+    "cliches.write_good.k_to_o": check_cliches_write_good_k_to_o,
+    "cliches.write_good.p_to_s": check_cliches_write_good_p_to_s,
+    "cliches.write_good.t_to_z": check_cliches_write_good_t_to_z,
+    "cliches.gnu_diction": check_cliches_gnu_diction,
+    "cliches.nigel": check_cliches_nigel,
+})

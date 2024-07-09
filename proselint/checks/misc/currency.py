@@ -15,7 +15,7 @@ Symbols.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check
+from proselint.checks import CheckResult, Pd, existence_check, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -36,3 +36,6 @@ def check(text: str) -> list[CheckResult]:
     ]
 
     return existence_check(text, symbols, err, msg, padding=Pd.sep_in_txt)
+
+
+registry.register("misc.currency", check)

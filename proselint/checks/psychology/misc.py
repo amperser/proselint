@@ -19,6 +19,7 @@ from proselint.checks import (
     CheckResult,
     existence_check,
     preferred_forms_check_opti,
+    registry,
 )
 
 examples_pass = [
@@ -65,3 +66,10 @@ def check_mental_telepathy(text: str) -> list[CheckResult]:
     msg = "This is redundant because all purported telepathy is mental."
 
     return existence_check(text, ["mental telepathy"], err, msg)
+
+
+registry.register_many({
+    "psychology.lie_detector": check_lie_detector_test,
+    "psychology.p_equals_zero": check_p_equals_zero,
+    "psychology.check_mental_telepathy": check_mental_telepathy,
+})

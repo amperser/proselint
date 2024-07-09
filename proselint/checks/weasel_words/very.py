@@ -16,7 +16,12 @@ delete it and the writing will be just as it should be.
 """
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, limit_results
+from proselint.checks import (
+    CheckResult,
+    existence_check,
+    limit_results,
+    registry,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -39,3 +44,6 @@ def check(text: str) -> list[CheckResult]:
     regex = "very"
 
     return existence_check(text, [regex], err, msg)
+
+
+registry.register("weasel_words.very", check)

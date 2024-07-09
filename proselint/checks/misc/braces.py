@@ -16,7 +16,7 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from proselint.checks import CheckResult
+from proselint.checks import CheckResult, registry
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -94,3 +94,6 @@ def check_unmatched(text: str) -> list[CheckResult]:
             results.append(_res)
 
     return results
+
+
+registry.register("misc.braces.unmatched", check_unmatched)
