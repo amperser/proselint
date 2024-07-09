@@ -16,7 +16,7 @@ from timeit import timeit
 
 import proselint
 from proselint import memoizer
-from proselint.tools import get_checks
+from proselint.checks import registry
 
 ##################################################################
 # Benchmark Linter & Cache
@@ -37,14 +37,16 @@ if __name__ == "__main__":
         "parallel": (True, True),
         "parallel-cached": (True, False),
     }
-    _num_checks = len(proselint.tools.get_checks(_cfg))
+    registry.populate_enabled(_cfg["checks"])
+    _num_checks = len(registry.get_all_enabled())
 
     print(f"\n############# lint(demo.md) - {_os}, {_num_checks} checks")
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
         for _i in range(3):
-            _checks = get_checks(_cfg)
+            registry.populate_enabled(_cfg["checks"])
+            _checks = registry.get_all_enabled()
             with file_path.open() as f_handler:
                 _text = f_handler.read()
             if _val[1]:

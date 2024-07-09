@@ -34,7 +34,8 @@ _cfg = proselint.config_default
 with file_path.open(encoding="utf-8", errors="replace") as fh:
     _text = fh.read()
 
-_checks = proselint.tools.get_checks(_cfg)
+proselint.checks.registry.populate_enabled(_cfg["checks"])
+_checks = proselint.checks.registry.get_all_enabled()
 
 print("\n############# Benchmark manually optimized Checks ###################")
 print("############# * or with calculations in check()   ###################")
