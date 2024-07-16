@@ -12,9 +12,10 @@ categories: writing
 
 Don't put pass
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,25 +26,24 @@ examples_fail = [
     "My password is PASSWORD.",
 ]
 
+_regex = r"[:]? [\S]{6,30}"
 
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "security.password"
-    msg = "Don't put passwords in plain text."
-
-    _regex = r"[:]? [\S]{6,30}"
-
-    items = [
-        rf"\bthe password is{_regex}",
-        rf"\bmy password is{_regex}",
-        rf"\bthe password's{_regex}",
-        rf"\bmy password's{_regex}",
-        rf"^password{_regex}",
-    ]
-
-    return existence_check(
-        text, items, err, msg, ignore_case=True, padding=Pd.disabled
-    )
+check = CheckSpec(
+    Existence(
+        [
+            rf"\bthe password is{_regex}",
+            rf"\bmy password is{_regex}",
+            rf"\bthe password's{_regex}",
+            rf"\bmy password's{_regex}",
+            rf"^password{_regex}",
+        ],
+        padding=Pd.disabled,
+    ),
+    "security.password",
+    "Don't put passwords in plain text.",
+)
 
 
-registry.register("security.password", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

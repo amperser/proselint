@@ -11,9 +11,10 @@ categories: writing
 ---
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -32,58 +33,51 @@ examples_fail = [
     "It happened at 7a.m. in the morning.",
 ]
 
+check_lowercase_periods = CheckSpec(
+    Existence([r"\d{1,2} ?[ap]m"]),
+    "dates_times.am_pm.lowercase_periods",
+    "With lowercase letters, periods are standard.",
+    ignore_case=False,
+)
 
-def check_lowercase_periods(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.am_pm.lowercase_periods"
-    msg = "With lowercase letters, the periods are standard."
+check_spacing = CheckSpec(
+    Existence(
+        [r"\b\d{1,2}[ap]\.?m\.?"],
+        padding=Pd.disabled,
+    ),
+    "dates_times.am_pm.spacing",
+    "It's standard to put a space before 'a.m.' or 'p.m.'.",
+)
 
-    return existence_check(
-        text, [r"\d{1,2} ?[ap]m"], err, msg, ignore_case=False
-    )
+check_midnight_noon = CheckSpec(
+    Existence(
+        [r"\b12 ?[ap]\.?m\.?"],
+        padding=Pd.disabled,
+    ),
+    "dates_times.am_pm.midnight_noon",
+    "12 a.m. and 12 p.m. are wrong and confusing. Use 'midnight' or 'noon'.",
+)
 
-
-def check_spacing(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.am_pm.spacing"
-    msg = "It's standard to put a space before 'a.m.' or 'p.m.'."
-
-    return existence_check(
-        text, [r"\b\d{1,2}[ap]\.?m\.?"], err, msg, padding=Pd.disabled
-    )
-
-
-def check_midnight_noon(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.am_pm.midnight_noon"
-
-    msg = (
-        "12 a.m. and 12 p.m. are wrong and confusing. Use 'midnight' or 'noon'."
-    )
-
-    return existence_check(
-        text, [r"\b12 ?[ap]\.?m\.?"], err, msg, padding=Pd.disabled
-    )
-
-
-def check_redundancy(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.am_pm.redundancy"
-    msg = "'a.m.' is always morning; 'p.m.' is always night."
-
-    items = [
-        r"\b\d{1,2} ?a\.?m\.? in the morning",
-        r"\b\d{1,2} ?p\.?m\.? in the evening",
-        r"\b\d{1,2} ?p\.?m\.? at night",
-        r"\b\d{1,2} ?p\.?m\.? in the afternoon",
-    ]
-
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
+check_redundancy = CheckSpec(
+    Existence(
+        [
+            r"\b\d{1,2} ?a\.?m\.? in the morning",
+            r"\b\d{1,2} ?p\.?m\.? in the evening",
+            r"\b\d{1,2} ?p\.?m\.? at night",
+            r"\b\d{1,2} ?p\.?m\.? in the afternoon",
+        ],
+        padding=Pd.disabled,
+    ),
+    "dates_times.am_pm.redundancy",
+    "'a.m.' is always morning; 'p.m.' is always night.",
+)
 
 
-registry.register_many({
-    "dates_times.am_pm.lowercase_periods": check_lowercase_periods,
-    "dates_times.am_pm.spacing": check_spacing,
-    "dates_times.am_pm.midnight_noon": check_midnight_noon,
-    "dates_times.am_pm.redundancy": check_redundancy,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_lowercase_periods,
+        check_spacing,
+        check_midnight_noon,
+        check_redundancy,
+    ))

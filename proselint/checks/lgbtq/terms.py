@@ -15,9 +15,10 @@ makes more acceptable recommendations. TheNew York Times and
 Associated Press have also adopted this style guide.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,12 +32,8 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
-    """Suggest preferred forms given the reference document."""
-    err = "lgbtq.terms.glaad"
-    msg = "Possibly offensive term. Consider using '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "homosexual man": "gay man",
         "homosexual men": "gay men",
         "homosexual woman": "lesbian",
@@ -47,9 +44,14 @@ def check(text: str) -> list[CheckResult]:
         "admitted homosexual": "openly gay",
         "avowed homosexual": "openly gay",
         "special rights": "equal rights",
-    }
+    }),
+    "lgbtq.terms.glaad",
+    "Possibly offensive term. Consider using '{}' instead of '{}'.",
+    # TODO: consider impact of setting ignore_case=True
+    ignore_case=False,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
 
-
-registry.register("lgbtq.terms.glaad", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

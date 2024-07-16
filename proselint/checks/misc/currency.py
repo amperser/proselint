@@ -13,9 +13,10 @@ categories: writing
 Symbols.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,17 +26,16 @@ examples_fail = [
     "It cost $10 dollars.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.currency"
-    msg = "Incorrect use of symbols in {}."
-
-    symbols = [
-        r"\$[\d]* ?(?:dollars|usd|us dollars)",
-    ]
-
-    return existence_check(text, symbols, err, msg, padding=Pd.sep_in_txt)
+check = CheckSpec(
+    Existence(
+        [r"\$[\d]* ?(?:dollars|usd|us dollars)"],
+        padding=Pd.sep_in_txt,
+    ),
+    "misc.currency",
+    "Incorrect use of symbols in {}.",
+)
 
 
-registry.register("misc.currency", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

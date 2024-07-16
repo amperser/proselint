@@ -1,5 +1,5 @@
 """Jargon."""
 
-from proselint.checks.jargon import misc
+from proselint.checks.jargon.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

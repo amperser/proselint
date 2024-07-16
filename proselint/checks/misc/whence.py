@@ -13,9 +13,10 @@ categories: writing
 From whence it came.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,13 +26,13 @@ examples_fail = [
     "Go back from whence you came!",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.whence"
-    msg = "The 'from' in 'from whence' is not needed."
-
-    return existence_check(text, ["from whence"], err, msg)
+check = CheckSpec(
+    Existence(["from whence"]),
+    "misc.whence",
+    "The 'from' in 'from whence' is redundant.",
+)
 
 
-registry.register("misc.whence", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

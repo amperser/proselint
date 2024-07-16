@@ -12,10 +12,13 @@ This submodule is thread safe.
 from __future__ import annotations
 
 import functools
+import importlib
+import pkgutil
 import re
 import string
+import time
 from enum import Enum
-from typing import Callable, NamedTuple, Optional
+from typing import Callable, NamedTuple, Optional, Union
 
 from proselint.logger import log
 
@@ -35,69 +38,247 @@ class CheckResult(NamedTuple):
 ###############################################################################
 
 
-Check = Callable[[str], list[CheckResult]]
+# Regex-PADDINGS
+# - these can be handed to the check-functions
+# - most efficient is `words_in_txt` but it does not work
+#   for all use-cases
+# - test with tools like https://regex101.com/ and optimize for low step-count
+class Pd(str, Enum):
+    """Helper for padding."""
+
+    disabled = r"{}"
+    # choose for checks with custom regex
+
+    safe_join = r"(?:{})"
+    # can be filled with w1|w2|w3|...
+
+    whitespace = r"\s{}\s"
+    # req whitespace around (no punctuation!)
+
+    sep_in_txt = r"(?:^|\W){}[\W$]"
+    # finds item as long it is surrounded by any non-word character:
+    # whitespace, punctuation, newline ...
+
+    words_in_txt = r"\b{}\b"
+    # much faster version of sep_in_txt, but more specialized, as
+    # non A-z - characters at start & end of search-string don't match!
+    # TODO: some cases can use faster non-word-boundary \B
+
+
+class Consistency(NamedTuple):
+    word_pairs: list[tuple[str, str]]
+
+
+class PreferredForms(NamedTuple):
+    items: dict[str, str]
+    padding: Pd = Pd.words_in_txt
+
+
+class PreferredFormsSimple(NamedTuple):
+    items: dict[str, str]
+    padding: Pd = Pd.words_in_txt
+
+
+class Existence(NamedTuple):
+    items: list[str]
+    unicode: bool = False
+    padding: Pd = Pd.words_in_txt
+    dotall: bool = False
+    exceptions: tuple[str, ...] = ()
+
+
+class ExistenceSimple(NamedTuple):
+    pattern: str
+    unicode: bool = True
+    exceptions: tuple[str, ...] = ()
+
+
+class ReverseExistence(NamedTuple):
+    allowed: list[str]
+
+
+CheckFn = Callable[[str], list[CheckResult]]
+
+
+class CheckSpec(NamedTuple):
+    type: Union[
+        Consistency,
+        PreferredForms,
+        PreferredFormsSimple,
+        Existence,
+        ExistenceSimple,
+        ReverseExistence,
+        CheckFn,
+    ]
+    path: str
+    msg: str
+    ignore_case: bool = True
+    offset: tuple[int, int] = (0, 0)
+
+    @property
+    def path_segments(self) -> list[str]:
+        return self.path.split(".")
+
+    def matches_partial(self, partial: str) -> bool:
+        partial_segments = partial.split(".")
+        if len(partial_segments) > len(self.path_segments):
+            raise ValueError(
+                "Partial key %s must not be longer than check path %s.",
+                partial,
+                self.path,
+            )
+        return all(
+            self.path_segments[i] == partial_segments[i]
+            for i in range(len(partial_segments))
+        )
+
+    # TODO: attempt to simplify this
+    def dispatch(self, text: str) -> list[CheckResult]:  # noqa: PLR0911
+        if isinstance(self.type, Consistency):
+            return consistency_check(
+                text,
+                self.type.word_pairs,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.offset,
+            )
+        if isinstance(self.type, PreferredForms):
+            return preferred_forms_check_regex(
+                text,
+                self.type.items,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.offset,
+                self.type.padding,
+            )
+        if isinstance(self.type, PreferredFormsSimple):
+            return preferred_forms_check_opti(
+                text,
+                self.type.items,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.offset,
+                self.type.padding,
+            )
+        if isinstance(self.type, Existence):
+            return existence_check(
+                text,
+                self.type.items,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.type.unicode,
+                self.offset,
+                self.type.padding,
+                self.type.dotall,
+                exceptions=self.type.exceptions,
+            )
+        if isinstance(self.type, ExistenceSimple):
+            return existence_check_simple(
+                text,
+                self.type.pattern,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.type.unicode,
+                self.type.exceptions,
+            )
+        if isinstance(self.type, ReverseExistence):
+            return reverse_existence_check(
+                text,
+                self.type.allowed,
+                self.path,
+                self.msg,
+                self.ignore_case,
+                self.offset,
+            )
+        if isinstance(self.type, Callable):
+            return self.type(text)
+        raise ValueError(
+            "Check type must be valid, found %s (type %s)",
+            self.type,
+            type(self.type),
+        )
 
 
 class CheckRegistry:
-    _checks: dict[str, Check]
-    _enabled: Optional[dict[str, bool]]
+    _checks: list[CheckSpec]
+    enabled_checks: Optional[dict[str, bool]]
+    start: Optional[float]
 
     def __init__(self) -> None:
-        self._checks = {}
-        self._enabled = None
+        self._checks = []
+        self.enabled_checks = None
+        self.start = None
 
-    def register(self, key: str, check: Check) -> None:
-        self._checks[key] = check
+    def register(self, check: CheckSpec) -> None:
+        self._checks.append(check)
+        log.debug(
+            "Registered %s at %.3fms",
+            check.path,
+            (time.time() - self.start) * 1000,
+        )
 
-    def register_many(self, checks: dict[str, Check]) -> None:
-        self._checks = {**self._checks, **checks}
+    def register_many(self, checks: tuple[CheckSpec, ...]) -> None:
+        self._checks.extend(checks)
+        log.debug(
+            "Registered %s at %.3fms",
+            [check.path for check in checks],
+            (time.time() - self.start) * 1000,
+        )
 
-    def populate_enabled(self, enabled: dict[str, bool]) -> None:
-        self._enabled = enabled
+    def discover(self) -> None:
+        # TODO: add a search for plugins and user defined checks
+        self.start = time.time()
+        for info in pkgutil.iter_modules(__path__, "."):
+            if info.name.startswith("._"):
+                continue
+            try:
+                module = importlib.import_module(info.name, "proselint.checks")
+                module.register_with(self)
+                log.debug(
+                    "Registered from module %s at %.3fms",
+                    module.__name__,
+                    (time.time() - self.start) * 1000,
+                )
+            except Exception as _:
+                log.exception(
+                    "Exception encountered while registering module %s.",
+                    info.name,
+                )
 
-    def get_all(self) -> list[Check]:
-        checks = list(self._checks.values())
-        log.debug("Collected %d checks to run.", len(checks))
-        return checks
+    @property
+    def checks(self) -> list[CheckSpec]:
+        log.debug("Collected %d checks to run.", len(self._checks))
+        return self._checks
 
-    def get_all_enabled(self) -> list[Check]:
-        if not self._enabled:
+    def get_all_enabled(
+        self, enabled: Optional[dict[str, bool]] = None
+    ) -> list[CheckSpec]:
+        if enabled is not None:
+            self.enabled_checks = enabled
+        if self.enabled_checks is None:
             return []
 
-        # TODO: replace with the following once everything is in place
-        # checks = [
-        #     self._checks[key]
-        #     for key, enabled in self._enabled.items()
-        #     if enabled and key in self._checks
-        # ]
-        checks = []
-        for key, enabled in self._enabled.items():
-            if enabled:
-                if key in self._checks:
-                    log.debug("Adding check %s", key)
-                    checks.append(self._checks[key])
-                else:
-                    partials = [
-                        x
-                        for x in self._checks.keys()
-                        if x.startswith(key)
-                    ]
-                    log.debug("Found partials for %s: %s", key, partials)
-                    checks.extend([self._checks[x] for x in partials])
-            else:
-                log.debug(
-                    "Skipping check %s.", key)
-        log.debug("Collected %d enabled checks to run.", len(checks))
-        return checks
+        # TODO: review potential optimizations for this
+        return [
+            x
+            for x in self.checks
+            for key, key_enabled in self.enabled_checks.items()
+            if key_enabled and (x.path == key or x.matches_partial(key))
+        ]
 
 
 registry = CheckRegistry()
 
 
-def run_check(_check: Callable, _text: str, source: str = "") -> list[dict]:
+def run_check(_check: CheckSpec, _text: str, source: str = "") -> list[dict]:
     """Run a check on the source."""
     errors = []
-    results: list[CheckResult] = _check(_text)
+    results: list[CheckResult] = _check.dispatch(_text)
     for _r in results:
         (line, column) = get_line_and_column(_text, _r.start_pos)
         if not is_quoted(_r.start_pos, _text):
@@ -186,33 +367,6 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 # The actual check-sub-functions used by the checks  ##########################
 ###############################################################################
-
-
-# Regex-PADDINGS
-# - these can be handed to the check-functions
-# - most efficient is `words_in_txt` but it does not work
-#   for all use-cases
-# - test with tools like https://regex101.com/ and optimize for low step-count
-class Pd(str, Enum):
-    """Helper for padding."""
-
-    disabled = r"{}"
-    # choose for checks with custom regex
-
-    safe_join = r"(?:{})"
-    # can be filled with w1|w2|w3|...
-
-    whitespace = r"\s{}\s"
-    # req whitespace around (no punctuation!)
-
-    sep_in_txt = r"(?:^|\W){}[\W$]"
-    # finds item as long it is surrounded by any non-word character:
-    # whitespace, punctuation, newline ...
-
-    words_in_txt = r"\b{}\b"
-    # much faster version of sep_in_txt, but more specialized, as
-    # non A-z - characters at start & end of search-string don't match!
-    # TODO: some cases can use faster non-word-boundary \B
 
 
 def consistency_check(  # noqa: PLR0913, PLR0917
@@ -654,46 +808,3 @@ def _threshold_check(
         if ppm > threshold:
             return [errors[0]]
     return []
-
-
-# TODO: this is diabolical. restructure modules to avoid having this down here.
-# this is caused by circular referencing. it would be better to have the
-# registry elsewhere.
-from proselint.checks import (
-    airlinese,
-    archaism,
-    cliches,
-    consistency,
-    corporate_speak,
-    cursing,
-    dates_times,
-    hedging,
-    hyperbole,
-    jargon,
-    lexical_illusions,
-    lgbtq,
-    links,
-    malapropisms,
-    misc,
-    mixed_metaphors,
-    mondegreens,
-    needless_variants,
-    nonwords,
-    oxymorons,
-    psychology,
-    punctuation,
-    redundancy,
-    restricted,
-    scientific,
-    security,
-    sexism,
-    skunked_terms,
-    spelling,
-    terms,
-    typography,
-    uncomparables,
-    weasel_words,
-)
-from proselint.checks import (
-    annotations as ann,
-)

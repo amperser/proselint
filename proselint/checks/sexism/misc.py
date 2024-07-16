@@ -13,9 +13,10 @@ categories: writing
 Points out sexist language.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -30,14 +31,11 @@ examples_fail = [
     "You get the mailperson.",
 ]
 
-
-def check_sexism(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "sexism.misc"
-    msg = "Gender bias. Use '{}' instead of '{}'."
-
+check_sexism = CheckSpec(
     # TODO: actress, postman
-    items: dict[str, str] = {
+    # note for the former that a similar issue to heroine exists, and for the
+    # latter, advice conflicting with other entries exists (i.e. postperson)
+    PreferredFormsSimple({
         "anchorman": "anchor",
         "anchorwoman": "anchor",
         "chairman": "chair",
@@ -74,17 +72,14 @@ def check_sexism(text: str) -> list[CheckResult]:
         "woman scientist": "scientist",
         "women scientists": "scientists",
         # "heroine": "hero",
-    }
+    }),
+    "sexism.misc",
+    "Gender bias. Use '{}' instead of '{}'.",
+    ignore_case=False,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
-
-
-def check_preferred_form(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "sexism.misc"
-    msg = "Not a preferred form. Use '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+check_preferred_form = CheckSpec(
+    PreferredFormsSimple({
         "anchorperson": "anchor",
         "chairperson": "chair",
         "draftperson": "drafter",
@@ -93,12 +88,15 @@ def check_preferred_form(text: str) -> list[CheckResult]:
         "policeperson": "police officer",
         "fireperson": "firefighter",
         "mailperson": "mail carrier",
-    }
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
+    }),
+    "sexism.misc",
+    "Not a preferred form. Use '{}' instead of '{}'.",
+)
 
 
-# TODO: identify correct names for these, or merge them
-registry.register_many({
-    "sexism.misc.1": check_sexism,
-    "sexism.misc.2": check_preferred_form,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_sexism,
+        check_preferred_form,
+    ))

@@ -13,9 +13,10 @@ categories: writing
 Points out metadiscourse.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,21 +26,19 @@ examples_fail = [
     "It's based on the rest of this article.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.metadiscourse"
-    msg = "Excessive metadiscourse."
-
-    metadiscourse = [
+check = CheckSpec(
+    Existence([
         "The preceeding discussion",
         "The rest of this article",
         "This chapter discusses",
         "The preceding paragraph demonstrated",
         "The previous section analyzed",
-    ]
+    ]),
+    "misc.metadiscourse",
+    "Excessive metadiscourse.",
+)
 
-    return existence_check(text, metadiscourse, err, msg)
 
-
-registry.register("misc.metadiscourse", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

@@ -13,9 +13,10 @@ categories: writing
 Archaism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -30,47 +31,46 @@ examples_fail = [
     "I feel nauseous.",
 ]
 
+name = "misc.tense_present"
+# TODO: add some actual context, explanation, or advice
+msg = "'{}'."
 
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.tense_present"
-    msg = "'{}'."
+check = CheckSpec(
+    Existence(
+        [
+            "between you and I",
+            "on accident",
+            "somewhat of a",
+            "all it's own",
+            "reason is because",
+            "audible to the ear",
+            "in regards to",
+            "would of",
+            # "and so",
+            r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
+        ],
+        unicode=True,
+    ),
+    name,
+    msg,
+    ignore_case=True,
+)
 
-    items1 = [
-        "between you and I",
-        "on accident",
-        "somewhat of a",
-        "all it's own",
-        "reason is because",
-        "audible to the ear",
-        "in regards to",
-        "would of",
-        # "and so",
-        r"i ?(?:feel|am feeling|am|'m|'m feeling) nauseous",
-    ]
-    ret1 = existence_check(
-        text,
-        items1,
-        err,
-        msg,
-        ignore_case=True,
-        string=True,
-    )
-
-    items2 = [
-        r"\bup to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
-    ]
-    ret2 = existence_check(
-        text,
-        items2,
-        err,
-        msg,
-        ignore_case=True,
-        string=True,
+check_2 = CheckSpec(
+    Existence(
+        [r"\bup to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?"],
+        unicode=True,
         padding=Pd.disabled,
-    )
+    ),
+    name,
+    msg,
+    ignore_case=True,
+)
 
-    return ret1 + ret2
 
-
-registry.register("misc.tense_present", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_2,
+    ))

@@ -13,9 +13,10 @@ categories: writing
 Credit card number printed.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,21 +26,19 @@ examples_fail = [
     "My credit card number is 5555555555554444.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "security.credit_card"
-    msg = "Don't put credit card numbers in plain text."
-
-    credit_card_numbers = [
+check = CheckSpec(
+    Existence([
         r"4\d{15}",
         r"5[1-5]\d{14}",
         r"3[4,7]\d{13}",
         r"3[0,6,8]\d{12}",
         r"6011\d{12}",
-    ]
+    ]),
+    "security.credit_card",
+    "Don't put credit card numbers in plain text.",
+)
 
-    return existence_check(text, credit_card_numbers, err, msg)
 
-
-registry.register("security.credit_card", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

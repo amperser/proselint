@@ -13,9 +13,10 @@ categories: writing
 Hyperbolic language.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -23,18 +24,19 @@ examples_pass = [
 
 examples_fail = ["So exaggerated!!!", "really??"]
 
+check = CheckSpec(
+    Existence(
+        [
+            r"[a-z]*[!]{2,}",
+            r"[a-z]*\?{2,}",
+        ],
+        padding=Pd.disabled,
+    ),
+    "hyperbole.misc",
+    "'{}' is hyperbolic.",
+)
 
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "hyperbole.misc"
-    msg = "'{}' is hyperbolic."
 
-    words = [
-        r"[a-z]*[!]{2,}",
-        r"[a-z]*\?{2,}",
-    ]
-
-    return existence_check(text, words, err, msg, padding=Pd.disabled)
-
-
-registry.register("hyperbole.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

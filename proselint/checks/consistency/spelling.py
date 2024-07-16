@@ -20,9 +20,10 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, consistency_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Consistency
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -34,30 +35,28 @@ examples_fail = [
     "The centre of the arts is the art center.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "consistency.spelling"
-    msg = "Inconsistent spelling of '{}' (vs. '{}')."
-
-    word_pairs = [
-        ["advisor", "adviser"],
-        # ["analyse", "analyze"],
-        ["centre", "center"],
-        ["colour", "color"],
-        ["emphasise", "emphasize"],
-        ["finalise", "finalize"],
-        ["focussed", "focused"],
-        ["labour", "labor"],
-        ["learnt", "learned"],
-        ["organise", "organize"],
-        ["organised", "organized"],
-        ["organising", "organizing"],
-        ["recognise", "recognize"],
-    ]
+check = CheckSpec(
     # TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
+    Consistency([
+        ("advisor", "adviser"),
+        # ("analyse", "analyze"),
+        ("centre", "center"),
+        ("colour", "color"),
+        ("emphasise", "emphasize"),
+        ("finalise", "finalize"),
+        ("focussed", "focused"),
+        ("labour", "labor"),
+        ("learnt", "learned"),
+        ("organise", "organize"),
+        ("organised", "organized"),
+        ("organising", "organizing"),
+        ("recognise", "recognize"),
+    ]),
+    "consistency.spelling",
+    "Inconsistent spelling of '{}' (vs. '{}').",
+)
 
-    return consistency_check(text, word_pairs, err, msg, ignore_case=True)
 
-
-registry.register("consistency.spelling", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

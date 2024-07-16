@@ -25,14 +25,14 @@ apparent in the action itself. For example, in “Suddenly, I don't hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
     Pd,
-    existence_check,
-    limit_results,
-    registry,
 )
 
 examples_pass = [
@@ -43,22 +43,18 @@ examples_fail = [
     "Suddenly, it all made sense.",
 ]
 
-
-@limit_results(3)
-def check(text: str) -> list[CheckResult]:
-    """Advice on sudden vs suddenly."""
-    err = "misc.suddenly"
-    msg = "Suddenly is nondescript, slows the action, and warns your reader."
-    regex = "Suddenly,"
-
-    return existence_check(
-        text,
-        [regex],
-        err,
-        msg,
+# TODO: reimplement limit_results
+check = CheckSpec(
+    Existence(
+        ["Suddenly,"],
         padding=Pd.disabled,
-        ignore_case=False,
-    )
+    ),
+    "misc.suddenly",
+    "Suddenly is nondescript, slows the action, and warns your reader.",
+    ignore_case=False,
+)
 
 
-registry.register("misc.suddenly", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

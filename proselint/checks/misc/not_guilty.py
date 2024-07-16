@@ -22,10 +22,9 @@ If somebody is found not guilty, say "not guilty." Omit the standard
 Not guilty beyond a reasonable doubt
 """
 
-
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -35,14 +34,13 @@ examples_fail = [
     "She is not guilty beyond a reasonable doubt.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.not_guilty"
-    msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."
-    regex = r"not guilty beyond (a |any )?reasonable doubt"
-
-    return existence_check(text, [regex], err, msg)
+check = CheckSpec(
+    Existence([r"not guilty beyond (a |any )?reasonable doubt"]),
+    "misc.not_guilty",
+    "'not guilty beyond a reasonable doubt' is an ambiguous phrasing.",
+)
 
 
-registry.register("misc.not_guilty", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

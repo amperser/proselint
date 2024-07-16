@@ -13,11 +13,12 @@ categories: writing
 Dates.
 
 """
+
 from __future__ import annotations
 
 import calendar
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -40,53 +41,51 @@ examples_fail = [
     "From 1999-2002, Sally served as chair of the committee.",
 ]
 
+check_decade_apostrophes_short = CheckSpec(
+    Existence([r"\d0\'s"]),
+    "dates_times.dates.apostrophes",
+    "Apostrophes aren't needed for decades.",
+)
 
-def check_decade_apostrophes_short(text: str) -> list[CheckResult]:
-    """Check the text for dates of the form X0's."""
-    err = "dates_times.dates"
-    msg = "Apostrophes aren't needed for decades."
-    items = [r"\d0\'s"]
-    return existence_check(text, items, err, msg, excluded_topics=["50 Cent"])
+check_decade_apostrophes_long = CheckSpec(
+    Existence([r"\d\d\d0\'s"]),
+    "dates_times.dates.apostrophes",
+    "Apostrophes aren't needed for decades.",
+)
 
+check_dash_and_from = CheckSpec(
+    Existence([r"from \d+[^ \t\n\r\f\v\w\.]\d+"]),
+    "dates_times.dates.dash_and_from",
+    "When specifying a date range, write 'from X to Y'.",
+)
 
-def check_decade_apostrophes_long(text: str) -> list[CheckResult]:
-    """Check the text for dates of the form XXX0's."""
-    err = "dates_times.dates"
-    msg = "Apostrophes aren't needed for decades."
-    items = [r"\d\d\d0\'s"]
-    return existence_check(text, items, err, msg)
+check_month_year_comma = CheckSpec(
+    Existence(
+        # NOTE: strangely month_name[0] is ""
+        [r"(?:" + "|".join(calendar.month_name[1:]) + r"), \d{3,}"],
+        padding=Pd.disabled,
+    ),
+    "dates_times.dates.month_year_comma",
+    "When specifying a month and year, no comma is needed.",
+)
 
-
-def check_dash_and_from(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a date range, write 'from X to Y'."
-    items = [r"[fF]rom \d+[^ \t\n\r\f\va-zA-Z0-9_\.]\d+"]
-    return existence_check(text, items, err, msg)
-
-
-def check_month_year_comma(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a month and year, no comma is needed."
-    items = [r"(?:" + "|".join(calendar.month_name[1:]) + r"), \d{3,}"]
-    # NOTE: strangely month_name[0] is ""
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
-
-
-def check_month_of_year(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a month and year, 'of' is unnecessary."
-    items = [r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"]
-    # NOTE: strangely month_name[0] is ""
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
+check_month_of_year = CheckSpec(
+    Existence(
+        # NOTE: strangely month_name[0] is ""
+        [r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"],
+        padding=Pd.disabled,
+    ),
+    "dates_times.dates",
+    "When specifying a month and year, 'of' is unnecessary.",
+)
 
 
-registry.register_many({
-    "dates_times.dates.apostrophes_short": check_decade_apostrophes_short,
-    "dates_times.dates.apostrophes_long": check_decade_apostrophes_long,
-    "dates_times.dates.from_dash": check_dash_and_from,
-    "dates_times.dates.month_year_comma": check_month_year_comma,
-    "dates_times.dates.month_of_year": check_month_of_year,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_decade_apostrophes_short,
+        check_decade_apostrophes_long,
+        check_dash_and_from,
+        check_month_year_comma,
+        check_month_of_year,
+    ))

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
     Pd,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -23,31 +23,23 @@ examples_fail = [
     "Associate together in groups.",
 ]
 
+msg = "Redundancy. Use '{}' instead of '{}'."
 
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "redundancy.wallace"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+check_wallace = CheckSpec(
+    PreferredFormsSimple({
         "rectangular in shape": "rectangular",
         "audible to the ear": "audible",
-    }
+    }),
+    "redundancy.wallace",
+    msg,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_garner(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    source:     Garner's Modern American Usage
-    source_url: http://bit.ly/1T4alrY
-    """
-    err = "redundancy.garner"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+"""
+source:     Garner's Modern American Usage
+source_url: http://bit.ly/1T4alrY
+"""
+check_garner = CheckSpec(
+    PreferredFormsSimple({
         "adequate enough": "adequate",
         "self-admitted": "admitted",
         "sworn affidavit": "affidavit",
@@ -135,54 +127,44 @@ def check_garner(text: str) -> list[CheckResult]:
         "visible to the eye": "visible",
         "professional vocation": "vocation",
         "while at the same time": "while",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    "redundancy.garner",
+    msg,
+)
 
-    items_regex = {
+check_garner_regex = CheckSpec(
+    PreferredForms({
         r"(?:general )?consensus of opinion": "consensus",
         r"associate together(?: in groups)?": "associate",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    "redundancy.garner",
+    msg,
+)
 
-    return ret1 + ret2
-
-
-def check_nordquist(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    source:     Richard Nordquist
-    source_url: http://grammar.about.com/bio/Richard-Nordquist-22176.htm
-    """
-    err = "redundancy.nordquist"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+"""
+source:     Richard Nordquist
+source_url: http://grammar.about.com/bio/Richard-Nordquist-22176.htm
+"""
+check_nordquist = CheckSpec(
+    PreferredFormsSimple({
         "absolutely essential": "essential",
         "absolutely necessary": "necessary",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    "redundancy.nordquist",
+    msg,
+)
 
-    items_regex: dict[str, str] = {
+check_nordquist_regex = CheckSpec(
+    PreferredForms({
         r"a\.m\. in the morning": "a.m.",
         r"p\.m\. at night": "p.m.",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    "redundancy.nordquist",
+    msg,
+)
 
-    return ret1 + ret2
-
-
-def check_atd_1(text: str) -> list[CheckResult]:
-    """
-    Check for redundancies from After the Deadline.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-    """
-    err = "redundancy.after_the_deadline"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+check_atd_1 = CheckSpec(
+    PreferredFormsSimple({
         "Bo Staff": "Bō",
         "Challah bread": "Challah",
         "Hallah bread": "Hallah",
@@ -381,22 +363,13 @@ def check_atd_1(text: str) -> list[CheckResult]:
         "hoist up": "hoist",
         "empty hole": "hole",
         "head honcho": "honcho",
-    }
+    }),
+    "redundancy.after_the_deadline",
+    "Redundancy. Use '{}' instead of '{}'.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_atd_2(text: str) -> list[CheckResult]:
-    """
-    Check for redundancies from After the Deadline.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-    """
-    err = "redundancy.after_the_deadline"
-    msg = "Redundancy. Use '{}' instead of '{}'."
-
-    items = {
+check_atd_2 = CheckSpec(
+    PreferredFormsSimple({
         "12 noon": "noon",
         "12 o'clock noon": "noon",
         "absolutely necessary": "necessary",
@@ -578,21 +551,30 @@ def check_atd_2(text: str) -> list[CheckResult]:
         "winter season": "winter",
         "yakitori chicken": "yakitori",
         "yerba mate tea": "yerba mate",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    "redundancy.after_the_deadline",
+    msg,
+)
 
-    items_regex: dict[str, str] = {r"\band etc\.": "etc."}
-    ret2 = preferred_forms_check_regex(
-        text, items_regex, err, msg, padding=Pd.disabled
-    )
+check_atd_2_regex = CheckSpec(
+    PreferredForms(
+        {r"\band etc\.": "etc."},
+        padding=Pd.disabled,
+    ),
+    "redundancy.after_the_deadline",
+    msg,
+)
 
-    return ret1 + ret2
 
-
-registry.register_many({
-    "redundancy.garner": check_garner,
-    "redundancy.wallace": check,
-    "redundancy.nordquist": check_nordquist,
-    "redundancy.after_the_deadline.1": check_atd_1,
-    "redundancy.after_the_deadline.2": check_atd_2,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_wallace,
+        check_garner_regex,
+        check_garner,
+        check_nordquist,
+        check_nordquist_regex,
+        check_atd_1,
+        check_atd_2,
+        check_atd_2_regex,
+    ))

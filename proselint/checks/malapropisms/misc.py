@@ -13,9 +13,10 @@ categories: writing
 Archaism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,19 +26,17 @@ examples_fail = [
     "Found in the Infinitesimal Universe.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "malapropisms.misc"
-    msg = "'{}' is a malapropism."
-
-    illogics = [
+check = CheckSpec(
+    Existence([
         "the infinitesimal universe",
         "a serial experience",
         "attack my voracity",
-    ]
+    ]),
+    "malapropisms.misc",
+    "'{}' is a malapropism.",
+)
 
-    return existence_check(text, illogics, err, msg)
 
-
-registry.register("malapropisms.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

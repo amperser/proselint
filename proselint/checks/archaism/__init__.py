@@ -1,5 +1,5 @@
 """Archaism."""
 
-from proselint.checks.archaism import misc
+from proselint.checks.archaism.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

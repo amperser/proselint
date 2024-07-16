@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckResult, registry, reverse_existence_check
+from proselint.checks import CheckRegistry, CheckSpec, ReverseExistence
 
 examples_pass = [
     "I am blonde.",
@@ -41,13 +41,13 @@ _CSV_PATH = "checks/restricted/top1000.csv"
 with files(proselint).joinpath(_CSV_PATH).open("r") as data:
     TOP1000_WORDS = data.read().split()
 
-
-def check_top1000(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "restricted.top1000"
-    msg = "'{}' is not in the top 1000 most common words."
-
-    return reverse_existence_check(text, TOP1000_WORDS, err, msg)
+check_top1000 = CheckSpec(
+    ReverseExistence(TOP1000_WORDS),
+    "restricted.top1000",
+    "'{}' is not in the top 1000 most common words.",
+)
 
 
-registry.register("restricted.top1000", check_top1000)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check_top1000)

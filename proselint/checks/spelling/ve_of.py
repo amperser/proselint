@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -12,18 +12,17 @@ examples_fail = [
     "This could of been the third test.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """-ve vs. -of."""
-    err = "spelling.ve_of"
-    msg = "-ve vs. -of. '{}' is the preferred spelling."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "could of": "could've",
         "should of": "should've",
         "would of": "would've",
-    }
-    return preferred_forms_check_opti(text, items, err, msg)
+    }),
+    "spelling.ve_of",
+    "-ve vs. -of. '{}' is the preferred spelling.",
+)
 
 
-registry.register("spelling.ve_of", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

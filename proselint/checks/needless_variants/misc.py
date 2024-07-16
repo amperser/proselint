@@ -13,9 +13,10 @@ categories: writing
 Points out use of needless variants.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,18 +26,11 @@ examples_fail = [
     "It was an extensible telescope.",
 ]
 
+name = "needless_variants.misc"
+msg = "'{1}' is a needless variant. '{0}' is the preferred form."
 
-def check_1(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-    """
-    err = "needless_variants.misc"
-    msg = "'{1}' is a needless variant. '{0}' is the preferred form."
-
-    items: dict[str, str] = {
+check_1 = CheckSpec(
+    PreferredFormsSimple({
         "abolishment": "abolition",
         "accessary": "accessory",
         "accreditate": "accredit",
@@ -207,22 +201,13 @@ def check_1(text: str) -> list[CheckResult]:
         "meliorate": "ameliorate",
         "misdoubt": "doubt",
         "parachronism": "anachronism",
-    }
+    }),
+    name,
+    msg,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_2(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-    """
-    err = "needless_variants.misc"
-    msg = "'{1}' is a needless variant. '{0}' is the preferred form."
-
-    items: dict[str, str] = {
+check_2 = CheckSpec(
+    PreferredFormsSimple({
         "Coffee klatsch": "kaffeeklatsch",
         "Zoroastrism": "Zoroastrianism",
         "coffee klatch": "kaffeeklatsch",
@@ -415,12 +400,15 @@ def check_2(text: str) -> list[CheckResult]:
         "volitive": "volitional",
         "wolverene": "wolverine",
         "wolvish": "wolfish",
-    }
+    }),
+    name,
+    msg,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register_many({
-    "needless_variants.misc.1": check_1,
-    "needless_variants.misc.2": check_2,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_1,
+        check_2,
+    ))

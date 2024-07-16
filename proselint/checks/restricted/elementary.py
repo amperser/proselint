@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckResult, registry, reverse_existence_check
+from proselint.checks import CheckRegistry, CheckSpec, ReverseExistence
 
 examples_pass = [
     "A boy and his goat went to a farm.",
@@ -40,13 +40,13 @@ _CSV_PATH = "checks/restricted/elementary.csv"
 with files(proselint).joinpath(_CSV_PATH).open("r") as data:
     ELEMENTARY_WORDS = data.read().split()
 
-
-def check_elementary(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "restricted.elementary"
-    msg = "'{}' is not a word kids learn in elementary school."
-
-    return reverse_existence_check(text, ELEMENTARY_WORDS, err, msg)
+check_elementary = CheckSpec(
+    ReverseExistence(ELEMENTARY_WORDS),
+    "restricted.elementary",
+    "'{}' is not a word kids learn in elementary school.",
+)
 
 
-registry.register("restricted.elementary", check_elementary)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check_elementary)

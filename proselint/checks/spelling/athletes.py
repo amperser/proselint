@@ -13,13 +13,14 @@ categories: writing
 Points out misspellings.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -30,13 +31,11 @@ examples_fail = [
     "One of the greats: Cal Ripkin.",
 ]
 
+name = "spelling.athletes"
+msg = "Misspelling of athlete's name. '{}' is the preferred form."
 
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "spelling.athletes"
-    msg = "Misspelling of athlete's name. '{}' is the preferred form."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "Dwayne Wade": "Dwyane Wade",
         "Mikka Kiprusoff": "Miikka Kiprusoff",
         "Mark Buerhle": "Mark Buehrle",
@@ -53,15 +52,23 @@ def check(text: str) -> list[CheckResult]:
         "Tori Hunter": "Torii Hunter",
         "Stephon Curry": "Stephen Curry",
         "Mike Kryzewski": "Mike Krzyzewski",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    name,
+    msg,
+)
 
-    items_regex: dict[str, str] = {
+check_regex = CheckSpec(
+    PreferredForms({
         r"J\.J\. Reddick": "J.J. Redick",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    name,
+    msg,
+)
 
-    return ret1 + ret2
 
-
-registry.register("spelling.athletes", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_regex,
+    ))

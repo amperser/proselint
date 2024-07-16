@@ -13,11 +13,17 @@ categories: writing
 Names for groups of animals.
 
 """
+
 from __future__ import annotations
 
 import re
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import (
+    CheckRegistry,
+    CheckResult,
+    CheckSpec,
+    preferred_forms_check_opti,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,7 +37,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
+def _check(text: str) -> list[CheckResult]:
     """Check the text."""
     if not any(re.finditer("(?:group|bunch) ", text, flags=re.IGNORECASE)):
         return []
@@ -107,4 +113,13 @@ def check(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-registry.register("terms.venery.oxford", check)
+check = CheckSpec(
+    _check,
+    "terms.venery.oxford",
+    "The venery term is '{}'.",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

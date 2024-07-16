@@ -14,9 +14,10 @@ A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple, registry
+from proselint.checks import CheckRegistry, CheckSpec, ExistenceSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -28,7 +29,7 @@ examples_pass = [
     "The theory",
     "She had coffee at the Foo-bar bar.",
     "Don't just play the game - play the game.",
-    "green greenery",
+    "Green greenery",
 ]
 
 examples_fail = [
@@ -37,27 +38,22 @@ examples_fail = [
     "She had coffee at the Foo bar bar.",
     "She she coffee at the Foo-bar.",
     "After I write i write i write.",
-    "that is an echo is an echo",
-    "don't miss the biggest illusion miss the biggest illusion.",
+    "That is an echo is an echo",
+    "Don't miss the biggest illusion miss the biggest illusion.",
 ]
 
 
-def check_repetitions(text: str) -> list[CheckResult]:
-    """Check the text."""
-    # src = "https://github.com/entorb/typonuketool/blob/main/subs.pl"
-    err = "lexical_illusions.misc"
-    msg = "There's a lexical illusion in '{}' - one or more words are repeated."
-    # check for repetition of 1 to 4 words
-    regex = r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b"
-    # NOTE: this can't be padded without mod -> \1
-    exceptions = [r"^had had$", r"^that that$"]
-    return existence_check_simple(
-        text,
-        regex,
-        err,
-        msg,
-        exceptions=exceptions,
-    )
+check_repetitions = CheckSpec(
+    ExistenceSimple(
+        # NOTE: this can't be padded without mod -> \1
+        r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b",
+        exceptions=(r"^had had$", r"^that that$"),
+    ),
+    "lexical_illusions.misc",
+    "There's a lexical illusion in '{}' - one or more words are repeated.",
+)
 
 
-registry.register("lexical_illusions.misc", check_repetitions)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check_repetitions)

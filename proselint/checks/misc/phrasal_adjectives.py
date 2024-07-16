@@ -13,15 +13,16 @@ categories: writing
 Phrasal adjectives.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
     Pd,
-    existence_check,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -34,28 +35,19 @@ examples_fail = [
     "He ran swiftly-fast.",
 ]
 
+check_ly = CheckSpec(
+    Existence(
+        [r"\s[^\s-]+ly-"],
+        padding=Pd.disabled,
+    ),
+    "misc.phrasal_adjectives.garner.ly",
+    "No hyphen is necessary in phrasal adjectives with an adverb "
+    "ending in -ly, unless the -ly adverb is part of a longer phrase",
+    offset=(1, 0),
+)
 
-def check_ly(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.phrasal_adjectives.garner.ly"
-    msg = (
-        "No hyphen is necessary in phrasal adjectives with an adverb "
-        "ending in -ly, unless the -ly adverb is part of a longer phrase"
-    )
-
-    items = [r"\s[^\s-]+ly-"]
-
-    return existence_check(
-        text, items, err, msg, padding=Pd.disabled, offset=(1, 0)
-    )
-
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.phrasal_adjectives.garner"
-    msg = "Hyphenate '{1}', a phrasal adjective, as '{0}'."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "across the board discounts": "across-the-board discounts",
         "acute care treatment": "acute-care treatment",
         "agreed upon answer": "agreed-upon answer",
@@ -156,18 +148,24 @@ def check(text: str) -> list[CheckResult]:
         "second quarter gain": "second-quarter gain",
         "third quarter gain": "third-quarter gain",
         "fourth quarter gain": "fourth-quarter gain",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    "misc.phrasal_adjectives.garner",
+    "Hyphenate '{1}', a phrasal adjective, as '{0}'.",
+)
 
-    items_regex: dict[str, str] = {
+check_regex = CheckSpec(
+    PreferredForms({
         r"U\.S\. led campaign": "U.S.-led campaign",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    "misc.phrasal_adjectives.garner",
+    "Hyphenate '{1}', a phrasal adjective, as '{0}'.",
+)
 
-    return ret1 + ret2
 
-
-registry.register_many({
-    "misc.phrasal_adjectives.garner.ly": check_ly,
-    "misc.phrasal_adjectives.garner": check
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_ly,
+        check,
+        check_regex,
+    ))

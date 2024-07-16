@@ -1,5 +1,5 @@
 """Avoid skunked terms."""
 
-from proselint.checks.skunked_terms import misc
+from proselint.checks.skunked_terms.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

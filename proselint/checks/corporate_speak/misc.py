@@ -13,9 +13,10 @@ categories: writing
 Avoid these cases of business jargon.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -26,13 +27,8 @@ examples_fail = [
     "We will circle back around to it.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "corporate_speak.misc"
-    msg = "Minimize your use of corporate catchphrases like this one."
-
-    items = [
+check = CheckSpec(
+    Existence([
         "at the end of the day",
         "back to the drawing board",
         "hit the ground running",
@@ -58,9 +54,12 @@ def check(text: str) -> list[CheckResult]:
         "drill-down",
         "elephant in the room",
         "on my plate",
-    ]
+    ]),
+    "corporate_speak.misc",
+    "Minimize your use of corporate catchphrases like this one.",
+)
 
-    return existence_check(text, items, err, msg, ignore_case=True)
 
-
-registry.register("corporate_speak.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

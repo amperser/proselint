@@ -46,13 +46,14 @@ structure.
 11. Place the emphatic word of a sentence at the end.
     * MDPNB: Principle of recency.
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -66,13 +67,11 @@ examples_fail = [
     "He had not succeeded with that.",
 ]
 
+name = "misc.composition"
+msg = "Try '{}' instead of '{}'."
 
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.composition"
-    msg = "Try '{}' instead of '{}'."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         # Put statements in positive form
         "not honest": "dishonest",
         "not important": "unimportant",
@@ -93,16 +92,24 @@ def check(text: str) -> list[CheckResult]:
         "was unaware of the fact that": "did not know that / was unaware that",
         "not succeed": "fail",
         "the fact that i had arrived": "my arrival",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    name,
+    msg,
+)
 
-    items_regex: dict[str, str] = {
+check_regex = CheckSpec(
+    PreferredForms({
         r"did not pay (any )?attention to": "ignored",
         r"(had )?not succeeded": "failed",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    name,
+    msg,
+)
 
-    return ret1 + ret2
 
-
-registry.register("misc.composition", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_regex,
+    ))

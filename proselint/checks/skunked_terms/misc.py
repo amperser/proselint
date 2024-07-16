@@ -13,9 +13,10 @@ categories: writing
 Archaism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -26,26 +27,26 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "skunked_terms.misc"
-    msg = (
-        "'{}' is a skunked term, impossible to use without issue. "
-        "Find another way to say it."
-    )
-
-    skunked_terms = [
-        "bona fides",
-        "deceptively",
-        "decimate",
-        "effete",
-        "fulsome",
-        "hopefully",
-        "impassionate",
-        "Thankfully,",
-    ]
-
-    return existence_check(text, skunked_terms, err, msg, padding=Pd.sep_in_txt)
+check = CheckSpec(
+    Existence(
+        [
+            "bona fides",
+            "deceptively",
+            "decimate",
+            "effete",
+            "fulsome",
+            "hopefully",
+            "impassionate",
+            "Thankfully,",
+        ],
+        padding=Pd.sep_in_txt,
+    ),
+    "skunked_terms.misc",
+    "'{}' is a skunked term, impossible to use without issue. "
+    "Find another way to say it.",
+)
 
 
-registry.register("skunked_terms.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

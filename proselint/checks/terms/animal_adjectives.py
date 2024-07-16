@@ -13,9 +13,10 @@ categories: writing
 Animal words.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,13 +26,8 @@ examples_fail = [
     "It was some bird-like creature.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "terms.animal_adjectives.garner"
-    msg = "There's a word for this: '{}'."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "hawk-like": "accipitrine",
         "goose-like": "anserine",
         "eagle-like": "aquiline",
@@ -78,9 +74,12 @@ def check(text: str) -> list[CheckResult]:
         "vulture-like": "vulturine",
         "zebra-like": "zebrine",
         "sable-like": "zibeline",
-    }
+    }),
+    "terms.animal_adjectives.garner",
+    "There's a word for this: '{}'.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("terms.animal_adjectives.garner", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

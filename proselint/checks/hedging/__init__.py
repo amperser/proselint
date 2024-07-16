@@ -1,5 +1,5 @@
 """Hedging."""
 
-from proselint.checks.hedging import misc
+from proselint.checks.hedging.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

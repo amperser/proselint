@@ -16,11 +16,17 @@ naturally to the sense 'pass into a specified state or mood, begin to use a
 specified tone. In this meaning a following modifier must be an adj. not an
 adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
 """
+
 from __future__ import annotations
 
 import re
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import (
+    CheckRegistry,
+    CheckResult,
+    CheckSpec,
+    preferred_forms_check_opti,
+)
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -33,7 +39,7 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
+def _check(text: str) -> list[CheckResult]:
     """Suggest the preferred forms."""
     if not any(re.finditer("wax ", text, re.IGNORECASE)):
         # early exit for a niche and costly check
@@ -73,4 +79,15 @@ def check(text: str) -> list[CheckResult]:
     return preferred_forms_check_opti(text, items, err, msg)
 
 
-registry.register("misc.waxed", check)
+# NOTE: This could be fully converted, but has been left this way (pending
+# review) to keep lazy evaluation for import-time performance.
+check = CheckSpec(
+    _check,
+    "misc.waxed",
+    "The modifier following 'waxed' must be an adjective: '{}' is correct.",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

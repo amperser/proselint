@@ -13,9 +13,10 @@ categories: writing
 Weasel words clearly weaken various aspects of a number of your sentences.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -27,17 +28,8 @@ examples_fail = [
     "It is said this is wrong.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """
-    Check the source for weasel words.
-
-    Definition: https://en.wikipedia.org/wiki/Weasel_word
-    """
-    error_code = "weasel_words.misc"
-    msg = "Weasel words aka. anonymous authority present ({})."
-
-    items = [
+check = CheckSpec(
+    Existence([
         # vague
         "evidence suggests",
         "in most respects",
@@ -50,9 +42,12 @@ def check(text: str) -> list[CheckResult]:
         "mistakes were made",
         "researchers believe",
         "some people say",
-    ]
+    ]),
+    "weasel_words.misc",
+    "Weasel words, AKA anonymous authority, present in '{}'.",
+)
 
-    return existence_check(text, items, error_code, msg)
 
-
-registry.register("weasel_words.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

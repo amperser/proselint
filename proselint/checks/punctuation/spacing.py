@@ -14,9 +14,10 @@ Checks for acceptable spacing around punctuation.
  - checks for acceptable spacing after ending punctuation
  - (!?) which must be 1 or 2 spaces.
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple, registry
+from proselint.checks import CheckRegistry, CheckSpec, ExistenceSimple, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -44,44 +45,38 @@ examples_fail = [
     "The quick brown fox jumps  .over the lazy dog!",
 ]
 
+check_end_punctuation_spacing = CheckSpec(
+    ExistenceSimple(r"[a-z][!\?][ ]{2,}"),
+    "punctuation.spacing.end_punctuation",
+    "Unacceptable number of spaces behind ! or ? (should be 1).",
+)
 
-def check_end_punctuation_spacing(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "punctuation.spacing.end_punctuation"
-    msg = "Unacceptable number of spaces behind ! or ? (should be 1)."
-    pattern = r"[a-z][!\?][ ]{2,}"
-    return existence_check_simple(text, pattern, err, msg)
-
-
-def check_general_spacing(text: str) -> list[CheckResult]:
-    """Check that punctuation spacing (,";:') is no more than 1."""
+check_general_spacing = CheckSpec(
     # comma is slightly more complex, consider the number 1,000
     # NOTE: this can break - the previous implementation was defective
-    err = "punctuation.spacing.separators"
-    msg = 'Unacceptable number of spaces behind ";: (must be 1 or less).'
-    pattern = r"""[,;\:\"'][ ]{2,}"""
-    return existence_check_simple(text, pattern, err, msg)
+    ExistenceSimple(r"""[,;\:\"'][ ]{2,}"""),
+    "punctuation.spacing.separators",
+    'Unacceptable number of spaces behind ";: (must be 1 or less).',
+)
+
+check_whitespace_before = CheckSpec(
+    ExistenceSimple(r"[a-z]+\s+[,;\:\.!\?]"),
+    "punctuation.whitespace_before",
+    "Unacceptable whitespace before punctuation",
+)
+
+check_whitespace_inbetween = CheckSpec(
+    ExistenceSimple(Pd.words_in_txt.value.format(r"[ ]{2,}")),
+    "punctuation.whitespace_inbetween",
+    "Multiple spaces, that would be ugly in Word or LibreOffice.",
+)
 
 
-def check_whitespace_before(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "punctuation.whitespace_before"
-    msg = "Unacceptable whitespace before punctuation"
-    pattern = r"[a-z]+\s+[,;\:\.!\?]"
-    return existence_check_simple(text, pattern, err, msg)
-
-
-def check_whitespace_inbetween(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "punctuation.whitespace_inbetween"
-    msg = "Multiple spaces, that would be ugly in Word or LibreOffice."
-    pattern = r"\b[ ]{2,}\b"
-    return existence_check_simple(text, pattern, err, msg)
-
-
-registry.register_many({
-    "punctuation.spacing.end_punctuation": check_end_punctuation_spacing,
-    "punctuation.spacing.separators": check_general_spacing,
-    "punctuation.whitespace_before": check_whitespace_before,
-    "punctuation.whitespace_inbetween": check_whitespace_inbetween,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_end_punctuation_spacing,
+        check_general_spacing,
+        check_whitespace_before,
+        check_whitespace_inbetween,
+    ))

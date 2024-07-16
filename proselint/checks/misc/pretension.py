@@ -13,13 +13,13 @@ categories: writing
 Points out pretension.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    existence_check,
-    limit_results,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
 )
 
 examples_pass = [
@@ -30,21 +30,19 @@ examples_fail = [
     "We need to reconceptualize the project.",
 ]
 
-
-@limit_results(1)
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.pretension.ogilvy"
-    msg = "Jargon words like this one are the hallmarks of a pretentious ass."
-
-    items = [
+# TODO: reimplement limit_results
+check = CheckSpec(
+    Existence([
         "reconceptualize",
         "demassification",
         "attitudinally",
         "judgmentally",
-    ]
+    ]),
+    "misc.pretension.ogilvy",
+    "Jargon words like this one are the hallmarks of a pretentious ass.",
+)
 
-    return existence_check(text, items, err, msg)
 
-
-registry.register("misc.pretension.ogilvy", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

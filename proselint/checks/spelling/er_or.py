@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -12,13 +12,8 @@ examples_fail = [
     "She met with the invester.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """-er vs. -or."""
-    err = "spelling.er_or"
-    msg = "-er vs. -or. '{}' is the preferred spelling."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "abducter": "abductor",
         "abbeter": "abettor",
         "acquiror": "acquirer",
@@ -43,9 +38,12 @@ def check(text: str) -> list[CheckResult]:
         "requestor": "requester",
         "revisor": "reviser",
         "surveyer": "surveyor",
-    }
+    }),
+    "spelling.er_or",
+    "-er vs. -or. '{}' is the preferred spelling.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("spelling.er_or", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

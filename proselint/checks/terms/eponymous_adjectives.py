@@ -13,9 +13,10 @@ categories: writing
 Eponymous adjectives.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,18 +26,16 @@ examples_fail = [
     "The writing wasn't Shakespearian.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "terms.eponymous_adjectives.garner"
-    msg = "'{}' is the preferred eponymous adjective."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "Mephistophelian": "Mephistophelean",
         "Shakespearian": "Shakespearean",
-    }
+    }),
+    "terms.eponymous_adjectives.garner",
+    "'{}' is the preferred eponymous adjective.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("terms.eponymous_adjectives.garner", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

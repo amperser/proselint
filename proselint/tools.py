@@ -9,11 +9,11 @@ import os
 import sys
 from concurrent.futures import Executor, Future, ProcessPoolExecutor
 from pathlib import Path
-from typing import Callable, NamedTuple, Optional, Union
+from typing import NamedTuple, Optional, Union
 from warnings import showwarning as warn
 
 from . import config_base
-from .checks import registry, run_check
+from .checks import CheckSpec, registry, run_check
 from .config_base import Output
 from .config_paths import config_global_path, config_user_paths
 from .logger import log
@@ -137,7 +137,7 @@ def lint(
     source_name: str = "",
     allow_futures: bool = False,
     *,  # internals from here on, caution
-    _checks: Optional[list[Callable]] = None,
+    _checks: Optional[list[CheckSpec]] = None,
     _exe: Optional[Executor] = None,
 ) -> list[LintResult]:
     """
@@ -157,8 +157,8 @@ def lint(
     if not isinstance(config, dict):
         config = config_base.proselint_base
     if _checks is None:
-        registry.populate_enabled(config["checks"])
-        _checks = registry.get_all_enabled()
+        registry.discover()
+        _checks = registry.get_all_enabled(config["checks"])
 
     memoizer_key = cache.calculate_key(content, _checks)
     # TODO: filename enables more elegant 2d-dict
@@ -237,8 +237,8 @@ def lint_path(
 
     if not isinstance(config, dict):
         config = config_base.proselint_base
-    registry.populate_enabled(config["checks"])
-    checks = registry.get_all_enabled()
+    registry.discover()
+    checks = registry.get_all_enabled(config["checks"])
 
     results = {}
     chars = 0
@@ -283,8 +283,6 @@ def lint_path(
     global last_char_count  # noqa: PLW0603
     last_char_count = chars
     return results
-
-
 
 
 def convert_to_json(

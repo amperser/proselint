@@ -13,9 +13,10 @@ categories: writing
 Nonwords.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,14 +26,8 @@ examples_fail = [
     "The test was good irregardless.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "nonwords.misc"
-    msg = "Nonword, try '{}'."
-
-    # NOTE: or-variants have outer quotes omitted for later quoting
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "doubtlessly": "doubtless' or 'undoubtedly",
         "analyzation": "analysis",
         "annoyment": "annoyance",
@@ -67,9 +62,12 @@ def check(text: str) -> list[CheckResult]:
         "unequivocable": "unequivocal",
         "unmercilessly": "mercilessly",
         "unrelentlessly": "unrelentingly' or relentlessly",
-    }
+    }),
+    "nonwords.misc",
+    "Nonword, try '{}'.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("nonwords.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

@@ -14,13 +14,13 @@ Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    existence_check,
-    limit_results,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
 )
 
 examples_pass = [
@@ -32,18 +32,16 @@ examples_fail = [
 ]
 
 
-@limit_results(1)
-def check(text: str) -> list[CheckResult]:
-    """Avoid 'very'."""
-    err = "weasel_words.very"
-    msg = (
-        "Substitute 'damn' every time you're "
-        "inclined to write 'very'; your editor will delete it "
-        "and the writing will be just as it should be."
-    )
-    regex = "very"
-
-    return existence_check(text, [regex], err, msg)
+# TODO: reimplement limit_results
+check = CheckSpec(
+    Existence(["very"]),
+    "weasel_words.very",
+    "Substitute 'damn' every time you're "
+    "inclined to write 'very'; your editor will delete it "
+    "and the writing will be just as it should be.",
+)
 
 
-registry.register("weasel_words.very", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

@@ -11,12 +11,13 @@ categories: writing
 ---
 
 """
+
 from __future__ import annotations
 
 import re
 from typing import Optional
 
-from proselint.checks import CheckResult, registry
+from proselint.checks import CheckRegistry, CheckResult, CheckSpec
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -72,7 +73,7 @@ def trace_braces(
     return None
 
 
-def check_unmatched(text: str) -> list[CheckResult]:
+def _check_unmatched(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.braces.unmatched"
     # msg = "Don't fail to match / close opened braces '{}'."
@@ -96,4 +97,13 @@ def check_unmatched(text: str) -> list[CheckResult]:
     return results
 
 
-registry.register("misc.braces.unmatched", check_unmatched)
+check_unmatched = CheckSpec(
+    _check_unmatched,
+    "misc.braces.unmatched",
+    "Don't fail to match / close unopened braces.",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check_unmatched)

@@ -13,9 +13,10 @@ categories: writing
 Archaism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -28,13 +29,8 @@ examples_fail = [
     "it fills a much-needed gap",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.illogic"
-    msg = "'{}' is illogical."
-
-    illogics = [
+check = CheckSpec(
+    Existence([
         "preplan",
         "more than .{1,10} all",
         "appraisal valuations?",  # singular & plural
@@ -44,29 +40,28 @@ def check(text: str) -> list[CheckResult]:
         "much-needed voids?",  # singular & plural
         "no longer requires oxygen",
         "without scarcely",
-    ]
+    ]),
+    "misc.illogic",
+    "'{}' is illogical.",
+)
 
-    return existence_check(text, illogics, err, msg)
+check_coin_a_phrase_from = CheckSpec(
+    Existence(["to coin a phrase from"]),
+    "misc.illogic.coin",
+    "You can't coin an existing phrase. Did you mean 'borrow'?",
+)
 
-
-def check_coin_a_phrase_from(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.illogic.coin"
-    msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
-    items = ["to coin a phrase from"]
-    return existence_check(text, items, err, msg)
-
-
-def check_without_your_collusion(text: str) -> list[CheckResult]:
-    """Check the textself."""
-    err = "misc.illogic.collusion"
-    msg = "It's impossible to defraud yourself. Try 'aquiescence'."
-    items = ["without your collusion"]
-    return existence_check(text, items, err, msg)
+check_without_your_collusion = CheckSpec(
+    Existence(["without your collusion"]),
+    "misc.illogic.collusion",
+    "It's impossible to defraud yourself. Try 'aquiescence'.",
+)
 
 
-registry.register_many({
-    "misc.illogic": check,
-    "misc.illogic.coin": check_coin_a_phrase_from,
-    "misc.illogic.collusion": check_without_your_collusion,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_coin_a_phrase_from,
+        check_without_your_collusion,
+    ))

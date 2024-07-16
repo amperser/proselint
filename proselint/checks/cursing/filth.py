@@ -13,9 +13,10 @@ categories: writing
 Filthy words.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -23,16 +24,8 @@ examples_pass = [
 
 examples_fail = ["Bad shit in this phrase."]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.filth"
-    msg = (
-        "Nobody ever tells you this as a kid, "
-        "but you're supposed to avoid this word."
-    )
-
-    items = [
+check = CheckSpec(
+    Existence([
         "shit",
         "piss",
         "fuck",
@@ -43,9 +36,15 @@ def check(text: str) -> list[CheckResult]:
         "fart",
         "turd",
         "twat",
-    ]
+    ]),
+    "cursing.filth",
+    (
+        "Nobody ever tells you this as a kid, "
+        "but you're supposed to avoid this word."
+    ),
+)
 
-    return existence_check(text, items, err, msg)
 
-
-registry.register("cursing.filth", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

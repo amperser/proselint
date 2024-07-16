@@ -13,14 +13,15 @@ categories: writing
 Commercialese.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
     Pd,
-    existence_check,
-    preferred_forms_check_regex,
-    registry,
+    PreferredForms,
 )
 
 examples_pass = [
@@ -32,13 +33,8 @@ examples_fail = [
     "the C.i.F. is free.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.commercialese"
-    msg = "'{}' is commercialese."
-
-    commercialese = [
+check = CheckSpec(
+    Existence([
         "acknowledging yours of",
         "beg to advise",
         "enclosed herewith",
@@ -62,31 +58,31 @@ def check(text: str) -> list[CheckResult]:
         "with regard to",
         "your favor has come to hand",
         "yours of even date",
-    ]
+    ]),
+    "misc.commercialese",
+    "'{}' is commercialese.",
+)
 
-    return existence_check(text, commercialese, err, msg)
-
-
-def check_abbrev(text: str) -> list[CheckResult]:
-    """Check for abbreviations."""
-    # src = "https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm"
-    err = "misc.commercialese.abbreviations"
-    msg = "'{}' is commercialese. Depending on audience switch to {}"
-
-    items_regex: dict[str, str] = {
-        r"inst\.": "this month",
-        r"prox\.": "next month",
-        r"ult\.": "last month",
-        r"c\.i\.f\.": "cost, insurance, freight",
-        r"f\.o\.b\.": "Free On Board",
-    }
-
-    return preferred_forms_check_regex(
-        text, items_regex, err, msg, padding=Pd.sep_in_txt
-    )
+# src = "https://www.ourcivilisation.com/smartboard/shop/gowerse/abc/cmmrcls.htm"
+check_abbrev = CheckSpec(
+    PreferredForms(
+        {
+            r"inst\.": "this month",
+            r"prox\.": "next month",
+            r"ult\.": "last month",
+            r"c\.i\.f\.": "cost, insurance, freight",
+            r"f\.o\.b\.": "Free On Board",
+        },
+        padding=Pd.sep_in_txt,
+    ),
+    "misc.commercialese.abbreviations",
+    "'{}' is commercialese. Depending on audience switch to {}.",
+)
 
 
-registry.register_many({
-    "misc.commercialiese": check,
-    "misc.commercialese.abbreviations": check_abbrev,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_abbrev,
+    ))

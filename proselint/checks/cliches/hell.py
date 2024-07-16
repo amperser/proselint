@@ -13,14 +13,10 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import (
-    CheckResult,
-    existence_check,
-    limit_results,
-    registry,
-)
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -30,16 +26,14 @@ examples_fail = [
     "I was at xyz and then all hell broke loose again.",
 ]
 
-
-@limit_results(1)
-def check_repeated_exclamations(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cliches.hell"
-    msg = "Never use the words 'all hell broke loose'."
-
-    items = ["all hell broke loose"]
-
-    return existence_check(text, items, err, msg)
+# TODO: limit_results
+check = CheckSpec(
+    Existence(["all hell broke loose"]),
+    "cliches.hell",
+    "Never use the words 'all hell broke loose'.",
+)
 
 
-registry.register("cliches.hell", check_repeated_exclamations)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

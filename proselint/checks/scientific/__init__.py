@@ -1,5 +1,5 @@
 """Scientific writing."""
 
-from proselint.checks.scientific import misc
+from proselint.checks.scientific.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

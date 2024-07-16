@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    existence_check,
-    limit_results,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -20,18 +19,13 @@ examples_fail = [
     "Writing tests is not rocket surgery.",
 ]
 
-
-@limit_results(1)
-def check_bottleneck(text: str) -> list[CheckResult]:
-    """
-    Avoid mixing metaphors about bottles and their necks.
-
-    source:     Sir Ernest Gowers
-    source_url: http://bit.ly/1CQPH61
-    """
-    err = "mixed_metaphors.misc.bottleneck"
-    msg = "Mixed metaphor — bottles with big necks are easy to pass through."
-    items = [
+# TODO: reimplement limit_results
+"""
+source:     Sir Ernest Gowers
+source_url: http://bit.ly/1CQPH61
+"""
+check_bottleneck = CheckSpec(
+    Existence([
         "biggest bottleneck",
         "big bottleneck",
         "large bottleneck",
@@ -39,38 +33,41 @@ def check_bottleneck(text: str) -> list[CheckResult]:
         "world-wide bottleneck",
         "huge bottleneck",
         "massive bottleneck",
-    ]
+    ]),
+    "mixed_metaphors.misc.bottleneck",
+    "Mixed metaphor — bottles with big necks are easy to pass through.",
+)
 
-    return existence_check(text, items, err, msg)
-
-
-def check_misc(text: str) -> list[CheckResult]:
-    """
-    Avoid mixing metaphors.
-
-    source:     Garner's Modern American Usage
-    source_url: http://bit.ly/1T4alrY
-    """
-    err = "mixed_metaphors.misc"
-    msg = "Mixed metaphor. Try '{}'."
-
-    items: dict[str, str] = {
+misc_name = "mixed_metaphors.misc"
+misc_msg = "Mixed metaphor. Try '{}'."
+"""
+source:     Garner's Modern American Usage
+source_url: http://bit.ly/1T4alrY
+"""
+check_misc = CheckSpec(
+    PreferredFormsSimple({
         "cream rises to the crop": "cream rises to the top",
         "button your seatbelts": "fasten your seatbelts",
         "a minute to decompose": "a minute to decompress",
         "not rocket surgery": "not rocket science",
-    }
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
+    }),
+    misc_name,
+    misc_msg,
+)
 
-    items_regex: dict[str, str] = {
+check_misc_2 = CheckSpec(
+    PreferredForms({
         r"sharpest marble in the (shed|box)": "sharpest tool in the shed",
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    misc_name,
+    misc_msg,
+)
 
-    return ret1 + ret2
 
-
-registry.register_many({
-    "mixed_metaphors.misc.bottleneck": check_bottleneck,
-    "mixed_metaphors.misc": check_misc,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_bottleneck,
+        check_misc,
+        check_misc_2,
+    ))

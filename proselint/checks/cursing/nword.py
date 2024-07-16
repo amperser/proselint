@@ -13,9 +13,10 @@ categories: writing
 Take responsibility with the shitty words you wanna say.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,17 +26,13 @@ examples_fail = [
     "Have i used the n-word?",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nword"
-    msg = "Take responsibility for the shitty words you want to say."
-
-    items = [
-        "the n-word",
-    ]
-
-    return existence_check(text, items, err, msg)
+check = CheckSpec(
+    Existence(["the n-word"]),
+    "cursing.nword",
+    "Take responsibility for the shitty words you want to say.",
+)
 
 
-registry.register("cursing.nword", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

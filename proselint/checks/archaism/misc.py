@@ -13,9 +13,10 @@ categories: writing
 Archaism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -24,13 +25,8 @@ examples_pass = [
 
 examples_fail = ["I want to sleep, perchance to dream."]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "archaism.misc"
-    msg = "'{}' is archaic."
-
-    archaisms = [
+check = CheckSpec(
+    Existence([
         "alack",
         "anent",
         # "anon",
@@ -83,11 +79,14 @@ def check(text: str) -> list[CheckResult]:
         # "demean", when used to mean "to behave" in legal contexts
         # "by the bye", # variant, modern is "by the by"
         # "comptroller" # in British English
-        # "abortive" Abortive is archaic in reference to abortions of fetuses,
+        # "abortive" Abortive is archaic in reference to abortions,
         # except in the sense “causing an abortion.”
-    ]
+    ]),
+    "archaism.misc",
+    "'{}' is archaic.",
+)
 
-    return existence_check(text, archaisms, err, msg)
 
-
-registry.register("archaism.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

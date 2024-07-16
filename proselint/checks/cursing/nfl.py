@@ -13,9 +13,10 @@ categories: writing
 Words the NFL won't print on a jersey.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,13 +32,11 @@ examples_fail = [
     "get your a.s.s. over here.",
 ]
 
+name = "cursing.nfl"
+msg = "The NFL won't print this word on a jersey."
 
-def check_a_to_e(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nfl"
-    msg = "The NFL won't print this word on a jersey."
-
-    items = [
+check_a_to_e = CheckSpec(
+    Existence([
         "420",
         "666",
         "2 on 1",
@@ -395,16 +394,13 @@ def check_a_to_e(text: str) -> list[CheckResult]:
         "erection",
         "evl",
         "excrement",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    name,
+    msg,
+)
 
-
-def check_f_to_h(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nfl"
-    msg = "The NFL won't print this word on a jersey."
-
-    items = [
+check_f_to_h = CheckSpec(
+    Existence([
         "f toyota",
         "face fucker",
         "facefucker",
@@ -620,16 +616,13 @@ def check_f_to_h(text: str) -> list[CheckResult]:
         "hottotrot",
         "hussy",
         "hustler",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    name,
+    msg,
+)
 
-
-def check_i_to_p(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nfl"
-    msg = "The NFL won't print this word on a jersey."
-
-    items = [
+check_i_to_p = CheckSpec(
+    Existence([
         "i love beer",
         "i luv beer",
         "id ten t",
@@ -900,16 +893,13 @@ def check_i_to_p(text: str) -> list[CheckResult]:
         "pussypounder",
         "putt pirate",
         "pwt",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    name,
+    msg,
+)
 
-
-def check_q_to_z(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nfl"
-    msg = "The NFL won't print this word on a jersey."
-
-    items = [
+check_q_to_z = CheckSpec(
+    Existence([
         "queef",
         "queer",
         "quickie",
@@ -1220,28 +1210,31 @@ def check_q_to_z(text: str) -> list[CheckResult]:
         "xxx",
         "yellow man",
         "yellowman",
-    ]
+    ]),
+    name,
+    msg,
+)
 
-    return existence_check(text, items, err, msg)
+check_abb = CheckSpec(
+    Existence(
+        [
+            r"a\.s\.s\.",
+            r"f\.i\.n\.e\.",
+            r"f\.u\.c\.k\.",
+        ],
+        padding=Pd.sep_in_txt,
+    ),
+    name,
+    msg,
+)
 
 
-def check_abb(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "cursing.nfl"
-    msg = "The NFL won't print this word on a jersey."
-
-    items = [
-        r"a\.s\.s\.",
-        r"f\.i\.n\.e\.",
-        r"f\.u\.c\.k\.",
-    ]
-    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
-
-
-registry.register_many({
-    "cursing.nfl.a_to_e": check_a_to_e,
-    "cursing.nfl.f_to_h": check_f_to_h,
-    "cursing.nfl.i_to_p": check_i_to_p,
-    "cursing.nfl.q_to_z": check_q_to_z,
-    "cursing.nfl.abb": check_abb
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_a_to_e,
+        check_f_to_h,
+        check_i_to_p,
+        check_q_to_z,
+        check_abb,
+    ))

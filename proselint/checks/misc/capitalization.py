@@ -13,14 +13,17 @@ categories: writing
 Incorrect capitalization.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckRegistry,
     CheckResult,
+    CheckSpec,
+    ExistenceSimple,
     Pd,
+    PreferredFormsSimple,
     existence_check_simple,
-    preferred_forms_check_opti,
-    registry,
 )
 
 examples_pass = [
@@ -46,40 +49,35 @@ examples_fail = [
 ]
 
 
-def check_terms(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.terms"
-    msg = "Incorrect capitalization. '{}' is the preferred form."
-
-    items: dict[str, str] = {
+check_terms = CheckSpec(
+    PreferredFormsSimple({
         "stone age": "Stone Age",
         "Space Age": "space age",
         "the American west": "the American West",
         "mother nature": "Mother Nature",
-    }
+    }),
+    "misc,capitalization.terms",
+    "Incorrect capitalization. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
-
-
-def check_seasons(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.seasons"
-    msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
-    items: dict[str, str] = {
+check_seasons = CheckSpec(
+    PreferredFormsSimple({
         "Winter": "winter",
         "Fall": "fall",
         "Summer": "summer",
         "Spring": "spring",
-    }
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
+    }),
+    "misc.capitalization.seasons",
+    "Seasons shouldn't be capitalized. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-
-def check_months(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.months"
-    msg = "Months should be capitalized. '{}' is the preferred form."
-
-    items: dict[str, str] = {
+check_months = CheckSpec(
+    # too many false positives: may, march
+    # TODO: deal better with collisions / false positives
+    #       i.e. "(you|he|...) may proceed" follows a pattern
+    PreferredFormsSimple({
         "january": "January",
         "february": "February",
         "april": "April",
@@ -90,19 +88,14 @@ def check_months(text: str) -> list[CheckResult]:
         "october": "October",
         "november": "November",
         "december": "December",
-    }
-    # too many false positives: may, march
-    # TODO: deal better with collisions / false positives
-    #       i.e. "(you|he|...) may proceed" follows a pattern
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
+    }),
+    "misc.capitalization.months",
+    "Months should be capitalized. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-
-def check_days(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.days"
-    msg = "Days of the week should be capitalized. '{}' is the preferred form."
-
-    items: dict[str, str] = {
+check_days = CheckSpec(
+    PreferredFormsSimple({
         "monday": "Monday",
         "tuesday": "Tuesday",
         "wednesday": "Wednesday",
@@ -110,21 +103,20 @@ def check_days(text: str) -> list[CheckResult]:
         "friday": "Friday",
         "saturday": "Saturday",
         "sunday": "Sunday",
-    }
+    }),
+    "misc.capitalization.days",
+    "Days of the week should be capitalized. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-    return preferred_forms_check_opti(text, items, err, msg, ignore_case=False)
+check_roman_war = CheckSpec(
+    ExistenceSimple("World War (I(i*)|i*)"),
+    "misc.capitalization.roman_num.ww",
+    "Capitalize the roman numeral abbreviation in '{}'.",
+)
 
 
-def check_roman_war(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.capitalization.roman_num.ww"
-    msg = "Don't fail to capitalize roman numeral abbreviation in '{}'."
-
-    regex = "World War (I(i*)|i*)"
-    return existence_check_simple(text, regex, err, msg, ignore_case=False)
-
-
-def check_roman_numerals(text: str) -> list[CheckResult]:
+def _check_roman_numerals(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "misc.capitalization.roman_num"
     msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
@@ -146,11 +138,20 @@ def check_roman_numerals(text: str) -> list[CheckResult]:
     return results_valid
 
 
-registry.register_many({
-    "misc.capitalization.terms": check_terms,
-    "misc.capitalization.seasons": check_seasons,
-    "misc.capitalization.months": check_months,
-    "misc.capitalization.days": check_days,
-    "misc.capitalization.roman_num.ww": check_roman_war,
-    "misc.capitalization.roman_num": check_roman_numerals,
-})
+check_roman_numerals = CheckSpec(
+    _check_roman_numerals,
+    "misc.capitalization.roman_num",
+    "Capitalize the roman numeral abbreviation '{}'.",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_terms,
+        check_seasons,
+        check_months,
+        check_days,
+        check_roman_war,
+        check_roman_numerals,
+    ))

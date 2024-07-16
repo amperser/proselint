@@ -13,13 +13,15 @@ categories: writing
 Check that links are not broken.
 
 """
+
 from __future__ import annotations
 
-import asyncio
 import re
-import urllib.request as ulr
+from time import sleep
+from urllib.error import URLError
+from urllib.request import Request, urlopen
 
-from proselint.checks import CheckResult, registry
+from proselint.checks import CheckRegistry, CheckResult, CheckSpec
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -35,7 +37,9 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
+# NOTE: this was renamed to avoid potential future conflicts with check path
+# computations
+def _check_links(text: str) -> list[CheckResult]:
     """Check the text."""
     err = "links.broken"
     msg = "Broken link: {}"
@@ -65,7 +69,7 @@ def check(text: str) -> list[CheckResult]:
                     replacements=None,
                 )
             )
-            asyncio.sleep(0.1)
+            sleep(0.1)
 
     return results
 
@@ -74,13 +78,21 @@ def is_broken_link(url: str) -> bool:
     """Determine whether the link returns a 404 error."""
     try:
         # TODO: update header?
-        request = ulr.Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
-        ulr.urlopen(request).read()  # noqa: S310
+        request = Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
+        urlopen(request).read()  # noqa: S310
         return False
-    except ulr.URLError:
-        return True
-    except OSError:
+    # TODO: consider simplifying this - URLerror is a subclass of OSError
+    except (URLError, OSError):
         return True
 
 
-registry.register("links.broken", check)
+check = CheckSpec(
+    _check_links,
+    "links.broken",
+    "Broken link: {}",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

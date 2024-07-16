@@ -7,7 +7,7 @@ import hashlib
 import pickle  # noqa: S403
 import shutil
 from datetime import datetime, timedelta, timezone
-from typing import TYPE_CHECKING, Callable, Optional, TypedDict
+from typing import TYPE_CHECKING, Optional, TypedDict
 
 from typing_extensions import Self, Unpack
 
@@ -17,6 +17,8 @@ from .version import __version__ as version
 
 if TYPE_CHECKING:
     from types import TracebackType
+
+    from proselint.checks import CheckSpec
 
 
 class Cache:
@@ -128,10 +130,10 @@ class Cache:
         self._age.clear()
 
     @staticmethod
-    def calculate_key(text: str, checks: list[Callable]) -> str:
+    def calculate_key(text: str, checks: list[CheckSpec]) -> str:
         """Compute the key for accessing a cache entry."""
         text_hash = hashlib.sha224(text.encode("utf-8")).hexdigest()[:50]
-        chck_list = [f"{c.__module__}.{c.__name__}" for c in checks]
+        chck_list = [f"{c.__module__}.{c.path}" for c in checks]
         chck_hash = hashlib.sha224(
             " ".join(chck_list).encode("utf-8")
         ).hexdigest()[:10]

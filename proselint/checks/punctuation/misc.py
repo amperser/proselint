@@ -13,14 +13,15 @@ categories: writing
 Dates.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
+    ExistenceSimple,
     Pd,
-    existence_check,
-    existence_check_simple,
-    registry,
 )
 
 examples_pass = [
@@ -35,59 +36,56 @@ examples_fail = [
     "I usually wait an hour. and then another.",
 ]
 
+check_garner = CheckSpec(
+    Existence(
+        [
+            r"et\. al",
+            r"et\. al\.",
+        ],
+        padding=Pd.sep_in_txt,
+    ),
+    "punctuation.misc.garner",
+    "Misplaced punctuation. It's 'et al.'",
+)
 
-def check_garner(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "punctuation.misc.garner"
-    msg = "Misplaced punctuation. It's 'et al.'"
-
-    items = [
-        r"et\. al",
-        r"et\. al\.",
-    ]
-    return existence_check(text, items, err, msg, padding=Pd.sep_in_txt)
-
-
-def check_lower_case_after_punctuation(text: str) -> list[CheckResult]:
-    """Check the text."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    err = "punctuation.misc.lower_case"
-    msg = "Is the lower case letter correct after the punctuation? here '{}'."
-    regex = r"\b[a-z]+[\.!\?]\s+[a-z]+\b"
-    # TODO: this can have false positives after abbreviations
-    exceptions = [
-        r"al\.",
-        r"lat\.",
-        r"vs\.",
-        r"etc\.",
-        r"Prof\.",
-        r"Dr\.",
-        r"[vV]ol\.",
-        r"[fF]ig\.",
-    ]
-    # en, TODO: add more, sync with numbers/sentence
-    # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
-    #                   "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
-    return existence_check_simple(
-        text, regex, err, msg, ignore_case=False, exceptions=exceptions
-    )
-
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
+check_lower_case_after_punctuation = CheckSpec(
+    ExistenceSimple(
+        # TODO: this can have false positives after abbreviations
+        r"\b[a-z]+[\.!\?]\s+[a-z]+\b",
+        # en, TODO: add more, sync with misc.numbers.sentence
+        # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
+        #                  "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
+        exceptions=(
+            r"al\.",
+            r"lat\.",
+            r"vs\.",
+            r"etc\.",
+            r"Prof\.",
+            r"Dr\.",
+            r"[vV]ol\.",
+            r"[fF]ig\.",
+        ),
+    ),
+    "punctuation.misc.lower_case",
+    "Is the lowercase letter correct after the punctuation here? Found '{}'.",
+)
 
 # TODO: determine validity of this
-def check_comma_digits(text: str) -> list[CheckResult]:
-    """Check for commas in digits."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    # NOTE: tnt also checks for German numbers, not implemented here
-    err = "punctuation.misc.comma_digits"
-    msg = "In English ',' is used as a decimal separator."
-    regex = Pd.words_in_txt.value.format(r"\d+,\d+")
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
+# NOTE: tnt also checks for German numbers, not implemented here
+check_comma_digits = CheckSpec(
     # NOTE: intentional words_in_txt
+    ExistenceSimple(Pd.words_in_txt.value.format(r"\d+,\d+")),
+    "punctuation.misc.comma_digits",
+    "In English ',' is used as a decimal separator.",
+)
 
-    return existence_check_simple(text, regex, err, msg)
 
-
-registry.register_many({
-    "punctuation.misc.garner": check_garner,
-    "punctuation.misc.lower_case": check_lower_case_after_punctuation,
-    "punctuation.misc.comma_digits": check_comma_digits,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_garner,
+        check_lower_case_after_punctuation,
+        check_comma_digits,
+    ))

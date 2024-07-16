@@ -1,5 +1,5 @@
 """Advice on science."""
 
-from proselint.checks.psychology import misc
+from proselint.checks.psychology.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

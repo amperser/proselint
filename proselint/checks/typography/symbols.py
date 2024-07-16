@@ -8,13 +8,13 @@ source_url: http://practicaltypography.com/
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckRegistry,
     CheckResult,
+    CheckSpec,
+    Existence,
     Pd,
     consistency_check,
-    existence_check,
     existence_check_simple,
-    limit_results,
-    registry,
 )
 
 examples_pass = [
@@ -49,85 +49,80 @@ examples_fail = [
     "pauls`s is not fine",
 ]
 
+# TODO: reimplement limit_results
 
-@limit_results(3)
-def check_ellipsis(text: str) -> list[CheckResult]:
-    """Use an ellipsis instead of three dots."""
-    err = "typography.symbols.ellipsis"
-    msg = "'...' is an approximation, use the ellipsis symbol '…'."
-    items = [r"\.\.\."]
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
+check_ellipsis = CheckSpec(
+    Existence(
+        [r"\.\.\."],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.ellipsis",
+    "'...' is an approximation, use the ellipsis symbol '…'.",
+)
 
+check_copyright_symbol = CheckSpec(
+    Existence(
+        [r"\([cC]\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.copyright",
+    "(c) is a goofy alphabetic approximation, use the symbol ©.",
+)
 
-@limit_results(1)
-def check_copyright_symbol(text: str) -> list[CheckResult]:
-    """Use the copyright symbol instead of (c)."""
-    err = "typography.symbols.copyright"
-    msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
-    regex = r"\([cC]\)\B"
+check_trademark_symbol = CheckSpec(
+    Existence(
+        [r"\(TM\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.trademark",
+    "(TM) is a goofy alphabetic approximation, use the symbol ™.",
+)
 
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
-
-
-@limit_results(3)
-def check_trademark_symbol(text: str) -> list[CheckResult]:
-    """Use the trademark symbol instead of (TM)."""
-    err = "typography.symbols.trademark"
-    msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
-    regex = r"\(TM\)\B"
-
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
-
-
-@limit_results(3)
-def check_registered_trademark_symbol(text: str) -> list[CheckResult]:
-    """Use the registered trademark symbol instead of (R)."""
-    err = "typography.symbols.registered"
-    msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
-    regex = r"\([rR]\)\B"
-
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
-
+check_registered_trademark_symbol = CheckSpec(
+    Existence(
+        [r"\([rR]\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.registered",
+    "(R) is a goofy alphabetic approximation, use the symbol ®.",
+)
 
 # FIXME: this check is repeated elsewhere
-@limit_results(3)
-def check_sentence_spacing(text: str) -> list[CheckResult]:
-    """Use no more than two spaces after a period."""
-    err = "typography.symbols.sentence_spacing"
-    msg = "More than two spaces after the period; use 1 or 2."
-    regex = r"\. {3}"
+check_sentence_spacing = CheckSpec(
+    Existence(
+        [r"\. {3}"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.sentence_spacing",
+    "More than two spaces after the period; use 1 or 2.",
+)
 
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
+check_multiplication_symbol = CheckSpec(
+    Existence(
+        [r"[0-9]+ ?x ?[0-9]+"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.multiplication_symbol",
+    "Use the multiplication symbol ×, not the letter x.",
+)
 
+check_curly_quotes = CheckSpec(
+    Existence(
+        [r"\"[\w\s\d]+\""],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.curly_quotes",
+    'Use curly quotes “”, not straight quotes "".',
+)
 
-@limit_results(3)
-def check_multiplication_symbol(text: str) -> list[CheckResult]:
-    """Use the multiplication symbol ×, not the lowercase letter x."""
-    err = "typography.symbols.multiplication_symbol"
-    msg = "Use the multiplication symbol ×, not the letter x."
-    regex = r"[0-9]+ ?x ?[0-9]+"
-
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
-
-
-@limit_results(3)
-def check_curly_quotes(text: str) -> list[CheckResult]:
-    """Use curly quotes, not straight quotes."""
-    err = "typography.symbols.curly_quotes"
-    msg = 'Use curly quotes “”, not straight quotes "".'
-    regex = r"\"[\w\s\d]+\""
-
-    return existence_check(text, [regex], err, msg, padding=Pd.disabled)
-
-
-def disabled_check_en_dash_separated_names(_text: str) -> list[CheckResult]:
-    """Use an en-dash to separate names."""
-    # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
-    #     u"Use an en dash (–) to separate names."],
-    return []  # TODO
+deactivated_check_en_dash_separated_names = CheckSpec(
+    Existence(["[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}"]),
+    "",
+    "Use an en dash (–) to separate names.",
+)
 
 
-def check_apostrophes(text: str) -> list[CheckResult]:
+def _check_apostrophes(text: str) -> list[CheckResult]:
     """Enforce use of correct typographical apostrophes."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
     err = "typography.symbols.apostrophes"
@@ -144,13 +139,22 @@ def check_apostrophes(text: str) -> list[CheckResult]:
     return results
 
 
-registry.register_many({
-    "typography.symbols.ellipsis": check_ellipsis,
-    "typography.symbols.copyright": check_copyright_symbol,
-    "typography.symbols.trademark": check_trademark_symbol,
-    "typography.symbols.registered": check_registered_trademark_symbol,
-    "typography.symbols.sentence_spacing": check_sentence_spacing,
-    "typography.symbols.multiplication_symbol": check_multiplication_symbol,
-    "typography.symbols.curly_quotes": check_curly_quotes,
-    "typography.symbols.apostrophes": check_apostrophes,
-})
+check_apostrophes = CheckSpec(
+    _check_apostrophes,
+    "typography.symbols.apostrophes",
+    "Use the correct apostrophe - 's is preferred - ´s is ok",
+)
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_ellipsis,
+        check_copyright_symbol,
+        check_trademark_symbol,
+        check_registered_trademark_symbol,
+        check_sentence_spacing,
+        check_multiplication_symbol,
+        check_curly_quotes,
+        check_apostrophes,
+    ))

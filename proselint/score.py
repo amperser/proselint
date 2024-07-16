@@ -4,7 +4,6 @@ Compute the linter's score on the corpus.
 NOTE: relic, probably broken
 """
 
-
 import os
 import re
 import subprocess  # noqa: S404

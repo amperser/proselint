@@ -1,4 +1,5 @@
 """Proselint config - replacement for default .proselintrc since #1212."""
+
 from __future__ import annotations
 
 from enum import IntEnum

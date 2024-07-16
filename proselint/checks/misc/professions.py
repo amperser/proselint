@@ -13,9 +13,10 @@ categories: writing
 Professions.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,18 +26,16 @@ examples_fail = [
     "I really need a shoe repair guy.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.professions"
-    msg = "'{}' is the name of that job, not '{}'"
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "shoe repair guy": "cobbler",
         "geometrist": "geometer",
-    }
+    }),
+    "misc.professions",
+    "'{}' is the name of that job, not '{}'.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("misc.professions", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

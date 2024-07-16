@@ -13,9 +13,10 @@ categories: writing
 Annotation left in text.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -24,22 +25,20 @@ examples_pass = [
 
 examples_fail = ["Add it to the TODO list."]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "annotations.misc"
-    msg = "Annotation left in text."
-
-    items = [
+check = CheckSpec(
+    Existence([
         "FIXME",
         "FIX ME",
         "TODO",
         "todo",
         "ERASE THIS",
         "FIX THIS",
-    ]
+    ]),
+    "annotations.misc",
+    "Annotation left in text.",
+)
 
-    return existence_check(text, items, err, msg, ignore_case=False)
 
-
-registry.register("annotations.misc", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

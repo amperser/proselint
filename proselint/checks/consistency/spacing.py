@@ -14,9 +14,10 @@ Points out instances where there are two conventions, 1 vs. 2 spaces after
 a period, in the same document.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, consistency_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Consistency
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,14 +26,14 @@ examples_pass = [
 
 examples_fail = ["This is bad.  Not consistent. At all."]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "consistency.spacing"
-    msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
-
-    regex = [r"[\.\?!] [A-Z]", r"[\.\?!]  [A-Z]"]
-    return consistency_check(text, [regex], err, msg, ignore_case=False)
+check = CheckSpec(
+    Consistency([(r"[\.\?!] [A-Z]", r"[\.\?!]  [A-Z]")]),
+    "consistency.spacing",
+    "Inconsistent spacing after period (1 vs. 2 spaces).",
+    ignore_case=False,
+)
 
 
-registry.register("consistency.spacing", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

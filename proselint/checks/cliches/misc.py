@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -32,18 +32,14 @@ examples_fail = [
     "He's sick and tired of it.",
 ]
 
+msg = "'{}' is a cliché."
 
-def check_cliches_garner(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    source:     Garner's Modern American Usage
-    source_url: http://bit.ly/1T4alrY
-    """
-    err = "cliches.garner"
-    msg = "'{}' is cliché."
-
-    items = [
+"""
+source:     Garner's Modern American Usage
+source_url: http://bit.ly/1T4alrY
+"""
+check_cliches_garner = CheckSpec(
+    Existence([
         "a fate worse than death",
         "alas and alack",
         "at the end of the day",
@@ -123,24 +119,17 @@ def check_cliches_garner(text: str) -> list[CheckResult]:
         "whet (?:the|your) appetite",
         "wool pulled over our eyes",
         "writ large",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.garner",
+    msg,
+)
 
-
-def check_cliches_write_good_a_to_c(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     write-good
+source_url: https://github.com/btford/write-good
+"""
+check_cliches_write_good_a_to_c = CheckSpec(
+    Existence([
         "a chip off the old block",
         "a clean slate",
         "a dark and stormy night",
@@ -293,24 +282,17 @@ def check_cliches_write_good_a_to_c(text: str) -> list[CheckResult]:
         "cute as a button",
         "cute as a puppy",
         "cuts to the quick",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.write_good",
+    msg,
+)
 
-
-def check_cliches_write_good_d_to_j(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     write-good
+source_url: https://github.com/btford/write-good
+"""
+check_cliches_write_good_d_to_j = CheckSpec(
+    Existence([
         "dark before the dawn",
         "day in, day out",
         "dead as a doornail",
@@ -480,24 +462,17 @@ def check_cliches_write_good_d_to_j(text: str) -> list[CheckResult]:
         "just a hop, skip, and a jump",
         "just the ticket",
         "justice is blind",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.write_good",
+    msg,
+)
 
-
-def check_cliches_write_good_k_to_o(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     write-good
+source_url: https://github.com/btford/write-good
+"""
+check_cliches_write_good_k_to_o = CheckSpec(
+    Existence([
         "keep a stiff upper lip",
         "keep an eye on",
         "keep it simple, stupid",
@@ -650,24 +625,17 @@ def check_cliches_write_good_k_to_o(text: str) -> list[CheckResult]:
         "out on a limb",
         "over a barrel",
         "over the hump",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.write_good",
+    msg,
+)
 
-
-def check_cliches_write_good_p_to_s(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-      so it was segmented to even the load for parallelization
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     write-good
+source_url: https://github.com/btford/write-good
+"""
+check_cliches_write_good_p_to_s = CheckSpec(
+    Existence([
         "pain and suffering",
         "pain in the",
         "panic button",
@@ -787,24 +755,17 @@ def check_cliches_write_good_p_to_s(text: str) -> list[CheckResult]:
         "stuffed shirt",
         "sweating blood",
         "sweating bullets",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.write_good",
+    msg,
+)
 
-
-def check_cliches_write_good_t_to_z(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-
-    source:     write-good
-    source_url: https://github.com/btford/write-good
-    """
-    err = "cliches.write_good"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     write-good
+source_url: https://github.com/btford/write-good
+"""
+check_cliches_write_good_t_to_z = CheckSpec(
+    Existence([
         "take a load off",
         "take one for the team",
         "take the bait",
@@ -910,21 +871,17 @@ def check_cliches_write_good_t_to_z(text: str) -> list[CheckResult]:
         "you're the boss",
         "young and foolish",
         "young and vibrant",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "cliches.write_good",
+    msg,
+)
 
-
-def check_cliches_gnu_diction(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    source:     GNU diction
-    source_url: https://directory.fsf.org/wiki/Diction
-    """
-    err = "cliches.gnu_diction"
-    msg = "'{}' is a cliché."
-
-    items = [
+"""
+source:     GNU diction
+source_url: https://directory.fsf.org/wiki/Diction
+"""
+check_cliches_gnu_diction = CheckSpec(
+    Existence([
         "a matter of concern",
         "all things being equal",
         "as a last resort",
@@ -952,22 +909,17 @@ def check_cliches_gnu_diction(text: str) -> list[CheckResult]:
         "we regret to inform you",
         "we wish to state",
         "you are hereby advised that",
-    ]
+    ]),
+    "cliches.gnu_diction",
+    msg,
+)
 
-    return existence_check(text, items, err, msg, ignore_case=True)
-
-
-def check_cliches_nigel(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    source:     Nigel Ree's Dictionary of Cliches
-    source_url: bit.ly/3sL091j
-    """
-    err = "cliches.nigel"
-    msg = "'{}' is cliché."
-
-    cliches = [
+"""
+source:     Nigel Ree's Dictionary of Cliches
+source_url: bit.ly/3sL091j
+"""
+check_cliches_nigel = CheckSpec(
+    Existence([
         "abhors a vacuum",
         "accident waiting to happen",
         "Achilles' heel",
@@ -1116,18 +1068,21 @@ def check_cliches_nigel(text: str) -> list[CheckResult]:
         "when the chips are down",
         "wind of change",
         "yawning gap",
-    ]
+    ]),
+    "cliches.nigel",
+    msg,
+)
 
-    return existence_check(text, cliches, err, msg, ignore_case=True)
 
-
-registry.register_many({
-    "cliches.garner": check_cliches_garner,
-    "cliches.write_good.a_to_c": check_cliches_write_good_a_to_c,
-    "cliches.write_good.d_to_j": check_cliches_write_good_d_to_j,
-    "cliches.write_good.k_to_o": check_cliches_write_good_k_to_o,
-    "cliches.write_good.p_to_s": check_cliches_write_good_p_to_s,
-    "cliches.write_good.t_to_z": check_cliches_write_good_t_to_z,
-    "cliches.gnu_diction": check_cliches_gnu_diction,
-    "cliches.nigel": check_cliches_nigel,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_cliches_garner,
+        check_cliches_write_good_a_to_c,
+        check_cliches_write_good_d_to_j,
+        check_cliches_write_good_k_to_o,
+        check_cliches_write_good_p_to_s,
+        check_cliches_write_good_t_to_z,
+        check_cliches_gnu_diction,
+        check_cliches_nigel,
+    ))

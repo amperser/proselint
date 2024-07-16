@@ -13,9 +13,10 @@ categories: writing
 Points out preferred forms.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -26,13 +27,8 @@ examples_fail = [
     "He is Chief Justice of the Supreme Court of the United States.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.preferred_forms.garner"
-    msg = "'{}' is the preferred form."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         # Obsolete words
         "imprimature": "imprimatur",
         # Proper nouns
@@ -183,9 +179,12 @@ def check(text: str) -> list[CheckResult]:
         # Accents
         "ne": "né",
         "nee": "née",
-    }
+    }),
+    "misc.preferred_forms.garner",
+    "'{}' is the preferred form.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register("misc.preferred_forms.garner", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

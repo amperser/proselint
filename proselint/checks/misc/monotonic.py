@@ -12,9 +12,10 @@ categories: writing
 
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check_simple, registry
+from proselint.checks import CheckRegistry, CheckSpec, ExistenceSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -29,19 +30,20 @@ I am a fan of superman.""",
 ]
 
 
-def check_sentence(text: str) -> list[CheckResult]:
-    """Can have false positives after abbreviations."""
-    err = "misc.monotonic.sentence"
-    msg = (
-        "It is bad style to open consecutive sentences with the same word, "
-        "here '{}'."
-    )
-
-    regex = r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
+check_sentence = CheckSpec(
     # matches identical words starting uppercase after either newline or .!?
     # NOTE: can't be padded without modification -> because of \2
-    return existence_check_simple(text, regex, err, msg, ignore_case=False)
+    ExistenceSimple(
+        r"([\.!\?]\s+|^)([A-Z][a-z]*\b)[^\.!\?]+[\.!?]\s+\2\b(\s+[a-z]*)"
+    ),
+    "misc.monotonic.sentence",
+    "It is bad style to open consecutive sentences with the same word in '{}'.",
+    ignore_case=False,
+)
 
-
-registry.register("misc.monotonic.sentence", check_sentence)
 # TODO: check same line/section-beginning
+
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check_sentence)

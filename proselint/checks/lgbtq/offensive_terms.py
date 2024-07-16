@@ -15,9 +15,10 @@ raises an error marking them as offensive. The New York Times and
 Associated Press have also adopted this style guide.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -29,12 +30,8 @@ examples_fail = [
 ]
 
 
-def check(text: str) -> list[CheckResult]:
-    """Flag offensive words based on the GLAAD reference guide."""
-    err = "lgbtq.offensive_terms.glaad"
-    msg = "Offensive term. Remove it or consider the context."
-
-    items = [
+check = CheckSpec(
+    Existence([
         "fag",
         "faggot",
         "dyke",
@@ -44,11 +41,16 @@ def check(text: str) -> list[CheckResult]:
         "transvestite",
         "homosexual lifestyle",
         "gay lifestyle",
-        # homo - may create false positives without additional context
-        # FIXME use topic detector to decide whether "homo" is offensive
-    ]
+        # homo may create false positives without additional context
+        # FIXME: use topic detector to decide whether "homo" is offensive
+    ]),
+    "lgbtq.offensive_terms.glaad",
+    "Offensive term. Remove it or consider the context.",
+    # TODO: consider the impact of setting ignore_case=True
+    ignore_case=False,
+)
 
-    return existence_check(text, items, err, msg, ignore_case=False)
 
-
-registry.register("lgbtq.offensive_terms.glaad", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

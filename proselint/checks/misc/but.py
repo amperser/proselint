@@ -13,9 +13,10 @@ categories: writing
 Paragraphs should not start with certain bad words.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -31,17 +32,19 @@ examples_fail = [
     "Is this cool? But that not so much.",
 ]
 
+check = CheckSpec(
+    Existence(
+        [r"\b(?:^|[\.!\?]\s*)But\b"],
+        # TODO: the above regex is functionally equivalent to Pd.words_in_txt
+        # so why not use it?
+        padding=Pd.disabled,
+    ),
+    "misc.but",
+    "No paragraph or sentence should start with a 'But'.",
+    ignore_case=False,
+)
 
-def check(text: str) -> list[CheckResult]:
-    """Do not start a paragraph with a 'But'."""
-    err = "misc.but"
-    msg = "No paragraph or sentence should start with a 'But'."
-    # regex = r"(^|([\n\r\.]+))(\s*)But"
-    regex = r"\b(?:^|[\.!\?]\s*)But\b"  # more powerful & 50% less computation
 
-    return existence_check(
-        text, [regex], err, msg, ignore_case=False, padding=Pd.disabled
-    )
-
-
-registry.register("misc.but", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

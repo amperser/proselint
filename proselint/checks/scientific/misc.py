@@ -13,19 +13,21 @@ categories: writing
 Dates.
 
 """
+
 from __future__ import annotations
 
 import re
 
 from proselint.checks import (
+    CheckRegistry,
     CheckResult,
+    CheckSpec,
+    Consistency,
+    Existence,
+    ExistenceSimple,
     Pd,
-    consistency_check,
-    existence_check,
-    existence_check_simple,
-    preferred_forms_check_opti,
-    preferred_forms_check_regex,
-    registry,
+    PreferredForms,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -48,85 +50,66 @@ examples_fail = [
     "We present you something I built.",
 ]
 
-
-def check_num_unit(text: str) -> list[CheckResult]:
-    """Check numbers with units."""
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
+check_num_unit = CheckSpec(
     # TODO: add more than the SI-Units
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L325
-    err = "scientific.misc.num_unit"
-    msg = (
-        "In scientific writing there is a non-breaking space "
-        "(U+00A0, ~ in latex) between a number and its unit, here '{}'."
-    )
-    regex = (
-        r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
-        r"(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+\b"
-    )
     # - start with a space and a number that may contain a decimal.point
     # - no space afterward, optional exponent, common units
-    return existence_check_simple(text, regex, err, msg, ignore_case=False)
+    ExistenceSimple(
+        r"\s\d*\.?\d+(?:k|M|G|T|E|m|u|µ|n|p|f)?"
+        r"(?:s|m|g|A|K|mol|cd|Hz|dB|%|N|cal|C|F|V)+\b"
+    ),
+    "scientific.misc.num_unit",
+    (
+        "In scientific writing there is a non-breaking space "
+        "(U+00A0, ~ in latex) between a number and its unit, here '{}'."
+    ),
+    ignore_case=False,
+)
 
-
-def check_emotion(text: str) -> list[CheckResult]:
-    """Avoid the following words."""
-    # src = https://www.sciencewrites.org/dos-and-donts
-    err = "scientific.misc.emotion"
-    msg = "Scientific writing should not use emotionally laden terms like '{}'"
-    items = [
+# src = https://www.sciencewrites.org/dos-and-donts
+check_emotion = CheckSpec(
+    Existence([
         "ridiculous",
         "unfortunately",
         "obvious",
         "obviously",
-    ]
-    return existence_check(text, items, err, msg)
+    ]),
+    "scientific.misc.emotion",
+    "Scientific writing should not use emotionally laden terms like '{}'.",
+)
 
+# src = https://www.sciencewrites.org/dos-and-donts
+check_weasel = CheckSpec(
+    Existence(["attempts"]),
+    "scientific.misc.weasel",
+    "Scientific writing should not build on uncertainty like '{}'.",
+)
 
-def check_weasel(text: str) -> list[CheckResult]:
-    """Avoid the following words."""
-    # src = https://www.sciencewrites.org/dos-and-donts
-    err = "scientific.misc.weasel"
-    msg = "Scientific writing should not build on uncertainty like '{}'"
-    items = ["attempts"]
-    return existence_check(text, items, err, msg)
+# src = https://www2.spsc.tugraz.at/www-archive/downloads/DoesandDonts%20in%20scientific%20writing%20reisenhofer%20tumfart.pdf
+check_conversation = CheckSpec(
+    Existence(["Well", "you see", "yes", "let's move on"]),
+    "scientific.misc.conversation",
+    "Scientific writing should not chatter or converse, like in '{}'.",
+)
 
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
+check_wrong = CheckSpec(
+    Existence(["lowly doped", "low doped"]),
+    "scientific.misc.wrong",
+    "Avoid technically incorrect terms like '{}'.",
+)
 
-def check_conversation(text: str) -> list[CheckResult]:
-    """Avoid the following words."""
-    # src = https://www2.spsc.tugraz.at/www-archive/downloads/DoesandDonts%20in%20scientific%20writing%20reisenhofer%20tumfart.pdf
-    err = "scientific.misc.conversation"
-    msg = "Scientific writing should not chatter / converse like '{}'"
-    items = ["Well", "you see", "yes", "let's move on"]
-    return existence_check(text, items, err, msg)
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
+check_avoid_misc = CheckSpec(
+    Existence(["becomes", "gets", "huge", "very"]),
+    "scientific.misc.avoid",
+    "Scientific writing should avoid terms like '{}'.",
+)
 
-
-def check_wrong(text: str) -> list[CheckResult]:
-    """Avoid the following words."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
-    err = "scientific.misc.wrong"
-    msg = "Avoid technically wrong terms like '{}'"
-    items = ["lowly doped", "low doped"]
-    return existence_check(text, items, err, msg)
-
-
-def check_avoid_misc(text: str) -> list[CheckResult]:
-    """Avoid the following words."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
-    err = "scientific.misc.avoid"
-    msg = "Scientific writing should avoid terms like '{}'"
-    items = ["becomes", "gets", "huge", "very"]
-    return existence_check(text, items, err, msg)
-
-
-def check_preferred(text: str) -> list[CheckResult]:
-    """Check the preferred forms."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
-    err = "scientific.misc.preference"
-    msg = (
-        "In scientific writing some terms are avoided or incorrect. "
-        "Consider using '{}' instead of '{}'."
-    )
-
-    items: dict[str, str] = {
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L522
+check_preferred = CheckSpec(
+    PreferredFormsSimple({
         "insignificant": "not significant",
         "though": "although",
         "they're": "they are",
@@ -173,11 +156,14 @@ def check_preferred(text: str) -> list[CheckResult]:
         "utilize": "use",
         "substantiate": "support",
         "in accordance with": "agree",
-    }
+    }),
+    "scientific.misc.preference",
+    "In scientific writing some terms are avoided or incorrect. "
+    "Consider using '{}' instead of '{}'.",
+)
 
-    ret1 = preferred_forms_check_opti(text, items, err, msg)
-
-    items_regex: dict[str, str] = {
+check_preferred_regex = CheckSpec(
+    PreferredForms({
         r"solar cell(|s)": "photovoltaic",
         r"(is|are) increasing": "increases",
         r"(is|are) decreasing": "decreases",
@@ -186,13 +172,14 @@ def check_preferred(text: str) -> list[CheckResult]:
         # TODO: active regex or no clean replacement
         # ["too ***", ["to strong", "to weak\w*", "to strong\w*"]],
         # TODO: except 'due to *'
-    }
-    ret2 = preferred_forms_check_regex(text, items_regex, err, msg)
+    }),
+    "scientific.misc.preference",
+    "In scientific writing some terms are avoided or incorrect. "
+    "Consider using '{}' instead of '{}'.",
+)
 
-    return ret1 + ret2
 
-
-def check_this_vs_those(text: str) -> list[CheckResult]:
+def _check_this_vs_those(text: str) -> list[CheckResult]:
     """Check the usage of "this" and "those"."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L812
     # TODO: magnet for false positives -> remove? seems niche
@@ -206,7 +193,7 @@ def check_this_vs_those(text: str) -> list[CheckResult]:
             r"this (agrees|allows|cancels|corresponds|enables|ensures|explains"
             r"|has|hypothesis|involves|indicates|leads|reduces|shows|suggests"
             r"|thesis)"
-        )
+        ),
     ]
     expt_regex = "(" + "|".join(exceptions) + ")"
     results: list[CheckResult] = []
@@ -228,30 +215,39 @@ def check_this_vs_those(text: str) -> list[CheckResult]:
     return results
 
 
-def check_we_or_i(text: str) -> list[CheckResult]:
-    """Check for consistency."""
-    # src = https://www.sciencewrites.org/audience
-    err = "scientific.misc.we_or_i"
-    msg = "Decide if you alone ('{}') or a team ('{}') has written the report"
+check_this_vs_those = CheckSpec(
+    _check_this_vs_those,
+    "scientific.misc.this_vs_those",
+    "(Maybe) wrong plural for '{}' -> use 'those *'",
+)
 
-    word_pairs = [
-        [Pd.words_in_txt.value.format("we"), Pd.words_in_txt.value.format("i")]
-    ]
-    return consistency_check(text, word_pairs, err, msg, ignore_case=True)
-
+check_we_or_i = CheckSpec(
+    Consistency([
+        (
+            Pd.words_in_txt.value.format("we"),
+            Pd.words_in_txt.value.format("i"),
+        )
+    ]),
+    "scientific.misc.we_or_i",
+    "Decide if you alone ('{}') or a team ('{}') has written the report",
+)
 
 # TODO: skipped in TNT:
 #       - L812 this vs those
 #     - deg C or deg K is old, deg not used anymore
 
-registry.register_many({
-    "scientific.misc.num_unit": check_num_unit,
-    "scientific.misc.emotion": check_emotion,
-    "scientific.misc.weasel": check_weasel,
-    "scientific.misc.conversation": check_conversation,
-    "scientific.misc.wrong": check_wrong,
-    "scientific.misc.avoid": check_avoid_misc,
-    "scientific.misc.preference": check_preferred,
-    "scientific.misc.this_vs_those": check_this_vs_those,
-    "scientific.misc.we_or_i": check_we_or_i,
-})
+
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_num_unit,
+        check_emotion,
+        check_weasel,
+        check_conversation,
+        check_wrong,
+        check_avoid_misc,
+        check_preferred,
+        check_preferred_regex,
+        check_this_vs_those,
+        check_we_or_i,
+    ))

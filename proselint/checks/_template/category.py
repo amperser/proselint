@@ -21,6 +21,7 @@ Note:
     - they are now mandatory for each check file
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import CheckResult, existence_check

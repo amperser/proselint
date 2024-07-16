@@ -13,13 +13,14 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    existence_check,
-    preferred_forms_check_opti,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -31,29 +32,25 @@ examples_fail = [
     "I give you many kudos.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.plurals.misc"
-    msg = "The plural is {} and not {}"
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "talismen": "talismans",
         "phenomenons": "phenomena",
-    }
+    }),
+    "misc.plurals.misc",
+    "The plural is {} and not {}",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
+check_kudos = CheckSpec(
+    Existence(["many kudos"]),
+    "misc.plurals.kudos",
+    "Kudos is singular.",
+)
 
 
-def check_kudos(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.plurals.kudos"
-    msg = "Kudos is singular."
-
-    return existence_check(text, ["many kudos"], err, msg)
-
-
-registry.register_many({
-    "misc.plurals.misc": check,
-    "misc.plurals.kudos": check_kudos
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_kudos,
+    ))

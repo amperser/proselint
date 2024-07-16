@@ -13,9 +13,10 @@ categories: writing
 Points out misuse of scare quotes.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, Pd, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,17 +26,16 @@ examples_fail = [
     "What was the 'take-home message'?",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.scare_quotes.pinker"
-    msg = "Misuse of 'scare quotes'. Delete them."
-
-    items = [
-        r"\bthe 'take-home message'\B",
-    ]
-
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
+check = CheckSpec(
+    Existence(
+        [r"\bthe 'take-home message'\B"],
+        padding=Pd.disabled,
+    ),
+    "misc.scare_quotes.pinker",
+    "Misuse of 'scare quotes'. Delete them.",
+)
 
 
-registry.register("misc.scare_quotes.pinker", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

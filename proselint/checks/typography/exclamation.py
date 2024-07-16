@@ -13,15 +13,14 @@ categories: writing
 Too much yelling.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
     Pd,
-    existence_check,
-    limit_results,
-    ppm_threshold,
-    registry,
 )
 
 examples_pass = [
@@ -38,37 +37,29 @@ examples_fail = [
 ]
 
 
-@limit_results(1)
-def check_repeated_exclamations(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "typography.exclamation.leonard.repeated"
-    msg = "Stop yelling. Keep your exclamation points under control."
+# TODO: reimplement limit_results
+# FIXME: this is duplicated by hyperbole.misc
+check_repeated_exclamations = CheckSpec(
+    Existence([r"[\!]\s*?[\!]{1,}"], padding=Pd.disabled, dotall=True),
+    "typography.exclamation.leonard.repeated",
+    "Stop yelling. Keep your exclamation points under control.",
+    ignore_case=False,
+)
 
-    items = [r"[\!]\s*?[\!]{1,}"]
-
-    return existence_check(
-        text,
-        items,
-        err,
-        msg,
+# TODO: reimplement ppm_threshold, evaluate whether 30 ppm is too low
+check_exclamations_ppm = CheckSpec(
+    Existence(
+        [r"\w!"],
         padding=Pd.disabled,
-        ignore_case=False,
-        dotall=True,
-    )
+    ),
+    "typography.exclamation.leonard.30ppm",
+    "More than 30 ppm of exclamations. Keep them under control.",
+)
 
 
-@ppm_threshold(30)  # TODO: isn't that way too low?
-def check_exclamations_ppm(text: str) -> list[CheckResult]:
-    """Make sure that the exclamation ppm is under 30."""
-    err = "typography.exclamation.leonard.30ppm"
-    msg = "More than 30 ppm of exclamations. Keep them under control."
-
-    items = [r"\w!"]
-
-    return existence_check(text, items, err, msg, padding=Pd.disabled)
-
-
-registry.register_many({
-    "typography.exclamation.leonard.repeated": check_repeated_exclamations,
-    "typography.exclamation.leonard.30ppm": check_exclamations_ppm,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_repeated_exclamations,
+        check_exclamations_ppm,
+    ))

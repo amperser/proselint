@@ -16,6 +16,7 @@ short reminder for format-strings:
 %% for a percent character
 
 """
+
 import logging
 import logging.handlers
 

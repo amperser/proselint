@@ -13,9 +13,10 @@ categories: writing
 Too much yelling.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,20 +26,18 @@ examples_fail = [
     "This leaves much to be desired.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.debased"
-    msg = "Debased language is a continuous temptation."
-
-    items = [
+check = CheckSpec(
+    Existence([
         "a not unjustifiable assumption",
         "leaves much to be desired",
         "would serve no purpose",
         "a consideration which we should do well to bear in mind",
-    ]
+    ]),
+    "misc.debased",
+    "Debased language is a continuous temptation.",
+)
 
-    return existence_check(text, items, err, msg)
 
-
-registry.register("misc.debased", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

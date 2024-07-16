@@ -13,28 +13,27 @@ categories: writing
 Points out misspellings.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
+    CheckRegistry,
+    CheckSpec,
     Pd,
-    preferred_forms_check_opti,
-    registry,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
 ]
 
-examples_fail = ["I like this alot.", "I stay 'til sundown."]
+examples_fail = [
+    "I like this alot.",
+    "I stay 'til sundown.",
+]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "spelling.misc"
-    msg = "Misspelling. '{}' is the preferred spelling."
-
-    items: dict[str, str] = {
+check = CheckSpec(
+    PreferredFormsSimple({
         "alot": "a lot",
         "accomodatable": "accommodable",
         "analingus": "anilingus",
@@ -161,31 +160,27 @@ def check(text: str) -> list[CheckResult]:
         "a timpano": "a timpani",
         "umteenth": "umpteenth",
         "verbage": "verbiage",
-    }
+    }),
+    "spelling.misc",
+    "Misspelling. '{}' is the preferred spelling.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_special(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "spelling.misc"
-    msg = "Misspelling. '{}' is the preferred spelling."
-
-    items: dict[str, str] = {
-        "highfaluting": "highfalutin",
-        "highfalutin'": "highfalutin",
-        "hifalutin": "highfalutin",
-        "'till": "till",
-        "'til": "till",
-    }
-
-    return preferred_forms_check_opti(
-        text, items, err, msg, padding=Pd.sep_in_txt
-    )
+check_special = CheckSpec(
+    PreferredFormsSimple(
+        {
+            "highfaluting": "highfalutin",
+            "highfalutin'": "highfalutin",
+            "hifalutin": "highfalutin",
+            "'till": "till",
+            "'til": "till",
+        },
+        padding=Pd.sep_in_txt,
+    ),
+    "spelling.misc",
+    "Misspelling. '{}' is the preferred spelling.",
+)
 
 
-# TODO: identify correct names for these, or merge them
-registry.register_many({
-    "spelling.misc.1": check,
-    "spelling.misc.2": check_special
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((check, check_special))

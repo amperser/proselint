@@ -13,9 +13,10 @@ categories: writing
 Chatspeak.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,13 +26,8 @@ examples_fail = [
     "BRB getting coffee.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.chatspeak"
-    msg = "'{}' is chatspeak. Write it out."
-
-    words = [
+check = CheckSpec(
+    Existence([
         "2day",
         "4U",
         "AFAIK",
@@ -55,9 +51,12 @@ def check(text: str) -> list[CheckResult]:
         "THX",
         "TTYL",
         "XOXO",
-    ]
+    ]),
+    "misc.chatspeak",
+    "'{}' is chatspeak. Write it out.",
+)
 
-    return existence_check(text, words, err, msg)
 
-
-registry.register("misc.chatspeak", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

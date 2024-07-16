@@ -13,9 +13,10 @@ categories: writing
 Back-formations.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,15 +26,13 @@ examples_fail = [
     "It is an improprietous use.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.back_formations"
-    msg = "Back-formation. '{}' is the preferred form."
-
-    items = {"improprietous": "improper"}
-
-    return preferred_forms_check_opti(text, items, err, msg)
+check = CheckSpec(
+    PreferredFormsSimple({"improprietous": "improper"}),
+    "misc.back_formations",
+    "Back-formation. '{}' is the preferred form.",
+)
 
 
-registry.register("misc.back_formations", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

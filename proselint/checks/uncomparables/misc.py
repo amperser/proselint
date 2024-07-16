@@ -44,11 +44,12 @@ better chance of penetrating — and simple penetration is what AE is all about.
 One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
 """
+
 from __future__ import annotations
 
 import itertools
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -134,35 +135,25 @@ def compile_uncomparables() -> list[str]:
 
 
 items = compile_uncomparables()
+name = "uncomparables.misc"
+msg = "Comparison of an uncomparable: '{}' is not comparable."
+
+check_1 = CheckSpec(
+    Existence(items[: round(len(items) / 2)]),
+    name,
+    msg,
+)
+
+check_2 = CheckSpec(
+    Existence(items[round(len(items) / 2) :]),
+    name,
+    msg,
+)
 
 
-def check_1(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-    """
-    err = "uncomparables.misc"
-    msg = "Comparison of an uncomparable: '{}' is not comparable."
-
-    return existence_check(text, items[: round(len(items) / 2)], err, msg)
-
-
-def check_2(text: str) -> list[CheckResult]:
-    """
-    Check the text.
-
-    NOTE: this was one of the slowest Checks,
-          so it was segmented to even the load for parallelization
-    """
-    err = "uncomparables.misc"
-    msg = "Comparison of an uncomparable: '{}' is not comparable."
-
-    return existence_check(text, items[round(len(items) / 2) :], err, msg)
-
-
-registry.register_many({
-    "uncomparables.misc.1": check_1,
-    "uncomparables.misc.2": check_2,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_1,
+        check_2,
+    ))

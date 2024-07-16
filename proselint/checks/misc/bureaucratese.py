@@ -13,9 +13,10 @@ categories: writing
 Bureaucratese.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -25,18 +26,17 @@ examples_fail = [
     "I hope the report meets with your approval.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Check the text."""
-    err = "misc.bureaucratese"
-    msg = "'{}' is bureaucratese."
-
-    bureaucratese = [
+check = CheckSpec(
+    Existence([
+        # TODO: met with your approval?
         "meet with your approval",
         "meets with your approval",
-    ]
+    ]),
+    "misc.bureaucratese",
+    "'{}' is bureaucratese.",
+)
 
-    return existence_check(text, bureaucratese, err, msg)
 
-
-registry.register("misc.bureaucratese", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

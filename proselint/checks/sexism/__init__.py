@@ -1,5 +1,5 @@
 """Sexism."""
 
-from proselint.checks.sexism import misc
+from proselint.checks.sexism.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

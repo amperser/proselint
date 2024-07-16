@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckResult, preferred_forms_check_opti, registry
+from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -12,18 +12,12 @@ examples_fail = [
     "He was definitely a Hong Kongite.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    source:     Garner's Modern American Usage
-    source_url: http://bit.ly/1T4alrY
-    """
-    err = "terms.denizen_labels.garner"
-    msg = "'{}' is the preferred denizen label."
-
-    items: dict[str, str] = {
+"""
+source:     Garner's Modern American Usage
+source_url: http://bit.ly/1T4alrY
+"""
+check = CheckSpec(
+    PreferredFormsSimple({
         "Afrikaaner": "Afrikaner",
         "Afrikander": "Afrikaner",
         "Alabaman": "Alabamian",
@@ -65,22 +59,17 @@ def check(text: str) -> list[CheckResult]:
         "Tusconite": "Tusconan",
         "Utahan": "Utahn",
         "Saudi Arabian": "Saudi",
-    }
+    }),
+    "terms.denizen_labels.garner",
+    "'{}' is the preferred denizen label.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_denizen_labels_norris(text: str) -> list[CheckResult]:
-    """
-    Suggest the preferred forms.
-
-    source:     Mary Norris
-    source_url: http://nyr.kr/1rGienj
-    """
-    err = "terms.denizen_labels.norris"
-    msg = "Would you like '{}'?"
-
-    items: dict[str, str] = {
+"""
+source:     Mary Norris
+source_url: http://nyr.kr/1rGienj
+"""
+check_denizen_labels_norris = CheckSpec(
+    PreferredFormsSimple({
         "Manchesterian": "Mancunian",
         "Manchesterians": "Mancunians",
         "Valladolidian": "Vallisoletano",
@@ -89,7 +78,7 @@ def check_denizen_labels_norris(text: str) -> list[CheckResult]:
         "Newcastleite": "Novocastrian",
         "Newcastlite": "Novocastrian",
         "Trois-Rivièrester": "Trifluvian",
-        "Leedsian": "Leodenisian",
+        "Leedsian": "Leodensian",
         "Minneapolisian": "Minneapolitan",
         "Hartlepoolian": "Hartlepudlian",
         "Liverpoolian": "Liverpudlian",
@@ -100,12 +89,15 @@ def check_denizen_labels_norris(text: str) -> list[CheckResult]:
         "Providencer": "Providentian",
         "Trentian": "Tridentine",
         "Trentonian": "Tridentine",
-    }
+    }),
+    "terms.denizen_labels.norris",
+    "Would you like '{}'?",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
 
-
-registry.register_many({
-    "terms.denizen_labels.garner": check,
-    "terms.denizen_labels.norris": check_denizen_labels_norris,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check,
+        check_denizen_labels_norris,
+    ))

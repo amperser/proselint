@@ -1,5 +1,5 @@
 """Mondegreens."""
 
-from proselint.checks.mondegreens import misc
+from proselint.checks.mondegreens.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]

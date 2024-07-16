@@ -13,9 +13,10 @@ categories: writing
 Points out academic narcissism.
 
 """
+
 from __future__ import annotations
 
-from proselint.checks import CheckResult, existence_check, registry
+from proselint.checks import CheckRegistry, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -26,17 +27,15 @@ examples_fail = [
     "have studied the problem in detail.",
 ]
 
-
-def check(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "misc.narcissism"
-    msg = "Professional narcissism. Talk about the subject, not its study."
-
-    narcissism = [
-        "In recent years, an increasing number of [a-zA-Z]{3,}sts have",
-    ]
-
-    return existence_check(text, narcissism, err, msg)
+check = CheckSpec(
+    Existence([
+        "In recent years, an increasing number of [a-zA-Z]{3,}sts have"
+    ]),
+    "misc.narcissism",
+    "Professional narcissism. Talk about the subject, not its study.",
+)
 
 
-registry.register("misc.narcissism", check)
+def register_with(registry: CheckRegistry) -> None:
+    """Register the check."""
+    registry.register(check)

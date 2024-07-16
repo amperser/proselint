@@ -13,13 +13,14 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
+
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckResult,
-    existence_check,
-    preferred_forms_check_opti,
-    registry,
+    CheckRegistry,
+    CheckSpec,
+    Existence,
+    PreferredFormsSimple,
 )
 
 examples_pass = [
@@ -32,44 +33,36 @@ examples_fail = [
     "I've been practicing mental telepathy.",
 ]
 
-
-def check_lie_detector_test(text: str) -> list[CheckResult]:
-    """Suggest the preferred forms."""
-    err = "psychology.lie_detector"
-    msg = "Polygraph machines measure arousal, not lying per se. Try {}."
-
-    items: dict[str, str] = {
+check_lie_detector_test = CheckSpec(
+    PreferredFormsSimple({
         "lie detector test": "polygraph test",
         "lie detector machine": "polygraph machine",
-    }
+    }),
+    "psychology.lie_detector",
+    "Polygraph machines measure arousal, not lying per se. Try {}.",
+)
 
-    return preferred_forms_check_opti(text, items, err, msg)
-
-
-def check_p_equals_zero(text: str) -> list[CheckResult]:
-    """Check for p = 0.000."""
-    err = "psychology.p_equals_zero"
-    msg = "Unless p really equals zero, you should use more decimal places."
-
-    items = [
+check_p_equals_zero = CheckSpec(
+    Existence([
         "p = 0.00",
         "p = 0.000",
         "p = 0.0000",
-    ]
+    ]),
+    "psychology.p_equals_zero",
+    "Unless p really equals zero, you should use more decimal places.",
+)
 
-    return existence_check(text, items, err, msg)
+check_mental_telepathy = CheckSpec(
+    Existence(["mental telepathy"]),
+    "psychology.mental_telepathy",
+    "This is redundant because all purported telepathy is mental.",
+)
 
 
-def check_mental_telepathy(text: str) -> list[CheckResult]:
-    """Check for 'mental telepathy'."""
-    err = "psychology.mental_telepathy"
-    msg = "This is redundant because all purported telepathy is mental."
-
-    return existence_check(text, ["mental telepathy"], err, msg)
-
-
-registry.register_many({
-    "psychology.lie_detector": check_lie_detector_test,
-    "psychology.p_equals_zero": check_p_equals_zero,
-    "psychology.check_mental_telepathy": check_mental_telepathy,
-})
+def register_with(registry: CheckRegistry) -> None:
+    """Register the checks."""
+    registry.register_many((
+        check_lie_detector_test,
+        check_p_equals_zero,
+        check_mental_telepathy,
+    ))

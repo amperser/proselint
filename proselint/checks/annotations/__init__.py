@@ -1,5 +1,5 @@
 """Annotations."""
 
-from proselint.checks.annotations import misc
+from proselint.checks.annotations.misc import register_with
 
-__all__ = ["misc"]
+__all__ = ["register_with"]
