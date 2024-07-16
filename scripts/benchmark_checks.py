@@ -34,29 +34,29 @@ _cfg = proselint.config_default
 with file_path.open(encoding="utf-8", errors="replace") as fh:
     _text = fh.read()
 
-proselint.checks.registry.populate_enabled(_cfg["checks"])
-_checks = proselint.checks.registry.get_all_enabled()
+proselint.checks.registry.discover()
+_checks = proselint.checks.registry.get_all_enabled(_cfg["checks"])
 
 print("\n############# Benchmark manually optimized Checks ###################")
 print("############# * or with calculations in check()   ###################")
 
 specials = [
-    "proselint.checks.misc.waxed.check",
-    "proselint.checks.terms.venery.check",
-    "proselint.checks.uncomparables.misc.check_1",
+    "proselint.checks.misc.waxed",
+    "proselint.checks.terms.venery",
+    "proselint.checks.uncomparables.misc",
 ]
 
 cache.clear()
 for check in _checks:
-    _name = f"{check.__module__}.{check.__name__}"
+    _name = f"{check.__module__}.{check.path}"
     if _name in specials:
-        _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+        _dur = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> uncached")
-        _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+        _dur = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> cached")
-        _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+        _dur = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> cached")
-        _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+        _dur = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=1)
         print(f"{_name} took {_dur * 1000:.3f} ms -> cached")
 
 # ########## output with memoize_const
@@ -80,15 +80,14 @@ for check in _checks:
 print("\n############# Benchmark reimpl. of slowest check ###################")
 
 specials = [
-    "proselint.checks.needless_variants.misc.check_1",
-    "proselint.checks.needless_variants.misc.check_2",
+    "proselint.checks.needless_variants.misc",
 ]
 
 for check in _checks:
-    _name = f"{check.__module__}.{check.__name__}"
+    _name = f"{check.__module__}.{check.path}"
     if _name in specials:
         for _i in range(3):
-            _dur = timeit("_e = check(_text)", globals=locals(), number=1)
+            _dur = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=1)
             print(f"{_name} took {_dur * 1000:.3f} ms -> run{_i}")
 
 
@@ -96,9 +95,9 @@ print("\n############# Benchmark all Checks ###################")
 
 result = {}
 for check in _checks:
-    _name = f"{check.__module__}.{check.__name__}"
+    _name = f"{check.__module__}.{check.path}"
     # print(f"Will now run: {_name}")
-    result[_name] = timeit("_e = check(_text)", globals=locals(), number=10)
+    result[_name] = timeit("_e = check.dispatch_with_flags(_text)", globals=locals(), number=10)
 
 result = dict(sorted(result.items(), key=lambda item: item[1]))
 for _key, _value in result.items():

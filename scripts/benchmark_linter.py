@@ -37,16 +37,14 @@ if __name__ == "__main__":
         "parallel": (True, True),
         "parallel-cached": (True, False),
     }
-    registry.populate_enabled(_cfg["checks"])
-    _num_checks = len(registry.get_all_enabled())
+    _num_checks = len(registry.get_all_enabled(_cfg["checks"]))
 
     print(f"\n############# lint(demo.md) - {_os}, {_num_checks} checks")
 
     for _name, _val in options.items():
         _cfg["parallelize"] = _val[0]
         for _i in range(3):
-            registry.populate_enabled(_cfg["checks"])
-            _checks = registry.get_all_enabled()
+            _checks = registry.get_all_enabled(_cfg["checks"])
             with file_path.open() as f_handler:
                 _text = f_handler.read()
             if _val[1]:
