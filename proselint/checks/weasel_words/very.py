@@ -18,6 +18,7 @@ delete it and the writing will be just as it should be.
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckSpec,
     Existence,
@@ -32,13 +33,13 @@ examples_fail = [
 ]
 
 
-# TODO: reimplement limit_results
 check = CheckSpec(
     Existence(["very"]),
     "weasel_words.very",
     "Substitute 'damn' every time you're "
     "inclined to write 'very'; your editor will delete it "
     "and the writing will be just as it should be.",
+    flags=CheckFlags(limit_results=1),
 )
 
 

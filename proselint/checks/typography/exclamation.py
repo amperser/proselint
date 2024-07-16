@@ -17,6 +17,7 @@ Too much yelling.
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckSpec,
     Existence,
@@ -37,16 +38,15 @@ examples_fail = [
 ]
 
 
-# TODO: reimplement limit_results
 # FIXME: this is duplicated by hyperbole.misc
 check_repeated_exclamations = CheckSpec(
     Existence([r"[\!]\s*?[\!]{1,}"], padding=Pd.disabled, dotall=True),
     "typography.exclamation.leonard.repeated",
     "Stop yelling. Keep your exclamation points under control.",
+    flags=CheckFlags(limit_results=1),
     ignore_case=False,
 )
 
-# TODO: reimplement ppm_threshold, evaluate whether 30 ppm is too low
 check_exclamations_ppm = CheckSpec(
     Existence(
         [r"\w!"],
@@ -54,6 +54,7 @@ check_exclamations_ppm = CheckSpec(
     ),
     "typography.exclamation.leonard.30ppm",
     "More than 30 ppm of exclamations. Keep them under control.",
+    flags=CheckFlags(ppm_threshold=30),
 )
 
 

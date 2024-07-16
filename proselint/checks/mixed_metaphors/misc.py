@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckSpec,
     Existence,
@@ -19,7 +20,6 @@ examples_fail = [
     "Writing tests is not rocket surgery.",
 ]
 
-# TODO: reimplement limit_results
 """
 source:     Sir Ernest Gowers
 source_url: http://bit.ly/1CQPH61
@@ -36,6 +36,7 @@ check_bottleneck = CheckSpec(
     ]),
     "mixed_metaphors.misc.bottleneck",
     "Mixed metaphor — bottles with big necks are easy to pass through.",
+    flags=CheckFlags(limit_results=1),
 )
 
 misc_name = "mixed_metaphors.misc"

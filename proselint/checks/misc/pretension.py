@@ -17,6 +17,7 @@ Points out pretension.
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckSpec,
     Existence,
@@ -30,7 +31,6 @@ examples_fail = [
     "We need to reconceptualize the project.",
 ]
 
-# TODO: reimplement limit_results
 check = CheckSpec(
     Existence([
         "reconceptualize",
@@ -40,6 +40,7 @@ check = CheckSpec(
     ]),
     "misc.pretension.ogilvy",
     "Jargon words like this one are the hallmarks of a pretentious ass.",
+    flags=CheckFlags(limit_results=1),
 )
 
 

@@ -100,6 +100,22 @@ class ReverseExistence(NamedTuple):
 CheckFn = Callable[[str], list[CheckResult]]
 
 
+class CheckFlags(NamedTuple):
+    """
+    A collection of check flags.
+
+    Currently, this supports:
+    - `limit_results`: A limit that truncates the check results.
+    - `ppm_threshold`: A threshold check comparing the number of results
+      against the text length.
+    """
+
+    # TODO: it would be vastly more efficient if these could interrupt instead
+    # of postprocessing - that is, halt searching if the limits are surpassed
+    # instead of truncating / alerting if conditions are met after the fact.
+    limit_results: int = 0
+    ppm_threshold: int = 0
+
 class CheckSpec(NamedTuple):
     type: Union[
         Consistency,
@@ -112,6 +128,7 @@ class CheckSpec(NamedTuple):
     ]
     path: str
     msg: str
+    flags: CheckFlags = CheckFlags()
     ignore_case: bool = True
     offset: tuple[int, int] = (0, 0)
 
@@ -131,6 +148,14 @@ class CheckSpec(NamedTuple):
             self.path_segments[i] == partial_segments[i]
             for i in range(len(partial_segments))
         )
+
+    def dispatch_with_flags(self, text: str) -> list[CheckResult]:
+        results = self.dispatch(text)
+        if self.flags.ppm_threshold > 0:
+            results = _threshold_check(results, self.flags.ppm_threshold, len(text))
+        if self.flags.limit_results > 0:
+            results = _truncate_errors(results, self.flags.limit_results)
+        return results
 
     # TODO: attempt to simplify this
     def dispatch(self, text: str) -> list[CheckResult]:  # noqa: PLR0911
@@ -278,7 +303,7 @@ registry = CheckRegistry()
 def run_check(_check: CheckSpec, _text: str, source: str = "") -> list[dict]:
     """Run a check on the source."""
     errors = []
-    results: list[CheckResult] = _check.dispatch(_text)
+    results: list[CheckResult] = _check.dispatch_with_flags(_text)
     for _r in results:
         (line, column) = get_line_and_column(_text, _r.start_pos)
         if not is_quoted(_r.start_pos, _text):

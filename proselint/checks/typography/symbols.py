@@ -8,6 +8,7 @@ source_url: http://practicaltypography.com/
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckResult,
     CheckSpec,
@@ -58,6 +59,7 @@ check_ellipsis = CheckSpec(
     ),
     "typography.symbols.ellipsis",
     "'...' is an approximation, use the ellipsis symbol '…'.",
+    flags=CheckFlags(limit_results=3),
 )
 
 check_copyright_symbol = CheckSpec(
@@ -67,6 +69,7 @@ check_copyright_symbol = CheckSpec(
     ),
     "typography.symbols.copyright",
     "(c) is a goofy alphabetic approximation, use the symbol ©.",
+    flags=CheckFlags(limit_results=1),
 )
 
 check_trademark_symbol = CheckSpec(
@@ -76,6 +79,7 @@ check_trademark_symbol = CheckSpec(
     ),
     "typography.symbols.trademark",
     "(TM) is a goofy alphabetic approximation, use the symbol ™.",
+    flags=CheckFlags(limit_results=3),
 )
 
 check_registered_trademark_symbol = CheckSpec(
@@ -85,6 +89,7 @@ check_registered_trademark_symbol = CheckSpec(
     ),
     "typography.symbols.registered",
     "(R) is a goofy alphabetic approximation, use the symbol ®.",
+    flags=CheckFlags(limit_results=3),
 )
 
 # FIXME: this check is repeated elsewhere
@@ -95,6 +100,7 @@ check_sentence_spacing = CheckSpec(
     ),
     "typography.symbols.sentence_spacing",
     "More than two spaces after the period; use 1 or 2.",
+    flags=CheckFlags(limit_results=3),
 )
 
 check_multiplication_symbol = CheckSpec(
@@ -104,6 +110,7 @@ check_multiplication_symbol = CheckSpec(
     ),
     "typography.symbols.multiplication_symbol",
     "Use the multiplication symbol ×, not the letter x.",
+    flags=CheckFlags(limit_results=3),
 )
 
 check_curly_quotes = CheckSpec(
@@ -113,6 +120,7 @@ check_curly_quotes = CheckSpec(
     ),
     "typography.symbols.curly_quotes",
     'Use curly quotes “”, not straight quotes "".',
+    flags=CheckFlags(limit_results=3),
 )
 
 deactivated_check_en_dash_separated_names = CheckSpec(

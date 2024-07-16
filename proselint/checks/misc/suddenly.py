@@ -29,6 +29,7 @@ shift in emotional calibration.
 from __future__ import annotations
 
 from proselint.checks import (
+    CheckFlags,
     CheckRegistry,
     CheckSpec,
     Existence,
@@ -43,7 +44,6 @@ examples_fail = [
     "Suddenly, it all made sense.",
 ]
 
-# TODO: reimplement limit_results
 check = CheckSpec(
     Existence(
         ["Suddenly,"],
@@ -51,6 +51,7 @@ check = CheckSpec(
     ),
     "misc.suddenly",
     "Suddenly is nondescript, slows the action, and warns your reader.",
+    flags=CheckFlags(limit_results=3),
     ignore_case=False,
 )
 
