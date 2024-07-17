@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 import proselint
+from proselint.checks import CheckSpec
 
 
 def is_check(file_path: Path) -> bool:
@@ -61,7 +62,7 @@ def get_module_names() -> list[str]:
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
     """
-    this checks multiple things:
+    Check multiple things:
     - successful import of check
     - example_fail and _pass present in file
     - both example-lists with at least one entry
@@ -73,7 +74,7 @@ def test_check(module_name: str) -> None:
     except ModuleNotFoundError as _xpt:
         raise ImportError(f"Is {module_name} broken?") from _xpt
 
-    checks = {
+    checks: dict[str, CheckSpec] = {
         d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
     }
 
@@ -85,12 +86,12 @@ def test_check(module_name: str) -> None:
     ):
         # TODO: raise to two as min
         raise ValueError(
-            f"The examples_pass-list must have >=1 entry for testing in {module_name}"
+            f"examples_pass must have 1 or more test entries in {module_name}"
         )
     for example in module.examples_pass:
         for _name, _check in checks.items():  # not-any config
             assert (
-                _check(example) == []
+                _check.dispatch_with_flags(example) == []
             ), f"false positive - {_name}('{example}')"
 
     if not hasattr(module, "examples_fail"):
@@ -100,12 +101,12 @@ def test_check(module_name: str) -> None:
         or len(module.examples_fail) < 1
     ):
         raise ValueError(
-            f"The examples_fail-list must have >=1 entry for testing in {module_name}"
+            f"examples_fail must have 1 or more test entries in {module_name}"
         )
     for example in module.examples_fail:
         result = []
         for check in checks.values():  # any-config
-            result.extend(check(example))
+            result.extend(check.dispatch_with_flags(example))
         assert (
             result != []
         ), f"false negative (did NOT trigger) - {module_name}: '{example}'"
