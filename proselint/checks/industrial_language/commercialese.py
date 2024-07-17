@@ -75,7 +75,7 @@ check_abbrev = CheckSpec(
         padding=Pd.sep_in_txt,
     ),
     "industrial_language.commercialese.abbreviations",
-    "'{}' is commercialese. Depending on audience switch to {}.",
+    "'{1}' is commercialese. Depending on audience switch to {0}.",
 )
 
 
