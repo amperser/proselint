@@ -8,7 +8,7 @@ import pytest
 import rstr
 
 import proselint
-from proselint.checks import CheckResult, Pd
+from proselint.checks import CheckResult, CheckSpec, Pd
 from tests.test_checks import get_module_names
 
 
@@ -145,14 +145,14 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
     except ModuleNotFoundError as _xpt:
         raise ImportError(f"Is {module_name} broken?") from _xpt
 
-    checks = {
+    checks: dict[str, CheckSpec] = {
         d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
     }
 
     examples: list[CheckResult] = []
     for check in checks.values():  # any-config
         # reverse regex-action happening here
-        examples.extend(check("smokey"))
+        examples.extend(check.dispatch_with_flags("smokey"))
 
     monkeypatch.undo()
 
@@ -162,7 +162,7 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
         print(_xmp)
         errors: list = []
         for check in checks.values():
-            errors.extend(check(_xmp))
+            errors.extend(check.dispatch_with_flags(_xmp))
         assert (
             len(errors) > 0
         ), f"False negative for {module_name} processing '{_xmp}'"
