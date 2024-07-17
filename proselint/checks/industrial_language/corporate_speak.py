@@ -55,7 +55,7 @@ check = CheckSpec(
         "elephant in the room",
         "on my plate",
     ]),
-    "corporate_speak.misc",
+    "industrial_language.corporate_speak",
     "Minimize your use of corporate catchphrases like this one.",
 )
 

@@ -58,7 +58,7 @@ check = CheckSpec(
         "your favor has come to hand",
         "yours of even date",
     ]),
-    "misc.commercialese",
+    "industrial_language.commercialese",
     "'{}' is commercialese.",
 )
 
@@ -74,7 +74,7 @@ check_abbrev = CheckSpec(
         },
         padding=Pd.sep_in_txt,
     ),
-    "misc.commercialese.abbreviations",
+    "industrial_language.commercialese.abbreviations",
     "'{}' is commercialese. Depending on audience switch to {}.",
 )
 

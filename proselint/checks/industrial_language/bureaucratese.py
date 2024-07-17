@@ -1,15 +1,16 @@
 """
-Jargon.
+Bureaucratese.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
-title:      Jargon
+title:      bureaucratese
 date:       2014-06-10
 categories: writing
 ---
 
+Bureaucratese.
 
 """
 
@@ -22,20 +23,17 @@ examples_pass = [
 ]
 
 examples_fail = [
-    "I agree it's in the affirmative.",
+    "I hope the report meets with your approval.",
 ]
 
 check = CheckSpec(
     Existence([
-        "in the affirmative",
-        "in the negative",
-        "agendize",
-        "per your order",
-        "per your request",
-        "disincentivize",
+        # TODO: met with your approval?
+        "meet with your approval",
+        "meets with your approval",
     ]),
-    "jargon.misc",
-    "'{}' is jargon. Can you replace it with something more standard?",
+    "industrial_language.bureaucratese",
+    "'{}' is bureaucratese.",
 )
 
 __register__ = (check,)

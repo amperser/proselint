@@ -8,16 +8,9 @@ from proselint.checks.misc.back_formations import (
     __register__ as register_back_formations,
 )
 from proselint.checks.misc.braces import __register__ as register_braces
-from proselint.checks.misc.bureaucratese import (
-    __register__ as register_bureaucratese,
-)
 from proselint.checks.misc.but import __register__ as register_but
 from proselint.checks.misc.capitalization import (
     __register__ as register_capitalization,
-)
-from proselint.checks.misc.chatspeak import __register__ as register_chatspeak
-from proselint.checks.misc.commercialese import (
-    __register__ as register_commercialese,
 )
 from proselint.checks.misc.composition import (
     __register__ as register_composition,
@@ -72,11 +65,8 @@ __register__ = (
     *register_apologizing,
     *register_back_formations,
     *register_braces,
-    *register_bureaucratese,
     *register_but,
     *register_capitalization,
-    *register_chatspeak,
-    *register_commercialese,
     *register_composition,
     *register_currency,
     *register_debased,

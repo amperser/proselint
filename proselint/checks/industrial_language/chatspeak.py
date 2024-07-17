@@ -44,7 +44,7 @@ check = CheckSpec(
         "LUV",
         "OMG",
         "rofl",
-        "roftl",
+        "rotfl",
         "sum1",
         "SWAK",
         "THNX",
@@ -52,7 +52,7 @@ check = CheckSpec(
         "TTYL",
         "XOXO",
     ]),
-    "misc.chatspeak",
+    "industrial_language.chatspeak",
     "'{}' is chatspeak. Write it out.",
 )
 
