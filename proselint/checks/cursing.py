@@ -1,16 +1,16 @@
 """
-On 'the N word'.
+On the 'n-word'.
 
 ---
 layout:     post
-source:     Louis CK
-source_url: https://youtu.be/dF1NUposXVQ?t=30s
+source:     ???
+source_url: ???
 title:      the 'n-word'
 date:       2014-06-10
 categories: writing
 ---
 
-Take responsibility with the shitty words you wanna say.
+Take responsibility for the words you want to say.
 
 """
 
@@ -27,9 +27,9 @@ examples_fail = [
 ]
 
 check = CheckSpec(
-    Existence(["the n-word"]),
+    Existence(["the n-word", "the n word"]),
     "cursing.nword",
-    "Take responsibility for the shitty words you want to say.",
+    "Take responsibility for the words you want to say.",
 )
 
 __register__ = (check,)
