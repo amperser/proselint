@@ -16,7 +16,7 @@ Never use the phrase 'all hell broke loose'.
 
 from __future__ import annotations
 
-from proselint.checks import CheckFlags, CheckRegistry, CheckSpec, Existence
+from proselint.checks import CheckFlags, CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -30,10 +30,7 @@ check = CheckSpec(
     Existence(["all hell broke loose"]),
     "cliches.hell",
     "Never use the words 'all hell broke loose'.",
-    flags=CheckFlags(limit_results=3)
+    flags=CheckFlags(limit_results=3),
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

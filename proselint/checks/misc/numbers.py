@@ -15,7 +15,7 @@ categories: writing
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, ExistenceSimple
+from proselint.checks import CheckSpec, ExistenceSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -90,11 +90,8 @@ check_single_digit = CheckSpec(
     "part of a name.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_section,
-        check_section,
-        check_single_digit,
-    ))
+__register__ = (
+    check_section,
+    check_section,
+    check_single_digit,
+)

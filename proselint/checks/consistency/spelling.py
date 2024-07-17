@@ -23,7 +23,7 @@ spellings in the same document.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Consistency
+from proselint.checks import CheckSpec, Consistency
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -56,7 +56,4 @@ check = CheckSpec(
     "Inconsistent spelling of '{}' (vs. '{}').",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

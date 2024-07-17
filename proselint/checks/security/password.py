@@ -15,7 +15,7 @@ Don't put pass
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
+from proselint.checks import CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -43,7 +43,4 @@ check = CheckSpec(
     "Don't put passwords in plain text.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

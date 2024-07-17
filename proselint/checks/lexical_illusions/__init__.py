@@ -1,5 +1,5 @@
 """Lexical illusions."""
 
-from proselint.checks.lexical_illusions.misc import register_with
+from proselint.checks.lexical_illusions.misc import __register__
 
-__all__ = ["register_with"]
+__all__ = ["__register__"]

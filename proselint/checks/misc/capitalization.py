@@ -17,7 +17,6 @@ Incorrect capitalization.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckResult,
     CheckSpec,
     ExistenceSimple,
@@ -144,14 +143,11 @@ check_roman_numerals = CheckSpec(
     "Capitalize the roman numeral abbreviation '{}'.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_terms,
-        check_seasons,
-        check_months,
-        check_days,
-        check_roman_war,
-        check_roman_numerals,
-    ))
+__register__ = (
+    check_terms,
+    check_seasons,
+    check_months,
+    check_days,
+    check_roman_war,
+    check_roman_numerals,
+)

@@ -30,7 +30,6 @@ from __future__ import annotations
 
 from proselint.checks import (
     CheckFlags,
-    CheckRegistry,
     CheckSpec,
     Existence,
     Pd,
@@ -55,7 +54,4 @@ check = CheckSpec(
     ignore_case=False,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

@@ -37,7 +37,6 @@ grammatical subject.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckResult,
     CheckSpec,
     existence_check,
@@ -84,7 +83,4 @@ check = CheckSpec(
     "Use of '{}'. {}",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

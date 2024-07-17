@@ -19,7 +19,6 @@ from __future__ import annotations
 import re
 
 from proselint.checks import (
-    CheckRegistry,
     CheckResult,
     CheckSpec,
     Consistency,
@@ -236,18 +235,15 @@ check_we_or_i = CheckSpec(
 #       - L812 this vs those
 #     - deg C or deg K is old, deg not used anymore
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_num_unit,
-        check_emotion,
-        check_weasel,
-        check_conversation,
-        check_wrong,
-        check_avoid_misc,
-        check_preferred,
-        check_preferred_regex,
-        check_this_vs_those,
-        check_we_or_i,
-    ))
+__register__ = (
+    check_num_unit,
+    check_emotion,
+    check_weasel,
+    check_conversation,
+    check_wrong,
+    check_avoid_misc,
+    check_preferred,
+    check_preferred_regex,
+    check_this_vs_those,
+    check_we_or_i,
+)

@@ -14,7 +14,7 @@ categories: writing
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
+from proselint.checks import CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -72,12 +72,9 @@ check_redundancy = CheckSpec(
     "'a.m.' is always morning; 'p.m.' is always night.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_lowercase_periods,
-        check_spacing,
-        check_midnight_noon,
-        check_redundancy,
-    ))
+__register__ = (
+    check_lowercase_periods,
+    check_spacing,
+    check_midnight_noon,
+    check_redundancy,
+)

@@ -16,7 +16,7 @@ Words the NFL won't print on a jersey.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
+from proselint.checks import CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -1228,13 +1228,10 @@ check_abb = CheckSpec(
     msg,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_a_to_e,
-        check_f_to_h,
-        check_i_to_p,
-        check_q_to_z,
-        check_abb,
-    ))
+__register__ = (
+    check_a_to_e,
+    check_f_to_h,
+    check_i_to_p,
+    check_q_to_z,
+    check_abb,
+)

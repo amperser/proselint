@@ -1,5 +1,5 @@
 """Oxymorons."""
 
-from proselint.checks.oxymorons.misc import register_with
+from proselint.checks.oxymorons.misc import __register__
 
-__all__ = ["register_with"]
+__all__ = ["__register__"]

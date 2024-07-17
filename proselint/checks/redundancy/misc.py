@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Pd,
     PreferredForms,
@@ -565,16 +564,13 @@ check_atd_2_regex = CheckSpec(
     msg,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_wallace,
-        check_garner_regex,
-        check_garner,
-        check_nordquist,
-        check_nordquist_regex,
-        check_atd_1,
-        check_atd_2,
-        check_atd_2_regex,
-    ))
+__register__ = (
+    check_wallace,
+    check_garner_regex,
+    check_garner,
+    check_nordquist,
+    check_nordquist_regex,
+    check_atd_1,
+    check_atd_2,
+    check_atd_2_regex,
+)

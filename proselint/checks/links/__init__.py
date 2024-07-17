@@ -1,5 +1,5 @@
 """Broken links."""
 
-from proselint.checks.links.broken import register_with
+from proselint.checks.links.broken import __register__
 
-__all__ = ["register_with"]
+__all__ = ["__register__"]

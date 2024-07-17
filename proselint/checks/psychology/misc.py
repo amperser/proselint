@@ -17,7 +17,6 @@ Psychological and psychiatric terms to avoid.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Existence,
     PreferredFormsSimple,
@@ -58,11 +57,8 @@ check_mental_telepathy = CheckSpec(
     "This is redundant because all purported telepathy is mental.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_lie_detector_test,
-        check_p_equals_zero,
-        check_mental_telepathy,
-    ))
+__register__ = (
+    check_lie_detector_test,
+    check_p_equals_zero,
+    check_mental_telepathy,
+)

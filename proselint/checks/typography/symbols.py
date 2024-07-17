@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from proselint.checks import (
     CheckFlags,
-    CheckRegistry,
     CheckResult,
     CheckSpec,
     Existence,
@@ -153,16 +152,13 @@ check_apostrophes = CheckSpec(
     "Use the correct apostrophe - 's is preferred - ´s is ok",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_ellipsis,
-        check_copyright_symbol,
-        check_trademark_symbol,
-        check_registered_trademark_symbol,
-        check_sentence_spacing,
-        check_multiplication_symbol,
-        check_curly_quotes,
-        check_apostrophes,
-    ))
+__register__ = (
+    check_ellipsis,
+    check_copyright_symbol,
+    check_trademark_symbol,
+    check_registered_trademark_symbol,
+    check_sentence_spacing,
+    check_multiplication_symbol,
+    check_curly_quotes,
+    check_apostrophes,
+)

@@ -17,7 +17,6 @@ Commercialese.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Existence,
     Pd,
@@ -80,9 +79,7 @@ check_abbrev = CheckSpec(
 )
 
 
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check,
-        check_abbrev,
-    ))
+__register__ = (
+    check,
+    check_abbrev,
+)

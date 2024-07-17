@@ -263,7 +263,7 @@ class CheckRegistry:
                 continue
             try:
                 module = importlib.import_module(info.name, "proselint.checks")
-                module.register_with(self)
+                self.register_many(module.__register__)
                 log.debug(
                     "Registered from module %s at %.3fms",
                     module.__name__,

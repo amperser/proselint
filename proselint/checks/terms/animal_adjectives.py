@@ -16,7 +16,7 @@ Animal words.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -79,7 +79,4 @@ check = CheckSpec(
     "There's a word for this: '{}'.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

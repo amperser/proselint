@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from proselint.checks import CheckRegistry, CheckResult, CheckSpec
+from proselint.checks import CheckResult, CheckSpec
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -103,7 +103,4 @@ check_unmatched = CheckSpec(
     "Don't fail to match / close unopened braces.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check_unmatched)
+__register__ = (check_unmatched,)

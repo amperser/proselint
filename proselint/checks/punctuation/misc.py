@@ -17,7 +17,6 @@ Dates.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Existence,
     ExistenceSimple,
@@ -81,11 +80,8 @@ check_comma_digits = CheckSpec(
     "In English ',' is used as a decimal separator.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_garner,
-        check_lower_case_after_punctuation,
-        check_comma_digits,
-    ))
+__register__ = (
+    check_garner,
+    check_lower_case_after_punctuation,
+    check_comma_digits,
+)

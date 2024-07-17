@@ -43,6 +43,8 @@ check_sentence = CheckSpec(
 
 # TODO: check same line/section-beginning
 
+__register__ = (check_sentence,)
+
 
 def register_with(registry: CheckRegistry) -> None:
     """Register the check."""

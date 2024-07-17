@@ -17,7 +17,6 @@ Phrasal adjectives.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Existence,
     Pd,
@@ -161,11 +160,8 @@ check_regex = CheckSpec(
     "Hyphenate '{1}', a phrasal adjective, as '{0}'.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_ly,
-        check,
-        check_regex,
-    ))
+__register__ = (
+    check_ly,
+    check,
+    check_regex,
+)

@@ -21,7 +21,7 @@ from time import sleep
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
-from proselint.checks import CheckRegistry, CheckResult, CheckSpec
+from proselint.checks import CheckResult, CheckSpec
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -92,7 +92,4 @@ check = CheckSpec(
     "Broken link: {}",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

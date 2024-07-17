@@ -17,7 +17,7 @@ and this happens most often between line breaks.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, ExistenceSimple
+from proselint.checks import CheckSpec, ExistenceSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -53,7 +53,4 @@ check_repetitions = CheckSpec(
     "There's a lexical illusion in '{}' - one or more words are repeated.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check_repetitions)
+__register__ = (check_repetitions,)

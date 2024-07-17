@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckRegistry, CheckSpec, ReverseExistence
+from proselint.checks import CheckSpec, ReverseExistence
 
 examples_pass = [
     "A boy and his goat went to a farm.",
@@ -46,7 +46,4 @@ check_elementary = CheckSpec(
     "'{}' is not a word kids learn in elementary school.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check_elementary)
+__register__ = (check_elementary,)

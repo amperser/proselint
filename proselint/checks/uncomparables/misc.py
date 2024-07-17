@@ -49,7 +49,7 @@ from __future__ import annotations
 
 import itertools
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence
+from proselint.checks import CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -150,10 +150,7 @@ check_2 = CheckSpec(
     msg,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_1,
-        check_2,
-    ))
+__register__ = (
+    check_1,
+    check_2,
+)

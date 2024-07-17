@@ -17,7 +17,6 @@ Points out misspellings.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Pd,
     PreferredFormsSimple,
@@ -180,7 +179,7 @@ check_special = CheckSpec(
     "Misspelling. '{}' is the preferred spelling.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((check, check_special))
+__register__ = (
+    check,
+    check_special,
+)

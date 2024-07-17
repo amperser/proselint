@@ -1,11 +1,9 @@
 """Weasel words."""
 
-from proselint.checks import CheckRegistry
-from proselint.checks.weasel_words.misc import register_with as register_misc
-from proselint.checks.weasel_words.very import register_with as register_very
+from proselint.checks.weasel_words.misc import __register__ as register_misc
+from proselint.checks.weasel_words.very import __register__ as register_very
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    register_misc(registry)
-    register_very(registry)
+__register__ = (
+    *register_misc,
+    *register_very,
+)

@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import calendar
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence, Pd
+from proselint.checks import CheckSpec, Existence, Pd
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -79,13 +79,10 @@ check_month_of_year = CheckSpec(
     "When specifying a month and year, 'of' is unnecessary.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_decade_apostrophes_short,
-        check_decade_apostrophes_long,
-        check_dash_and_from,
-        check_month_year_comma,
-        check_month_of_year,
-    ))
+__register__ = (
+    check_decade_apostrophes_short,
+    check_decade_apostrophes_long,
+    check_dash_and_from,
+    check_month_year_comma,
+    check_month_of_year,
+)

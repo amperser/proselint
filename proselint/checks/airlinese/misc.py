@@ -16,7 +16,7 @@ Airlinese.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence
+from proselint.checks import CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -37,7 +37,4 @@ check = CheckSpec(
     "'{}' is airlinese.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

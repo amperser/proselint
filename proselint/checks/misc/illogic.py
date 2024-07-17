@@ -16,7 +16,7 @@ Archaism.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence
+from proselint.checks import CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -58,10 +58,8 @@ check_without_your_collusion = CheckSpec(
 )
 
 
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check,
-        check_coin_a_phrase_from,
-        check_without_your_collusion,
-    ))
+__register__ = (
+    check,
+    check_coin_a_phrase_from,
+    check_without_your_collusion,
+)

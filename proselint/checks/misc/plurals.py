@@ -17,7 +17,6 @@ Using the incorrect form of the plural.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     Existence,
     PreferredFormsSimple,
@@ -47,10 +46,7 @@ check_kudos = CheckSpec(
     "Kudos is singular.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check,
-        check_kudos,
-    ))
+__register__ = (
+    check,
+    check_kudos,
+)

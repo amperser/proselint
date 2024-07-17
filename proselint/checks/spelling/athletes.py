@@ -17,7 +17,6 @@ Points out misspellings.
 from __future__ import annotations
 
 from proselint.checks import (
-    CheckRegistry,
     CheckSpec,
     PreferredForms,
     PreferredFormsSimple,
@@ -65,10 +64,7 @@ check_regex = CheckSpec(
     msg,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check,
-        check_regex,
-    ))
+__register__ = (
+    check,
+    check_regex,
+)

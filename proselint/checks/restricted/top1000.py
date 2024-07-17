@@ -22,7 +22,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.checks import CheckRegistry, CheckSpec, ReverseExistence
+from proselint.checks import CheckSpec, ReverseExistence
 
 examples_pass = [
     "I am blonde.",
@@ -47,7 +47,4 @@ check_top1000 = CheckSpec(
     "'{}' is not in the top 1000 most common words.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check_top1000)
+__register__ = (check_top1000,)

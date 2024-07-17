@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, PreferredFormsSimple
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -94,10 +94,7 @@ check_denizen_labels_norris = CheckSpec(
     "Would you like '{}'?",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check,
-        check_denizen_labels_norris,
-    ))
+__register__ = (
+    check,
+    check_denizen_labels_norris,
+)

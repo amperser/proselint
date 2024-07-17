@@ -16,7 +16,7 @@ From whence it came.
 
 from __future__ import annotations
 
-from proselint.checks import CheckRegistry, CheckSpec, Existence
+from proselint.checks import CheckSpec, Existence
 
 examples_pass = [
     "Smoke phrase with nothing flagged.",
@@ -32,7 +32,4 @@ check = CheckSpec(
     "The 'from' in 'from whence' is redundant.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

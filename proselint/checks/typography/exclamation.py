@@ -18,7 +18,6 @@ from __future__ import annotations
 
 from proselint.checks import (
     CheckFlags,
-    CheckRegistry,
     CheckSpec,
     Existence,
     Pd,
@@ -57,10 +56,7 @@ check_exclamations_ppm = CheckSpec(
     flags=CheckFlags(ppm_threshold=30),
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_repeated_exclamations,
-        check_exclamations_ppm,
-    ))
+__register__ = (
+    check_repeated_exclamations,
+    check_exclamations_ppm,
+)

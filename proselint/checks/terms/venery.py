@@ -19,7 +19,6 @@ from __future__ import annotations
 import re
 
 from proselint.checks import (
-    CheckRegistry,
     CheckResult,
     CheckSpec,
     preferred_forms_check_opti,
@@ -119,7 +118,4 @@ check = CheckSpec(
     "The venery term is '{}'.",
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the check."""
-    registry.register(check)
+__register__ = (check,)

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from proselint.checks import (
     CheckFlags,
-    CheckRegistry,
     CheckSpec,
     Existence,
     PreferredForms,
@@ -64,11 +63,8 @@ check_misc_2 = CheckSpec(
     misc_msg,
 )
 
-
-def register_with(registry: CheckRegistry) -> None:
-    """Register the checks."""
-    registry.register_many((
-        check_bottleneck,
-        check_misc,
-        check_misc_2,
-    ))
+__register__ = (
+    check_bottleneck,
+    check_misc,
+    check_misc_2,
+)
