@@ -116,6 +116,7 @@ class CheckFlags(NamedTuple):
     limit_results: int = 0
     ppm_threshold: int = 0
 
+
 class CheckSpec(NamedTuple):
     type: Union[
         Consistency,
@@ -144,6 +145,7 @@ class CheckSpec(NamedTuple):
                 partial,
                 self.path,
             )
+        # NOTE: this can be replaced with itertools.pairwise for versions >=3.10
         return all(
             self.path_segments[i] == partial_segments[i]
             for i in range(len(partial_segments))
@@ -152,7 +154,9 @@ class CheckSpec(NamedTuple):
     def dispatch_with_flags(self, text: str) -> list[CheckResult]:
         results = self.dispatch(text)
         if self.flags.ppm_threshold > 0:
-            results = _threshold_check(results, self.flags.ppm_threshold, len(text))
+            results = _threshold_check(
+                results, self.flags.ppm_threshold, len(text)
+            )
         if self.flags.limit_results > 0:
             results = _truncate_errors(results, self.flags.limit_results)
         return results
