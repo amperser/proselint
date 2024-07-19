@@ -47,7 +47,7 @@ check = CheckSpec(
         "avowed homosexual": "openly gay",
         "special rights": "equal rights",
     }),
-    "lgbtq.terms.glaad",
+    "social_awareness.lgbtq.terms.glaad",
     "Possibly offensive term. Consider using '{}' instead of '{}'.",
     # TODO: consider impact of setting ignore_case=True
     ignore_case=False,
@@ -67,7 +67,7 @@ check_offensive = CheckSpec(
         # homo may create false positives without additional context
         # FIXME: use topic detector to decide whether "homo" is offensive
     ]),
-    "lgbtq.terms.offensive",
+    "social_awareness.lgbtq.terms.offensive",
     "Offensive term. Remove it or consider the context.",
     # TODO: consider the impact of setting ignore_case=True
     ignore_case=False,

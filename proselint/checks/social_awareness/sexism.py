@@ -72,7 +72,7 @@ check_sexism = CheckSpec(
         "women scientists": "scientists",
         # "heroine": "hero",
     }),
-    "sexism.misc",
+    "social_awareness.sexism.misc",
     "Gender bias. Use '{}' instead of '{}'.",
     ignore_case=False,
 )
@@ -88,7 +88,7 @@ check_preferred_form = CheckSpec(
         "fireperson": "firefighter",
         "mailperson": "mail carrier",
     }),
-    "sexism.misc",
+    "social_awareness.sexism.misc",
     "Not a preferred form. Use '{}' instead of '{}'.",
 )
 

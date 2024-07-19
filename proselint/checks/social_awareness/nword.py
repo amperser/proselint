@@ -28,7 +28,7 @@ examples_fail = [
 
 check = CheckSpec(
     Existence(["the n-word", "the n word"]),
-    "cursing.nword",
+    "social_awareness.nword",
     "Take responsibility for the words you want to say.",
 )
 
