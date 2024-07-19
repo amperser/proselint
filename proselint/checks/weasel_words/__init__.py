@@ -1,9 +1,8 @@
 """Weasel words."""
 
-from proselint.checks.weasel_words.misc import __register__ as register_misc
-from proselint.checks.weasel_words.very import __register__ as register_very
+from proselint.checks.weasel_words import misc, very
 
 __register__ = (
-    *register_misc,
-    *register_very,
+    *misc.__register__,
+    *very.__register__,
 )
