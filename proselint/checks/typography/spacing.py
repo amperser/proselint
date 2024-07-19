@@ -47,7 +47,7 @@ examples_fail = [
 
 check_end_punctuation_spacing = CheckSpec(
     ExistenceSimple(r"[a-z][!\?][ ]{2,}"),
-    "punctuation.spacing.end_punctuation",
+    "typography.spacing.end_punctuation",
     "Unacceptable number of spaces behind ! or ? (should be 1).",
 )
 
@@ -55,20 +55,20 @@ check_general_spacing = CheckSpec(
     # comma is slightly more complex, consider the number 1,000
     # NOTE: this can break - the previous implementation was defective
     ExistenceSimple(r"""[,;\:\"'][ ]{2,}"""),
-    "punctuation.spacing.separators",
+    "typography.spacing.separators",
     'Unacceptable number of spaces behind ";: (must be 1 or less).',
 )
 
 check_whitespace_before = CheckSpec(
     ExistenceSimple(r"[a-z]+\s+[,;\:\.!\?]"),
-    "punctuation.whitespace_before",
-    "Unacceptable whitespace before punctuation",
+    "typography.spacing.whitespace_before",
+    "Unacceptable spacing before punctuation.",
 )
 
 check_whitespace_inbetween = CheckSpec(
     ExistenceSimple(Pd.words_in_txt.value.format(r"[ ]{2,}")),
-    "punctuation.whitespace_inbetween",
-    "Multiple spaces, that would be ugly in Word or LibreOffice.",
+    "typography.spacing.whitespace_inbetween",
+    "Unacceptable spacing inbetween words.",
 )
 
 __register__ = (

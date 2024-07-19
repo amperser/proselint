@@ -3,8 +3,8 @@
 from proselint.checks.typography.diacritical_marks import (
     __register__ as register_diacritical_marks,
 )
-from proselint.checks.typography.exclamation import (
-    __register__ as register_exclamation,
+from proselint.checks.typography.spacing import (
+    __register__ as register_spacing,
 )
 from proselint.checks.typography.symbols import (
     __register__ as register_symbols,
@@ -12,6 +12,6 @@ from proselint.checks.typography.symbols import (
 
 __register__ = (
     *register_diacritical_marks,
-    *register_exclamation,
+    *register_spacing,
     *register_symbols,
 )
