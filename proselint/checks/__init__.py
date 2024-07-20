@@ -348,43 +348,31 @@ def get_line_and_column(text: str, position: int) -> tuple[int, int]:
     return (len(_t) - 1, len(_t[-1]))
 
 
-@functools.lru_cache
-def find_quoted_ranges(_text: str) -> list[tuple[int, int]]:
+def check_matching_quotes(chars: tuple[str, str]) -> bool:
+    """Check if a pair of quotes match."""
+    straight = "\"'"
+    curly = "“”"
+    return (chars[0] in straight and chars[0] == chars[1]) or (
+        chars[0] in curly and chars[1] in curly and chars[0] != chars[1]
+    )
+
+
+def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
     """Find the range of a quote pair."""
-
-    # FIXME: optimize - use regex or produce a 1-dimensional array or lookup
-    # table
-    def matching(quotemark1: str, quotemark2: str) -> bool:
-        straight = "\"'"
-        curly = "“”"
-        # TODO: extend! straight Q should match (q1==q2)
-        # and curly shouldn't (q1!=q2)
-        return (quotemark1 in straight and quotemark2 in straight) or (
-            quotemark1 in curly and quotemark2 in curly
-        )
-
-    state = 0
-    quote_active = char_prev = ""
-    start = None
-    ranges = []
-    seps = " .,:;-\r\n"
-    quotes = ['"', "“", "”", "'"]
-    for _i, _char in enumerate(_text + "\n"):
-        if state == 0 and _char in quotes and char_prev in seps:
-            start = _i
-            state = 1
-            quote_active = _char
-        elif state == 1 and matching(_char, quote_active):
-            state = 2
-        elif state == 2:
-            if _char in seps:
-                ranges.append((start + 1, _i - 1))
-                start = None
-                state = 0
-            else:
-                state = 1
-        char_prev = _char
-    return ranges
+    active_quotes: list[tuple[str, int]] = [
+        (_m.group(0), _m.start()) for _m in re.finditer(r"[\"'“”]", text)
+    ]
+    prev_quotes: list[tuple[str, int]] = []
+    spans: list[tuple[int, int]] = []
+    for quote, span_end in active_quotes:
+        for potential, span_start in reversed(prev_quotes):
+            if check_matching_quotes((quote, potential)):
+                prev_quotes.pop()
+                spans.append((span_start, span_end))
+                break
+        else:
+            prev_quotes.append((quote, span_end))
+    return spans
 
 
 def is_quoted(position: int, text: str) -> bool:
