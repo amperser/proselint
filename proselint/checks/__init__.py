@@ -535,7 +535,6 @@ def existence_check(  # noqa: PLR0913, PLR0917
     offset: tuple[int, int] = (0, 0),
     padding: Pd = Pd.words_in_txt,
     dotall: bool = False,
-    excluded_topics: Optional[list] = None,
     exceptions: tuple = (),
 ) -> list[CheckResult]:
     """Build a checker that prohibits certain words or phrases."""
@@ -548,13 +547,6 @@ def existence_check(  # noqa: PLR0913, PLR0917
         flags |= re.DOTALL
 
     errors: list[CheckResult] = []
-
-    # If the topic of the text is in the excluded list, return immediately.
-    # TODO: might be removed, as the implementation is bad & not that useful
-    if excluded_topics:
-        tps = topics(text)
-        if any(t in excluded_topics for t in tps):
-            return errors
 
     if padding not in {Pd.disabled, Pd.safe_join, Pd.words_in_txt}:
         # Pd.whitespace & Pd.sep_in_text each add 1 char before and after
@@ -599,7 +591,6 @@ def existence_check_simple(  # noqa: PLR0913, PLR0917
     in comparison to existence_check:
         - does not work on lists
         - has no padding & offset
-        - does not exclude topics
     """
     flags = 0
     if unicode:
@@ -685,35 +676,6 @@ def reverse_existence_check(  # noqa: PLR0913, PLR0917
     ]
 
 
-def detector_50_Cent(text: str) -> tuple[str, float]:
-    """Determine whether 50 Cent is a topic."""
-    keywords = [
-        "50 Cent",
-        "rap",
-        "hip hop",
-        "Curtis James Jackson III",
-        "Curtis Jackson",
-        "Eminem",
-        "Dre",
-        "Get Rich or Die Tryin'",
-        "G-Unit",
-        "Street King Immortal",
-        "In da Club",
-        "Interscope",
-    ]
-    num_keywords = sum(word in text for word in keywords)  # TODO: regex
-    return "50 Cent", float(num_keywords > 2)
-
-
-def topics(text: str) -> list[str]:
-    """Return a list of topics."""
-    detectors = [
-        detector_50_Cent,
-    ]
-    ts = [detector(text) for detector in detectors]
-    return [t[0] for t in ts if t[1] > 0.95]
-
-
 def context(_text: str, _position: int, level: str = "paragraph") -> str:
     """Get sentence or paragraph that surrounds the given position."""
     if level == "sentence":  # noqa: SIM114
@@ -729,7 +691,7 @@ def context(_text: str, _position: int, level: str = "paragraph") -> str:
 ###############################################################################
 
 
-def detect_language(text: str) -> str:
+def _detect_language(text: str) -> str:
     """Detect the source language."""
     # TODO: add language to text.metadata, some checks are language agnostic
     lang_regex = {
