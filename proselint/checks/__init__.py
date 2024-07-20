@@ -531,7 +531,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     err: str,
     msg: str,
     ignore_case: bool = True,
-    string: bool = False,  # TODO: why not default on?
+    unicode: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: Pd = Pd.words_in_txt,
     dotall: bool = False,
@@ -541,7 +541,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
     flags = 0
     if ignore_case:
         flags |= re.IGNORECASE
-    if string:
+    if unicode:
         flags |= re.UNICODE
     if dotall:
         flags |= re.DOTALL
