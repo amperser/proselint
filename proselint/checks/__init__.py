@@ -97,7 +97,7 @@ class ReverseExistence(NamedTuple):
     allowed: list[str]
 
 
-CheckFn = Callable[[str], list[CheckResult]]
+CheckFn = Callable[[str, "CheckSpec"], list[CheckResult]]
 
 
 class CheckFlags(NamedTuple):
@@ -225,7 +225,7 @@ class CheckSpec(NamedTuple):
                 self.offset,
             )
         if isinstance(self.type, Callable):
-            return self.type(text)
+            return self.type(text, self)
         raise ValueError(
             "Check type must be valid, found %s (type %s)",
             self.type,

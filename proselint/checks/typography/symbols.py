@@ -129,18 +129,15 @@ deactivated_check_en_dash_separated_names = CheckSpec(
 )
 
 
-def _check_apostrophes(text: str) -> list[CheckResult]:
+def _check_apostrophes(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Enforce use of correct typographical apostrophes."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
-    err = "typography.symbols.apostrophes"
-    msg = "Use the correct apostrophe - 's is preferred - ´s is ok"
     regex = r"\w+`s"  # unwanted form
-    results = existence_check_simple(text, regex, err, msg)
+    results = existence_check_simple(text, regex, spec.path, spec.msg)
 
-    msg = "Use the same apostrophe consistently - {} vs {}"
     results.extend(
         consistency_check(
-            text, [[r"\w+'s", r"\w+´s"]], err, msg, ignore_case=False
+            text, [[r"\w+'s", r"\w+´s"]], spec.path, spec.msg, ignore_case=False
         )
     )
     return results
@@ -149,7 +146,7 @@ def _check_apostrophes(text: str) -> list[CheckResult]:
 check_apostrophes = CheckSpec(
     _check_apostrophes,
     "typography.symbols.apostrophes",
-    "Use the correct apostrophe - 's is preferred - ´s is ok",
+    "Use the same apostrophe consistently - {} vs {}",
 )
 
 __register__ = (

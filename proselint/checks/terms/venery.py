@@ -36,13 +36,10 @@ examples_fail = [
 ]
 
 
-def _check(text: str) -> list[CheckResult]:
+def _check(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the text."""
     if not any(re.finditer("(?:group|bunch) ", text, flags=re.IGNORECASE)):
         return []
-
-    err = "terms.venery.oxford"
-    msg = "The venery term is '{}'."
 
     term_list = [
         ["alligators", "congregation"],
@@ -109,7 +106,7 @@ def _check(text: str) -> list[CheckResult]:
         for generic in generic_terms
     }
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, spec.path, spec.msg)
 
 
 check = CheckSpec(

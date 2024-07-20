@@ -33,74 +33,58 @@ examples_fail = [
     "there might be an error).",
 ]
 
+BRACES = (
+    (r"[()]", ("(", ")")),
+    (r"[{}]", ("{", "}")),
+    (r"[\[\]]", ("[", "]")),
+)
+
 
 def trace_braces(
-    text: str, rex: str, char1: str, char2: str, err: str
+    text: str, rex: str, chars: tuple[str, str], spec: CheckSpec
 ) -> Optional[CheckResult]:
     """Check that braces match."""
     # TODO: same check for quotes?
     _count = 0
     for _m in re.finditer(rex, text):
-        if _m.group(0) == char1:
-            _count += 1
-        elif _m.group(0) == char2:
-            _count -= 1
+        _count += (-1) ** chars.index(_m.group(0))
         if _count < 0:
             # TODO: this could trigger false positives for lists like 1), 2), a)
-            _msg = (
-                "Don't fail to match / close opened braces -> "
-                f"more {char1}{char2}-braces closed than opened"
-            )
+            _msg = f"{spec.msg} more '{chars[1]}' were closed than opened."
             return CheckResult(
                 start_pos=_m.start(),
                 end_pos=_m.end(),
-                check=err,
+                check=spec.path,
                 message=_msg,
                 replacements=None,
             )
     if _count > 0:
-        _msg = (
-            "Don't fail to match / close opened braces -> "
-            f"at least one '{char1}' is left open"
-        )
+        # TODO: add a correct span for this case
         return CheckResult(
             start_pos=0,
             end_pos=len(text),
-            check=err,
-            message=_msg,
+            check=spec.path,
+            message=f"{spec.msg} at least one '{chars[0]}' is left open.",
             replacements=None,
         )
     return None
 
 
-def _check_unmatched(text: str) -> list[CheckResult]:
+def _check_unmatched(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the text."""
-    err = "misc.braces.unmatched"
-    # msg = "Don't fail to match / close opened braces '{}'."
+    results: list[Optional[CheckResult]] = [
+        trace_braces(text, regex, chars, spec)
+        for regex, chars in BRACES
+        if re.search(regex, text)
+    ]
 
-    results: list[CheckResult] = []
-    if any(re.finditer(r"[()]", text)):
-        _res = trace_braces(text, r"[()]", "(", ")", err)
-        if _res:
-            results.append(_res)
-
-    if any(re.finditer(r"[\[\]]", text)):
-        _res = trace_braces(text, r"[\[\]]", "[", "]", err)
-        if _res:
-            results.append(_res)
-
-    if any(re.finditer(r"[{}]", text)):
-        _res = trace_braces(text, r"[{}]", "{", "}", err)
-        if _res:
-            results.append(_res)
-
-    return results
+    return [result for result in results if result]
 
 
 check_unmatched = CheckSpec(
     _check_unmatched,
     "misc.braces.unmatched",
-    "Don't fail to match / close unopened braces.",
+    "Match braces:",
 )
 
 __register__ = (check_unmatched,)

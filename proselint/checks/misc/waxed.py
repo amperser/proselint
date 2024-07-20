@@ -38,14 +38,11 @@ examples_fail = [
 ]
 
 
-def _check(text: str) -> list[CheckResult]:
+def _check(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Suggest the preferred forms."""
     if not any(re.finditer("wax ", text, re.IGNORECASE)):
         # early exit for a niche and costly check
         return []
-
-    err = "misc.waxed"
-    msg = "The modifier following 'waxed' must be an adj.: '{}' is correct"
 
     waxes = ["wax", "waxes", "waxed", "waxing"]
     modifiers = [
@@ -75,7 +72,7 @@ def _check(text: str) -> list[CheckResult]:
         for word in waxes
     }
 
-    return preferred_forms_check_opti(text, items, err, msg)
+    return preferred_forms_check_opti(text, items, spec.path, spec.msg)
 
 
 # NOTE: This could be fully converted, but has been left this way (pending

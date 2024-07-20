@@ -54,11 +54,8 @@ examples_fail = [
 ]
 
 
-def _check(text: str) -> list[CheckResult]:
+def _check(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the text."""
-    err = "misc.greylist"
-    msg = "Use of '{}'. {}"
-
     bad_words = {
         "obviously": "This is obviously an inadvisable word to use.",
         "utilize": "Do you know anyone who needs to utilize the word utilize?",
@@ -70,8 +67,8 @@ def _check(text: str) -> list[CheckResult]:
             existence_check(
                 text,
                 [word],
-                err,
-                msg.format(word, expl),
+                spec.path,
+                spec.msg.format(word, expl),
             ),
         )
     return results

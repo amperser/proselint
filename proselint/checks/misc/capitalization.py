@@ -115,16 +115,13 @@ check_roman_war = CheckSpec(
 )
 
 
-def _check_roman_numerals(text: str) -> list[CheckResult]:
+def _check_roman_numerals(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the text."""
-    err = "misc.capitalization.roman_num"
-    msg = "Don't fail to capitalize roman numeral abbreviation '{}'."
-
     numerals_regex = Pd.words_in_txt.value.format(
         r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
     )
     results_all = existence_check_simple(
-        text, numerals_regex, err, msg, ignore_case=True
+        text, numerals_regex, spec.path, spec.msg, ignore_case=True
     )
     results_valid: list[CheckResult] = []
     for _res in results_all:

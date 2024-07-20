@@ -178,12 +178,10 @@ check_preferred_regex = CheckSpec(
 )
 
 
-def _check_this_vs_those(text: str) -> list[CheckResult]:
+def _check_this_vs_those(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the usage of "this" and "those"."""
     # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L812
     # TODO: magnet for false positives -> remove? seems niche
-    err = "scientific.misc.this_vs_those"
-    msg = "(Maybe) wrong plural for '{}' -> use 'those *'"
     exceptions = [
         "this results in",
         r"this \w+ss\b",
@@ -206,8 +204,8 @@ def _check_this_vs_those(text: str) -> list[CheckResult]:
             CheckResult(
                 start_pos=_m.start(),
                 end_pos=_m.end(),
-                check=err,
-                message=msg.format(_res),
+                check=spec.path,
+                message=spec.msg.format(_res),
                 replacements=None,
             )
         )
