@@ -288,13 +288,29 @@ class CheckRegistry:
         if self.enabled_checks is None:
             return []
 
+        enabled_checks = []
+        skipped_checks = []
+        for key, key_enabled in self.enabled_checks.items():
+            if key_enabled:
+                enabled_checks.append(key)
+            else:
+                skipped_checks.append(key)
+
         # TODO: review potential optimizations for this
-        return [
-            x
-            for x in self.checks
-            for key, key_enabled in self.enabled_checks.items()
-            if key_enabled and (x.path == key or x.matches_partial(key))
-        ]
+        filtered_enabled = list(
+            filter(
+                lambda x: not any(
+                    x.matches_partial(key) for key in skipped_checks
+                )
+                and any(
+                    x.path == key or x.matches_partial(key)
+                    for key in enabled_checks
+                ),
+                self.checks,
+            )
+        )
+        log.debug("Enabled: %s", [x.path for x in filtered_enabled])
+        return filtered_enabled
 
 
 registry = CheckRegistry()
