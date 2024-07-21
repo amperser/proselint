@@ -11,10 +11,10 @@ from proselint.checks import (
     CheckFlags,
     CheckResult,
     CheckSpec,
+    Consistency,
     Existence,
+    ExistenceSimple,
     Pd,
-    consistency_check,
-    existence_check_simple,
 )
 
 examples_pass = [
@@ -128,25 +128,20 @@ deactivated_check_en_dash_separated_names = CheckSpec(
     "Use an en dash (–) to separate names.",
 )
 
+APOSTROPHE_REGEX = Pd.words_in_txt.format(r"\w+{}(:?t|s|ll|d|m|ve|re)")
 
-def _check_apostrophes(text: str, spec: CheckSpec) -> list[CheckResult]:
-    """Enforce use of correct typographical apostrophes."""
-    # src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
-    regex = r"\w+`s"  # unwanted form
-    results = existence_check_simple(text, regex, spec.path, spec.msg)
-
-    results.extend(
-        consistency_check(
-            text, [[r"\w+'s", r"\w+´s"]], spec.path, spec.msg, ignore_case=False
-        )
-    )
-    return results
-
-
-check_apostrophes = CheckSpec(
-    _check_apostrophes,
+check_apostrophes_consistency = CheckSpec(
+    Consistency([(APOSTROPHE_REGEX.format("'"), APOSTROPHE_REGEX.format("´"))]),
     "typography.symbols.apostrophes",
-    "Use the same apostrophe consistently - {} vs {}",
+    "Use the same apostrophe consistently - ' vs ´",
+    ignore_case=False,  # TODO: why is this off?
+)
+
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
+check_apostrophes_correct = CheckSpec(
+    ExistenceSimple(APOSTROPHE_REGEX.format("`")),
+    "typography.symbols.apostrophes",
+    "Use the correct apostrophe - ' or ´ instead of `",
 )
 
 __register__ = (
@@ -157,5 +152,6 @@ __register__ = (
     check_sentence_spacing,
     check_multiplication_symbol,
     check_curly_quotes,
-    check_apostrophes,
+    check_apostrophes_consistency,
+    check_apostrophes_correct,
 )
