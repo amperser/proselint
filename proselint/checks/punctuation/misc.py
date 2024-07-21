@@ -76,7 +76,7 @@ check_lower_case_after_punctuation = CheckSpec(
 # NOTE: tnt also checks for German numbers, not implemented here
 check_comma_digits = CheckSpec(
     # NOTE: intentional words_in_txt
-    ExistenceSimple(Pd.words_in_txt.value.format(r"\d+,\d+")),
+    ExistenceSimple(Pd.words_in_txt.format(r"\d+,\d+")),
     "punctuation.misc.comma_digits",
     "In English ',' is used as a decimal separator.",
 )

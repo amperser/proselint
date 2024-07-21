@@ -221,8 +221,8 @@ check_this_vs_those = CheckSpec(
 check_we_or_i = CheckSpec(
     Consistency([
         (
-            Pd.words_in_txt.value.format("we"),
-            Pd.words_in_txt.value.format("i"),
+            Pd.words_in_txt.format("we"),
+            Pd.words_in_txt.format("i"),
         )
     ]),
     "scientific.misc.we_or_i",

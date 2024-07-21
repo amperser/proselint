@@ -117,7 +117,7 @@ check_roman_war = CheckSpec(
 
 def _check_roman_numerals(text: str, spec: CheckSpec) -> list[CheckResult]:
     """Check the text."""
-    numerals_regex = Pd.words_in_txt.value.format(
+    numerals_regex = Pd.words_in_txt.format(
         r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})"
     )
     results_all = existence_check_simple(

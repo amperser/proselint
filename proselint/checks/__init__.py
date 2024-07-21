@@ -499,7 +499,7 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
         offset = (offset[0] + 1, offset[1] - 1)
 
     if len(items) > 1:
-        rx = Pd.safe_join.value.format("|".join(items.keys()))
+        rx = Pd.safe_join.format("|".join(items.keys()))
     else:
         rx = next(iter(items))
     rx = padding.format(rx)
@@ -549,7 +549,7 @@ def existence_check(  # noqa: PLR0913, PLR0917
         offset = (offset[0] + 1, offset[1] - 1)
 
     if len(re_items) > 1:
-        re_items = Pd.safe_join.value.format("|".join(re_items))
+        re_items = Pd.safe_join.format("|".join(re_items))
     else:
         re_items = re_items[0]
     rx = padding.format(re_items)

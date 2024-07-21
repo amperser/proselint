@@ -66,7 +66,7 @@ check_whitespace_before = CheckSpec(
 )
 
 check_whitespace_inbetween = CheckSpec(
-    ExistenceSimple(Pd.words_in_txt.value.format(r"[ ]{2,}")),
+    ExistenceSimple(Pd.words_in_txt.format(r"[ ]{2,}")),
     "typography.spacing.whitespace_inbetween",
     "Unacceptable spacing inbetween words.",
 )

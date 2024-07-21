@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from proselint.checks import (
     CheckFlags,
-    CheckResult,
     CheckSpec,
     Consistency,
     Existence,
