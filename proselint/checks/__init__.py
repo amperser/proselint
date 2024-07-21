@@ -140,11 +140,7 @@ class CheckSpec(NamedTuple):
     def matches_partial(self, partial: str) -> bool:
         partial_segments = partial.split(".")
         if len(partial_segments) > len(self.path_segments):
-            raise ValueError(
-                "Partial key %s must not be longer than check path %s.",
-                partial,
-                self.path,
-            )
+            return False
         # NOTE: this can be replaced with itertools.pairwise for versions >=3.10
         return all(
             self.path_segments[i] == partial_segments[i]
