@@ -51,7 +51,7 @@ check_garner = CheckSpec(
 check_lower_case_after_punctuation = CheckSpec(
     ExistenceSimple(
         # TODO: this can have false positives after abbreviations
-        r"\b[a-z]+[\.!\?]\s+[a-z]+\b",
+        Pd.words_in_txt.format(r"[a-z]+[\.!\?]\s+[a-z]+"),
         # en, TODO: add more, sync with misc.numbers.sentence
         # exceptions_de = ["bzw.", "ca.", "cf.", "etc.", "vgl.",
         #                  "no.", "m.E", "m.a.W.", "u.U.", "s.u.", "z.B."]
@@ -68,6 +68,7 @@ check_lower_case_after_punctuation = CheckSpec(
     ),
     "punctuation.misc.lower_case",
     "Is the lowercase letter correct after the punctuation here? Found '{}'.",
+    ignore_case=False,
 )
 
 # TODO: determine validity of this
