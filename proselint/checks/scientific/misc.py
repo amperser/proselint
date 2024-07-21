@@ -4,7 +4,7 @@ Scientific writing.
 ---
 layout:     post
 source:     div
-source_url:
+source_url: ???
 title:      scientific
 date:       2024-01-14
 categories: writing

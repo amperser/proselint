@@ -37,7 +37,7 @@ check_lie_detector_test = CheckSpec(
         "lie detector test": "polygraph test",
         "lie detector machine": "polygraph machine",
     }),
-    "psychology.lie_detector",
+    "scientific.psychology.lie_detector",
     "Polygraph machines measure arousal, not lying per se. Try {}.",
 )
 
@@ -47,13 +47,13 @@ check_p_equals_zero = CheckSpec(
         "p = 0.000",
         "p = 0.0000",
     ]),
-    "psychology.p_equals_zero",
+    "scientific.psychology.p_equals_zero",
     "Unless p really equals zero, you should use more decimal places.",
 )
 
 check_mental_telepathy = CheckSpec(
     Existence(["mental telepathy"]),
-    "psychology.mental_telepathy",
+    "scientific.psychology.mental_telepathy",
     "This is redundant because all purported telepathy is mental.",
 )
 
