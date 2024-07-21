@@ -34,7 +34,6 @@ proselint_base: dict = {
         "hyperbole": True,
         "industrial_language": True,
         "lexical_illusions": True,
-        "lgbtq": True,
         "malapropisms": True,
         "misc": True,
         "misc.monotonic": False,  # in preview phase
@@ -43,19 +42,17 @@ proselint_base: dict = {
         "needless_variants": True,
         "nonwords": True,
         "oxymorons": True,
-        "psychology": True,
         "punctuation": True,
         "redundancy": True,
         "skunked_terms": True,
+        "social_awareness": False,  # in preview phase
         "spelling": True,
+        "scientific": True,
         "scientific.misc": False,  # in preview phase
-        "scientific.psychology": True,
-        "sexism": True,
         "terms": True,
         "typography": True,
         "uncomparables": True,
         "weasel_words": True,
-        "restricted.top1000": False,
-        "restricted.elementary": False,
+        "restricted": False,  # restrictive writing styles, off by default
     },
 }
