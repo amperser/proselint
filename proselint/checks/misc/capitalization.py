@@ -112,6 +112,7 @@ check_roman_war = CheckSpec(
     ExistenceSimple("World War (I(i*)|i*)"),
     "misc.capitalization.roman_num.ww",
     "Capitalize the roman numeral abbreviation in '{}'.",
+    ignore_case=False,
 )
 
 
