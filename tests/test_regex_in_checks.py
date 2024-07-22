@@ -1,31 +1,26 @@
 from __future__ import annotations
 
-import importlib
-import re
 from typing import Optional
 
 import pytest
 import rstr
 
 import proselint
-from proselint.checks import CheckResult, CheckSpec, Pd
-from tests.test_checks import get_module_names
+from proselint.checks import CheckResult, Pd
+from tests.test_checks import extract_checks, get_module_names, verify_module
 
 
 def generate_examples(items: list[str]) -> list[CheckResult]:
-    results: list[CheckResult] = []
-    for item in items:
-        example = rstr.xeger(item)
-        results.append(
-            CheckResult(
-                start_pos=0,
-                end_pos=100,
-                check="mock",
-                message=f"Smoke phrase with something {example} flagged.",
-                replacements=None,
-            )
+    return [
+        CheckResult(
+            start_pos=0,
+            end_pos=100,
+            check="mock",
+            message=rstr.xeger(item),
+            replacements=None,
         )
-    return results
+        for item in items
+    ]
 
 
 def verify_regex_padding(regex: list[str], padding: str) -> None:
@@ -36,13 +31,13 @@ def verify_regex_padding(regex: list[str], padding: str) -> None:
     ), f"all elements in list must be strings ({regex[:5]})"
 
     examples = [rstr.xeger(_e) for _e in regex]
-    if padding == Pd.sep_in_txt.value:
+    if padding == Pd.sep_in_txt:
         # if all elements start&end with alpha/num we can optimize
         assert not all(
             _x[0].isalnum() and _x[-1].isalnum() for _x in examples
         ), f"Choose Pd.words_in_txt for {regex[:5]}[...] as optimization for check()"
 
-    if padding == Pd.words_in_txt.value:
+    if padding == Pd.words_in_txt:
         # any element without num or alpha at start AND end should fail
         for _i, _x in enumerate(examples):
             assert (
@@ -113,8 +108,7 @@ def mock_existence_check_simple(
     unicode: bool = True,
     exceptions=(),
 ) -> list[CheckResult]:
-    items = [pattern]
-    return generate_examples(items)
+    return generate_examples([pattern])
 
 
 # ######### Unittests
@@ -122,7 +116,7 @@ def mock_existence_check_simple(
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_regex_in_checks(module_name: str, monkeypatch) -> None:
-    # first: intercept regex-items, test them and get reverse-regex as example-data
+    # first: intercept regex-items, test them and get reverse-regex as example data
     monkeypatch.setattr(
         proselint.checks,
         "preferred_forms_check_regex",
@@ -140,19 +134,12 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
         proselint.checks, "existence_check_simple", mock_existence_check_simple
     )
 
-    try:
-        module = importlib.import_module("." + module_name, "proselint")
-    except ModuleNotFoundError as _xpt:
-        raise ImportError(f"Is {module_name} broken?") from _xpt
-
-    checks: dict[str, CheckSpec] = {
-        d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
-    }
+    checks = extract_checks(verify_module(module_name))
 
     examples: list[CheckResult] = []
-    for check in checks.values():  # any-config
+    for check in checks:  # any config
         # reverse regex-action happening here
-        examples.extend(check.dispatch_with_flags("smokey"))
+        examples.extend(check.dispatch("smokey"))
 
     monkeypatch.undo()
 
@@ -161,8 +148,8 @@ def test_regex_in_checks(module_name: str, monkeypatch) -> None:
         _xmp = example.message
         print(_xmp)
         errors: list = []
-        for check in checks.values():
-            errors.extend(check.dispatch_with_flags(_xmp))
+        for check in checks:
+            errors.extend(check.dispatch(_xmp))
         assert (
             len(errors) > 0
         ), f"False negative for {module_name} processing '{_xmp}'"

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import importlib
-import os
-import re
+from os import walk
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
@@ -12,101 +12,113 @@ from proselint.checks import CheckSpec
 
 
 def is_check(file_path: Path) -> bool:
-    """Check whether a file contains a check."""
-    # TODO: there are 3 variations of same FN, refactor when _preview is implemented
-    if file_path.suffix != ".py":
-        return False
-    if file_path.name == "__init__.py":
-        return False
-    if "_template" in file_path.as_posix():
-        return False
-    return True
+    """Check whether a file should contain a check."""
+    # TODO: there are 3 variations of check
+    # refactor when preview is implemented
+    return (
+        "_template" not in file_path.as_posix()
+        and file_path.suffix == ".py"
+        and file_path.name != "__init__.py"
+    )
 
 
 def get_check_files() -> list[Path]:
     """
-    traverses through all subdirs and selects
-    .py-files that are in a module (have an __init__.py) and are
-    not in "template"-dir
+    Traverse through subdirectories and select valid check files.
+
+    These are .py files outside of the template directory that are in an
+    explicit module (i.e. they have an associated __init__.py).
     """
     # TODO: duplicated code, test_config_default
     checks_path = (proselint.path / "checks").absolute()
     results = []
-    for _root, _, _files in os.walk(checks_path):
-        root_path = Path(_root)
-        for _file in _files:
-            file_path = root_path / _file
-            if is_check(file_path):
-                if not (file_path.parent / "__init__.py").exists():
-                    raise FileNotFoundError(
-                        "Check-Directory is missing '__init__.py'"
-                    )
-                results.append(file_path)
+    for root, _, files in walk(checks_path):
+        root_path = Path(root)
+        for file in files:
+            file_path = root_path / file
+            if not is_check(file_path):
+                continue
+            if not (file_path.parent / "__init__.py").exists():
+                raise FileNotFoundError(
+                    "Check directory '%s' is missing an '__init__.py'"
+                    % root_path
+                )
+            results.append(file_path)
     return results
 
 
 def get_module_names() -> list[str]:
-    """Transform file-list to importable module names"""
-    result = []
-    for _file in get_check_files():
-        path_relative = _file.relative_to(proselint.path)
-        module_name = path_relative.with_suffix("").as_posix().replace("/", ".")
-        print(module_name)
-        result.append(module_name)
-    return result
+    """Transform file list to importable module names."""
+    return [
+        file.relative_to(next(iter(proselint.checks.__path__)))
+        .with_suffix("")
+        .as_posix()
+        .replace("/", ".")
+        for file in get_check_files()
+    ]
 
 
 # ######### Unittests
+def verify_examples(module: ModuleType, name: str, attr: str) -> list[str]:
+    """Check that examples are present lists with at least one entry."""
+    if not hasattr(module, attr):
+        raise AttributeError(f"'{attr}' missing in {name}")
+
+    examples = getattr(module, attr)
+    if not isinstance(examples, list) or len(examples) < 1:
+        raise ValueError(f"'{attr}' must have 1 or more test entries in {name}")
+    return examples
+
+
+def verify_module(module_name: str) -> ModuleType:
+    """Check that a module is importable."""
+    try:
+        module = importlib.import_module(f".{module_name}", "proselint.checks")
+    except ModuleNotFoundError as exc:
+        raise ImportError(f"Is {module_name} broken?") from exc
+    return module
+
+
+def extract_checks(module: ModuleType) -> list[CheckSpec]:
+    """Extract `CheckSpec`s from a module."""
+    return [
+        x for d in dir(module) if isinstance(x := getattr(module, d), CheckSpec)
+    ]
 
 
 @pytest.mark.parametrize("module_name", get_module_names())
 def test_check(module_name: str) -> None:
     """
-    Check multiple things:
-    - successful import of check
-    - example_fail and _pass present in file
-    - both example-lists with at least one entry
-    - successful testing of these examples
+    Test for a successful import with present examples and test those examples.
 
+    For successful imports, see `verify_module`.
+    For present examples, see `verify_examples`.
     """
-    try:
-        module = importlib.import_module("." + module_name, "proselint")
-    except ModuleNotFoundError as _xpt:
-        raise ImportError(f"Is {module_name} broken?") from _xpt
+    module = verify_module(module_name)
+    checks = extract_checks(module)
 
-    checks: dict[str, CheckSpec] = {
-        d: getattr(module, d) for d in dir(module) if re.match(r"^check", d)
-    }
-
-    if not hasattr(module, "examples_pass"):
-        raise AttributeError(f"'examples_pass' missing in {module_name}")
-    if (
-        not isinstance(module.examples_pass, list)
-        or len(module.examples_pass) < 1
-    ):
-        # TODO: raise to two as min
-        raise ValueError(
-            f"examples_pass must have 1 or more test entries in {module_name}"
-        )
-    for example in module.examples_pass:
-        for _name, _check in checks.items():  # not-any config
+    examples_pass = verify_examples(module, module_name, "examples_pass")
+    for example in examples_pass:
+        for check in checks:  # not-any config
             assert (
-                _check.dispatch_with_flags(example) == []
-            ), f"false positive - {_name}('{example}')"
+                check.dispatch(example) == []
+            ), f"False positive - {check.path}('{example}')"
 
-    if not hasattr(module, "examples_fail"):
-        raise AttributeError(f"'examples_fail' missing in {module_name}")
-    if (
-        not isinstance(module.examples_fail, list)
-        or len(module.examples_fail) < 1
-    ):
-        raise ValueError(
-            f"examples_fail must have 1 or more test entries in {module_name}"
-        )
-    for example in module.examples_fail:
+    examples_fail = verify_examples(module, module_name, "examples_fail")
+    for example in examples_fail:
         result = []
-        for check in checks.values():  # any-config
-            result.extend(check.dispatch_with_flags(example))
+        for check in checks:  # any-config
+            result.extend(check.dispatch(example))
         assert (
             result != []
-        ), f"false negative (did NOT trigger) - {module_name}: '{example}'"
+        ), f"False negative (did NOT trigger) - {module_name}: '{example}'"
+
+
+@pytest.mark.parametrize("module_name", get_module_names())
+def test_check_paths(module_name: str) -> None:
+    """Test that check paths match the module they reside in."""
+    checks = extract_checks(verify_module(module_name))
+    for check in checks:
+        assert check.matches_partial(
+            module_name
+        ), f"{check.path} does not match {module_name}"
