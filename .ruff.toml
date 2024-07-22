@@ -18,14 +18,14 @@ select = [
 #    "ERA",  # eradicate commented out code
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
-#    "FBT",  # boolean traps
+    "FBT",  # boolean traps
     "FLY",  # flynt
     "FURB", # refurb
     "G",    # flake8-logging-format
     "I",    # incomplete isort
     "INP",  # flake8-no-pep420
     "LOG",  # flake8-logging
-#    "N",    # naming
+    "N",    # naming
     "NPY",  # NumPy-specific rules
     "PD",   # pandas-vet
     "PERF", # Perflint
@@ -57,9 +57,8 @@ preview = true
 
 [lint.per-file-ignores]
 "tests/**" = ["S", "N8", "SLF001", "PLR", "PLC2701"]
-"proselint/checks/**" = ["RUF001", "RUF002", "RUF003", "TID252"]
 "scripts/**" = ["E501", "DTZ005"]
-
+"proselint/checks/**" = ["RUF001"]
 "plugins/**" = ["INP001", "RUF012"]
 "scripts_web/**" = ["S1", "SIM", "RET", "TCH"]
 
