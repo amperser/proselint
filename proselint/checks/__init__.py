@@ -282,18 +282,15 @@ class CheckRegistry:
                 skipped_checks.append(key)
 
         # TODO: review potential optimizations for this
-        filtered_enabled = list(
-            filter(
-                lambda x: not any(
-                    x.matches_partial(key) for key in skipped_checks
-                )
-                and any(
-                    x.path == key or x.matches_partial(key)
-                    for key in enabled_checks
-                ),
-                self.checks,
+        filtered_enabled = [
+            x
+            for x in self.checks
+            if not any(x.matches_partial(key) for key in skipped_checks)
+            and any(
+                x.path == key or x.matches_partial(key)
+                for key in enabled_checks
             )
-        )
+        ]
         log.debug("Collected %d enabled checks.", len(filtered_enabled))
         return filtered_enabled
 
