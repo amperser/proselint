@@ -120,7 +120,7 @@ check_cliches_garner = CheckSpec(
         "wool pulled over our eyes",
         "writ large",
     ]),
-    "cliches.garner",
+    "cliches.misc.garner",
     msg,
 )
 
@@ -283,7 +283,7 @@ check_cliches_write_good_a_to_c = CheckSpec(
         "cute as a puppy",
         "cuts to the quick",
     ]),
-    "cliches.write_good",
+    "cliches.misc.write_good",
     msg,
 )
 
@@ -463,7 +463,7 @@ check_cliches_write_good_d_to_j = CheckSpec(
         "just the ticket",
         "justice is blind",
     ]),
-    "cliches.write_good",
+    "cliches.misc.write_good",
     msg,
 )
 
@@ -626,7 +626,7 @@ check_cliches_write_good_k_to_o = CheckSpec(
         "over a barrel",
         "over the hump",
     ]),
-    "cliches.write_good",
+    "cliches.misc.write_good",
     msg,
 )
 
@@ -756,7 +756,7 @@ check_cliches_write_good_p_to_s = CheckSpec(
         "sweating blood",
         "sweating bullets",
     ]),
-    "cliches.write_good",
+    "cliches.misc.write_good",
     msg,
 )
 
@@ -872,7 +872,7 @@ check_cliches_write_good_t_to_z = CheckSpec(
         "young and foolish",
         "young and vibrant",
     ]),
-    "cliches.write_good",
+    "cliches.misc.write_good",
     msg,
 )
 
@@ -910,7 +910,7 @@ check_cliches_gnu_diction = CheckSpec(
         "we wish to state",
         "you are hereby advised that",
     ]),
-    "cliches.gnu_diction",
+    "cliches.misc.gnu_diction",
     msg,
 )
 
@@ -1069,7 +1069,7 @@ check_cliches_nigel = CheckSpec(
         "wind of change",
         "yawning gap",
     ]),
-    "cliches.nigel",
+    "cliches.misc.nigel",
     msg,
 )
 

@@ -29,7 +29,7 @@ check_wallace = CheckSpec(
         "rectangular in shape": "rectangular",
         "audible to the ear": "audible",
     }),
-    "redundancy.wallace",
+    "redundancy.misc.wallace",
     msg,
 )
 
@@ -127,7 +127,7 @@ check_garner = CheckSpec(
         "professional vocation": "vocation",
         "while at the same time": "while",
     }),
-    "redundancy.garner",
+    "redundancy.misc.garner",
     msg,
 )
 
@@ -136,7 +136,7 @@ check_garner_regex = CheckSpec(
         r"(?:general )?consensus of opinion": "consensus",
         r"associate together(?: in groups)?": "associate",
     }),
-    "redundancy.garner",
+    "redundancy.misc.garner",
     msg,
 )
 
@@ -149,7 +149,7 @@ check_nordquist = CheckSpec(
         "absolutely essential": "essential",
         "absolutely necessary": "necessary",
     }),
-    "redundancy.nordquist",
+    "redundancy.misc.nordquist",
     msg,
 )
 
@@ -158,7 +158,7 @@ check_nordquist_regex = CheckSpec(
         r"a\.m\. in the morning": "a.m.",
         r"p\.m\. at night": "p.m.",
     }),
-    "redundancy.nordquist",
+    "redundancy.misc.nordquist",
     msg,
 )
 
@@ -363,7 +363,7 @@ check_atd_1 = CheckSpec(
         "empty hole": "hole",
         "head honcho": "honcho",
     }),
-    "redundancy.after_the_deadline",
+    "redundancy.misc.after_the_deadline",
     "Redundancy. Use '{}' instead of '{}'.",
 )
 
@@ -551,7 +551,7 @@ check_atd_2 = CheckSpec(
         "yakitori chicken": "yakitori",
         "yerba mate tea": "yerba mate",
     }),
-    "redundancy.after_the_deadline",
+    "redundancy.misc.after_the_deadline",
     msg,
 )
 
@@ -560,7 +560,7 @@ check_atd_2_regex = CheckSpec(
         {r"\band etc\.": "etc."},
         padding=Pd.disabled,
     ),
-    "redundancy.after_the_deadline",
+    "redundancy.misc.after_the_deadline",
     msg,
 )
 

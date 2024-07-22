@@ -31,7 +31,7 @@ check_vtech = CheckSpec(
         "Virginia Polytechnic and State University": "Virginia Polytechnic "
         "Institute and State University",
     }),
-    "misc.institution.vtech",
+    "misc.institution_name.vtech",
     "Incorrect name. Use '{}' instead of '{}'.",
 )
 

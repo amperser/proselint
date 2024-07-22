@@ -55,7 +55,7 @@ check_terms = CheckSpec(
         "the American west": "the American West",
         "mother nature": "Mother Nature",
     }),
-    "misc,capitalization.terms",
+    "misc.capitalization.terms",
     "Incorrect capitalization. '{}' is the preferred form.",
     ignore_case=False,
 )

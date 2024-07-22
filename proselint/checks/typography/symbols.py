@@ -121,11 +121,14 @@ check_curly_quotes = CheckSpec(
     flags=CheckFlags(limit_results=3),
 )
 
-deactivated_check_en_dash_separated_names = CheckSpec(
+# TODO: fix this or remove it
+"""
+check_en_dash_separated_names = CheckSpec(
     Existence(["[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}"]),
     "",
     "Use an en dash (–) to separate names.",
 )
+"""
 
 APOSTROPHE_REGEX = Pd.words_in_txt.format(r"\w+{}(:?t|s|ll|d|m|ve|re)")
 
