@@ -167,8 +167,7 @@ def lint(
 
     with contextlib.suppress(KeyError):
         # early exit if result is already cached
-        errors = cache[memoizer_key]
-        return [LintResult(**_e) for _e in errors]
+        return [LintResult(**_e) for _e in cache[memoizer_key]]
 
     # padding
     # -> some checks expect words in text and expect something around it
@@ -277,6 +276,7 @@ def lint_path(
         _file: fetch_results(_errors, config, _file.as_posix())
         for _file, _errors in results.items()
     }
+    cache.to_file()
 
     # TODO: transform linter into class
     # bad style ... but
