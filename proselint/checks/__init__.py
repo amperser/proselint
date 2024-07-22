@@ -230,11 +230,13 @@ class CheckSpec(NamedTuple):
 
 class CheckRegistry:
     _checks: list[CheckSpec]
+    _discovered: bool
     enabled_checks: Optional[dict[str, bool]]
     start: Optional[float]
 
     def __init__(self) -> None:
         self._checks = []
+        self._discovered = False
         self.enabled_checks = None
         self.start = None
 
@@ -245,6 +247,9 @@ class CheckRegistry:
         self._checks.extend(checks)
 
     def discover(self) -> None:
+        # assume .discover() has already happened and return
+        if self._discovered:
+            return
         # TODO: add a search for plugins and user defined checks
         for info in pkgutil.iter_modules(__path__, "."):
             if info.name.startswith("._"):
@@ -259,6 +264,7 @@ class CheckRegistry:
                 )
                 continue
             log.debug("Registered from module %s.", module.__name__)
+        self._discovered = True
 
     @property
     def checks(self) -> list[CheckSpec]:
