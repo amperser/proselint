@@ -252,9 +252,9 @@ class CheckRegistry:
             try:
                 module = importlib.import_module(info.name, "proselint.checks")
                 self.register_many(module.__register__)
-            except Exception as _:
+            except Exception:
                 log.exception(
-                    "Exception encountered while registering module %s.",
+                    "Error encountered while registering module %s.",
                     info.name,
                 )
                 continue
