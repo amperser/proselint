@@ -16,7 +16,6 @@ import importlib
 import pkgutil
 import re
 import string
-import time
 from enum import Enum
 from typing import Callable, NamedTuple, Optional, Union
 
@@ -241,39 +240,25 @@ class CheckRegistry:
 
     def register(self, check: CheckSpec) -> None:
         self._checks.append(check)
-        log.debug(
-            "Registered %s at %.3fms",
-            check.path,
-            (time.time() - self.start) * 1000,
-        )
 
     def register_many(self, checks: tuple[CheckSpec, ...]) -> None:
         self._checks.extend(checks)
-        log.debug(
-            "Registered %s at %.3fms",
-            [check.path for check in checks],
-            (time.time() - self.start) * 1000,
-        )
 
     def discover(self) -> None:
         # TODO: add a search for plugins and user defined checks
-        self.start = time.time()
         for info in pkgutil.iter_modules(__path__, "."):
             if info.name.startswith("._"):
                 continue
             try:
                 module = importlib.import_module(info.name, "proselint.checks")
                 self.register_many(module.__register__)
-                log.debug(
-                    "Registered from module %s at %.3fms",
-                    module.__name__,
-                    (time.time() - self.start) * 1000,
-                )
             except Exception as _:
                 log.exception(
                     "Exception encountered while registering module %s.",
                     info.name,
                 )
+                continue
+            log.debug("Registered from module %s.", module.__name__)
 
     @property
     def checks(self) -> list[CheckSpec]:
@@ -309,7 +294,7 @@ class CheckRegistry:
                 self.checks,
             )
         )
-        log.debug("Enabled: %s", [x.path for x in filtered_enabled])
+        log.debug("Collected %d enabled checks.", len(filtered_enabled))
         return filtered_enabled
 
 
