@@ -101,7 +101,7 @@ def test_check(module_name: str) -> None:
     for example in examples_pass:
         for check in checks:  # not-any config
             assert (
-                check.dispatch(example) == []
+                check.dispatch_with_flags(example) == []
             ), f"False positive - {check.path}('{example}')"
 
     examples_fail = verify_examples(module, module_name, "examples_fail")
