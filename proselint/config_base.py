@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from enum import IntEnum
+from typing import TypedDict
 
 
 class Output(IntEnum):
@@ -19,10 +20,19 @@ class Output(IntEnum):
         return [_e.name for _e in cls]
 
 
-proselint_base: dict = {
+class Config(TypedDict):
+    """Configuration for proselint."""
+
+    max_errors: int
+    parallelize: bool
+    output_format: Output
+    checks: dict[str, bool]
+
+
+proselint_base: Config = {
     "max_errors": 1000,
     "parallelize": True,  # NOTE: has overhead, noticeable for small content
-    "output_format": Output.compact.name,
+    "output_format": Output.compact,
     "checks": {
         "annotations": True,
         "archaism": True,

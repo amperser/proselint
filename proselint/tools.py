@@ -14,7 +14,7 @@ from warnings import showwarning as warn
 
 from . import config_base
 from .checks import CheckSpec, registry, run_check
-from .config_base import Output
+from .config_base import Output, Config
 from .config_paths import config_global_path, config_user_paths
 from .logger import log
 from .memoizer import cache
@@ -61,7 +61,7 @@ def _deepmerge_dicts(
 
 def load_options(
     config_file_path: Optional[Path] = None,
-) -> dict:
+) -> Config:
     """Read various proselintrc files, allowing user overrides."""
     # TODO: allow toml - json is a pain for user-configs
     cfg_default = config_base.proselint_base
@@ -70,7 +70,7 @@ def load_options(
     if config_global_path.is_file():
         log.debug("Config read from global '%s' (as base)", config_global_path)
         _cfg = json.load(config_global_path.open())
-        cfg_default = _deepmerge_dicts(cfg_default, _cfg)
+        cfg_default: Config = _deepmerge_dicts(cfg_default, _cfg)
 
     if config_file_path:
         # place provided config as highest user input
@@ -97,7 +97,12 @@ def load_options(
             user_options = json.load(path_old.open())
             break
 
-    return _deepmerge_dicts(cfg_default, user_options)
+    result: Config = _deepmerge_dicts(cfg_default, user_options)
+    if result["output_format"] in Output.names():
+        result["output_format"] = Output[result["output_format"]]
+    if isinstance(result["output_format"], str):
+        result["output_format"] = cfg_default["output_format"]
+    return result
 
 
 ###############################################################################
@@ -307,19 +312,15 @@ def convert_to_json(
     )
 
 
-def print_to_console(  # noqa: PLR0912
+def print_to_console(
     results: Union[dict[str, list[LintResult]], list[LintResult]],
-    config: Optional[dict] = None,
+    config: Optional[Config] = None,
     file_path: Optional[Path] = None,
 ) -> None:
     """Print the errors, resulting from lint, for filename."""
     if config is None:
         config = config_base.proselint_base
-
-    try:
-        out_fmt = Output[config["output_format"]]
-    except KeyError:
-        out_fmt = Output[config_base.proselint_base["output_format"]]
+    out_fmt = config["output_format"]
 
     if not isinstance(results, (list, dict)):
         log.error(

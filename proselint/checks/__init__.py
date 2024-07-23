@@ -19,6 +19,7 @@ import string
 from enum import Enum
 from typing import Callable, NamedTuple, Optional, Union
 
+from proselint.config_base import proselint_base
 from proselint.logger import log
 
 
@@ -254,7 +255,6 @@ class CheckRegistry:
     enabled_checks: Optional[dict[str, bool]]
     start: Optional[float]
 
-    # TODO: make this a singleton, like Cache?
     def __init__(self) -> None:
         """Instantiate the registry. This should only happen once."""
         self._checks = []
@@ -298,7 +298,7 @@ class CheckRegistry:
         return self._checks
 
     def get_all_enabled(
-        self, enabled: Optional[dict[str, bool]] = None
+        self, enabled: dict[str, bool] = proselint_base["checks"]
     ) -> list[CheckSpec]:
         """Filter registered checks based on their keys."""
         if enabled is not None:

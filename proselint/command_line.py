@@ -212,9 +212,9 @@ def proselint() -> None:
 
     output_format = inputs_collected.get("--output-format", None)
     if output_format in Output.names():
-        config["output_format"] = output_format
+        config["output_format"] = Output[output_format]
     elif verbose:
-        config["output_format"] = Output.full.name
+        config["output_format"] = Output.full
 
     if subcommand == "benchmark":
         run_benchmark()
