@@ -33,6 +33,9 @@ jobs:
         run: poetry install
       - name: "[EXEC] Lint"
         uses: chartboost/ruff-action@v1
+        with:
+          src: "proselint tests"
+          changed-files: true
     #  - name: Run Pre-Commit Tests 🧪
     #    uses: pre-commit/action@v3.0.0
 
