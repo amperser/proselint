@@ -312,6 +312,14 @@ def convert_to_json(
     )
 
 
+def terminal_uri_from(uri: str, label: Optional[str] = None) -> str:
+    """Generate an OSC 8 terminal URI escape sequence with a URI and label."""
+    if label is None:
+        label = uri
+
+    return f"\033]8;;{uri}\033\\{label}\033]8;;\033\\"
+
+
 def print_to_console(
     results: Union[dict[str, list[LintResult]], list[LintResult]],
     config: Optional[Config] = None,
@@ -335,25 +343,25 @@ def print_to_console(
     for _file, _results in results.items():
         if out_fmt == Output.json:
             log.info(convert_to_json(_results))
-        else:
-            for _e in _results:
-                _source = _e.source
-                if isinstance(_file, Path):
-                    if out_fmt == Output.compact:
-                        _source = _file.name
-                    else:
-                        # TODO: would be nice to supress "file:///"
-                        # https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-                        # could consider using as_posix for this?
-                        _source = _file.absolute().as_uri()
-                elif out_fmt == Output.compact:
-                    _source = ""
+            continue
 
-                log.info(
-                    "%s:%d:%d: %s %s",
-                    _source,
-                    _e.line,
-                    _e.column,
-                    _e.check,
-                    _e.message,
+        for _e in _results:
+            _source = _e.source
+            if isinstance(_file, Path):
+                _source = terminal_uri_from(
+                    _file.absolute().as_uri(),
+                    _file.name
+                    if out_fmt == Output.compact
+                    else _file.absolute().as_posix(),
                 )
+            elif out_fmt == Output.compact:
+                _source = ""
+
+            log.info(
+                "%s:%d:%d: %s %s",
+                _source,
+                _e.line,
+                _e.column,
+                _e.check,
+                _e.message,
+            )
