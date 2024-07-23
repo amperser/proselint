@@ -92,6 +92,6 @@ check_single_digit = CheckSpec(
 
 __register__ = (
     check_section,
-    check_section,
+    check_sentence,
     check_single_digit,
 )
