@@ -65,20 +65,28 @@ class Pd(str, Enum):
 
 
 class Consistency(NamedTuple):
+    """A data carrier for consistency checks."""
+
     word_pairs: list[tuple[str, str]]
 
 
 class PreferredForms(NamedTuple):
+    """A data carrier for preferred forms checks."""
+
     items: dict[str, str]
     padding: Pd = Pd.words_in_txt
 
 
 class PreferredFormsSimple(NamedTuple):
+    """A data carrier for simple preferred forms checks."""
+
     items: dict[str, str]
     padding: Pd = Pd.words_in_txt
 
 
 class Existence(NamedTuple):
+    """A data carrier for existence checks."""
+
     items: list[str]
     unicode: bool = False
     padding: Pd = Pd.words_in_txt
@@ -87,12 +95,16 @@ class Existence(NamedTuple):
 
 
 class ExistenceSimple(NamedTuple):
+    """A data carrier for simple existence checks."""
+
     pattern: str
     unicode: bool = True
     exceptions: tuple[str, ...] = ()
 
 
 class ReverseExistence(NamedTuple):
+    """A data carrier for reverse existence checks."""
+
     allowed: list[str]
 
 
@@ -117,6 +129,8 @@ class CheckFlags(NamedTuple):
 
 
 class CheckSpec(NamedTuple):
+    """A general universal specification for lint checks."""
+
     type: Union[
         Consistency,
         PreferredForms,
@@ -134,9 +148,11 @@ class CheckSpec(NamedTuple):
 
     @property
     def path_segments(self) -> list[str]:
+        """Hierarchal segments of the check path."""
         return self.path.split(".")
 
     def matches_partial(self, partial: str) -> bool:
+        """Check if `partial` is a subset key of the full check path."""
         partial_segments = partial.split(".")
         if len(partial_segments) > len(self.path_segments):
             return False
@@ -147,6 +163,7 @@ class CheckSpec(NamedTuple):
         )
 
     def dispatch_with_flags(self, text: str) -> list[CheckResult]:
+        """Dispatch the check and apply the specified flags to its output."""
         results = self.dispatch(text)
         if self.flags.ppm_threshold > 0:
             results = _threshold_check(
@@ -158,14 +175,15 @@ class CheckSpec(NamedTuple):
 
     # TODO: attempt to simplify this
     def dispatch(self, text: str) -> list[CheckResult]:  # noqa: PLR0911
+        """Dispatch the check, depending on `self.type`."""
         if isinstance(self.type, Consistency):
             return consistency_check(
                 text,
                 self.type.word_pairs,
                 self.path,
                 self.msg,
-                self.ignore_case,
                 self.offset,
+                ignore_case=self.ignore_case,
             )
         if isinstance(self.type, PreferredForms):
             return preferred_forms_check_regex(
@@ -173,9 +191,9 @@ class CheckSpec(NamedTuple):
                 self.type.items,
                 self.path,
                 self.msg,
-                self.ignore_case,
                 self.offset,
                 self.type.padding,
+                ignore_case=self.ignore_case,
             )
         if isinstance(self.type, PreferredFormsSimple):
             return preferred_forms_check_opti(
@@ -183,9 +201,9 @@ class CheckSpec(NamedTuple):
                 self.type.items,
                 self.path,
                 self.msg,
-                self.ignore_case,
                 self.offset,
                 self.type.padding,
+                ignore_case=self.ignore_case,
             )
         if isinstance(self.type, Existence):
             return existence_check(
@@ -193,12 +211,12 @@ class CheckSpec(NamedTuple):
                 self.type.items,
                 self.path,
                 self.msg,
-                self.ignore_case,
-                self.type.unicode,
                 self.offset,
                 self.type.padding,
-                self.type.dotall,
-                exceptions=self.type.exceptions,
+                self.type.exceptions,
+                ignore_case=self.ignore_case,
+                unicode=self.type.unicode,
+                dotall=self.type.dotall,
             )
         if isinstance(self.type, ExistenceSimple):
             return existence_check_simple(
@@ -206,9 +224,9 @@ class CheckSpec(NamedTuple):
                 self.type.pattern,
                 self.path,
                 self.msg,
-                self.ignore_case,
-                self.type.unicode,
                 self.type.exceptions,
+                ignore_case=self.ignore_case,
+                unicode=self.type.unicode,
             )
         if isinstance(self.type, ReverseExistence):
             return reverse_existence_check(
@@ -216,8 +234,8 @@ class CheckSpec(NamedTuple):
                 self.type.allowed,
                 self.path,
                 self.msg,
-                self.ignore_case,
                 self.offset,
+                ignore_case=self.ignore_case,
             )
         if isinstance(self.type, Callable):
             return self.type(text, self)
@@ -229,24 +247,31 @@ class CheckSpec(NamedTuple):
 
 
 class CheckRegistry:
+    """A registry for lint checks."""
+
     _checks: list[CheckSpec]
     _discovered: bool
     enabled_checks: Optional[dict[str, bool]]
     start: Optional[float]
 
+    # TODO: make this a singleton, like Cache?
     def __init__(self) -> None:
+        """Instantiate the registry. This should only happen once."""
         self._checks = []
         self._discovered = False
         self.enabled_checks = None
         self.start = None
 
     def register(self, check: CheckSpec) -> None:
+        """Register a check."""
         self._checks.append(check)
 
     def register_many(self, checks: tuple[CheckSpec, ...]) -> None:
+        """Register multiple checks."""
         self._checks.extend(checks)
 
     def discover(self) -> None:
+        """Walk submodules in check paths and register their exported checks."""
         # assume .discover() has already happened and return
         if self._discovered:
             return
@@ -268,12 +293,14 @@ class CheckRegistry:
 
     @property
     def checks(self) -> list[CheckSpec]:
+        """All registered checks."""
         log.debug("Collected %d checks to run.", len(self._checks))
         return self._checks
 
     def get_all_enabled(
         self, enabled: Optional[dict[str, bool]] = None
     ) -> list[CheckSpec]:
+        """Filter registered checks based on their keys."""
         if enabled is not None:
             self.enabled_checks = enabled
         if self.enabled_checks is None:
@@ -344,7 +371,7 @@ def get_line_and_column(text: str, position: int) -> tuple[int, int]:
     # NOTE: fixes a special case where IndexError would occur for position = 0
     if position == 0:
         return (0, 0)
-    _t = text[:position].splitlines(True)
+    _t = text[:position].splitlines(keepends=True)
     return (len(_t) - 1, len(_t[-1]))
 
 
@@ -398,13 +425,14 @@ def is_quoted(position: int, text: str) -> bool:
 ###############################################################################
 
 
-def consistency_check(  # noqa: PLR0913, PLR0917
+def consistency_check(  # noqa: PLR0913
     text: str,
     word_pairs: list,
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     """
     Build a consistency checker for the given `word_pairs`.
@@ -442,9 +470,10 @@ def preferred_forms_check_regex(  # noqa: PLR0913, PLR0917
     items: dict[str, str],
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     """
     Build a checker that suggests the preferred form.
@@ -480,9 +509,10 @@ def preferred_forms_check_opti(  # noqa: PLR0913, PLR0917
     items: dict[str, str],
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     """
     Build a checker that suggests the preferred form.
@@ -530,12 +560,13 @@ def existence_check(  # noqa: PLR0913, PLR0917
     re_items: list,
     err: str,
     msg: str,
-    ignore_case: bool = True,
-    unicode: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: Pd = Pd.words_in_txt,
-    dotall: bool = False,
     exceptions: tuple = (),
+    *,
+    ignore_case: bool = True,
+    unicode: bool = True,
+    dotall: bool = False,
 ) -> list[CheckResult]:
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
@@ -576,14 +607,15 @@ def existence_check(  # noqa: PLR0913, PLR0917
     return errors
 
 
-def existence_check_simple(  # noqa: PLR0913, PLR0917
+def existence_check_simple(  # noqa: PLR0913
     text: str,
     pattern: str,
     err: str,
     msg: str,
+    exceptions: tuple = (),
+    *,
     ignore_case: bool = True,
     unicode: bool = True,
-    exceptions: tuple = (),
 ) -> list[CheckResult]:
     """
     Build a checker for single patterns.
@@ -632,7 +664,7 @@ def _has_digits(text: str) -> bool:
 
 
 def _allowed_word(
-    permitted: set[str], match: re.Match, ignore_case: bool = True
+    permitted: set[str], match: re.Match, *, ignore_case: bool = True
 ) -> bool:
     """Determine if a match object result is in a set of strings."""
     matched = match.group(0)
@@ -641,13 +673,14 @@ def _allowed_word(
     return matched in permitted
 
 
-def reverse_existence_check(  # noqa: PLR0913, PLR0917
+def reverse_existence_check(  # noqa: PLR0913
     text: str,
     allowed: list[str],
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     """Find all words in `text` that aren't in the list of `allowed` words."""
     permitted = set(

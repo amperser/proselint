@@ -33,7 +33,7 @@ logging.basicConfig(format="%(message)s")
 # log.addHandler(console_handler)
 
 
-def set_verbosity(debug: bool = False) -> None:
+def set_verbosity(*, debug: bool = False) -> None:
     """Set the logger's verbose mode."""
     if debug:
         log.setLevel(logging.DEBUG)

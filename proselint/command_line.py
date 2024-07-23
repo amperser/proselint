@@ -63,7 +63,7 @@ def run_benchmark(_corpus: str = "0.1.0") -> None:
     sys.exit(0)
 
 
-def check(config: dict, paths: list[Path], demo: bool) -> None:
+def check(config: dict, paths: list[Path], *, demo: bool) -> None:
     """Run proselint on given files and directories (default)."""
     # Use the demo file by default.
     if demo:
@@ -98,7 +98,7 @@ def clean() -> None:
     sys.exit(0)
 
 
-def dump_config(config: dict, default: bool) -> None:
+def dump_config(config: dict, *, default: bool) -> None:
     """Display the current or default configuration."""
     log.info(
         json.dumps(
@@ -112,6 +112,7 @@ def dump_config(config: dict, default: bool) -> None:
 
 def checked_path(
     path_unfiltered: str,
+    *,
     resolve: bool = False,
     accept_file: bool = True,
     accept_dir: bool = True,
@@ -121,8 +122,8 @@ def checked_path(
         path_unfiltered = os.path.realpath(path_unfiltered)
     try:
         stat_res = os.stat(path_unfiltered)  # noqa: PTH116
-    except OSError:
-        raise FileNotFoundError(path_unfiltered)
+    except OSError as err:
+        raise FileNotFoundError(path_unfiltered) from err
 
     if not accept_file and stat.S_ISREG(stat_res.st_mode):
         raise OSError("files not permitted, found file %s", path_unfiltered)
@@ -191,7 +192,7 @@ def proselint() -> None:
 
     verbose = "--verbose" in flags_collected
 
-    set_verbosity(verbose)
+    set_verbosity(debug=verbose)
 
     if "--help" in flags_collected:
         # TODO: create help
@@ -220,10 +221,10 @@ def proselint() -> None:
     elif subcommand == "clean":
         clean()
     elif subcommand == "dump-config":
-        dump_config(config, "--default" in flags_collected)
+        dump_config(config, default="--default" in flags_collected)
     else:
         paths = [checked_path(x, resolve=True) for x in args_collected]
-        check(config, paths, "--demo" in flags_collected)
+        check(config, paths, demo="--demo" in flags_collected)
 
 
 if __name__ == "__main__":

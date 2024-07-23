@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 
 class Cache(TTLCache):
     """The cache system."""
+
     save_path = cache_user_path / "cache.pickle"
     _instance: Optional[Self] = None
 
@@ -34,9 +35,7 @@ class Cache(TTLCache):
 
     def __init__(self, max_size: int = 128) -> None:
         """Create a cache instance."""
-        super().__init__(
-            max_size, ttl=timedelta(days=1), timer=datetime.now
-        )
+        super().__init__(max_size, ttl=timedelta(days=1), timer=datetime.now)
         self.name_to_key: dict[str, str] = {}
 
     def __setitem__(self, key: str, value: list) -> None:

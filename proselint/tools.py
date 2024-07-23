@@ -135,8 +135,9 @@ def lint(
     content: str,
     config: Optional[dict] = None,
     source_name: str = "",
+    *,
     allow_futures: bool = False,
-    *,  # internals from here on, caution
+    # internals from here on, caution
     _checks: Optional[list[CheckSpec]] = None,
     _exe: Optional[Executor] = None,
 ) -> list[LintResult]:

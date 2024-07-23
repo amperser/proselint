@@ -53,9 +53,10 @@ def mock_preferred_forms_check_regex(
     items: dict[str, str],
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     item_list = list(items.keys())
     verify_regex_padding(item_list, padding)
@@ -67,9 +68,10 @@ def mock_preferred_forms_check_opti(
     items: dict[str, str],
     err: str,
     msg: str,
-    ignore_case: bool = True,
     offset: tuple[int, int] = (0, 0),
     padding: str = Pd.words_in_txt,
+    *,
+    ignore_case: bool = True,
 ) -> list[CheckResult]:
     item_list = list(items.keys())
     # items can't contain any active regex - tested here:
@@ -87,13 +89,13 @@ def mock_existence_check(
     re_items: list,
     err: str,
     msg: str,
-    ignore_case: bool = True,
-    string: bool = False,
     offset: tuple[int, int] = (0, 0),
     padding: Pd = Pd.words_in_txt,
+    exceptions: tuple = (),
+    *,
+    ignore_case: bool = True,
+    unicode: bool = True,
     dotall: bool = False,
-    excluded_topics: Optional[list] = None,
-    exceptions=(),
 ) -> list[CheckResult]:
     verify_regex_padding(re_items, padding)
     return generate_examples(re_items)
@@ -104,9 +106,10 @@ def mock_existence_check_simple(
     pattern: str,
     err: str,
     msg: str,
+    exceptions=(),
+    *,
     ignore_case: bool = True,
     unicode: bool = True,
-    exceptions=(),
 ) -> list[CheckResult]:
     return generate_examples([pattern])
 
@@ -115,7 +118,10 @@ def mock_existence_check_simple(
 
 
 @pytest.mark.parametrize("module_name", get_module_names())
-def test_regex_in_checks(module_name: str, monkeypatch) -> None:
+def test_regex_in_checks(
+    module_name: str,
+    monkeypatch: pytest.MonkeyPatch
+) -> None:
     # first: intercept regex-items, test them and get reverse-regex as example data
     monkeypatch.setattr(
         proselint.checks,
