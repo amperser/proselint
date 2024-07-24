@@ -21,6 +21,7 @@ jobs:
       - name: "[INIT] Install PDM"
         uses: pdm-project/setup-pdm@v4
         with:
+          python-version: ${{ matrix.python }}
           update-python: false
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
@@ -38,7 +39,7 @@ jobs:
         uses: chartboost/ruff-action@v1
         with:
           src: "proselint tests"
-          changed-files: true
+          changed-files: "true"
       - name: Run Pre-Commit Tests 🧪
         uses: pre-commit/action@v3.0.0
 
@@ -64,6 +65,7 @@ jobs:
       - name: "[INIT] Install PDM"
         uses: pdm-project/setup-pdm@v4
         with:
+          python-version: ${{ matrix.python }}
           update-python: false
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
