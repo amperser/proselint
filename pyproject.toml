@@ -39,6 +39,10 @@ distribution = true
 version = { source = "file", path = "proselint/version.py"}
 
 [tool.pdm.scripts]
+test = "pytest"
+test-cover = "pytest --cov=proselint --cov-report=lcov"
+lint = "ruff check proselint tests"
+format = "ruff format --preview proselint tests"
 
 [tool.pdm.dev-dependencies]
 test = [
