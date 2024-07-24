@@ -7,18 +7,17 @@ readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
 	"Programming language :: Python :: 3",
-	"Programming language :: Python :: 3.8",
 	"Programming language :: Python :: 3.9",
 	"Programming language :: Python :: 3.10",
 	"Programming language :: Python :: 3.11",
 	"Programming language :: Python :: 3.12",
-	"License :: OSI Approved :: BSD License"
+	"Programming language :: Python :: 3.13",
+	"License :: OSI Approved :: BSD License",
 ]
 dynamic = ["version"]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
 	"typing_extensions>=4.9.0",
-	"importlib-resources>=6.0; python_version<'3.9'",
 	"cachetools>=5.4.0"
 ]
 

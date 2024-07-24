@@ -16,10 +16,7 @@ Elementary
 
 from __future__ import annotations
 
-try:
-    from importlib.resources import files
-except ImportError:
-    from importlib_resources import files
+from importlib.resources import files
 
 import proselint
 from proselint.checks import CheckSpec, ReverseExistence
