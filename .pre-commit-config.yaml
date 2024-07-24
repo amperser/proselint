@@ -31,16 +31,6 @@ repos:
       - id: rst-inline-touching-normal
       - id: text-unicode-replacement-char
 
-#  - repo: https://github.com/RobertCraigie/pyright-python
-#    rev: v1.1.338
-#    hooks:
-#    - id: pyright
-#      additional_dependencies:
-#        - DukeTypem2D[test]
-#        - pydantic  # TODO: the following only until PyPI-version is stable
-#        - PyYAML
-#        - toml
-
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.1.14'
     hooks:
@@ -52,7 +42,6 @@ repos:
     rev: v0.38.0
     hooks:
       - id: markdownlint
-        args: ["--disable", "MD013"] # ignore line length
 
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: v0.15
@@ -64,14 +53,13 @@ repos:
     hooks:
     -   id: csslint
 
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.372
+    hooks:
+      - id: pyright
 #  - repo: https://github.com/pre-commit/mirrors-eslint
 #    rev: 'v8.56.0'
 #    hooks:
 #    -   id: eslint
 ## config must be adapted,
 ## see https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file-formats
-
-  - repo: https://gitlab.com/smop/pre-commit-hooks
-    rev: 'v1.0.0'
-    hooks:
-    -   id: check-poetry

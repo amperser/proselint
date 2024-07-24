@@ -18,26 +18,29 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.3
+      - name: "[INIT] Install PDM"
+        uses: pdm-project/setup-pdm@v4
+        with:
+          update-python: false
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
         uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+            ~/.cache/pdm
+            .venv
+          key: dev-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/pdm.lock') }}
       - name: "[INIT] Install dependencies"
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: poetry install
+        run: pdm install -d --with dev
       - name: "[EXEC] Lint"
         uses: chartboost/ruff-action@v1
         with:
           src: "proselint tests"
           changed-files: true
-    #  - name: Run Pre-Commit Tests 🧪
-    #    uses: pre-commit/action@v3.0.0
+      - name: Run Pre-Commit Tests 🧪
+        uses: pre-commit/action@v3.0.0
 
   test-cover:
     name: Test & Cover
@@ -58,27 +61,29 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.3
+      - name: "[INIT] Install PDM"
+        uses: pdm-project/setup-pdm@v4
+        with:
+          update-python: false
       - name: "[INIT] Restore dependency cache"
         id: cache-restore
         uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+            ~/.cache/pdm
+            .venv
+          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/pdm.lock') }}
       - name: "[INIT] Install dependencies"
         if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: pip install poetry && poetry install
+        run: pdm install -d --with test
       - name: "[EXEC] Test build package"
-        run: poetry build
+        run: pdm build
       - name: "[EXEC] Unit test"
-        run: poetry run pytest
-#      - name: "[EXEC] Test"
-#        run: ./utils ci test --coverage
-#      - name: "[EXEC] Upload coverage to Codecov"
-#        uses: codecov/codecov-action@v3.1.4 # TODO: maybe not on every py-ver?
-#        with:
-#          fail_ci_if_error: true
-#          flags: ${{ matrix.os }},py${{ matrix.python }}
+        run: pdm run pytest --cov=proselint --cov-report=lcov
+      - name: "[EXEC] Upload coverage to Codecov"
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          env_vars: OS,PYTHON
