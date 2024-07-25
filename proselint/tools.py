@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import copy
 import json
+import operator
 import os
 import sys
 from concurrent.futures import Executor, Future, ProcessPoolExecutor
@@ -14,7 +15,7 @@ from warnings import showwarning as warn
 
 from . import config_base
 from .checks import CheckSpec, registry, run_check
-from .config_base import Output, Config
+from .config_base import Config, Output
 from .config_paths import config_global_path, config_user_paths
 from .logger import log
 from .memoizer import cache
@@ -206,7 +207,7 @@ def lint(
 
     # Sort the errors by line and column number.
     errors = sorted(
-        errors[: config["max_errors"]], key=lambda e: (e["line"], e["column"])
+        errors[: config["max_errors"]], key=operator.itemgetter("line", "column")
     )
     cache[memoizer_key] = errors
     # return user-friendly format
@@ -223,7 +224,7 @@ def fetch_results(
         _errors = [_e for _ft in futures for _e in _ft.result()]
         _errors = sorted(
             _errors[: config["max_errors"]],
-            key=lambda e: (e["line"], e["column"]),
+            key=operator.itemgetter("line", "column"),
         )
         # store results in cache
         key = cache.name_to_key.get(source_name)
@@ -317,6 +318,8 @@ def terminal_uri_from(uri: str, label: Optional[str] = None) -> str:
     if label is None:
         label = uri
 
+    if log.fancy:
+        return f"[link={uri}]{label}[/link]"
     return f"\033]8;;{uri}\033\\{label}\033]8;;\033\\"
 
 
@@ -348,15 +351,22 @@ def print_to_console(
         for _e in _results:
             _source = _e.source
             if isinstance(_file, Path):
-                _source = terminal_uri_from(
-                    _file.absolute().as_uri(),
-                    _file.name
-                    if out_fmt == Output.compact
-                    else _file.absolute().as_posix(),
+                _source = (
+                    "<stdin>"
+                    if _file.name == "<stdin>"
+                    else terminal_uri_from(
+                        _file.absolute().as_uri(),
+                        _file.name
+                        if out_fmt == Output.compact
+                        else _file.absolute().as_posix(),
+                    )
                 )
             elif out_fmt == Output.compact:
                 _source = ""
 
+            # FIXME: if line or column number is 100, rich logs emojis
+            # creating a console instance with emoji=False does not fix this
+            # could be a bug in rich
             log.info(
                 "%s:%d:%d: %s %s",
                 _source,

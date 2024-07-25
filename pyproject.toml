@@ -29,6 +29,11 @@ Issues = "https://github.com/amperser/proselint/issues"
 [project.scripts]
 proselint = "proselint.command_line:proselint"
 
+[project.optional-dependencies]
+fancy-log = [
+	"rich>=13.7.1",
+]
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"

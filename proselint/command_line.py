@@ -17,7 +17,7 @@ from proselint.tools import print_to_console
 from . import tools
 from .config_base import Output, proselint_base
 from .config_paths import demo_file
-from .logger import log, set_verbosity
+from .logger import log
 from .memoizer import cache
 from .version import __version__
 
@@ -50,7 +50,7 @@ def run_benchmark(_corpus: str = "0.1.0") -> None:
                     ["proselint", "--demo", "-o", "compact"],  # noqa: S607
                     # filepath.as_posix()
                     timeout=4,
-                    shell=False,  # noqa: S603
+                    shell=False,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
@@ -185,6 +185,9 @@ def proselint() -> None:
         "-v": "--verbose",
         "-h": "--help",
     }
+    if log.rich:
+        flags.append("--fancy")
+        shorts["-f"] = "--fancy"
 
     subcommand, flags_collected, inputs_collected, args_collected = parse_args(
         args, commands, flags, inputs, shorts
@@ -192,7 +195,7 @@ def proselint() -> None:
 
     verbose = "--verbose" in flags_collected
 
-    set_verbosity(debug=verbose)
+    log.setup(debug=verbose, fancy="--fancy" in flags_collected)
 
     if "--help" in flags_collected:
         # TODO: create help

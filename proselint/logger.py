@@ -18,35 +18,53 @@ short reminder for format-strings:
 """
 
 import logging
-import logging.handlers
+from sys import stdout
+from typing import Union
 
-# TODO: maybe use with rich to allow links
+try:
+    from rich.logging import RichHandler
 
-log = logging.getLogger("proselint")
-log.setLevel(logging.INFO)
-# log.propagate = 0
-
-logging.basicConfig(format="%(message)s")
-
-# console_handler = logging.StreamHandler(sys.stderr)
-# console_handler.setLevel(logging.INFO)
-# log.addHandler(console_handler)
+    _has_rich = True
+except ImportError:
+    _has_rich = False
 
 
-def set_verbosity(*, debug: bool = False) -> None:
-    """Set the logger's verbose mode."""
-    if debug:
-        log.setLevel(logging.DEBUG)
-        logging.basicConfig(format="%(name)s %(levelname)s: %(message)s")
-    else:
-        log.setLevel(logging.INFO)
-        logging.basicConfig(format="%(message)s", force=True)
-        # only needed in debug mode:
-        # logging._srcfile = None
-        # logging.logThreads = 0
-        # logging.logProcesses = 0
+class Logger(logging.Logger):
+    def __init__(self, name: str, level: Union[int, str] = 0) -> None:
+        super().__init__(name, level)
+        self.rich = _has_rich
+        self.fancy = False
+        # TODO: implement a way to switch to stderr for lint warnings
+
+    def setup(
+        self,
+        *,
+        debug: bool = False,
+        fancy: bool = False,
+    ) -> None:
+        self.fancy = fancy = self.rich and fancy
+        if fancy:
+            handler = RichHandler(
+                markup=True,
+                rich_tracebacks=True,
+                show_path=False,
+                show_time=False,
+            )
+        else:
+            handler = logging.StreamHandler(stdout)
+
+        handler.setLevel(logging.DEBUG if debug else logging.INFO)
+        logging.basicConfig(
+            level=logging.NOTSET,
+            format="[%(levelname)08s] %(name)s: %(message)s"
+            if debug and not fancy
+            else "%(message)s",
+            handlers=[handler],
+        )
+
+    def is_verbose(self) -> bool:
+        return self.level == logging.DEBUG
 
 
-def get_verbosity() -> bool:
-    """Check if the logger is in verbose mode."""
-    return log.level == logging.DEBUG
+logging.setLoggerClass(Logger)
+log: Logger = logging.getLogger("proselint")
