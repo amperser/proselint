@@ -2,6 +2,7 @@ use std::{collections::HashMap, path::PathBuf};
 
 use proselint_registry::checks::{Check, LintResult};
 use walkdir::WalkDir;
+use rayon::prelude::*;
 
 use crate::config::base::Config;
 
@@ -104,7 +105,6 @@ pub fn lint(
 
 	// TODO: registry
 	let checks: Vec<Check> = proselint_checks::REGISTER.to_vec();
-	println!("found {} checks :)", checks.len());
 
 	// TODO: parallelize
 	let mut errors: Vec<LintResult> = checks
