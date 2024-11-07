@@ -1,0 +1,14 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+proselint-checks = { path = "crates/proselint-checks" }
+proselint-registry = { path = "crates/proselint-registry" }
+regex = "1.10.5"
+fancy-regex = "0.13.0"
