@@ -49,10 +49,11 @@ fn check(
 	#[cfg(feature = "demo")] demo: bool,
 ) -> anyhow::Result<ExitStatus> {
 	let results = crate::utils::lint_path(
-        paths.unwrap_or(vec![]),
-        config,
-        #[cfg(feature = "demo")] demo,
-    );
+		paths.unwrap_or(vec![]),
+		config,
+		#[cfg(feature = "demo")]
+		demo,
+	);
 	print!("{results:?}");
 	Ok(ExitStatus::Success)
 }

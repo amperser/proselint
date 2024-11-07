@@ -15,11 +15,8 @@ pub fn get_line_and_column(text: &str, pos: usize) -> (usize, usize) {
 	if pos == 0 {
 		return (0, 0);
 	}
-	let lines: Vec<&str> = text
-		.split_at(pos as usize)
-		.0
-		.split_inclusive("\n")
-		.collect();
+	let lines: Vec<&str> =
+		text.split_at(pos as usize).0.split_inclusive("\n").collect();
 	(lines.len() - 1, lines.last().unwrap().len())
 }
 
@@ -107,6 +104,7 @@ pub fn lint(
 
 	// TODO: registry
 	let checks: Vec<Check> = proselint_checks::REGISTER.to_vec();
+	println!("found {} checks :)", checks.len());
 
 	// TODO: parallelize
 	let mut errors: Vec<LintResult> = checks
@@ -151,7 +149,7 @@ pub fn lint_path(
 	if demo {
 		results.insert(
 			PathBuf::from("<demo>"),
-			lint(crate::config::paths::DEMO_DATA, config, "<demo>", false)
+			lint(crate::config::paths::DEMO_DATA, config, "<demo>", false),
 		);
 		return results;
 	}

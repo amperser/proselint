@@ -35,7 +35,7 @@ impl Padding {
 macro_rules! pad {
 	($padding:path, $text:expr$(,)?) => {
 		const_format::str_replace!($padding.as_str(), "{}", $text)
-	}
+	};
 }
 
 #[derive(Debug, Clone)]
@@ -366,7 +366,7 @@ pub struct Check {
 impl Check {
 	pub const fn default() -> Self {
 		Check {
-			check_type: CheckType::CheckFn(&|_, _| { vec![] }),
+			check_type: CheckType::CheckFn(&|_, _| vec![]),
 			path: "",
 			msg: "",
 			flags: CheckFlags::default(),

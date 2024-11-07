@@ -36,9 +36,9 @@ gen_register!(
 	dates_times,
 	hedging,
 	industrial_language,
-    lexical_illusions,
-    malapropisms,
-    misc,
+	lexical_illusions,
+	malapropisms,
+	misc,
 );
 
 pub mod mixed_metaphors;
