@@ -61,6 +61,10 @@ pub struct CheckResult {
 	pub replacements: Option<String>,
 }
 
+pub trait CheckFn: Fn(&str, &Check) -> Vec<CheckResult> + Send + Sync {}
+
+impl<T: Fn(&str, &Check) -> Vec<CheckResult> + Send + Sync> CheckFn for T {}
+
 #[derive(Clone, Copy)]
 pub enum CheckType {
 	Consistency {
@@ -89,7 +93,7 @@ pub enum CheckType {
 	ReverseExistence {
 		allowed: &'static [&'static str],
 	},
-	CheckFn(&'static dyn Fn(&str, &Check) -> Vec<CheckResult>),
+	CheckFn(&'static dyn CheckFn),
 }
 
 impl CheckType {
