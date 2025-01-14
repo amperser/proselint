@@ -21,9 +21,7 @@ const CHECK: Check = Check {
 			"no longer requires oxygen",
 			"without scarcely",
 		],
-		unicode: true,
 		padding: Padding::WordsInText,
-		dotall: false,
 		exceptions: &[],
 	},
 	path: "misc.illogic",
@@ -34,7 +32,6 @@ const CHECK: Check = Check {
 const CHECK_COIN: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, "to coin a phrase from"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.illogic.coin",
@@ -45,7 +42,6 @@ const CHECK_COIN: Check = Check {
 const CHECK_COLLUSION: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, "without your collusion"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.illogic.collusion",

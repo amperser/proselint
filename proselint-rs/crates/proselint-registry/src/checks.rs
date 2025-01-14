@@ -87,14 +87,11 @@ pub enum CheckType {
 	},
 	Existence {
 		items: &'static [&'static str],
-		unicode: bool,
 		padding: Padding,
-		dotall: bool,
 		exceptions: &'static [&'static str],
 	},
 	ExistenceSimple {
 		pattern: &'static str,
-		unicode: bool,
 		exceptions: &'static [&'static str],
 	},
 	ReverseExistence {
@@ -227,8 +224,6 @@ impl CheckType {
 		padding: Padding,
 		exceptions: &[&str],
 		ignore_case: bool,
-		unicode: bool,
-		dotall: bool,
 	) -> Vec<CheckResult> {
 		let offset = padding.to_offset_from(offset);
 
@@ -252,8 +247,6 @@ impl CheckType {
 
 		regex::RegexBuilder::new(rx)
 			.case_insensitive(ignore_case)
-			.unicode(unicode)
-			.dot_matches_new_line(dotall)
 			.build()
 			.unwrap()
 			.find_iter(text)
@@ -280,7 +273,6 @@ impl CheckType {
 		msg: &str,
 		exceptions: &[&str],
 		ignore_case: bool,
-		unicode: bool,
 	) -> Vec<CheckResult> {
 		// TODO: this should be a RegexBuilder with case_insensitive
 		// held up by fancy-regex#132
@@ -401,7 +393,7 @@ impl Check {
 					self.ignore_case,
 				)
 			}
-			Existence { items, unicode, padding, dotall, exceptions } => {
+			Existence { items, padding, exceptions } => {
 				CheckType::existence(
 					text,
 					items,
@@ -411,11 +403,9 @@ impl Check {
 					padding,
 					exceptions,
 					self.ignore_case,
-					unicode,
-					dotall,
 				)
 			}
-			ExistenceSimple { pattern, unicode, exceptions } => {
+			ExistenceSimple { pattern, exceptions } => {
 				CheckType::existence_simple(
 					text,
 					pattern,
@@ -423,7 +413,6 @@ impl Check {
 					self.msg,
 					exceptions,
 					self.ignore_case,
-					unicode,
 				)
 			}
 			ReverseExistence { allowed } => CheckType::rev_existence(

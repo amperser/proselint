@@ -26,7 +26,6 @@ const CHECK: Check = Check {
 	check_type: CheckType::ExistenceSimple {
         // NOTE: this can't be padded without mod -> \1
 		pattern: r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b",
-		unicode: true,
 		exceptions: &[r"^had had$", r"^that that$"],
 	},
 	path: "lexical_illusions.misc",

@@ -101,7 +101,6 @@ const CHECK_DAYS: Check = Check {
 const CHECK_ROMAN_WAR: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: r"World War ((I*i+)|(i+I*))+",
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.capitalization.roman_num.ww",
@@ -118,7 +117,6 @@ const _CHECK_ROMAN_NUMERALS: Check = Check {
 			Padding::WordsInText,
 			r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})",
 		),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.capitalization.roman_num",

@@ -6,7 +6,6 @@ pub const EXAMPLES_FAIL: &[&str] = &["To say more research is needed."];
 const CHECK: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, "more research is needed"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.apologizing",

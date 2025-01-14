@@ -21,7 +21,6 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 const CHECK_LOWERCASE_PERIODS: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: str_replace!(Padding::WordsInText.as_str(), "{}", r"\d{1,2} ?[ap]m"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "dates_times.am_pm.lowercase_periods",
@@ -33,7 +32,6 @@ const CHECK_LOWERCASE_PERIODS: Check = Check {
 const CHECK_SPACING: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: r"\b\d{1,2}[ap]\.?m\.?",
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "dates_times.am_pm.spacing",
@@ -44,7 +42,6 @@ const CHECK_SPACING: Check = Check {
 const CHECK_MIDNIGHT_NOON: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: r"\b12 ?[ap]\.?m\.?",
-		unicode: true,
 		exceptions: &[], 
 	},
 	path: "dates_times.am_pm.midnight_noon",
@@ -60,9 +57,7 @@ const CHECK_REDUNDANCY: Check = Check {
             r"\b\d{1,2} ?p\.?m\.? at night",
             r"\b\d{1,2} ?p\.?m\.? in the afternoon",
 		],
-		unicode: true,
 		padding: Padding::None,
-		dotall: false,
 		exceptions: &[],
 	},
 	path: "dates_times.am_pm.redundancy",

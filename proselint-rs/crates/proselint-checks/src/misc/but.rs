@@ -16,7 +16,6 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 const CHECK: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, r"(?:^|[\.!\?]\s*)But"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.but",

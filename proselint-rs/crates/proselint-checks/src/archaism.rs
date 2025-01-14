@@ -64,9 +64,7 @@ const CHECK: Check = Check {
 			// "abortive" Abortive is archaic in reference to abortions,
 			// except in the sense “causing an abortion.”
 		],
-		unicode: true,
 		padding: Padding::WordsInText,
-		dotall: false,
 		exceptions: &[],
 	},
 	path: "archaism.misc",

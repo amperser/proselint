@@ -11,7 +11,6 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 const CHECK_OBVIOUSLY: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, "obviously"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.greylist.obviously",
@@ -22,7 +21,6 @@ const CHECK_OBVIOUSLY: Check = Check {
 const CHECK_UTILIZE: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, "utilize"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.greylist.utilize",

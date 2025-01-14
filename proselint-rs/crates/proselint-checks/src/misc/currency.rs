@@ -9,7 +9,6 @@ const CHECK: Check = Check {
 			Padding::SeparatorInText,
 			r"\$[\d]* ?(?:dollars|usd|us dollars)"
 		),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "misc.currency",

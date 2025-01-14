@@ -8,7 +8,6 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 const CHECK: Check = Check {
 	check_type: CheckType::ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, r"(met|meets?) with your approval"),
-		unicode: true,
 		exceptions: &[],
 	},
 	path: "industrial_language.bureaucratese",
