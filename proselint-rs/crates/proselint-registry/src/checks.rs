@@ -1,4 +1,4 @@
-use fancy_regex::Regex;
+use regex::{Match, Regex, RegexBuilder};
 
 #[derive(Clone, Copy, Debug, Default)]
 pub enum Padding {
@@ -97,50 +97,41 @@ pub enum CheckType {
 }
 
 impl CheckType {
-	fn consistency(
+	pub fn consistency(
 		text: &str,
-		word_pairs: &[(&str, &str)],
+		word_pairs: &[[&str; 2]],
 		path: &str,
 		msg: &str,
-		offset: (usize, usize),
+		offset: [usize; 2],
 		ignore_case: bool,
 	) -> Vec<CheckResult> {
 		let mut results: Vec<CheckResult> = vec![];
 
-		// NOTE: would it be more efficient to use a RegexSet and see which
-		// pairs have matches for both, to prevent running multiple state
-		// machines over the entire input?
-		for word_pair in word_pairs {
-			let matches: [Vec<fancy_regex::Match>; 2] = [
-				Regex::new(word_pair.0)
-					.unwrap()
-					.find_iter(text)
-					.filter_map(|x| x.ok())
-					.collect(),
-				Regex::new(word_pair.1)
-					.unwrap()
-					.find_iter(text)
-					.filter_map(|x| x.ok())
-					.collect(),
-			];
+		for pair in word_pairs {
+			let matches: [Vec<Match>; 2] = pair
+				.iter()
+				.map(|part| {
+					RegexBuilder::new(part)
+						.case_insensitive(ignore_case)
+						.build()
+						.unwrap()
+						.find_iter(text)
+						.collect::<Vec<_>>()
+				})
+				.collect::<Vec<_>>()
+				.try_into()
+				.unwrap();
 
-			if matches[0].len() > 0 && matches[1].len() > 0 {
-				let idx_minority =
-					(matches[0].len() > matches[1].len()) as usize;
-
-				results.append(
-					&mut matches[idx_minority]
-						.iter()
-						.map(|m| CheckResult {
-							start_pos: m.start() + offset.0,
-							end_pos: m.end() + offset.1,
-							check_name: path.to_string(),
-							message: "".to_string(),
-							replacements: Some(word_pair.0.to_string()),
-						})
-						.collect(),
-				)
-			}
+			let idx_minority = (matches[0].len() > matches[1].len()) as usize;
+			results.extend(matches[idx_minority].iter().map(|m| {
+				CheckResult {
+					start_pos: m.start() + offset[0],
+					end_pos: m.end() + offset[1],
+					check_name: path.to_string(),
+					message: msg.to_string(),
+					replacements: Some(pair[0].to_string()),
+				}
+			}));
 		}
 		results
 	}
@@ -159,21 +150,21 @@ impl CheckType {
 			_ => (offset.0 + 1, offset.1.saturating_sub(1)),
 		};
 
+		// TODO: benchmark replacing this with RegexSet
 		items
 			.entries()
 			.flat_map(|(original, replacement)| {
-				Regex::new(&padding.pad(original))
+				RegexBuilder::new(&padding.pad(original))
+					.case_insensitive(ignore_case)
+					.build()
 					.unwrap()
 					.find_iter(text)
-					.filter_map(|m| {
-						m.map(|x| CheckResult {
-							start_pos: x.start() + offset.0,
-							end_pos: x.end() + offset.1,
-							check_name: path.to_string(),
-							message: msg.to_string(),
-							replacements: Some(replacement.to_string()),
-						})
-						.ok()
+					.map(|m| CheckResult {
+						start_pos: m.start() + offset.0,
+						end_pos: m.end() + offset.1,
+						check_name: path.to_string(),
+						message: msg.to_string(),
+						replacements: Some(replacement.to_string()),
 					})
 					.collect::<Vec<_>>()
 			})
@@ -204,23 +195,24 @@ impl CheckType {
 			}),
 		);
 
-		Regex::new(rx)
+		// TODO: benchmark replacing this with RegexSet
+		RegexBuilder::new(rx)
+			.case_insensitive(ignore_case)
+			.build()
 			.unwrap()
 			.find_iter(text)
-			.filter_map(|m| {
-				m.ok().and_then(|x| {
-					let original = x.as_str().trim();
-					let replacements =
-						items.get(original).map(|entry| entry.to_string());
+			.map(|m| {
+				let original = m.as_str().trim();
+				let replacements =
+					items.get(original).map(|entry| entry.to_string());
 
-					Some(CheckResult {
-						start_pos: x.start() + offset.0,
-						end_pos: x.end() + offset.1,
-						check_name: path.to_string(),
-						message: msg.to_string(),
-						replacements,
-					})
-				})
+				CheckResult {
+					start_pos: m.start() + offset.0,
+					end_pos: m.end() + offset.1,
+					check_name: path.to_string(),
+					message: msg.to_string(),
+					replacements,
+				}
 			})
 			.collect()
 	}
@@ -252,28 +244,35 @@ impl CheckType {
 
 		let regex_exceptions = exceptions
 			.iter()
-			.map(|exception| Regex::new(exception).unwrap())
+			.map(|exception| {
+				RegexBuilder::new(exception)
+					.case_insensitive(ignore_case)
+					.build()
+					.unwrap()
+			})
 			.collect::<Vec<_>>();
 
-		let mut results: Vec<CheckResult> = vec![];
-		for m in Regex::new(rx).unwrap().find_iter(text).filter_map(|x| x.ok())
-		{
-			let txt = m.as_str().trim();
-			if regex_exceptions
-				.iter()
-				.any(|exception| exception.is_match(txt).unwrap())
-			{
-				continue;
-			}
-			results.push(CheckResult {
-				start_pos: m.start() + offset.0,
-				end_pos: m.end() + offset.1,
-				check_name: path.to_string(),
-				message: msg.to_string(),
-				replacements: None,
-			});
-		}
-		results
+		regex::RegexBuilder::new(rx)
+			.case_insensitive(ignore_case)
+			.unicode(unicode)
+			.dot_matches_new_line(dotall)
+			.build()
+			.unwrap()
+			.find_iter(text)
+			.filter_map(|m| {
+				let match_text = m.as_str().trim();
+				(!regex_exceptions
+					.iter()
+					.any(|exception| exception.is_match(match_text)))
+				.then(|| CheckResult {
+					start_pos: m.start() + offset.0,
+					end_pos: m.end() + offset.1,
+					check_name: path.to_string(),
+					message: msg.to_string(),
+					replacements: None,
+				})
+			})
+			.collect()
 	}
 
 	fn existence_simple(
@@ -287,28 +286,28 @@ impl CheckType {
 	) -> Vec<CheckResult> {
 		// TODO: this should be a RegexBuilder with case_insensitive
 		// held up by fancy-regex#132
-		let regex_pattern = Regex::new(pattern).unwrap();
+		let regex_pattern = fancy_regex::Regex::new(pattern).unwrap();
 		let regex_exceptions = exceptions
 			.iter()
-			.map(|exception| Regex::new(exception).unwrap())
+			.map(|exception| fancy_regex::Regex::new(exception).unwrap())
 			.collect::<Vec<_>>();
-		let mut results: Vec<CheckResult> = Vec::new();
-		for m in regex_pattern.find_iter(text).filter_map(|x| x.ok()) {
-			if regex_exceptions
-				.iter()
-				.any(|exception| exception.is_match(m.as_str()).unwrap())
-			{
-				continue;
-			}
-			results.push(CheckResult {
-				start_pos: m.start(),
-				end_pos: m.end(),
-				check_name: path.to_string(),
-				message: m.as_str().trim().to_string(),
-				replacements: None,
+		regex_pattern
+			.find_iter(text)
+			.filter_map(|x| {
+				x.ok().and_then(|m| {
+					(!regex_exceptions.iter().any(|exception| {
+						exception.is_match(m.as_str()).unwrap()
+					}))
+					.then(|| CheckResult {
+						start_pos: m.start(),
+						end_pos: m.end(),
+						check_name: path.to_string(),
+						message: msg.to_string(),
+						replacements: None,
+					})
+				})
 			})
-		}
-		results
+			.collect()
 	}
 
 	fn rev_existence(
@@ -323,21 +322,15 @@ impl CheckType {
 		tokenizer
 			.find_iter(text)
 			.filter_map(|m| {
-				m.ok().and_then(|x| {
-					let txt = x.as_str();
-					if !txt.chars().any(|c| c.is_ascii_digit())
-						&& !allowed.contains(&txt)
-					{
-						Some(CheckResult {
-							start_pos: x.start() + offset.0 + 1,
-							end_pos: x.end() + offset.1,
-							check_name: path.to_string(),
-							message: msg.to_string(),
-							replacements: None,
-						})
-					} else {
-						None
-					}
+				let match_text = m.as_str();
+				(!match_text.chars().any(|c| c.is_ascii_digit())
+					&& !allowed.contains(&match_text))
+				.then(|| CheckResult {
+					start_pos: m.start() + offset.0 + 1,
+					end_pos: m.end() + offset.1,
+					check_name: path.to_string(),
+					message: msg.to_string(),
+					replacements: None,
 				})
 			})
 			.collect()
@@ -385,10 +378,10 @@ impl Check {
 		match self.check_type.to_owned() {
 			Consistency { word_pairs } => CheckType::consistency(
 				text,
-				word_pairs,
+				&word_pairs.iter().map(|x| [x.0, x.1]).collect::<Vec<_>>(),
 				self.path,
 				self.msg,
-				self.offset,
+				[self.offset.0, self.offset.1],
 				self.ignore_case,
 			),
 			PreferredForms { items, padding } => CheckType::preferred_forms(
