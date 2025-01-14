@@ -29,6 +29,13 @@ impl Padding {
 	pub fn pad(&self, text: &str) -> String {
 		self.as_str().replace(r"{}", text)
 	}
+
+	pub const fn to_offset_from(&self, offset: [usize; 2]) -> [usize; 2] {
+		match self {
+			Padding::None | Padding::SafeJoin | Padding::WordsInText => offset,
+			_ => [offset[0] + 1, offset[1].saturating_sub(1)],
+		}
+	}
 }
 
 #[macro_export]
@@ -68,7 +75,7 @@ impl<T: Fn(&str, &Check) -> Vec<CheckResult> + Send + Sync> CheckFn for T {}
 #[derive(Clone, Copy)]
 pub enum CheckType {
 	Consistency {
-		word_pairs: &'static [(&'static str, &'static str)],
+		word_pairs: &'static [[&'static str; 2]],
 	},
 	PreferredForms {
 		items: &'static phf::Map<&'static str, &'static str>,
@@ -97,7 +104,7 @@ pub enum CheckType {
 }
 
 impl CheckType {
-	pub fn consistency(
+	fn consistency(
 		text: &str,
 		word_pairs: &[[&str; 2]],
 		path: &str,
@@ -141,14 +148,11 @@ impl CheckType {
 		items: &phf::Map<&str, &str>,
 		path: &str,
 		msg: &str,
-		offset: (usize, usize),
+		offset: [usize; 2],
 		padding: Padding,
 		ignore_case: bool,
 	) -> Vec<CheckResult> {
-		let offset = match padding {
-			Padding::None | Padding::SafeJoin | Padding::WordsInText => offset,
-			_ => (offset.0 + 1, offset.1.saturating_sub(1)),
-		};
+		let offset = padding.to_offset_from(offset);
 
 		// TODO: benchmark replacing this with RegexSet
 		items
@@ -160,8 +164,8 @@ impl CheckType {
 					.unwrap()
 					.find_iter(text)
 					.map(|m| CheckResult {
-						start_pos: m.start() + offset.0,
-						end_pos: m.end() + offset.1,
+						start_pos: m.start() + offset[0],
+						end_pos: m.end() + offset[1],
 						check_name: path.to_string(),
 						message: msg.to_string(),
 						replacements: Some(replacement.to_string()),
@@ -176,14 +180,11 @@ impl CheckType {
 		items: &phf::Map<&str, &str>,
 		path: &str,
 		msg: &str,
-		offset: (usize, usize),
+		offset: [usize; 2],
 		padding: Padding,
 		ignore_case: bool,
 	) -> Vec<CheckResult> {
-		let offset = match padding {
-			Padding::None | Padding::SafeJoin | Padding::WordsInText => offset,
-			_ => (offset.0 + 1, offset.1.saturating_sub(1)),
-		};
+		let offset = padding.to_offset_from(offset);
 
 		let rx = &padding.pad(
 			&(if items.len() > 1 {
@@ -207,8 +208,8 @@ impl CheckType {
 					items.get(original).map(|entry| entry.to_string());
 
 				CheckResult {
-					start_pos: m.start() + offset.0,
-					end_pos: m.end() + offset.1,
+					start_pos: m.start() + offset[0],
+					end_pos: m.end() + offset[1],
 					check_name: path.to_string(),
 					message: msg.to_string(),
 					replacements,
@@ -222,17 +223,14 @@ impl CheckType {
 		items: &[&str],
 		path: &str,
 		msg: &str,
-		offset: (usize, usize),
+		offset: [usize; 2],
 		padding: Padding,
 		exceptions: &[&str],
 		ignore_case: bool,
 		unicode: bool,
 		dotall: bool,
 	) -> Vec<CheckResult> {
-		let offset = match padding {
-			Padding::None | Padding::SafeJoin | Padding::WordsInText => offset,
-			_ => (offset.0 + 1, offset.1.saturating_sub(1)),
-		};
+		let offset = padding.to_offset_from(offset);
 
 		let rx = &padding.pad(
 			&(if items.len() > 1 {
@@ -265,8 +263,8 @@ impl CheckType {
 					.iter()
 					.any(|exception| exception.is_match(match_text)))
 				.then(|| CheckResult {
-					start_pos: m.start() + offset.0,
-					end_pos: m.end() + offset.1,
+					start_pos: m.start() + offset[0],
+					end_pos: m.end() + offset[1],
 					check_name: path.to_string(),
 					message: msg.to_string(),
 					replacements: None,
@@ -315,7 +313,7 @@ impl CheckType {
 		allowed: &[&str],
 		path: &str,
 		msg: &str,
-		offset: (usize, usize),
+		offset: [usize; 2],
 		ignore_case: bool,
 	) -> Vec<CheckResult> {
 		let tokenizer = Regex::new(r"\w[\w'-]+\w").unwrap();
@@ -326,8 +324,8 @@ impl CheckType {
 				(!match_text.chars().any(|c| c.is_ascii_digit())
 					&& !allowed.contains(&match_text))
 				.then(|| CheckResult {
-					start_pos: m.start() + offset.0 + 1,
-					end_pos: m.end() + offset.1,
+					start_pos: m.start() + offset[0] + 1,
+					end_pos: m.end() + offset[1],
 					check_name: path.to_string(),
 					message: msg.to_string(),
 					replacements: None,
@@ -354,10 +352,9 @@ pub struct Check {
 	pub check_type: CheckType,
 	pub path: &'static str,
 	pub msg: &'static str,
-	// pub x: &'static dyn Fn(&'static [&'static str]) -> &str,
 	pub flags: CheckFlags,
 	pub ignore_case: bool,
-	pub offset: (usize, usize),
+	pub offset: [usize; 2],
 }
 
 impl Check {
@@ -368,7 +365,7 @@ impl Check {
 			msg: "",
 			flags: CheckFlags::default(),
 			ignore_case: true,
-			offset: (0, 0),
+			offset: [0, 0],
 		}
 	}
 
@@ -378,10 +375,10 @@ impl Check {
 		match self.check_type.to_owned() {
 			Consistency { word_pairs } => CheckType::consistency(
 				text,
-				&word_pairs.iter().map(|x| [x.0, x.1]).collect::<Vec<_>>(),
+				word_pairs,
 				self.path,
 				self.msg,
-				[self.offset.0, self.offset.1],
+				self.offset,
 				self.ignore_case,
 			),
 			PreferredForms { items, padding } => CheckType::preferred_forms(
