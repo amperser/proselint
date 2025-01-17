@@ -103,11 +103,8 @@ pub enum CheckType {
 impl CheckType {
 	fn consistency(
 		text: &str,
+		check: &Check,
 		word_pairs: &[[&str; 2]],
-		path: &'static str,
-		msg: &str,
-		offset: [usize; 2],
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
 		let mut results: Vec<CheckResult> = vec![];
 
@@ -116,7 +113,7 @@ impl CheckType {
 				.iter()
 				.map(|part| {
 					RegexBuilder::new(part)
-						.case_insensitive(ignore_case)
+						.case_insensitive(check.ignore_case)
 						.build()
 						.unwrap()
 						.find_iter(text)
@@ -129,10 +126,10 @@ impl CheckType {
 			let idx_minority = (matches[0].len() > matches[1].len()) as usize;
 			results.extend(matches[idx_minority].iter().map(|m| {
 				CheckResult {
-					start_pos: m.start() + offset[0],
-					end_pos: m.end() + offset[1],
-					check_name: path,
-					message: msg.to_string(),
+					start_pos: m.start() + check.offset[0],
+					end_pos: m.end() + check.offset[1],
+					check_name: check.path,
+					message: check.msg.to_string(),
 					replacements: Some(pair[0].to_string()),
 				}
 			}));
@@ -142,29 +139,26 @@ impl CheckType {
 
 	fn preferred_forms(
 		text: &str,
+		check: &Check,
 		items: &phf::Map<&str, &str>,
-		path: &'static str,
-		msg: &str,
-		offset: [usize; 2],
 		padding: Padding,
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
-		let offset = padding.to_offset_from(offset);
+		let offset = padding.to_offset_from(check.offset);
 
 		// TODO: benchmark replacing this with RegexSet
 		items
 			.entries()
 			.flat_map(|(original, replacement)| {
 				RegexBuilder::new(&padding.pad(original))
-					.case_insensitive(ignore_case)
+					.case_insensitive(check.ignore_case)
 					.build()
 					.unwrap()
 					.find_iter(text)
 					.map(|m| CheckResult {
 						start_pos: m.start() + offset[0],
 						end_pos: m.end() + offset[1],
-						check_name: path,
-						message: msg.to_string(),
+						check_name: check.path,
+						message: check.msg.to_string(),
 						replacements: Some(replacement.to_string()),
 					})
 					.collect::<Vec<_>>()
@@ -174,14 +168,11 @@ impl CheckType {
 
 	fn preferred_forms_simple(
 		text: &str,
+		check: &Check,
 		items: &phf::Map<&str, &str>,
-		path: &'static str,
-		msg: &str,
-		offset: [usize; 2],
 		padding: Padding,
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
-		let offset = padding.to_offset_from(offset);
+		let offset = padding.to_offset_from(check.offset);
 
 		let rx = &padding.pad(
 			&(if items.len() > 1 {
@@ -195,7 +186,7 @@ impl CheckType {
 
 		// TODO: benchmark replacing this with RegexSet
 		RegexBuilder::new(rx)
-			.case_insensitive(ignore_case)
+			.case_insensitive(check.ignore_case)
 			.build()
 			.unwrap()
 			.find_iter(text)
@@ -207,8 +198,8 @@ impl CheckType {
 				CheckResult {
 					start_pos: m.start() + offset[0],
 					end_pos: m.end() + offset[1],
-					check_name: path,
-					message: msg.to_string(),
+					check_name: check.path,
+					message: check.msg.to_string(),
 					replacements,
 				}
 			})
@@ -217,15 +208,12 @@ impl CheckType {
 
 	fn existence(
 		text: &str,
+		check: &Check,
 		items: &[&str],
-		path: &'static str,
-		msg: &str,
-		offset: [usize; 2],
 		padding: Padding,
 		exceptions: &[&str],
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
-		let offset = padding.to_offset_from(offset);
+		let offset = padding.to_offset_from(check.offset);
 
 		let rx = &padding.pad(
 			&(if items.len() > 1 {
@@ -239,14 +227,14 @@ impl CheckType {
 			.iter()
 			.map(|exception| {
 				RegexBuilder::new(exception)
-					.case_insensitive(ignore_case)
+					.case_insensitive(check.ignore_case)
 					.build()
 					.unwrap()
 			})
 			.collect::<Vec<_>>();
 
 		regex::RegexBuilder::new(rx)
-			.case_insensitive(ignore_case)
+			.case_insensitive(check.ignore_case)
 			.build()
 			.unwrap()
 			.find_iter(text)
@@ -258,8 +246,8 @@ impl CheckType {
 				.then(|| CheckResult {
 					start_pos: m.start() + offset[0],
 					end_pos: m.end() + offset[1],
-					check_name: path,
-					message: msg.to_string(),
+					check_name: check.path,
+					message: check.msg.to_string(),
 					replacements: None,
 				})
 			})
@@ -268,11 +256,9 @@ impl CheckType {
 
 	fn existence_simple(
 		text: &str,
+		check: &Check,
 		pattern: &str,
-		path: &'static str,
-		msg: &str,
 		exceptions: &[&str],
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
 		// TODO: this should be a RegexBuilder with case_insensitive
 		// held up by fancy-regex#132
@@ -291,8 +277,8 @@ impl CheckType {
 					.then(|| CheckResult {
 						start_pos: m.start(),
 						end_pos: m.end(),
-						check_name: path,
-						message: msg.to_string(),
+						check_name: check.path,
+						message: check.msg.to_string(),
 						replacements: None,
 					})
 				})
@@ -302,11 +288,8 @@ impl CheckType {
 
 	fn rev_existence(
 		text: &str,
+		check: &Check,
 		allowed: &[&str],
-		path: &'static str,
-		msg: &str,
-		offset: [usize; 2],
-		ignore_case: bool,
 	) -> Vec<CheckResult> {
 		let tokenizer = Regex::new(r"\w[\w'-]+\w").unwrap();
 		tokenizer
@@ -316,10 +299,10 @@ impl CheckType {
 				(!match_text.chars().any(|c| c.is_ascii_digit())
 					&& !allowed.contains(&match_text))
 				.then(|| CheckResult {
-					start_pos: m.start() + offset[0] + 1,
-					end_pos: m.end() + offset[1],
-					check_name: path,
-					message: msg.to_string(),
+					start_pos: m.start() + check.offset[0] + 1,
+					end_pos: m.end() + check.offset[1],
+					check_name: check.path,
+					message: check.msg.to_string(),
 					replacements: None,
 				})
 			})
@@ -367,61 +350,44 @@ impl Check {
 		match self.check_type.to_owned() {
 			Consistency { word_pairs } => CheckType::consistency(
 				text,
+				self,
 				word_pairs,
-				self.path,
-				self.msg,
-				self.offset,
-				self.ignore_case,
 			),
 			PreferredForms { items, padding } => CheckType::preferred_forms(
 				text,
+				self,
 				items,
-				self.path,
-				self.msg,
-				self.offset,
 				padding,
-				self.ignore_case,
 			),
 			PreferredFormsSimple { items, padding } => {
 				CheckType::preferred_forms_simple(
 					text,
+					self,
 					items,
-					self.path,
-					self.msg,
-					self.offset,
 					padding,
-					self.ignore_case,
 				)
 			}
 			Existence { items, padding, exceptions } => {
 				CheckType::existence(
 					text,
+					self,
 					items,
-					self.path,
-					self.msg,
-					self.offset,
 					padding,
 					exceptions,
-					self.ignore_case,
 				)
 			}
 			ExistenceSimple { pattern, exceptions } => {
 				CheckType::existence_simple(
 					text,
+					self,
 					pattern,
-					self.path,
-					self.msg,
 					exceptions,
-					self.ignore_case,
 				)
 			}
 			ReverseExistence { allowed } => CheckType::rev_existence(
 				text,
+				self,
 				allowed,
-				self.path,
-				self.msg,
-				self.offset,
-				self.ignore_case,
 			),
 			CheckFn(check_fn) => check_fn(text, self),
 		}
