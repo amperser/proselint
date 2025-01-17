@@ -47,7 +47,7 @@ macro_rules! pad {
 
 #[derive(Debug, Clone)]
 pub struct LintResult {
-	pub check_name: String,
+	pub check_name: &'static str,
 	pub message: String,
 	pub source: String,
 	pub line: usize,
@@ -63,7 +63,7 @@ pub struct LintResult {
 pub struct CheckResult {
 	pub start_pos: usize,
 	pub end_pos: usize,
-	pub check_name: String,
+	pub check_name: &'static str,
 	pub message: String,
 	pub replacements: Option<String>,
 }
@@ -104,7 +104,7 @@ impl CheckType {
 	fn consistency(
 		text: &str,
 		word_pairs: &[[&str; 2]],
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		offset: [usize; 2],
 		ignore_case: bool,
@@ -131,7 +131,7 @@ impl CheckType {
 				CheckResult {
 					start_pos: m.start() + offset[0],
 					end_pos: m.end() + offset[1],
-					check_name: path.to_string(),
+					check_name: path,
 					message: msg.to_string(),
 					replacements: Some(pair[0].to_string()),
 				}
@@ -143,7 +143,7 @@ impl CheckType {
 	fn preferred_forms(
 		text: &str,
 		items: &phf::Map<&str, &str>,
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		offset: [usize; 2],
 		padding: Padding,
@@ -163,7 +163,7 @@ impl CheckType {
 					.map(|m| CheckResult {
 						start_pos: m.start() + offset[0],
 						end_pos: m.end() + offset[1],
-						check_name: path.to_string(),
+						check_name: path,
 						message: msg.to_string(),
 						replacements: Some(replacement.to_string()),
 					})
@@ -175,7 +175,7 @@ impl CheckType {
 	fn preferred_forms_simple(
 		text: &str,
 		items: &phf::Map<&str, &str>,
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		offset: [usize; 2],
 		padding: Padding,
@@ -207,7 +207,7 @@ impl CheckType {
 				CheckResult {
 					start_pos: m.start() + offset[0],
 					end_pos: m.end() + offset[1],
-					check_name: path.to_string(),
+					check_name: path,
 					message: msg.to_string(),
 					replacements,
 				}
@@ -218,7 +218,7 @@ impl CheckType {
 	fn existence(
 		text: &str,
 		items: &[&str],
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		offset: [usize; 2],
 		padding: Padding,
@@ -258,7 +258,7 @@ impl CheckType {
 				.then(|| CheckResult {
 					start_pos: m.start() + offset[0],
 					end_pos: m.end() + offset[1],
-					check_name: path.to_string(),
+					check_name: path,
 					message: msg.to_string(),
 					replacements: None,
 				})
@@ -269,7 +269,7 @@ impl CheckType {
 	fn existence_simple(
 		text: &str,
 		pattern: &str,
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		exceptions: &[&str],
 		ignore_case: bool,
@@ -291,7 +291,7 @@ impl CheckType {
 					.then(|| CheckResult {
 						start_pos: m.start(),
 						end_pos: m.end(),
-						check_name: path.to_string(),
+						check_name: path,
 						message: msg.to_string(),
 						replacements: None,
 					})
@@ -303,7 +303,7 @@ impl CheckType {
 	fn rev_existence(
 		text: &str,
 		allowed: &[&str],
-		path: &str,
+		path: &'static str,
 		msg: &str,
 		offset: [usize; 2],
 		ignore_case: bool,
@@ -318,7 +318,7 @@ impl CheckType {
 				.then(|| CheckResult {
 					start_pos: m.start() + offset[0] + 1,
 					end_pos: m.end() + offset[1],
-					check_name: path.to_string(),
+					check_name: path,
 					message: msg.to_string(),
 					replacements: None,
 				})

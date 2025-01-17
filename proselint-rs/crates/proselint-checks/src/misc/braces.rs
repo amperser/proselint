@@ -18,7 +18,7 @@ fn trace_braces(text: &str, pattern: &str, chars: (&str, &str), spec: &Check) ->
 			return Some(CheckResult {
 				start_pos: m.start(),
 				end_pos: m.end(),
-				check_name: spec.path.to_string(),
+				check_name: spec.path,
 				message: format!("{} more '{}' were closed than opened.", spec.msg, chars.1),
 				replacements: None,
 			});
@@ -27,7 +27,7 @@ fn trace_braces(text: &str, pattern: &str, chars: (&str, &str), spec: &Check) ->
 	(count > 0).then(|| CheckResult {
 		start_pos: 0,
 		end_pos: text.len(),
-		check_name: spec.path.to_string(),
+		check_name: spec.path,
 		message: format!("{} at least one '{}' is left open.", spec.msg, chars.0),
 		replacements: None,
 	})

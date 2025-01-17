@@ -77,7 +77,7 @@ pub fn run_check(check: Check, text: &str, source: &str) -> Vec<LintResult> {
 			let (line, column) = get_line_and_column(text, result.start_pos);
 			if !is_quoted(result.start_pos, text) {
 				Some(LintResult {
-					check_name: result.check_name.clone(),
+					check_name: result.check_name,
 					message: result.message.clone(),
 					source: source.to_string(),
 					line,
