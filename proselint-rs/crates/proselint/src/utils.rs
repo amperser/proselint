@@ -71,7 +71,7 @@ pub fn is_quoted(pos: usize, text: &str) -> bool {
 
 pub fn run_check(check: Check, text: &str, source: &str) -> Vec<LintResult> {
 	check
-		.check(text)
+		.check(text, &check)
 		.iter()
 		.filter_map(|result| {
 			let (line, column) = get_line_and_column(text, result.start_pos);
