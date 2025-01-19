@@ -1,11 +1,12 @@
-"""Not guilty beyond a reasonable doubt.
+"""
+Not guilty beyond a reasonable doubt.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Not guilty beyond a reasonable doubt.
-date:       2016-03-09 15:50:31
+date:       2016-03-09
 categories: writing
 ---
 
@@ -21,15 +22,22 @@ If somebody is found not guilty, say "not guilty." Omit the standard
 Not guilty beyond a reasonable doubt
 """
 
+from __future__ import annotations
 
-from proselint.tools import existence_check, memoize
+from proselint.checks import CheckSpec, Existence
 
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-@memoize
-def check(text):
-    """Check the text."""
-    err = "misc.not_guilty"
-    msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."
-    regex = r"not guilty beyond (a |any )?reasonable doubt"
+examples_fail = [
+    "She is not guilty beyond a reasonable doubt.",
+]
 
-    return existence_check(text, [regex], err, msg)
+check = CheckSpec(
+    Existence([r"not guilty beyond (a |any )?reasonable doubt"]),
+    "misc.not_guilty",
+    "'not guilty beyond a reasonable doubt' is an ambiguous phrasing.",
+)
+
+__register__ = (check,)

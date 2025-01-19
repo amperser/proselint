@@ -1,32 +1,38 @@
-"""Common errors with institution names.
+"""
+Common errors with institution names.
 
 ---
 layout:     post
 source:     Institution's webpage
 source_url: http://bit.ly/2en1zbv,
 title:      Institution Name
-date:       2016-11-16 11:46:19
+date:       2016-11-16
 categories: writing
 ---
 
 Institution names.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check_vtech(text):
-    """Suggest the correct name.
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-    source: Virginia Tech Division of Student Affairs
-    source_url: http://bit.ly/2en1zbv
-    """
-    err = "institution.vtech"
-    msg = "Incorrect name. Use '{}' instead of '{}'."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    institution = [
-        ["Virginia Polytechnic Institute and State University",
-         ["Virginia Polytechnic and State University"]],
-    ]
-    return preferred_forms_check(text, institution, err, msg)
+examples_fail = [
+    "I went to the Virginia Polytechnic and State University.",
+]
+
+check_vtech = CheckSpec(
+    PreferredFormsSimple({
+        "Virginia Polytechnic and State University": "Virginia Polytechnic "
+        "Institute and State University",
+    }),
+    "misc.institution_name.vtech",
+    "Incorrect name. Use '{}' instead of '{}'.",
+)
+
+__register__ = (check_vtech,)

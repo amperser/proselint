@@ -1,44 +1,70 @@
-"""Misspellings.
+"""
+Misspellings.
 
 ---
 layout:     post
 source:     The Wall Street Journal
 source_url: http://on.wsj.com/1rksm8k
-title:      misspellings
-date:       2014-06-10 12:31:19
+title:      misspellings of athletes
+date:       2014-06-10
 categories: writing
 ---
 
 Points out misspellings.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "spelling.athletes"
-    msg = "Misspelling of athlete's name. '{}' is the preferred form."
+from proselint.checks import (
+    CheckSpec,
+    PreferredForms,
+    PreferredFormsSimple,
+)
 
-    misspellings = [
-        ["Dwyane Wade",         ["Dwayne Wade"]],
-        ["Miikka Kiprusoff",    ["Mikka Kiprusoff"]],
-        ["Mark Buehrle",        ["Mark Buerhle"]],
-        ["Skylar Diggins",      ["Skyler Diggins"]],
-        ["Agnieszka Radwanska", ["Agnieska Radwanska"]],
-        ["J.J. Redick",         ["J.J. Reddick"]],
-        ["Manny Pacquiao",      ["Manny Packquaio"]],
-        ["Antawn Jamison",      ["Antwan Jamison"]],
-        ["Cal Ripken",          ["Cal Ripkin"]],
-        ["Jhonny Peralta",      ["Johnny Peralta"]],
-        ["Monta Ellis",         ["Monte Ellis"]],
-        ["Alex Rodriguez",      ["Alex Rodriquez"]],
-        ["Mark Teixeira",       ["Mark Texeira"]],
-        ["Brett Favre",         ["Brett Farve"]],
-        ["Torii Hunter",        ["Tori Hunter"]],
-        ["Stephen Curry",       ["Stephon Curry"]],
-        ["Mike Krzyzewski",     ["Mike Kryzewski"]],
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return preferred_forms_check(text, misspellings, err, msg)
+examples_fail = [
+    "One of the greats: Cal Ripkin.",
+]
+
+name = "spelling.athletes"
+msg = "Misspelling of athlete's name. '{}' is the preferred form."
+
+check = CheckSpec(
+    PreferredFormsSimple({
+        "Dwayne Wade": "Dwyane Wade",
+        "Mikka Kiprusoff": "Miikka Kiprusoff",
+        "Mark Buerhle": "Mark Buehrle",
+        "Skyler Diggins": "Skylar Diggins",
+        "Agnieska Radwanska": "Agnieszka Radwanska",
+        "Manny Packquaio": "Manny Pacquiao",
+        "Antwan Jamison": "Antawn Jamison",
+        "Cal Ripkin": "Cal Ripken",
+        "Johnny Peralta": "Jhonny Peralta",
+        "Monte Ellis": "Monta Ellis",
+        "Alex Rodriquez": "Alex Rodriguez",
+        "Mark Texeira": "Mark Teixeira",
+        "Brett Farve": "Brett Favre",
+        "Tori Hunter": "Torii Hunter",
+        "Stephon Curry": "Stephen Curry",
+        "Mike Kryzewski": "Mike Krzyzewski",
+    }),
+    name,
+    msg,
+)
+
+check_regex = CheckSpec(
+    PreferredForms({
+        r"J\.J\. Reddick": "J.J. Redick",
+    }),
+    name,
+    msg,
+)
+
+__register__ = (
+    check,
+    check_regex,
+)

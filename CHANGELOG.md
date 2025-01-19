@@ -1,5 +1,272 @@
 # Change Log
 
+<<<<<<< HEAD
+## [proselint@0.16.0](https://github.com/amperser/proselint/compare/0.15.0...0.16.0)
+
+- remove memoize-wrapper as it adds a level of complexity to a user-interface
+- lint() now only accepts string as input, lint_path() handles the previous options
+- fix broken offset-magic done in check_functions
+- further improve usability of result-processing functions
+- major speedup especially multicpu in windows x3.3, serial x2
+- new inside out regex-ing for less computational overhead
+  - example orig: `(?:^|\W)w1[\W$]|(?:^|\W)w2[\W$]|(?:^|\W)w3[\W$]`
+  - example new:  `(?:^|\W)(w1|w2|w3)[\W$]`
+
+```shell
+> lint_path(corpora)   OLD v0.15
+serial took 50196.394 ms -> run0
+serial took 53044.826 ms -> run1
+parallel took 15721.931 ms -> run0
+parallel took 15773.215 ms -> run1
+
+> lint_path(corpora)  	optimized regex (NEW)
+serial took 31550.519 ms -> run0
+serial took 36539.587 ms -> run1
+parallel took 10411.408 ms -> run0
+parallel took 10132.006 ms -> run1
+```
+
+- add benchmark to compare lint(), lint_path() and proselint-executable
+- fix and improve naming of checks (files, dirs and inside checks)
+- add pre-commit tests-suite
+- extend and activate check for roman numerals
+- extend check for lexical illusions (now 1-4 words)
+- add check for lower case word at the beginning of new sentence
+- add check for comma between digits
+- add check for repeated beginning word of consecutive sentences (monotonic)
+- add check for no whitespace between numbers and its unit (scientific)
+- add check for whitespace before punctuation
+- add scientific-checks, ported from TNT https://github.com/entorb/typonuketool and other sources
+- add check for unmatched braces (), [], {}
+- add check for consistence of apostrophes
+- fix checks for punctuation
+- add check for digits at the beginning of sentence, and single digits
+- improve various checks - mostly reduction of computational overhead of regexes
+- move example text into check-files, these get tested by pytest
+  - this approach is unconventional, but it's better maintainable (there were several tests missing, some were broken or testing same thing twice)
+  - also better documentation
+  - downside: slightly slower import of check-modules (unconfirmed)
+- precompiling the regex of the slowest check improves performance significantly
+- fix and improve several checks (less computation, more powerful, pass unittests)
+  - lexical illusions
+  - but
+  - cursing (something like "a.s.s." allowed "amsisa")
+- speedup for not needed safe_join-formatting (+10% in sherlock)
+- speedup for sep_in_txt by setting word-boundary (\b) (+33% in sherlock)
+- speedup by replacing sep_in_txt completely (100x less computation in sherlock)
+- sherlock-benchmark of checks from >500s down to 174s
+- reduce false positives on numbers-checks, use non-breaking space if you need to use numbers
+
+```
+############# lint_path(corpora) - Linux, 147 checks
+serial took 26687.769 ms -> run0
+serial took 28858.442 ms -> run1
+parallel took 9076.079 ms -> run0
+parallel took 8898.538 ms -> run1
+```
+
+- new test-design for checks
+  - check-categories bring their own example-data
+  - must have at least 1x failing & passing example strings
+  - discovery and inclusion is automatically
+  - in addition, reverse-regex-ing is used to test-trigger each item in check
+  - advantages
+    - easier maintainable
+    - no untested or redundantly tested checks anymore
+    - extensive test for valid usage of _check-functions
+- preferred_check wants now a dict for items instead of multidimensional list
+- new optimized preferred_check() disallowes regex in items (applicable to most checks) and can speedup substantially
+  - small text like demo and even larger 500kb sherlock increase by factor of 3!
+  - relation between durations of slowest & median check was 30 and is now 20
+  - relation between durations of median & fastest check was 100 and is now 20
+
+```
+# 10 runs for demo.md, before and after
+count:  148 checks
+min:    5.185200006962987e-05 s
+median: 0.001499587999205687 s
+mean:   0.011178609621624305 s
+max:    0.12145168799997919 s
+sum:    1.654434224000397 s
+
+count:  146 checks
+min:    5.214600241743028e-05 s
+median: 0.001201241000671871 s
+mean:   0.004014868616301499 s
+max:    0.0240363439952489 s
+sum:    0.5861708179800189 s
+```
+
+or to keep comparable to previous benchmarks
+
+```
+############# lint_path(corpora) - Linux, 149 checks
+serial took 15157.265 ms -> run0
+serial took 18547.386 ms -> run1
+parallel took 5610.961 ms -> run0
+parallel took 5836.078 ms -> run1
+```
+
+- large texts like sherlock show flaws in `is_quoted()` and `get_line_and_col()`, the first one is slower as it should be and the second one even grows exponentially
+  - is_quoted(), grows exponentially -> 30x slower sherlock, 20% demo
+  - get_line_and_column(), 5x slower than it should be, additional 40% improvement for sherlock, <1% demo
+
+```
+# 10 runs for sherlock, give a baseline (without these two mentioned functions)
+count:  146 checks
+min:    0.0009843750012805685 s
+median: 0.10638334300165297 s
+mean:   0.3801483482671906 s
+max:    2.5366100829996867 s
+sum:    55.50165884700982 s    (these numbers are for 10 runs)
+
+# -> text is 100x larger than demo, should take ~6s singlecore, but even multicore:
+Found 362 lint-warnings in 46.192 s (1 files, 548.63 kiByte)
+# -> now without get_line_and_col() & is_quoted()
+Found 1000 lint-warnings in 1.183 s (1 files, 548.63 kiByte)
+# -> just without is_quoted()
+Found 1000 lint-warnings in 1.649 s (1 files, 548.63 kiByte)
+# -> both optimized
+Found 362 lint-warnings in 1.375 s (1 files, 548.63 kiByte)
+
+```
+
+or to keep comparable to previous benchmarks
+
+```
+############# lint_path(corpora) - Linux, 146 checks
+serial took 5901.395 ms -> run0
+serial took 6331.165 ms -> run1
+parallel took 2245.927 ms -> run0
+parallel took 2456.038 ms -> run1
+```
+
+## [proselint@0.15.0](https://github.com/amperser/proselint/compare/0.14.0...0.15.0)
+
+### Biggest Changes
+
+- featureset of py38
+- cleaner and faster code
+- fixed bugs, undefined behavior, broken legacy code
+- some checks did not work as intended
+- multiprocessed parallelization and other optimizations
+
+### Benchmark-Comparison
+
+- custom set of files, same hardware
+
+#### Windows
+
+Proselint-main (uncached & cached)
+
+- Found 104 lint-warnings in 47.579 s
+- Found 104 lint-warnings in 0.878 s
+
+Proselint-modernized
+
+- Found 108 lint-warnings in 39.930 s (12 files, 617.45 kiByte) -> serialized (old approach)
+- Found 108 lint-warnings in 13.164 s (12 files, 617.45 kiByte) -> serial files, parallel checks
+- Found 108 lint-warnings in 9.931 s (12 files, 617.45 kiByte)  -> global check-executor (new approach)
+- Found 108 lint-warnings in 0.011 s (12 files, 617.45 kiByte)  -> cached
+
+#### Linux / WSL
+
+Proselint-main (uncached & cached)
+
+- Found 104 lint-warnings in 37.041 s
+- Found 104 lint-warnings in 0.771 s
+
+Proselint-modernized
+
+- Found 108 lint-warnings in 34.521 s (12 files, 617.45 kiByte) -> serialized (old approach)
+- Found 108 lint-warnings in 8.248 s (12 files, 617.45 kiByte)  -> serial files, parallel checks
+- Found 108 lint-warnings in 6.098 s (12 files, 617.45 kiByte)  -> global check-executor (new approach)
+- Found 108 lint-warnings in 0.044 s (12 files, 617.45 kiByte)  -> cached
+
+### Breaking changes
+
+- cli arg `--time` -> `--benchmark`, `-b`
+- cli arg `--debug` ->  `--verbose`, `-v`
+- exit code now returns number of errors
+- cli arg `--output-format` controls old flags json, compact
+- py >= 3.8
+- api-changes ->  web_scripts & plugins untested
+- config adjustments (1 test removed, 1 added)
+	- "misc.metaconcepts": False,  # TODO: remove, was duplicate of scare_quotes
+
+### Whats broken / untested
+
+- web_scripts
+- plugins
+- Github action
+
+
+### Detailed Changelog
+
+- featureset of py38
+- use pathlib instead of string based paths
+- add type-hinting
+- replaced memoizer, short-comings:
+	- shelves have a good interface but are slow
+	- cache-init and -closing was a mess
+	- clearing cache resulted in broken states
+	- memoize-wrapper was wasting resources (hash of text recalc for every check, ..)
+	- age of cache-entries was not considered
+	- every cached fn had its own file-cache
+	- cache migration was done on every memoize-decoration
+- cache
+	- hash test beforehand only once
+	- consider age of items
+	- memoize lint() instead of checks
+- fix bugs related to:
+	- overshadowing builtin names (list, ...)
+	- string based path-traversal
+	- mix of relative and absolute paths (also relics that deleted file somewhere)
+	- varius small bugs (ie. missing comma in element lists)
+	- cache was not cleaned up by fn (as it should)
+- lots of modernization from old codebase
+	- latest python versions had trouble with proselint
+- update deps
+- reformat using black-style, done by ruff
+- linted codebase with ruff
+- add logger and refactor print-output
+	- linter informs about duration
+	- results include link to file
+	- inform about duration, files scanned and text-size
+- refactor unittest
+	- remove classes / boilerplate
+	- move tests for checks into separate dir
+	- more helpful error-messages
+	- remove duplicates
+	- repair broken tests
+	- lower complexity of tests (each test should only test for one thing)
+- add unittests
+    - detect missing check-flags in default-config
+	- find unavaible checks for default-config-flags
+	- don't fail on wrong config-flags
+	- check working cache, speed-test
+	- check working cache, same results
+- minimal changes to outer api
+- config
+	- correctness of default-config is tested
+	- don't fail on faulty config-flags
+- checks
+	- remove duplicates
+	- fix padding for checks using regex
+- existence_check() - join and padding -> cleared up
+	- join is always done
+	- padding can be selected py Enum, defaults to separate in text
+	- fix checks accordingly
+- put root-scripts into sep dir
+- exithandler for more graceful ctrl+c
+- ppm-wrapper is now more forgiving with small sample-sizes
+- add parallelization
+	- checks() are run multiprocessed
+	- one global executioner collects tasks for all files to analyze
+	- break up the slowest checks to balance the load
+- optimizations were done with profiling and benchmarking
+- overhaul controling output-format by cli
+
 ## [proselint@0.14.0](https://github.com/amperser/proselint/compare/0.13.0...0.14.0)
 
 ### Bug Fixes

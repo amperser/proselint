@@ -1,31 +1,40 @@
-"""Back-formations.
+"""
+Back-formations.
 
 ---
 layout:     post
 source:     The sense of style
 source_url: http://amzn.to/1EOUZ5g
 title:      back-formations
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Back-formations.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "pinker.latin"
-    msg = "Use English. '{}' is the preferred form."
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-    list = [
-        ["other things being equal",          ["ceteris paribus"]],
-        ["among other things",                ["inter alia"]],
-        ["in and of itself",                  ["simpliciter"]],
-        ["having made the necessary changes", ["mutatis mutandis"]],
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return preferred_forms_check(text, list, err, msg)
+examples_fail = [
+    "And ceteris paribus, it was good.",
+]
+
+check = CheckSpec(
+    PreferredFormsSimple({
+        "ceteris paribus": "other things being equal",
+        "inter alia": "among other things",
+        "simpliciter": "in and of itself",
+        "mutatis mutandis": "having made the necessary changes",
+    }),
+    "misc.latin.pinker",
+    "Use English. '{}' is the preferred form.",
+)
+
+__register__ = (check,)

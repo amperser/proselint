@@ -13,14 +13,14 @@
     <script src="../mode/javascript/javascript.js"></script>
     <script src="../mode/css/css.js"></script>
     <script src="../mode/htmlmixed/htmlmixed.js"></script>
-        
+
     <link rel="stylesheet" href="../doc/docs.css">
     <style type="text/css">
       .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
     </style>
   </head>
   <body>
-    
+
     <h1>HTML5 code completation demo</h1>
     <ul>
       <li>Type an html tag. If you press Ctrl+Space a hint panel show the code suggest. You can type to autocomplete tags, attributes if your cursor are inner a tag or attribute values if your cursor are inner a attribute value.</li>
@@ -37,11 +37,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
   </head>
-  
+
   <body>
-    
+
     <div class="container">
-      
+
       <div class="masthead">
         <h3 class="muted">HTML5 Autocomplete</h3>
         <div class="navbar">
@@ -56,22 +56,22 @@
           </div>
         </div><!-- /.navbar -->
       </div>
-      
+
       <!-- Jumbotron -->
       <div class="jumbotron">
         <img src="/Images/w2s.png" />
         <h1>W2S Cloud IDE</h1>
       </div>
-      
+
       <hr>
-      
-      
+
+
       <hr>
-      
+
       <div class="footer">
         Final of html5 autocomplete
       </div>
-      
+
     </div> <!-- /container -->
   </body>
 </html>
@@ -81,7 +81,7 @@
       CodeMirror.commands.autocomplete = function(cm) {
           CodeMirror.showHint(cm, CodeMirror.htmlHint);
       }
-        
+
       var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         mode: 'text/html',
         autoCloseTags: true,

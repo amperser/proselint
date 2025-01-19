@@ -1,35 +1,43 @@
 """Redundant Acronym Syndrome (RAS) syndrome."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "garner.redundancy.ras"
-    msg = "RAS syndrome. Use '{}' instead of '{}'."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    redundancies = [
-        ["ABM",               ["ABM missile"]],
-        ["ACT",               ["ACT test"]],
-        ["ABMs",              ["ABM missiles"]],
-        ["ABS",               ["ABS braking system"]],
-        ["ATM",               ["ATM machine"]],
-        ["CD",                ["CD disc"]],
-        ["CPI",               ["CPI Index"]],
-        ["GPS",               ["GPS system"]],
-        ["GUI",               ["GUI interface"]],
-        ["HIV",               ["HIV virus"]],
-        ["ISBN",              ["ISBN number"]],
-        ["LCD",               ["LCD display"]],
-        ["PDF",               ["PDF format"]],
-        ["PIN",               ["PIN number"]],
-        ["RAS",               ["RAS syndrome"]],
-        ["RIP",               ["RIP in peace"]],
-        ["RSVP",              ["please RSVP"]],
-        ["SALT",              ["SALT talks"]],
-        ["SAT",               ["SAT test"]],
-        ["UPC",               ["UPC codes"]],
-    ]
+examples_fail = [
+    "Please enter your PIN number.",
+]
 
-    return preferred_forms_check(text, redundancies, err, msg)
+check = CheckSpec(
+    PreferredFormsSimple({
+        "ABM missile": "ABM",
+        "ACT test": "ACT",
+        "ABM missiles": "ABMs",
+        "ABS braking system": "ABS",
+        "ATM machine": "ATM",
+        "CD disc": "CD",
+        "CPI Index": "CPI",
+        "GPS system": "GPS",
+        "GUI interface": "GUI",
+        "HIV virus": "HIV",
+        "ISBN number": "ISBN",
+        "LCD display": "LCD",
+        "LED diode": "LED",
+        "PDF format": "PDF",
+        "PIN number": "PIN",
+        "RAS syndrome": "RAS",
+        "RIP in peace": "RIP",
+        "please RSVP": "RSVP",
+        "SALT talks": "SALT",
+        "SAT test": "SAT",
+        "UPC codes": "UPC",
+    }),
+    "redundancy.ras_syndrome.garner",
+    "RAS syndrome. Use '{}' instead of '{}'.",
+)
+
+__register__ = (check,)

@@ -1,28 +1,35 @@
-"""Back-formations.
+"""
+Back-formations.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      back-formations
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Back-formations.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.back_formations"
-    msg = "Back-formation. '{}' is the preferred form."
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-    list = [
-        ["improper",       ["improprietous"]],
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return preferred_forms_check(text, list, err, msg)
+examples_fail = [
+    "It is an improprietous use.",
+]
+
+check = CheckSpec(
+    PreferredFormsSimple({"improprietous": "improper"}),
+    "misc.back_formations",
+    "Back-formation. '{}' is the preferred form.",
+)
+
+__register__ = (check,)

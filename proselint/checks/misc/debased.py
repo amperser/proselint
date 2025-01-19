@@ -1,31 +1,40 @@
-"""Debased language.
+"""
+Debased language.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
 title:      yelling
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Too much yelling.
 
 """
-from proselint.tools import existence_check, memoize
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Check the text."""
-    err = "misc.debased"
-    msg = "Bad usage, debased language, a continuous temptation."
+from proselint.checks import CheckSpec, Existence
 
-    list = [
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "This leaves much to be desired.",
+]
+
+check = CheckSpec(
+    Existence([
         "a not unjustifiable assumption",
         "leaves much to be desired",
         "would serve no purpose",
         "a consideration which we should do well to bear in mind",
-    ]
+    ]),
+    "misc.debased",
+    "Debased language is a continuous temptation.",
+)
 
-    return existence_check(text, list, err, msg)
+__register__ = (check,)

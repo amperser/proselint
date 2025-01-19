@@ -1,30 +1,39 @@
-"""Many a singular.
+"""
+Many a singular.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Many a singular.
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 The idiom 'many a' requires a singular verb.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.many_a"
-    msg = "'many a' requires a singular verb."
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-    preferences = [
-        ["is many a",          ["are many a"]],
-        ["has been many a",    ["have been many a"]],
-        ["was many a",         ["were many a"]],
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return preferred_forms_check(text, preferences, err, msg)
+examples_fail = [
+    "There were many a day I thought about it.",
+]
+
+check = CheckSpec(
+    PreferredFormsSimple({
+        "are many a": "is many a",
+        "have been many a": "has been many a",
+        "were many a": "was many a",
+    }),
+    "misc.many_a",
+    "'many a' requires a singular verb, as in '{}'.",
+)
+
+__register__ = (check,)

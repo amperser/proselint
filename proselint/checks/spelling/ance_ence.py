@@ -1,19 +1,25 @@
 """-ance vs. -ence."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """-ance vs. -ence."""
-    err = "spelling.ance_ence"
-    msg = "-ance vs. -ence. '{}' is the correct spelling."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    preferences = [
+examples_fail = [
+    "The resistence was futile.",
+]
 
-        ["appearance", ["appearence"]],
-        ["occurrence", ["occurrance"]],
-        ["resistance", ["resistence"]],
-    ]
+check = CheckSpec(
+    PreferredFormsSimple({
+        "appearence": "appearance",
+        "occurrance": "occurrence",
+        "resistence": "resistance",
+    }),
+    "spelling.ance_ence",
+    "-ance vs. -ence. '{}' is the correct spelling.",
+)
 
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

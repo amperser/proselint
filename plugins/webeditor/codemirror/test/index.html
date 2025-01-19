@@ -84,7 +84,7 @@
           running = false, // Flag that states tests are running
          quit = false, // Flag to quit tests ASAP
          verbose = false; // Adds message for *every* test to output
-      
+
       function runHarness(){
         if (running) {
           quit = true;
@@ -115,7 +115,7 @@
           "</form>";
         runTests(displayTest);
       }
-      
+
       function setStatus(message, className, force){
         if (quit && !force) return;
         if (!message) throw("must provide message");

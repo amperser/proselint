@@ -1,30 +1,38 @@
-"""Eponymous adjectives.
+"""
+Eponymous adjectives.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
 title:      Eponymous adjectives
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Eponymous adjectives.
 
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "garner.eponymous_adjective"
-    msg = "'{}' is the preferred eponymous adjective."
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-    preferences = [
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-        ["Mephistophelean",    ["Mephistophelian"]],
-        ["Shakespearean",      ["Shakespearian"]],
-    ]
+examples_fail = [
+    "The writing wasn't Shakespearian.",
+]
 
-    return preferred_forms_check(text, preferences, err, msg)
+check = CheckSpec(
+    PreferredFormsSimple({
+        "Mephistophelian": "Mephistophelean",
+        "Shakespearian": "Shakespearean",
+    }),
+    "terms.eponymous_adjectives.garner",
+    "'{}' is the preferred eponymous adjective.",
+)
+
+__register__ = (check,)

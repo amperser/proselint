@@ -1,19 +1,25 @@
 """-ve vs. -of."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """-ve vs. -of."""
-    err = "spelling.ve_of"
-    msg = "-ve vs. -of. '{}' is the preferred spelling."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    preferences = [
+examples_fail = [
+    "This could of been the third test.",
+]
 
-        ["could've", ["could of"]],
-        ["should've", ["should of"]],
-        ["would've", ["would of"]],
-    ]
+check = CheckSpec(
+    PreferredFormsSimple({
+        "could of": "could've",
+        "should of": "should've",
+        "would of": "would've",
+    }),
+    "spelling.ve_of",
+    "-ve vs. -of. '{}' is the preferred spelling.",
+)
 
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

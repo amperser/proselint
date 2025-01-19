@@ -75,7 +75,7 @@ let rec sort = function
 
 and insert elem = function
   | [] -&gt; [elem]
-  | x :: l -&gt; 
+  | x :: l -&gt;
       if elem &lt; x then elem :: x :: l else x :: insert elem l;;
 
 (* Imperative features *)

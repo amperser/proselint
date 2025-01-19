@@ -1,28 +1,38 @@
-"""Professional narcissism.
+"""
+Professional narcissism.
 
 ---
 layout:     post
 source:     Pinker's book on writing
 source_url: ???
 title:      professional narcissism
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Points out academic narcissism.
 
 """
-from proselint.tools import existence_check, memoize
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "pinker.narcissism"
-    msg = "Professional narcissism. Talk about the subject, not its study."
+from proselint.checks import CheckSpec, Existence
 
-    narcissism = [
-        "In recent years, an increasing number of [a-zA-Z]{3,}sts have",
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return existence_check(text, narcissism, err, msg)
+examples_fail = [
+    "In recent years, an increasing number of scientists "
+    "have studied the problem in detail.",
+]
+
+check = CheckSpec(
+    Existence([
+        "In recent years, an increasing number of [a-zA-Z]{3,}sts have"
+    ]),
+    "misc.narcissism",
+    "Professional narcissism. Talk about the subject, not its study.",
+)
+
+__register__ = (check,)

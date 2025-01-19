@@ -1,91 +1,159 @@
-"""Use the right symbols.
+"""
+Use the right symbols.
 
 source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
 """
 
-from proselint.tools import existence_check, max_errors, memoize
+from __future__ import annotations
 
+from proselint.checks import (
+    CheckFlags,
+    CheckSpec,
+    Consistency,
+    Existence,
+    ExistenceSimple,
+    Pd,
+)
 
-@max_errors(3)
-@memoize
-def check_ellipsis(text):
-    """Use an ellipsis instead of three dots."""
-    err = "typography.symbols.ellipsis"
-    msg = "'...' is an approximation, use the ellipsis symbol '…'."
-    regex = r"\.\.\."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    # quotes
+    """This is “a sentence”. Look at it.""",
+    """“This should produce no error”, he said.""",
+    """A 'singular' should not, though.""",
+    # apo
+    "jim's is preferred",
+    "amanda´s is ok",
+]
 
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           offset=0)
+examples_fail = [
+    "The long and winding road...",
+    "Show me the money! (C)",
+    "Show me the money! (c)",
+    "The Fresh Maker (TM)",
+    "The Fresh Maker (tm)",
+    "Just Do It (R)",
+    "Just Do It (r)",
+    # spacing
+    "This is a sentence.   This is another.",
+    # mult
+    "It is obvious that 2 x 2 = 4.",
+    # quotes
+    """This is "another sentence". How faulty.""",
+    """"This should produce an error", he said.""",
+    """Alas, "it should here too".""",
+    # apo
+    "jim's is preferred - amanda´s is ok, but not mixed",
+    "pauls`s is not fine",
+]
 
+# TODO: reimplement limit_results
 
-@max_errors(1)
-@memoize
-def check_copyright_symbol(text):
-    """Use the copyright symbol instead of (c)."""
-    err = "typography.symbols.copyright"
-    msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
-    regex = r"\([cC]\)"
+check_ellipsis = CheckSpec(
+    Existence(
+        [r"\.\.\."],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.ellipsis",
+    "'...' is an approximation, use the ellipsis symbol '…'.",
+    flags=CheckFlags(limit_results=3),
+)
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
+check_copyright_symbol = CheckSpec(
+    Existence(
+        [r"\([cC]\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.copyright",
+    "(c) is a goofy alphabetic approximation, use the symbol ©.",
+    flags=CheckFlags(limit_results=1),
+)
 
+check_trademark_symbol = CheckSpec(
+    Existence(
+        [r"\(TM\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.trademark",
+    "(TM) is a goofy alphabetic approximation, use the symbol ™.",
+    flags=CheckFlags(limit_results=3),
+)
 
-@max_errors(3)
-@memoize
-def check_trademark_symbol(text):
-    """Use the trademark symbol instead of (TM)."""
-    err = "typography.symbols.trademark"
-    msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
-    regex = r"\(TM\)"
+check_registered_trademark_symbol = CheckSpec(
+    Existence(
+        [r"\([rR]\)\B"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.registered",
+    "(R) is a goofy alphabetic approximation, use the symbol ®.",
+    flags=CheckFlags(limit_results=3),
+)
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
+# FIXME: this check is repeated elsewhere
+check_sentence_spacing = CheckSpec(
+    Existence(
+        [r"\. {3}"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.sentence_spacing",
+    "More than two spaces after the period; use 1 or 2.",
+    flags=CheckFlags(limit_results=3),
+)
 
+check_multiplication_symbol = CheckSpec(
+    Existence(
+        [r"[0-9]+ ?x ?[0-9]+"],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.multiplication_symbol",
+    "Use the multiplication symbol ×, not the letter x.",
+    flags=CheckFlags(limit_results=3),
+)
 
-@max_errors(3)
-@memoize
-def check_registered_trademark_symbol(text):
-    """Use the registered trademark symbol instead of (R)."""
-    err = "typography.symbols.trademark"
-    msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
-    regex = r"\([rR]\)"
+check_curly_quotes = CheckSpec(
+    Existence(
+        [r"\"[\w\s\d]+\""],
+        padding=Pd.disabled,
+    ),
+    "typography.symbols.curly_quotes",
+    'Use curly quotes “”, not straight quotes "".',
+    flags=CheckFlags(limit_results=3),
+)
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
+# TODO: fix this or remove it
+"""
+check_en_dash_separated_names = CheckSpec(
+    Existence(["[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}"]),
+    "",
+    "Use an en dash (–) to separate names.",
+)
+"""
 
+APOSTROPHE_REGEX = Pd.words_in_txt.format(r"\w+{}(:?t|s|ll|d|m|ve|re)")
 
-@max_errors(3)
-@memoize
-def check_sentence_spacing(text):
-    """Use no more than two spaces after a period."""
-    err = "typography.symbols.sentence_spacing"
-    msg = "More than two spaces after the period; use 1 or 2."
-    regex = r"\. {3}"
+check_apostrophes_consistency = CheckSpec(
+    Consistency([(APOSTROPHE_REGEX.format("'"), APOSTROPHE_REGEX.format("´"))]),
+    "typography.symbols.apostrophes",
+    "Use the same apostrophe consistently - ' vs ´",
+    ignore_case=False,  # TODO: why is this off?
+)
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
+# src = https://github.com/entorb/typonuketool/blob/main/subs.pl#L834
+check_apostrophes_correct = CheckSpec(
+    ExistenceSimple(APOSTROPHE_REGEX.format("`")),
+    "typography.symbols.apostrophes",
+    "Use the correct apostrophe - ' or ´ instead of `",
+)
 
-
-@max_errors(3)
-@memoize
-def check_multiplication_symbol(text):
-    """Use the multiplication symbol ×, not the lowercase letter x."""
-    err = "typography.symbols.multiplication_symbol"
-    msg = "Use the multiplication symbol ×, not the letter x."
-    regex = r"[0-9]+ ?x ?[0-9]+"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-
-@max_errors(3)
-@memoize
-def check_curly_quotes(text):
-    """Use curly quotes, not straight quotes."""
-    err = "typography.symbols.curly_quotes"
-    msg = 'Use curly quotes “”, not straight quotes "".'
-    regex = r"\"[\w\s\d]+\""
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-# @memoize
-# def check_en_dash_separated_names(text):
-#     """Use an en-dash to separate names."""
-#     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
-#     #     u"Use an en dash (–) to separate names."],
+__register__ = (
+    check_ellipsis,
+    check_copyright_symbol,
+    check_trademark_symbol,
+    check_registered_trademark_symbol,
+    check_sentence_spacing,
+    check_multiplication_symbol,
+    check_curly_quotes,
+    check_apostrophes_consistency,
+    check_apostrophes_correct,
+)

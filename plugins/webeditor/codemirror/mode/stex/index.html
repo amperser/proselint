@@ -20,11 +20,11 @@
   \frametitle{Size Lemma for Balanced Trees}
   \begin{itemize}
   \item
-    \begin{assertion}[id=size-lemma,type=lemma] 
-    Let $G=\tup{V,E}$ be a \termref[cd=binary-trees]{balanced binary tree} 
+    \begin{assertion}[id=size-lemma,type=lemma]
+    Let $G=\tup{V,E}$ be a \termref[cd=binary-trees]{balanced binary tree}
     of \termref[cd=graph-depth,name=vertex-depth]{depth}$n>i$, then the set
      $\defeq{\livar{V}i}{\setst{\inset{v}{V}}{\gdepth{v} = i}}$ of
-    \termref[cd=graphs-intro,name=node]{nodes} at 
+    \termref[cd=graphs-intro,name=node]{nodes} at
     \termref[cd=graph-depth,name=vertex-depth]{depth} $i$ has
     \termref[cd=cardinality,name=cardinality]{cardinality} $\power2i$.
    \end{assertion}
@@ -39,7 +39,7 @@
         \end{spfcase}
         \begin{spfcase}{$i>0$}
           \begin{spfstep}[display=flow]
-           then $\livar{V}{i-1}$ contains $\power2{i-1}$ vertexes 
+           then $\livar{V}{i-1}$ contains $\power2{i-1}$ vertexes
            \begin{justification}[method=byIH](IH)\end{justification}
           \end{spfstep}
           \begin{spfstep}
@@ -57,8 +57,8 @@
         \end{spfcase}
       \end{spfcases}
     \end{sproof}
-  \item 
-    \begin{assertion}[id=fbbt,type=corollary]	
+  \item
+    \begin{assertion}[id=fbbt,type=corollary]
       A fully balanced tree of depth $d$ has $\power2{d+1}-1$ nodes.
     \end{assertion}
   \item
@@ -81,7 +81,7 @@
 \end{note}
 \end{module}
 
-%%% Local Variables: 
+%%% Local Variables:
 %%% mode: LaTeX
 %%% TeX-master: "all"
 %%% End: \end{document}

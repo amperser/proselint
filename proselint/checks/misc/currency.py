@@ -1,28 +1,38 @@
-"""Currency.
+"""
+Currency.
 
 ---
 layout:     post
 source:     SublimeLinter-annotations
 source_url: http://bit.ly/16Q7H41
 title:      symbols
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
 Symbols.
 
 """
-from proselint.tools import existence_check, memoize
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Check the text."""
-    err = "misc.currency"
-    msg = "Incorrect use of symbols in {}."
+from proselint.checks import CheckSpec, Existence, Pd
 
-    symbols = [
-        r"\$[\d]* ?(?:dollars|usd|us dollars)"
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    return existence_check(text, symbols, err, msg)
+examples_fail = [
+    "It cost $10 dollars.",
+]
+
+check = CheckSpec(
+    Existence(
+        [r"\$[\d]* ?(?:dollars|usd|us dollars)"],
+        padding=Pd.sep_in_txt,
+    ),
+    "misc.currency",
+    "Incorrect use of symbols in {}.",
+)
+
+__register__ = (check,)

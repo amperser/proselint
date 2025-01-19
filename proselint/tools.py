@@ -1,541 +1,377 @@
 """General-purpose tools shared across linting checks."""
 
+from __future__ import annotations
+
+import contextlib
 import copy
-import dbm
-import functools
-import hashlib
-import importlib
-import inspect
 import json
+import operator
 import os
-import re
-import shelve
 import sys
-import traceback
+from concurrent.futures import Executor, Future, ProcessPoolExecutor
+from pathlib import Path
+from typing import NamedTuple, Optional, Union
 from warnings import showwarning as warn
 
-from . import config
-
-_cache_shelves = dict()
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-home_dir = os.path.expanduser("~")
-cwd = os.getcwd()
-
-
-def close_cache_shelves():
-    """Close previously opened cache shelves."""
-    for cache in _cache_shelves.values():
-        cache.close()
-    _cache_shelves.clear()
+from . import config_base
+from .checks import CheckSpec, registry, run_check
+from .config_base import Config, Output
+from .config_paths import config_global_path, config_user_paths
+from .logger import log
+from .memoizer import cache
 
 
-def close_cache_shelves_after(f):
-    """Decorate a function to ensure cache shelves are closed after call."""
-    @functools.wraps(f)
-    def wrapped(*args, **kwargs):
-        f(*args, **kwargs)
-        close_cache_shelves()
-    return wrapped
+class LintResult(NamedTuple):
+    """A lint result."""
+
+    # allows access by name and export ._asdict()
+    # NOTE: const after instantiation & trouble with pickling
+    check: str
+    message: str
+    source: str
+    line: int
+    column: int
+    start: int
+    end: int
+    extent: int
+    severity: str
+    replacements: Optional[str]
 
 
-def _get_xdg_path(variable_name, default_path):
-    path = os.environ.get(variable_name)
-    if path is None or path == '':
-        return default_path
-    else:
-        return path
+###############################################################################
+# Config ######################################################################
+###############################################################################
 
 
-def _get_xdg_config_home():
-    return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
+def _deepmerge_dicts(
+    base: dict,
+    overrides: dict,
+) -> dict:
+    """Merge dictionaries recursively. `overrides` takes priority."""
+    # Note: this could be faster, just sum dicts -> not relevant here
+    result = copy.deepcopy(base)
 
-
-def _get_xdg_cache_home():
-    return _get_xdg_path('XDG_CACHE_HOME', os.path.join(home_dir, '.cache'))
-
-
-def _get_cache(cachepath):
-    if cachepath in _cache_shelves:
-        return _cache_shelves[cachepath]
-
-    try:
-        cache = shelve.open(cachepath, protocol=2)
-    except dbm.error:
-        # dbm error on open - delete and retry
-        print('Error (%s) opening %s - will attempt to delete and re-open.' %
-              (sys.exc_info()[1], cachepath))
-        try:
-            os.remove(cachepath)
-            cache = shelve.open(cachepath, protocol=2)
-        except Exception:
-            print('Error on re-open: %s' % sys.exc_info()[1])
-            cache = None
-    except Exception:
-        # unknown error
-        print('Could not open cache file %s, maybe name collision. '
-              'Error: %s' % (cachepath, traceback.format_exc()))
-        cache = None
-
-    # Don't fail on bad caches
-    if cache is None:
-        print('Using in-memory shelf for cache file %s' % cachepath)
-        cache = shelve.Shelf(dict())
-
-    _cache_shelves[cachepath] = cache
-    return cache
-
-
-def memoize(f):
-    """Cache results of computations on disk."""
-    # Determine the location of the cache.
-    cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
-    legacy_cache_dirname = os.path.join(home_dir, ".proselint")
-
-    if not os.path.isdir(cache_dirname):
-        # Migrate the cache from the legacy path to XDG compliant location.
-        if os.path.isdir(legacy_cache_dirname):
-            os.rename(legacy_cache_dirname, cache_dirname)
-        # Create the cache if it does not already exist.
-        else:
-            os.makedirs(cache_dirname)
-
-    cache_filename = f.__module__ + "." + f.__name__
-    cachepath = os.path.join(cache_dirname, cache_filename)
-
-    @functools.wraps(f)
-    def wrapped(*args, **kwargs):
-
-        # handle instance methods
-        if hasattr(f, '__self__'):
-            args = args[1:]
-
-        signature = cache_filename.encode("utf-8")
-
-        tempargdict = inspect.getcallargs(f, *args, **kwargs)
-
-        for item in list(tempargdict.items()):
-            if item[0] == "text":
-                signature += item[1].encode("utf-8")
-
-        key = hashlib.sha256(signature).hexdigest()
-        cache = _get_cache(cachepath)
-
-        try:
-            return cache[key]
-        except KeyError:
-            value = f(*args, **kwargs)
-            cache[key] = value
-            cache.sync()
-            return value
-        except TypeError:
-            call_to = f.__module__ + '.' + f.__name__
-            print('Warning: could not disk cache call to %s;'
-                  'it probably has unhashable args. Error: %s' %
-                  (call_to, traceback.format_exc()))
-            return f(*args, **kwargs)
-
-    return wrapped
-
-
-def get_checks(options):
-    """Extract the checks."""
-    sys.path.append(proselint_path)
-    checks = []
-    check_names = [key for (key, val) in options["checks"].items() if val]
-
-    for check_name in check_names:
-        module = importlib.import_module("checks." + check_name)
-        for d in dir(module):
-            if re.match("check", d):
-                checks.append(getattr(module, d))
-
-    return checks
-
-
-def deepmerge_dicts(dict1, dict2):
-    """Deep merge dictionaries, second dict will take priority."""
-    result = copy.deepcopy(dict1)
-
-    for key, value in dict2.items():
+    for key, value in overrides.items():
         if isinstance(value, dict):
-            result[key] = deepmerge_dicts(result[key] or {}, value)
+            result[key] = _deepmerge_dicts(result.get(key, {}), value)
         else:
             result[key] = value
 
     return result
 
 
-def load_options(config_file_path=None, conf_default=None):
+def load_options(
+    config_file_path: Optional[Path] = None,
+) -> Config:
     """Read various proselintrc files, allowing user overrides."""
-    conf_default = conf_default or {}
-    if os.path.isfile("/etc/proselintrc"):
-        conf_default = json.load(open("/etc/proselintrc"))
+    # TODO: allow toml - json is a pain for user-configs
+    cfg_default = config_base.proselint_base
 
-    user_config_paths = [
-        os.path.join(cwd, '.proselintrc.json'),
-        os.path.join(_get_xdg_config_home(), 'proselint', 'config.json'),
-        os.path.join(home_dir, '.proselintrc.json')
-    ]
+    # global config will be a base for
+    if config_global_path.is_file():
+        log.debug("Config read from global '%s' (as base)", config_global_path)
+        _cfg = json.load(config_global_path.open())
+        cfg_default: Config = _deepmerge_dicts(cfg_default, _cfg)
 
     if config_file_path:
-        if not os.path.isfile(config_file_path):
+        # place provided config as highest user input
+        if not config_file_path.is_file():
             raise FileNotFoundError(
-                f"Config file {config_file_path} does not exist")
-        user_config_paths.insert(0, config_file_path)
+                f"Given config path {config_file_path} does not exist"
+            )
+        config_user_paths.insert(0, config_file_path)
 
     user_options = {}
-    for path in user_config_paths:
-        if os.path.isfile(path):
-            user_options = json.load(open(path))
+    for path in config_user_paths:
+        if path.is_file():
+            log.debug("Config read from '%s'", path)
+            user_options = json.load(path.open())
             break
-        oldpath = path.replace(".json", "")
-        if os.path.isfile(oldpath):
-            warn(f"{oldpath} was found instead of a JSON file."
-                 f" Rename to {path}.", DeprecationWarning, "", 0)
-            user_options = json.load(open(oldpath))
+        path_old = path.with_suffix("")
+        if path_old.is_file() and path.suffix:
+            warn(
+                f"Found {path_old} instead of a JSON file. Rename to {path}.",
+                DeprecationWarning,
+                "",
+                0,
+            )
+            user_options = json.load(path_old.open())
             break
 
-    return deepmerge_dicts(conf_default, user_options)
+    result: Config = _deepmerge_dicts(cfg_default, user_options)
+    if result["output_format"] in Output.names():
+        result["output_format"] = Output[result["output_format"]]
+    if isinstance(result["output_format"], str):
+        result["output_format"] = cfg_default["output_format"]
+    return result
 
 
-def errors_to_json(errors):
-    """Convert the errors to JSON."""
-    out = []
-    for e in errors:
-        out.append({
-            "check": e[0],
-            "message": e[1],
-            "line": 1 + e[2],
-            "column": 1 + e[3],
-            "start": 1 + e[4],
-            "end": 1 + e[5],
-            "extent": e[6],
-            "severity": e[7],
-            "replacements": e[8],
-        })
+###############################################################################
+# Linting #####################################################################
+###############################################################################
 
-    return json.dumps(
-        {"status": "success", "data": {"errors": out}}, sort_keys=True)
+last_char_count: int = 0
 
 
-def line_and_column(text, position):
-    """Return the line number and column of a position in a string."""
-    position_counter = 0
-    line_no = 0
-    for line in text.splitlines(True):
-        if (position_counter + len(line.rstrip())) >= position:
-            break
-        position_counter += len(line)
-        line_no += 1
-    return (line_no, position - position_counter)
+def extract_files(paths: Union[Path, list[Path]]) -> list[Path]:
+    """Expand list of paths to include all text files matching the pattern."""
+    valid_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
+
+    if isinstance(paths, Path):
+        paths = [paths]
+
+    expanded_files = []
+    for _path in paths:
+        # If it's a directory, recursively walk through it and find the files.
+        if _path.is_dir():
+            for _dir, _, _filenames in os.walk(_path):
+                _path = Path(_dir)
+                for filename in _filenames:
+                    _file_path = _path / filename
+                    if _file_path.suffix.lower() in valid_extensions:
+                        expanded_files.append(_file_path)
+        # Otherwise add the file directly.
+        else:
+            expanded_files.append(_path)
+
+    return expanded_files
 
 
-def lint(input_file, debug=False, config=config.default):
-    """Run the linter on the input file."""
-    if isinstance(input_file, str):
-        text = input_file
-    else:
-        text = input_file.read()
+def lint(
+    content: str,
+    config: Optional[dict] = None,
+    source_name: str = "",
+    *,
+    allow_futures: bool = False,
+    # internals from here on, caution
+    _checks: Optional[list[CheckSpec]] = None,
+    _exe: Optional[Executor] = None,
+) -> list[LintResult]:
+    """
+    Run the linter on the input file.
 
-    # Get the checks.
-    checks = get_checks(config)
+    Arguments:
+    ---------
+        content: content to lint
+        config: lint configuration (mostly which checks to enable)
+        source_name: file path
+        allow_futures: skip the internal memoizer, has to be done later manually
+
+    """
+    if not isinstance(content, str):
+        raise ValueError("linter expects a string as content")
+
+    if not isinstance(config, dict):
+        config = config_base.proselint_base
+    if _checks is None:
+        registry.discover()
+        _checks = registry.get_all_enabled(config["checks"])
+
+    memoizer_key = cache.calculate_key(content, _checks)
+    # TODO: filename enables more elegant 2d-dict
+    #       d[funcSig,fileSig] = (input_hash,result)
+    #                        -> smaller, more efficient dicts
+
+    with contextlib.suppress(KeyError):
+        # early exit if result is already cached
+        return [LintResult(**_e) for _e in cache[memoizer_key]]
+
+    # padding
+    # -> some checks expect words in text and expect something around it
+    # -> this prevents edge-cases
+    # -> is considered in run_checks()
+    content = f"\n{content}\n "  # benchmarked the fastest OP
 
     # Apply all the checks.
-    errors = []
-    for check in checks:
-
-        result = check(text)
-
-        for error in result:
-            (start, end, check, message, replacements) = error
-            (line, column) = line_and_column(text, start)
-            if not is_quoted(start, text):
-                errors += [(check, message, line, column, start, end,
-                            end - start, "warning", replacements)]
-
-        if len(errors) > config["max_errors"]:
-            break
+    if config["parallelize"]:
+        # TODO: simplify always multi, thread, benchmark performance
+        if _exe is None:
+            _exe = ProcessPoolExecutor()
+            log.debug("[Lint] created inner Executor for parallelization")
+        else:
+            log.debug("[Lint] used outer Executor for parallelization")
+        # NOTE: ThreadPoolExecutor is concurrent, but not multi-cpu
+        # NOTE: .map() is build on .submit(), harder to use here, same speed
+        futures = [
+            _exe.submit(run_check, check, content, source_name)
+            for check in _checks
+        ]
+        if allow_futures:
+            cache.name_to_key[source_name] = memoizer_key
+            return futures
+        errors = [_e for _ft in futures for _e in _ft.result()]
+        # errors.extend([_ft.result for _ft in futures]), try it
+    else:  # single process
+        results = [run_check(check, content) for check in _checks]
+        errors = [_e for _res in results for _e in _res]
 
     # Sort the errors by line and column number.
-    errors = sorted(errors[:config["max_errors"]], key=lambda e: (e[2], e[3]))
-
-    return errors
-
-
-def assert_error(text, check, n=1):
-    """Assert that text has n errors of type check."""
-    assert_error.description = f"No {check} error for '{text}'"
-    assert len([error[0] for error in lint(text) if error[0] == check]) == n
+    errors = sorted(
+        errors[: config["max_errors"]], key=operator.itemgetter("line", "column")
+    )
+    cache[memoizer_key] = errors
+    # return user-friendly format
+    return [LintResult(**_e) for _e in errors]
 
 
-def consistency_check(text, word_pairs, err, msg, offset=0):
-    """Build a consistency checker for the given word_pairs."""
-    errors = []
-
-    msg = " ".join(msg.split())
-
-    for w in word_pairs:
-        matches = [
-            [m for m in re.finditer(w[0], text)],
-            [m for m in re.finditer(w[1], text)]
-        ]
-
-        if len(matches[0]) > 0 and len(matches[1]) > 0:
-
-            idx_minority = len(matches[0]) > len(matches[1])
-
-            for m in matches[idx_minority]:
-                errors.append((
-                    m.start() + offset,
-                    m.end() + offset,
-                    err,
-                    msg.format(w[~idx_minority], m.group(0)),
-                    w[~idx_minority]))
-
-    return errors
-
-
-def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
-    """Build a checker that suggests the preferred form."""
-    if ignore_case:
-        flags = re.IGNORECASE
-    else:
-        flags = 0
-
-    msg = " ".join(msg.split())
-
-    errors = []
-    regex = r"[\W^]{}[\W$]"
-    for p in list:
-        for r in p[1]:
-            for m in re.finditer(regex.format(r), text, flags=flags):
-                txt = m.group(0).strip()
-                errors.append((
-                    m.start() + 1 + offset,
-                    m.end() + offset,
-                    err,
-                    msg.format(p[0], txt),
-                    p[0]))
-
-    return errors
-
-
-def existence_check(text, list, err, msg, ignore_case=True, str=False,
-                    offset=0, require_padding=True, dotall=False,
-                    excluded_topics=None, exceptions=(), join=False):
-    """Build a checker that prohibits certain words or phrases."""
-    flags = 0
-
-    msg = " ".join(msg.split())
-
-    if ignore_case:
-        flags = flags | re.IGNORECASE
-
-    if str:
-        flags = flags | re.UNICODE
-
-    if dotall:
-        flags = flags | re.DOTALL
-
-    if require_padding:
-        regex = r"(?:^|\W){}[\W$]"
-    else:
-        regex = r"{}"
-
-    errors = []
-
-    # If the topic of the text is in the excluded list, return immediately.
-    if excluded_topics:
-        tps = topics(text)
-        if any([t in excluded_topics for t in tps]):
-            return errors
-
-    rx = "|".join(regex.format(w) for w in list)
-    for m in re.finditer(rx, text, flags=flags):
-        txt = m.group(0).strip()
-        if any([re.search(exception, txt) for exception in exceptions]):
-            continue
-        errors.append((
-            m.start() + 1 + offset,
-            m.end() + offset,
-            err,
-            msg.format(txt),
-            None))
-
-    return errors
-
-
-def _allowed_word(permitted, match: re.Match, /, ignore_case=True):
-    """Determine if a match object result is in a set of strings."""
-    matched = match.string[match.start():match.end()]
-    if ignore_case:
-        return matched.lower() in permitted
-    return matched in permitted
-
-
-def reverse_existence_check(
-    text, list, err, msg, ignore_case=True, offset=0
-):
-    """Find all words in ``text`` that aren't on the ``list``."""
-    permitted = set([word.lower() for word in list] if ignore_case else list)
-    allowed_word = functools.partial(
-        _allowed_word, permitted, ignore_case=ignore_case)
-
-    # Match all 3+ character words that contain a hyphen or apostrophe
-    # only in the middle (not as the first or last character)
-    tokenizer = re.compile(r"\w[\w'-]+\w")
-
-    # Ignore any that contain numerals
-    exclusions = re.compile(r'\d')
-
-    errors = [
-        (
-            m.start() + 1 + offset,
-            m.end() + offset,
-            err,
-            msg.format(m.string[m.start():m.end()]),
-            None
+def fetch_results(
+    futures: Union[list[Future], list[LintResult]],
+    config: dict,
+    source_name: str,
+) -> list[LintResult]:
+    """Fetch a result from futures (required for multiprocessing)."""
+    if len(futures) > 0 and isinstance(futures[0], Future):
+        _errors = [_e for _ft in futures for _e in _ft.result()]
+        _errors = sorted(
+            _errors[: config["max_errors"]],
+            key=operator.itemgetter("line", "column"),
         )
-        for m in tokenizer.finditer(text)
-        if (
-            not exclusions.search(m.string[m.start():m.end()])
-            and not allowed_word(m)
-        )
-    ]
-    return errors
+        # store results in cache
+        key = cache.name_to_key.get(source_name)
+        cache[key] = _errors
+        return [LintResult(**_e) for _e in _errors]
+    return futures
 
 
-def max_errors(limit):
-    """Decorate a check to truncate error output to a specified limit."""
-    def wrapper(f):
-        @functools.wraps(f)
-        def wrapped(*args, **kwargs):
-            return truncate_errors(f(*args, **kwargs), limit)
-        return wrapped
-    return wrapper
+def lint_path(
+    paths: Union[Path, list[Path]],
+    config: Optional[dict] = None,
+) -> dict[Path, list[LintResult]]:
+    """Lint a path with files or a specific file."""
+    # Expand the list of directories and files.
+    filepaths = extract_files(paths)
+
+    if not isinstance(config, dict):
+        config = config_base.proselint_base
+    registry.discover()
+    checks = registry.get_all_enabled(config["checks"])
+
+    results = {}
+    chars = 0
+
+    if len(filepaths) == 0:
+        # Use stdin if no paths were specified
+        log.info("No path specified -> will read from <stdin>")
+        content = sys.stdin.read()
+        results[Path("<stdin>")] = lint(content, config=config, _checks=checks)
+    else:
+        # offer "outer" executor, to make multiprocessing more effective
+        exe = ProcessPoolExecutor() if config["parallelize"] else None
+        for file in filepaths:
+            log.debug("Analyzing '%s'", file.name)
+            try:
+                with file.open(encoding="utf-8", errors="replace") as _fh:
+                    content = _fh.read()
+            except Exception:
+                log.exception(
+                    "[LintPath] Error opening '%s' -> will skip", file.name
+                )
+                continue
+            results[file] = lint(
+                content,
+                config,
+                source_name=file.as_posix(),
+                allow_futures=True,
+                _checks=checks,
+                _exe=exe,
+            )
+            chars += len(content)
+
+    log.debug("[Lint] finished pooling, will wait for results now")
+    # fetch result from futures, if needed
+    results = {
+        _file: fetch_results(_errors, config, _file.as_posix())
+        for _file, _errors in results.items()
+    }
+    cache.to_file()
+
+    # TODO: transform linter into class
+    # bad style ... but
+    global last_char_count  # noqa: PLW0603
+    last_char_count = chars
+    return results
 
 
-def truncate_errors(errors, limit=float("inf")):
-    """If limit was specified, truncate the list of errors.
-
-    Give the total number of times that the error was found elsewhere.
+def convert_to_json(
+    # FIXME: incorrect type (not enough args for dict, too many for list)
+    results: Union[dict[list[str, LintResult]], list[LintResult]],
+) -> str:
     """
-    if len(errors) > limit:
-        start1, end1, err1, msg1, replacements = errors[0]
+    Convert the errors to JSON.
 
-        if len(errors) == limit + 1:
-            msg1 += " Found once elsewhere."
-        else:
-            msg1 += f" Found {len(errors)} times elsewhere."
+    Note: previously this used a list, now it uses a dictionary with the
+    same format as `LintResult`.
+    """
+    if isinstance(results, dict):
+        out = [_rl.to_json() for _res in results.values() for _rl in _res]
+    else:
+        # assumed list
+        out = [_rl._asdict() for _rl in results]
 
-        errors = [(start1, end1, err1, msg1, replacements)] + errors[1:limit]
-
-    return errors
-
-
-def ppm_threshold(threshold):
-    """Decorate a check to error if the PPM threshold is surpassed."""
-    def wrapped(f):
-        @functools.wraps(f)
-        def wrapper(*args, **kwargs):
-            return threshold_check(f(*args, **kwargs), threshold, len(args[0]))
-        return wrapper
-    return wrapped
+    return json.dumps(
+        {"status": "success", "data": {"errors": out}}, sort_keys=True
+    )
 
 
-def threshold_check(errors, threshold, length):
-    """Check that returns an error if the PPM threshold is surpassed."""
-    if length > 0:
-        errcount = len(errors)
-        ppm = (errcount / length) * 1e6
+def terminal_uri_from(uri: str, label: Optional[str] = None) -> str:
+    """Generate an OSC 8 terminal URI escape sequence with a URI and label."""
+    if label is None:
+        label = uri
 
-        if ppm >= threshold and errcount >= 1:
-            return [errors[0]]
-    return []
-
-
-def is_quoted(position, text):
-    """Determine if the position in the text falls within a quote."""
-    def matching(quotemark1, quotemark2):
-        straight = '\"\''
-        curly = '“”'
-        if quotemark1 in straight and quotemark2 in straight:
-            return True
-        if quotemark1 in curly and quotemark2 in curly:
-            return True
-        else:
-            return False
-
-    def find_ranges(text):
-        s = 0
-        q = pc = ''
-        start = None
-        ranges = []
-        seps = " .,:;-\r\n"
-        quotes = ['\"', '“', '”', "'"]
-        for i, c in enumerate(text + "\n"):
-            if s == 0 and c in quotes and pc in seps:
-                start = i
-                s = 1
-                q = c
-            elif s == 1 and matching(c, q):
-                s = 2
-            elif s == 2:
-                if c in seps:
-                    ranges.append((start+1, i-1))
-                    start = None
-                    s = 0
-                else:
-                    s = 1
-            pc = c
-        return ranges
-
-    def position_in_ranges(ranges, position):
-        for start, end in ranges:
-            if start <= position < end:
-                return True
-        return False
-
-    return position_in_ranges(find_ranges(text), position)
+    if log.fancy:
+        return f"[link={uri}]{label}[/link]"
+    return f"\033]8;;{uri}\033\\{label}\033]8;;\033\\"
 
 
-def detector_50_Cent(text):
-    """Determine whether 50 Cent is a topic."""
-    keywords = [
-        "50 Cent",
-        "rap",
-        "hip hop",
-        "Curtis James Jackson III",
-        "Curtis Jackson",
-        "Eminem",
-        "Dre",
-        "Get Rich or Die Tryin'",
-        "G-Unit",
-        "Street King Immortal",
-        "In da Club",
-        "Interscope",
-    ]
-    num_keywords = sum(word in text for word in keywords)
-    return ("50 Cent", float(num_keywords > 2))
+def print_to_console(
+    results: Union[dict[str, list[LintResult]], list[LintResult]],
+    config: Optional[Config] = None,
+    file_path: Optional[Path] = None,
+) -> None:
+    """Print the errors, resulting from lint, for filename."""
+    if config is None:
+        config = config_base.proselint_base
+    out_fmt = config["output_format"]
 
+    if not isinstance(results, (list, dict)):
+        log.error(
+            "[OutputError] no list or dictionary provided "
+            "(guess: results of lint_path() need to be extracted first)"
+        )
+        return
+    # encapsulate output of lint() to match that of lint_path()
+    if isinstance(results, list):
+        results = {file_path: results}
 
-def topics(text):
-    """Return a list of topics."""
-    detectors = [
-        detector_50_Cent
-    ]
-    ts = []
-    for detector in detectors:
-        ts.append(detector(text))
+    for _file, _results in results.items():
+        if out_fmt == Output.json:
+            log.info(convert_to_json(_results))
+            continue
 
-    return [t[0] for t in ts if t[1] > 0.95]
+        for _e in _results:
+            _source = _e.source
+            if isinstance(_file, Path):
+                _source = (
+                    "<stdin>"
+                    if _file.name == "<stdin>"
+                    else terminal_uri_from(
+                        _file.absolute().as_uri(),
+                        _file.name
+                        if out_fmt == Output.compact
+                        else _file.absolute().as_posix(),
+                    )
+                )
+            elif out_fmt == Output.compact:
+                _source = ""
 
-
-def context(text, position, level="paragraph"):
-    """Get sentence or paragraph that surrounds the given position."""
-    if level == "sentence":
-        pass
-    elif level == "paragraph":
-        pass
-
-    return ""
+            # FIXME: if line or column number is 100, rich logs emojis
+            # creating a console instance with emoji=False does not fix this
+            # could be a bug in rich
+            log.info(
+                "%s:%d:%d: %s %s",
+                _source,
+                _e.line,
+                _e.column,
+                _e.check,
+                _e.message,
+            )

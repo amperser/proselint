@@ -1,23 +1,30 @@
 """-ally vs. -ly."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """-ally vs. -ly."""
-    err = "spelling.ally_ly"
-    msg = "-ally vs. -ly. '{}' is the correct spelling."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    preferences = [
-        ["academically", ["academicly"]],
-        ["accidentally", ["accidently"]],
-        ["automatically", ["automaticly"]],
-        ["basically", ["basicly"]],
-        ["dramatically", ["dramaticly"]],
-        ["emotionally", ["emotionly"]],
-        ["incidentally", ["incidently"]],
-        ["optimistically", ["optimisticly"]],
-    ]
+examples_fail = [
+    "She was accidently fired.",
+]
 
-    return preferred_forms_check(text, preferences, err, msg)
+check = CheckSpec(
+    PreferredFormsSimple({
+        "academicly": "academically",
+        "accidently": "accidentally",
+        "automaticly": "automatically",
+        "basicly": "basically",
+        "dramaticly": "dramatically",
+        "emotionly": "emotionally",
+        "incidently": "incidentally",
+        "optimisticly": "optimistically",
+    }),
+    "spelling.ally_ly",
+    "-ally vs. -ly. '{}' is the correct spelling.",
+)
+
+__register__ = (check,)

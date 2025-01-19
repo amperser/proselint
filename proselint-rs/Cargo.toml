@@ -1,0 +1,18 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+# Internal
+proselint-checks = { path = "crates/proselint-checks" }
+proselint-registry = { path = "crates/proselint-registry" }
+# External
+criterion = "0.5.1"
+fancy-regex = "0.13.0"
+phf = { version = "0.11.2", features = ["macros"] }
+regex = "1.10.5"

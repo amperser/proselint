@@ -1,32 +1,45 @@
-"""Pretension.
+"""
+Pretension.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
-title:      yelling
-date:       2014-06-10 12:31:19
+title:      pretension
+date:       2014-06-10
 categories: writing
 ---
 
-Never use the phrase 'all hell broke loose'.
+Points out pretension.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
 
+from __future__ import annotations
 
-@max_errors(1)
-@memoize
-def check(text):
-    """Check the text."""
-    err = "ogilvy.pretension"
-    msg = "Jargon words like this one are the hallmarks of a pretentious ass."
+from proselint.checks import (
+    CheckFlags,
+    CheckSpec,
+    Existence,
+)
 
-    list = [
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "We need to reconceptualize the project.",
+]
+
+check = CheckSpec(
+    Existence([
         "reconceptualize",
         "demassification",
         "attitudinally",
         "judgmentally",
-    ]
+    ]),
+    "misc.pretension.ogilvy",
+    "Jargon words like this one are the hallmarks of a pretentious ass.",
+    flags=CheckFlags(limit_results=1),
+)
 
-    return existence_check(text, list, err, msg)
+__register__ = (check,)

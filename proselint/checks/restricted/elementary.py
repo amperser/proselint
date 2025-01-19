@@ -1,4 +1,5 @@
-"""Check if the text contains only words that elementary kids would know.
+"""
+Check if the text contains only words that elementary kids would know.
 
 ---
 layout:     Website
@@ -12,23 +13,34 @@ categories: writing
 Elementary
 
 """
-try:
-    from importlib.resources import files
-except ImportError:
-    from importlib_resources import files
+
+from __future__ import annotations
+
+from importlib.resources import files
 
 import proselint
-from proselint.tools import memoize, reverse_existence_check
+from proselint.checks import CheckSpec, ReverseExistence
 
-_CSV_PATH = 'checks/restricted/elementary.csv'
-with files(proselint).joinpath(_CSV_PATH).open('r') as data:
+examples_pass = [
+    "A boy and his goat went to a farm.",
+    "I am tired.",
+    "Your body is made of water.",
+]
+
+examples_fail = [
+    "Cells make up your body.",
+    "I love clowns.",
+    "I hate cells and clowns.",
+]
+
+_CSV_PATH = "checks/restricted/elementary.csv"
+with files(proselint).joinpath(_CSV_PATH).open("r") as data:
     ELEMENTARY_WORDS = data.read().split()
 
+check_elementary = CheckSpec(
+    ReverseExistence(ELEMENTARY_WORDS),
+    "restricted.elementary",
+    "'{}' is not a word kids learn in elementary school.",
+)
 
-@memoize
-def check(text):
-    """Check the text."""
-    err = "restricted.elementary"
-    msg = "'{}' is not a word kids learn in elementary school."
-
-    return reverse_existence_check(text, ELEMENTARY_WORDS, err, msg)
+__register__ = (check_elementary,)

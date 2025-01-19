@@ -44,7 +44,7 @@ permBag bs = concatMap (\(f,cs) -> map (f:) $ permBag cs) . oneOfEach $ bs
     oneOfEach (an@(a,n):bs) =
         let bs' = if n == 1 then bs else (a,n-1):bs
         in (a,bs') : mapSnd (an:) (oneOfEach bs)
-    
+
     apSnd f (a,b) = (a, f b)
     mapSnd = map . apSnd
 </textarea></form>

@@ -1,11 +1,12 @@
-"""Elementary Rules of Usage.
+"""
+Elementary Rules of Usage.
 
 ---
 layout:     post
 source:     Strunk & White
 source_url: ???
 title:      Elementary Principles of Composition
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
@@ -45,40 +46,67 @@ structure.
 11. Place the emphatic word of a sentence at the end.
     * MDPNB: Principle of recency.
 """
-from proselint.tools import memoize, preferred_forms_check
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Suggest the preferred forms."""
-    err = "strunk_white.composition"
-    msg = "Try '{}' instead of '{}'."
+from proselint.checks import (
+    CheckSpec,
+    PreferredForms,
+    PreferredFormsSimple,
+)
 
-    bad_forms = [
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
+
+examples_fail = [
+    "His story is not honest.",
+    "Her story is a strange one.",
+    "He had not succeeded.",
+    "He had not succeeded with that.",
+]
+
+name = "misc.composition"
+msg = "Try '{}' instead of '{}'."
+
+check = CheckSpec(
+    PreferredFormsSimple({
         # Put statements in positive form
-        ["dishonest",               ["not honest"]],
-        ["trifling",                ["not important"]],
-        ["forgot",                  ["did not remember"]],
-        ["ignored",                 ["did not pay (any )?attention to"]],
-        ["distrusted",              ["did not have much confidence in"]],
-
+        "not honest": "dishonest",
+        "not important": "unimportant",
+        "did not remember": "forgot",
+        "did not have much confidence in": "distrusted",
         # Omit needless words
-        ["whether",                 ["the question as to whether"]],
-        ["no doubt",                ["there is no doubt but that"]],
-        ["used for fuel",           ["used for fuel purposes"]],
-        ["he",                      ["he is a man who"]],
-        ["hastily",                 ["in a hasty manner"]],
-        ["this subject",            ["this is a subject that"]],
-        ["Her story is strange.",   ["Her story is a strange one."]],
-        ["because",                 ["the reason why is that"]],
-        ["because / since",         ["owing to the fact that"]],
-        ["although / though",       ["in spite of the fact that"]],
-        ["remind you / notify you",
-            ["call your attention to the fact that"]],
-        ["I did not know that / I was unaware that",
-            ["I was unaware of the fact that"]],
-        ["his failure",             ["the fact that he had not succeeded"]],
-        ["my arrival",              ["the fact that i had arrived"]]
-    ]
+        "the question as to whether": "whether",
+        "there is no doubt but that": "no doubt",
+        "used for fuel purposes": "used for fuel",
+        "he is a man who": "he",
+        "in a hasty manner": "hastily",
+        "this is a subject that": "this subject",
+        "a strange one": "strange",
+        "the reason why is that": "because",
+        "owing to the fact that": "because / since",
+        "in spite of the fact that": "although / though",
+        "call your attention to the fact that": "remind you / notify you",
+        "was unaware of the fact that": "did not know that / was unaware that",
+        "not succeed": "fail",
+        "the fact that i had arrived": "my arrival",
+    }),
+    name,
+    msg,
+)
 
-    return preferred_forms_check(text, bad_forms, err, msg)
+check_regex = CheckSpec(
+    PreferredForms({
+        r"did not pay (any )?attention to": "ignored",
+        r"(had )?not succeeded": "failed",
+    }),
+    name,
+    msg,
+)
+
+
+__register__ = (
+    check,
+    check_regex,
+)

@@ -16,3 +16,12 @@ corpora/*
 !corpora/README.md
 dist/
 *.pstore
+
+.pdm-python
+.pdm.toml
+.pdm-build/
+
+debug/
+target/
+**/*.rs.bk
+*.pdb

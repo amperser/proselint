@@ -1,41 +1,46 @@
 """-er vs. -or."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """-er vs. -or."""
-    err = "spelling.er_or"
-    msg = "-er vs. -or. '{}' is the preferred spelling."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    preferences = [
+examples_fail = [
+    "She met with the invester.",
+]
 
-        ["abductor",            ["abducter"]],
-        ["abettor",             ["abbeter"]],
-        ["acquirer",            ["acquiror"]],
-        ["adapter",             ["adaptor"]],
-        ["collector",           ["collecter"]],
-        ["conjurer",            ["conjuror"]],
-        ["corrupter",           ["corruptor"]],
-        ["digester",            ["digestor"]],
-        ["dispenser",           ["dispensor"]],
-        ["distributor",         ["distributer"]],
-        ["endorser",            ["endorsor"]],
-        ["eraser",              ["erasor"]],
-        ["idolater",            ["idolator"]],
-        ["impostor",            ["imposter"]],
-        ["infiltrator",         ["infiltrater"]],
-        ["investor",            ["invester"]],
-        ["manipulator",         ["manipulater"]],
-        ["mortgagor",           ["mortgager"]],
-        ["persecutor",          ["persecuter"]],
-        ["promoter",            ["promotor"]],
-        ["promoter",            ["promotor"]],
-        ["purveyor",            ["purveyer"]],
-        ["requester",           ["requestor"]],
-        ["reviser",             ["revisor"]],
-        ["surveyor",            ["surveyer"]],
-    ]
+check = CheckSpec(
+    PreferredFormsSimple({
+        "abducter": "abductor",
+        "abbeter": "abettor",
+        "acquiror": "acquirer",
+        "adaptor": "adapter",
+        "collecter": "collector",
+        "conjuror": "conjurer",
+        "corruptor": "corrupter",
+        "digestor": "digester",
+        "dispensor": "dispenser",
+        "distributer": "distributor",
+        "endorsor": "endorser",
+        "erasor": "eraser",
+        "idolator": "idolater",
+        "imposter": "impostor",
+        "infiltrater": "infiltrator",
+        "invester": "investor",
+        "manipulater": "manipulator",
+        "mortgager": "mortgagor",
+        "persecuter": "persecutor",
+        "promotor": "promoter",
+        "purveyer": "purveyor",
+        "requestor": "requester",
+        "revisor": "reviser",
+        "surveyer": "surveyor",
+    }),
+    "spelling.er_or",
+    "-er vs. -or. '{}' is the preferred spelling.",
+)
 
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

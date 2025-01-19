@@ -1,25 +1,47 @@
-"""Don't start a paragraph with 'But'.
+"""
+Don't start a paragraph with 'But'.
 
 ---
-layout:
-source: Justin Jungé
+layout:     post
+source:     Justin Jungé
 source_url:
-title:
-date:       2016-03-10 12:31:19
+title:      paragraph-start-with-but
+date:       2016-03-10
 categories: writing
 ---
 
 Paragraphs should not start with certain bad words.
 
 """
-from proselint.tools import existence_check, memoize
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Do not start a paragraph with a 'But'."""
-    err = "misc.but"
-    msg = "No paragraph should start with a 'But'."
-    regex = r"(^|([\n\r]+))(\s*)But"
+from proselint.checks import CheckSpec, Existence, Pd
 
-    return existence_check(text, [regex], err, msg, ignore_case=False)
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    """I never start with the word "but",
+but might use it after a linebreak.""",
+    "Butter is the best.",
+]
+
+examples_fail = [
+    'But I never start with the word "but".',
+    "But why are you like that.",
+    "This is cool! But that not so much.",
+    "Is this cool? But that not so much.",
+]
+
+check = CheckSpec(
+    Existence(
+        [r"\b(?:^|[\.!\?]\s*)But\b"],
+        # TODO: the above regex is functionally equivalent to Pd.words_in_txt
+        # so why not use it?
+        padding=Pd.disabled,
+    ),
+    "misc.but",
+    "No paragraph or sentence should start with a 'But'.",
+    ignore_case=False,
+)
+
+__register__ = (check,)

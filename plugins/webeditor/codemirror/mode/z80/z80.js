@@ -7,7 +7,7 @@ CodeMirror.defineMode('z80', function()
 	var variables2 = /^(n?[zc]|p[oe]?|m)\b/i;
 	var errors = /^([hl][xy]|i[xy][hl]|slia|sll)\b/i;
 	var numbers = /^([\da-f]+h|[0-7]+o|[01]+b|\d+)\b/i;
-	
+
 	return {startState: function()
 	{
 		return {context: 0};
@@ -15,24 +15,24 @@ CodeMirror.defineMode('z80', function()
 	{
 		if (!stream.column())
 			state.context = 0;
-		
+
 		if (stream.eatSpace())
 			return null;
-		
+
 		var w;
-		
+
 		if (stream.eatWhile(/\w/))
 		{
 			w = stream.current();
-			
+
 			if (stream.indentation())
 			{
 				if (state.context == 1 && variables1.test(w))
 					return 'variable-2';
-				
+
 				if (state.context == 2 && variables2.test(w))
 					return 'variable-3';
-				
+
 				if (keywords1.test(w))
 				{
 					state.context = 1;
@@ -48,7 +48,7 @@ CodeMirror.defineMode('z80', function()
 					state.context = 3;
 					return 'keyword';
 				}
-				
+
 				if (errors.test(w))
 					return 'error';
 			}
@@ -72,11 +72,11 @@ CodeMirror.defineMode('z80', function()
 			{
 				if (w == '"')
 					break;
-				
+
 				if (w == '\\')
 					stream.next();
 			}
-			
+
 			return 'string';
 		}
 		else if (stream.eat('\''))
@@ -87,7 +87,7 @@ CodeMirror.defineMode('z80', function()
 		else if (stream.eat('.') || stream.sol() && stream.eat('#'))
 		{
 			state.context = 4;
-			
+
 			if (stream.eatWhile(/\w/))
 				return 'def';
 		}
@@ -105,7 +105,7 @@ CodeMirror.defineMode('z80', function()
 		{
 			stream.next();
 		}
-		
+
 		return null;
 	}};
 });

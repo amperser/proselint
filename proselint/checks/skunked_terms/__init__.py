@@ -1,1 +1,0 @@
-"""Avoid skunked terms."""

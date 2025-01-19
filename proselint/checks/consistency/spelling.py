@@ -1,11 +1,12 @@
-"""Inconsistent spelling.
+"""
+Inconsistent spelling.
 
 ---
 layout:     post
 source:     Intelligent Editing Ltd.
 source_url: http://bit.ly/1x3hYj7
 title:      Inconsistent spelling
-date:       2014-06-10 12:31:19
+date:       2014-06-10
 categories: writing
 ---
 
@@ -19,29 +20,40 @@ preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
 """
-from proselint.tools import consistency_check, memoize
 
+from __future__ import annotations
 
-@memoize
-def check(text):
-    """Check the text."""
-    err = "consistency.spelling"
-    msg = "Inconsistent spelling of '{}' (vs. '{}')."
+from proselint.checks import CheckSpec, Consistency
 
-    word_pairs = [
-        ["advisor", "adviser"],
-        # ["analyse", "analyze"],
-        ["centre", "center"],
-        ["colour", "color"],
-        ["emphasise", "emphasize"],
-        ["finalise", "finalize"],
-        ["focussed", "focused"],
-        ["labour", "labor"],
-        ["learnt", "learned"],
-        ["organise", "organize"],
-        ["organised", "organized"],
-        ["organising", "organizing"],
-        ["recognise", "recognize"],
-    ]
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+    "The centre for the arts is the art centre.",
+    "The center for the arts is the art center.",
+]
 
-    return consistency_check(text, word_pairs, err, msg)
+examples_fail = [
+    "The centre of the arts is the art center.",
+]
+
+check = CheckSpec(
+    # TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
+    Consistency([
+        ("advisor", "adviser"),
+        # ("analyse", "analyze"),
+        ("centre", "center"),
+        ("colour", "color"),
+        ("emphasise", "emphasize"),
+        ("finalise", "finalize"),
+        ("focussed", "focused"),
+        ("labour", "labor"),
+        ("learnt", "learned"),
+        ("organise", "organize"),
+        ("organised", "organized"),
+        ("organising", "organizing"),
+        ("recognise", "recognize"),
+    ]),
+    "consistency.spelling",
+    "Inconsistent spelling of '{}' (vs. '{}').",
+)
+
+__register__ = (check,)

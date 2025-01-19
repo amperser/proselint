@@ -1,65 +1,71 @@
 """Em vs. im, en vs. in."""
 
-from proselint.tools import memoize, preferred_forms_check
+from __future__ import annotations
 
+from proselint.checks import CheckSpec, PreferredFormsSimple
 
-@memoize
-def check(text):
-    """em- vs. en-, im- vs. in-."""
-    err = "spelling.em_im_en_in"
-    msg = "em-, im-, en-, and in-. '{}' is the preferred spelling."
+examples_pass = [
+    "Smoke phrase with nothing flagged.",
+]
 
-    preferences = [
+examples_fail = [
+    "We shall imbark on a voyage.",
+]
 
-        ["embalm",      ["imbalm"]],
-        ["embark",      ["imbark"]],
-        ["embed",       ["imbed"]],
-        ["embitter",    ["imbitter"]],
-        ["emblaze",     ["imblaze"]],
-        ["embody",      ["imbody"]],
-        ["embolden",    ["imbolden"]],
-        ["embosom",     ["imbosom"]],
-        ["embower",     ["imbower"]],
-        ["embrown",     ["imbrown"]],
-        ["empanel",     ["impanel"]],
-        ["empower",     ["impower"]],
-        ["encage",      ["incage"]],
-        ["encapsulate", ["incapsulate"]],
-        ["encase",      ["incase"]],
-        ["enclasp",     ["inclasp"]],
-        ["encumber",    ["incumber"]],
-        ["encumbrance", ["incumbrance"]],
-        ["endow",       ["indow"]],
-        ["endowment",   ["indowment"]],
-        ["endue",       ["indue"]],
-        ["enfold",      ["infold"]],
-        ["engraft",     ["ingraft"]],
-        ["engulf",      ["ingulf"]],
-        ["enlace",      ["inlace"]],
-        ["enmesh",      ["inmesh"]],
-        ["ensheathe",   ["insheathe"]],
-        ["enshrine",    ["inshrine"]],
-        ["ensnare",     ["insnare"]],
-        ["ensoul",      ["insoul"]],
-        ["ensphere",    ["insphere"]],
-        ["enthrall",    ["inthrall"]],
-        ["enthrone",    ["inthrone"]],
-        ["entitle",     ["intitle"]],
-        ["entomb",      ["intomb"]],
-        ["entreat",     ["intreat"]],
-        ["entrench",    ["intrench"]],
-        ["entrust",     ["intrust"]],
-        ["entwine",     ["intwine"]],
-        ["entwist",     ["intwist"]],
-        ["enwind",      ["inwind"]],
-        ["enwrap",      ["inwrap"]],
-        ["enwreathe",   ["inwreathe"]],
-        ["imbrue",      ["embrue"]],
-        ["impale",      ["empale"]],
-        ["impoverish",  ["empoverish"]],
-        ["inflame",     ["enflame"]],
-        ["ingrain",     ["engrain"]],
-        ["inure",       ["enure"]],
-    ]
+check = CheckSpec(
+    PreferredFormsSimple({
+        "imbalm": "embalm",
+        "imbark": "embark",
+        "imbed": "embed",
+        "imbitter": "embitter",
+        "imblaze": "emblaze",
+        "imbody": "embody",
+        "imbolden": "embolden",
+        "imbosom": "embosom",
+        "imbower": "embower",
+        "imbrown": "embrown",
+        "impanel": "empanel",
+        "impower": "empower",
+        "incage": "encage",
+        "incapsulate": "encapsulate",
+        "incase": "encase",
+        "inclasp": "enclasp",
+        "incumber": "encumber",
+        "incumbrance": "encumbrance",
+        "indow": "endow",
+        "indowment": "endowment",
+        "indue": "endue",
+        "infold": "enfold",
+        "ingraft": "engraft",
+        "ingulf": "engulf",
+        "inlace": "enlace",
+        "inmesh": "enmesh",
+        "insheathe": "ensheathe",
+        "inshrine": "enshrine",
+        "insnare": "ensnare",
+        "insoul": "ensoul",
+        "insphere": "ensphere",
+        "inthrall": "enthrall",
+        "inthrone": "enthrone",
+        "intitle": "entitle",
+        "intomb": "entomb",
+        "intreat": "entreat",
+        "intrench": "entrench",
+        "intrust": "entrust",
+        "intwine": "entwine",
+        "intwist": "entwist",
+        "inwind": "enwind",
+        "inwrap": "enwrap",
+        "inwreathe": "enwreathe",
+        "embrue": "imbrue",
+        "empale": "impale",
+        "empoverish": "impoverish",
+        "enflame": "inflame",
+        "engrain": "ingrain",
+        "enure": "inure",
+    }),
+    "spelling.em_im_en_in",
+    "em-, im-, en-, and in-. '{}' is the preferred spelling.",
+)
 
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)
