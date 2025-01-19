@@ -1,6 +1,6 @@
 use const_format::str_replace;
 
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 
 pub const EXAMPLES_PASS: &[&str] = &[
     "Smoke phrase with nothing flagged.",
@@ -19,7 +19,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK_LOWERCASE_PERIODS: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: str_replace!(Padding::WordsInText.as_str(), "{}", r"\d{1,2} ?[ap]m"),
 		exceptions: &[],
 	},
@@ -30,7 +30,7 @@ const CHECK_LOWERCASE_PERIODS: Check = Check {
 };
 
 const CHECK_SPACING: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: r"\b\d{1,2}[ap]\.?m\.?",
 		exceptions: &[],
 	},
@@ -40,7 +40,7 @@ const CHECK_SPACING: Check = Check {
 };
 
 const CHECK_MIDNIGHT_NOON: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: r"\b12 ?[ap]\.?m\.?",
 		exceptions: &[], 
 	},
@@ -50,7 +50,7 @@ const CHECK_MIDNIGHT_NOON: Check = Check {
 };
 
 const CHECK_REDUNDANCY: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
             r"\b\d{1,2} ?a\.?m\.? in the morning",
             r"\b\d{1,2} ?p\.?m\.? in the evening",

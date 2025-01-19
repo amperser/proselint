@@ -1,4 +1,4 @@
-use proselint_registry::{pad, checks::{Check, CheckType, Padding}};
+use proselint_registry::{pad, checks::{Check, types::*, Padding}};
 use const_format::concatcp;
 
 pub const EXAMPLES_PASS: &[&str] = &[
@@ -22,7 +22,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK_DECADES_APOSTROPHES_SHORT: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, r"\d0\'s"),
 		exceptions: &[],
 	},
@@ -32,7 +32,7 @@ const CHECK_DECADES_APOSTROPHES_SHORT: Check = Check {
 };
 
 const CHECK_DECADES_APOSTROPHES_LONG: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, r"\d\d\d0\'s"),
 		exceptions: &[],
 	},
@@ -42,7 +42,7 @@ const CHECK_DECADES_APOSTROPHES_LONG: Check = Check {
 };
 
 const CHECK_DASH_AND_FROM: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: pad!(Padding::WordsInText, r"from \d+[^ \t\n\r\f\v\w.]\d+"),
 		exceptions: &[],
 	},
@@ -58,7 +58,7 @@ const MONTHS_SEPARATED: &str =
 	|August|September|October|November|December";
 
 const CHECK_MONTH_YEAR_COMMA: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: concatcp!(pad!(Padding::SafeJoin, MONTHS_SEPARATED), r", \d{3,}"),
 		exceptions: &[],
 	},
@@ -68,7 +68,7 @@ const CHECK_MONTH_YEAR_COMMA: Check = Check {
 };
 
 const CHECK_MONTH_OF_YEAR: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: concatcp!(pad!(Padding::SafeJoin, MONTHS_SEPARATED), r"of \d{3,}"),
 		exceptions: &[],
 	},

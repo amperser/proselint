@@ -8,7 +8,11 @@ edition = "2021"
 license = "MIT"
 
 [workspace.dependencies]
+# Internal
 proselint-checks = { path = "crates/proselint-checks" }
 proselint-registry = { path = "crates/proselint-registry" }
-regex = "1.10.5"
+# External
+criterion = "0.5.1"
 fancy-regex = "0.13.0"
+phf = { version = "0.11.2", features = ["macros"] }
+regex = "1.10.5"

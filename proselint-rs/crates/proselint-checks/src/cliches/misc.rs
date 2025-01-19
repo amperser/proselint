@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 
 pub const EXAMPLES_PASS: &[&str] = &[
 	"Smoke phrase with nothing flagged.",
@@ -32,7 +32,7 @@ const MSG: &str = "'{}' is a cliché.";
 // source:     Garner's Modern American Usage
 // source_url: http://bit.ly/1T4alrY
 const CHECK_GARNER: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"a fate worse than death",
 			"alas and alack",
@@ -125,7 +125,7 @@ const CHECK_GARNER: Check = Check {
 // source:     write-good
 // source_url: https://github.com/btford/write-good
 const CHECK_WRITE_GOOD_A_TO_C: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"a chip off the old block",
 			"a clean slate",
@@ -289,7 +289,7 @@ const CHECK_WRITE_GOOD_A_TO_C: Check = Check {
 };
 
 pub const CHECK_WRITE_GOOD_D_TO_J: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"dark before the dawn",
 			"day in, day out",
@@ -472,7 +472,7 @@ pub const CHECK_WRITE_GOOD_D_TO_J: Check = Check {
 // source:     write-good
 // source_url: https://github.com/btford/write-good
 pub const CHECK_WRITE_GOOD_K_TO_O: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"keep a stiff upper lip",
 			"keep an eye on",
@@ -638,7 +638,7 @@ pub const CHECK_WRITE_GOOD_K_TO_O: Check = Check {
 // source:     write-good
 // source_url: https://github.com/btford/write-good
 const CHECK_WRITE_GOOD_P_TO_S: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"pain and suffering",
 			"pain in the",
@@ -771,7 +771,7 @@ const CHECK_WRITE_GOOD_P_TO_S: Check = Check {
 // source:     write-good
 // source_url: https://github.com/btford/write-good
 const CHECK_WRITE_GOOD_T_TO_Z: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"take a load off",
 			"take one for the team",
@@ -890,7 +890,7 @@ const CHECK_WRITE_GOOD_T_TO_Z: Check = Check {
 // source:     GNU diction
 // source_url: https://directory.fsf.org/wiki/Diction
 const CHECK_GNU_DICTION: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"a matter of concern",
 			"all things being equal",
@@ -931,7 +931,7 @@ const CHECK_GNU_DICTION: Check = Check {
 // source:     Nigel Ree's Dictionary of Cliches
 // source_url: bit.ly/3sL091j
 const CHECK_NIGEL: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"abhors a vacuum",
 			"accident waiting to happen",

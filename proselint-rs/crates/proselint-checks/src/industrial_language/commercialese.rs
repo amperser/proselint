@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 use phf::phf_map;
 
 pub const EXAMPLES_PASS: &[&str] = &["Smoke phrase with nothing flagged."];
@@ -8,7 +8,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"acknowledging yours of",
 			"beg to advise",
@@ -43,7 +43,7 @@ const CHECK: Check = Check {
 };
 
 const CHECK_ABBREV: Check = Check {
-	check_type: CheckType::PreferredForms {
+	check_type: &PreferredForms {
 		items: &phf_map!(
 			r"inst\." => "this month",
 			r"prox\." => "next month",

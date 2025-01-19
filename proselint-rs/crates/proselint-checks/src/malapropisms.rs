@@ -1,10 +1,10 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 
 pub const EXAMPLES_PASS: &[&str] = &["Smoke phrase with nothing flagged."];
 pub const EXAMPLES_FAIL: &[&str] = &["Found in the Infinitesimal Universe."];
 
 const CHECK: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"the infinitesimal universe",
 			"a serial experience",

@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType, CheckResult};
+use proselint_registry::checks::{Check, CheckResult};
 use regex::Regex;
 
 pub const EXAMPLES_PASS: &[&str] = &[];
@@ -41,7 +41,7 @@ fn check_unmatched(text: &str, spec: &Check) -> Vec<CheckResult> {
 }
 
 const CHECK: Check = Check {
-	check_type: CheckType::CheckFn(&check_unmatched),
+	check_type: &check_unmatched,
 	path: "misc.braces.unmatched",
 	msg: "Match braces:",
 	..Check::default()

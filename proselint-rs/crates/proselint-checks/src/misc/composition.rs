@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 use phf::phf_map;
 
 pub const EXAMPLES_PASS: &[&str] = &["Smoke phrase with nothing flagged."];
@@ -13,7 +13,7 @@ const NAME: &str = "misc.composition";
 const MSG: &str = "Try '{}' instead of '{}'.";
 
 const CHECK: Check = Check {
-	check_type: CheckType::PreferredFormsSimple {
+	check_type: &PreferredFormsSimple {
 		items: &phf_map!(
 			// Put statements in positive form
 			"not honest" => "dishonest",
@@ -44,7 +44,7 @@ const CHECK: Check = Check {
 };
 
 const CHECK_REGEX: Check = Check {
-	check_type: CheckType::PreferredForms {
+	check_type: &PreferredForms {
 		items: &phf_map!(
 			r"did not pay (any )?attention to" => "ignored",
 			r"(had )?not succeeded" => "failed",

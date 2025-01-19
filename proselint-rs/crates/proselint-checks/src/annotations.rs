@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, Padding, types::*};
 
 pub const EXAMPLES_PASS: &[&str] = &[
 	"Smoke phrase with nothing flagged.",
@@ -9,7 +9,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"FIXME",
 			"FIX ME",

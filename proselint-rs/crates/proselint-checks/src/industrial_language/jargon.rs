@@ -1,10 +1,10 @@
-use proselint_registry::checks::{Check, CheckType, Padding};
+use proselint_registry::checks::{Check, types::*, Padding};
 
 pub const EXAMPLES_PASS: &[&str] = &["Smoke phrase with nothing flagged."];
 pub const EXAMPLES_FAIL: &[&str] = &["I agree it's in the affirmative."];
 
 const CHECK: Check = Check {
-	check_type: CheckType::Existence {
+	check_type: &Existence {
 		items: &[
 			"in the affirmative",
 			"in the negative",

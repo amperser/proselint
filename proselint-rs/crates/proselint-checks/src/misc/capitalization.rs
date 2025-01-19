@@ -1,4 +1,4 @@
-use proselint_registry::{pad, checks::{Check, CheckType, CheckResult, Padding}};
+use proselint_registry::{pad, checks::{Check, types::*, CheckResult, Padding}};
 use phf::phf_map;
 
 pub const EXAMPLES_PASS: &[&str] = &[
@@ -23,7 +23,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK_TERMS: Check = Check {
-	check_type: CheckType::PreferredFormsSimple {
+	check_type: &PreferredFormsSimple {
 		items: &phf_map!(
 			"stone age" => "Stone Age",
 			"Space Age" => "space age",
@@ -39,7 +39,7 @@ const CHECK_TERMS: Check = Check {
 };
 
 const CHECK_SEASONS: Check = Check {
-	check_type: CheckType::PreferredFormsSimple {
+	check_type: &PreferredFormsSimple {
 		items: &phf_map!(
 			"Winter" => "winter",
 			"Fall" => "fall",
@@ -58,7 +58,7 @@ const CHECK_MONTHS: Check = Check {
 	// too many false positives: may, march
 	// TODO: deal with collisions
 	//		 i.e. "(you|he|...) may proceed" follows a pattern
-	check_type: CheckType::PreferredFormsSimple {
+	check_type: &PreferredFormsSimple {
 		items: &phf_map!(
 			"january" => "January",
 			"february" => "February",
@@ -80,7 +80,7 @@ const CHECK_MONTHS: Check = Check {
 };
 
 const CHECK_DAYS: Check = Check {
-	check_type: CheckType::PreferredFormsSimple {
+	check_type: &PreferredFormsSimple {
 		items: &phf_map!(
 			"monday" => "Monday",
 			"tuesday" => "Tuesday",
@@ -99,7 +99,7 @@ const CHECK_DAYS: Check = Check {
 };
 
 const CHECK_ROMAN_WAR: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: r"World War ((I*i+)|(i+I*))+",
 		exceptions: &[],
 	},
@@ -112,7 +112,7 @@ const CHECK_ROMAN_WAR: Check = Check {
 // TODO: this could be tidier if a filter flag existed
 // it also should not be split into two checks - refactor if possible
 const _CHECK_ROMAN_NUMERALS: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: pad!(
 			Padding::WordsInText,
 			r"M{0,3}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})",
@@ -126,19 +126,19 @@ const _CHECK_ROMAN_NUMERALS: Check = Check {
 };
 const NUMERALS: [char; 7] = ['m', 'd', 'c', 'l', 'x', 'v', 'i'];
 
-fn check_roman_numerals(text: &str, _check: &Check) -> Vec<CheckResult> {
+fn check_roman_numerals(text: &str, check: &Check) -> Vec<CheckResult> {
 	_CHECK_ROMAN_NUMERALS
-		.dispatch(text)
+		.check(text, check)
 		.into_iter()
 		.filter(|result| {
 			let item = text[result.start_pos..result.end_pos].trim();
-			item.len() > 0 && item.chars().any(|x| NUMERALS.contains(&x))
+			!item.is_empty() && item.chars().any(|x| NUMERALS.contains(&x))
 		})
 		.collect()
 }
 
 const CHECK_ROMAN_NUMERALS: Check = Check {
-	check_type: CheckType::CheckFn(&check_roman_numerals),
+	check_type: &check_roman_numerals,
 	path: "misc.capitalization.roman_num",
 	msg: "Capitalize the roman numeral '{}'.",
 	..Check::default()

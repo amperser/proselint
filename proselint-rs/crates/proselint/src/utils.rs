@@ -1,8 +1,8 @@
 use std::{collections::HashMap, path::PathBuf};
 
-use proselint_registry::checks::{Check, LintResult};
-use walkdir::WalkDir;
+use proselint_registry::checks::{types::CheckType, Check, LintResult};
 use rayon::prelude::*;
+use walkdir::WalkDir;
 
 use crate::config::base::Config;
 
@@ -71,7 +71,7 @@ pub fn is_quoted(pos: usize, text: &str) -> bool {
 
 pub fn run_check(check: Check, text: &str, source: &str) -> Vec<LintResult> {
 	check
-		.dispatch(text)
+		.check(text)
 		.iter()
 		.filter_map(|result| {
 			let (line, column) = get_line_and_column(text, result.start_pos);
@@ -120,8 +120,7 @@ pub fn extract_files(paths: Vec<PathBuf>) -> Vec<PathBuf> {
 	let mut expanded_files: Vec<PathBuf> = vec![];
 	for path in paths {
 		if path.is_dir() {
-			for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok())
-			{
+			for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok()) {
 				if entry.path().extension().is_some_and(|ext| {
 					VALID_EXTENSIONS.contains(&ext.to_str().unwrap())
 				}) {

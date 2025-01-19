@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType};
+use proselint_registry::checks::{Check, types::*};
 
 pub const EXAMPLES_PASS: &[&str] = &[
 	"Smoke phrase with nothing flagged.",
@@ -23,7 +23,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 ];
 
 const CHECK: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
         // NOTE: this can't be padded without mod -> \1
 		pattern: r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)+\b",
 		exceptions: &[r"^had had$", r"^that that$"],

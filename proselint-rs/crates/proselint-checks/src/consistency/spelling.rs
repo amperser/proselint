@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType};
+use proselint_registry::checks::{Check, types::*};
 
 pub const EXAMPLES_PASS: &[&str] = &[
 	"Smoke phrase with nothing flagged.",
@@ -11,7 +11,7 @@ pub const EXAMPLES_FAIL: &[&str] = &[
 
 const CHECK: Check = Check {
 	// TODO: add more BE, UE, even generalize [a-z]+(ize|ized|izing)?
-	check_type: CheckType::Consistency { word_pairs: &[
+	check_type: &Consistency { word_pairs: &[
 		["advisor", "adviser"],
 		// ["analyse", "analyze"],
 		["centre", "center"],

@@ -1,10 +1,10 @@
-use proselint_registry::checks::{Check, CheckType, CheckFlags};
+use proselint_registry::checks::{Check, types::*, CheckFlags};
 
 pub const EXAMPLES_PASS: &[&str] = &["Smoke phrase with nothing flagged."];
 pub const EXAMPLES_FAIL: &[&str] = &["I was at xyz and then all hell broke loose."];
 
 const CHECK: Check = Check {
-	check_type: CheckType::ExistenceSimple {
+	check_type: &ExistenceSimple {
 		pattern: "all hell broke loose",
 		exceptions: &[],
 	},

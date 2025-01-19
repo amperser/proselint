@@ -1,4 +1,4 @@
-use proselint_registry::checks::{Check, CheckType};
+use proselint_registry::checks::{Check, types::*};
 
 pub const EXAMPLES_PASS: &[&str] = &[
 	"Smoke phrase with nothing flagged.",
@@ -7,7 +7,7 @@ pub const EXAMPLES_PASS: &[&str] = &[
 pub const EXAMPLES_FAIL: &[&str] = &["This is bad.	Not consistent. At all."];
 
 const CHECK: Check = Check {
-	check_type: CheckType::Consistency {
+	check_type: &Consistency {
 		word_pairs: &[[r"[\.\?!] [A-Z]", r"[\.\?!]	[A-Z]"]]
 	},
 	path: "consistency.spacing",
