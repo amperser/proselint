@@ -18,7 +18,7 @@ except ImportError:
     from importlib_resources import files
 
 import proselint
-from proselint.tools import memoize, reverse_existence_check
+from proselint.tools import reverse_existence_check
 
 _CSV_PATH = 'checks/restricted/top1000.csv'
 
@@ -26,7 +26,7 @@ with files(proselint).joinpath(_CSV_PATH).open('r') as data:
     TOP1000_WORDS = data.read().split()
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "restricted.top1000"

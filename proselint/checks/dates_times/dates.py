@@ -14,10 +14,10 @@ Dates.
 """
 import calendar
 
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check_decade_apostrophes_short(text):
     """Check the text for dates of the form X0's."""
     err = "dates_times.dates"
@@ -29,7 +29,7 @@ def check_decade_apostrophes_short(text):
         text, [regex], err, msg, excluded_topics=["50 Cent"])
 
 
-@memoize
+
 def check_decade_apostrophes_long(text):
     """Check the text for dates of the form XXX0's."""
     err = "dates_times.dates"
@@ -39,7 +39,7 @@ def check_decade_apostrophes_long(text):
     return existence_check(text, [regex], err, msg)
 
 
-@memoize
+
 def check_dash_and_from(text):
     """Check the text."""
     err = "dates_times.dates"
@@ -58,7 +58,7 @@ def check_month_year_comma(text):
     return existence_check(text, [regex], err, msg)
 
 
-@memoize
+
 def check_month_of_year(text):
     """Check the text."""
     err = "dates_times.dates"

@@ -12,10 +12,10 @@ categories: writing
 Phrasal adjectives.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from proselint.tools import existence_checkpreferred_forms_check
 
 
-@memoize
+
 def check_ly(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.ly"
@@ -29,7 +29,7 @@ def check_ly(text):
                            require_padding=False, offset=-1)
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "garner.phrasal_adjectives.examples"

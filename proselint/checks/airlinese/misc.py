@@ -12,10 +12,10 @@ categories: writing
 Airlinese.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "airlinese.misc"

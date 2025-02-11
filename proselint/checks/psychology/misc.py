@@ -12,10 +12,10 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from proselint.tools import existence_checkpreferred_forms_check
 
 
-@memoize
+
 def check_lie_detector_test(text):
     """Suggest the preferred forms."""
     err = "psychology.lie_detector"
@@ -29,7 +29,7 @@ def check_lie_detector_test(text):
     return preferred_forms_check(text, list, err, msg)
 
 
-@memoize
+
 def check_p_equals_zero(text):
     """Check for p = 0.000."""
     err = "psychology.p_equals_zero"
@@ -44,7 +44,7 @@ def check_p_equals_zero(text):
     return existence_check(text, list, err, msg, join=True)
 
 
-@memoize
+
 def check_mental_telepathy(text):
     """Check for 'mental telepathy'."""
     err = "psychology.mental_telepathy"

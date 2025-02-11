@@ -12,10 +12,10 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
-from proselint.tools import existence_check, memoize, preferred_forms_check
+from proselint.tools import existence_checkpreferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
     err = "misc.false_plurals.examples"
@@ -29,7 +29,7 @@ def check(text):
     return preferred_forms_check(text, preferences, err, msg)
 
 
-@memoize
+
 def check_kudos(text):
     """Check the text."""
     err = "misc.false_plurals.kudos"

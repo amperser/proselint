@@ -14,10 +14,10 @@ raises an error marking them as offensive. The New York Times and
 Associated Press have also adopted this style guide.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Flag offensive words based on the GLAAD reference guide."""
     err = "glaad.offensive_terms"

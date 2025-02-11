@@ -16,10 +16,7 @@ import re
 import urllib.request as urllib_request  # for Python 3
 from socket import error as SocketError
 
-from proselint.tools import memoize
 
-
-@memoize
 def check(text):
     """Check the text."""
     err = "links.valid"
@@ -45,7 +42,7 @@ def check(text):
     return errors
 
 
-@memoize
+
 def is_broken_link(url):
     """Determine whether the link returns a 404 error."""
     try:

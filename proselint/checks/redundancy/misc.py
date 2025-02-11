@@ -1,9 +1,9 @@
 """Redundancy."""
 
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
     err = "redundancy.wallace"
@@ -16,7 +16,7 @@ def check(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
+
 def check_garner(text):
     """Suggest the preferred forms.
 
@@ -120,7 +120,7 @@ def check_garner(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
+
 def check_nordquist(text):
     """Suggest the preferred forms.
 
@@ -139,7 +139,7 @@ def check_nordquist(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
+
 def check_atd(text):
     """Check for redundancies from After the Deadline."""
     err = "after_the_deadline.redundancy"

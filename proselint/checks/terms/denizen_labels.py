@@ -1,9 +1,9 @@
 """Denizen labels."""
 
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms.
 
@@ -56,7 +56,7 @@ def check(text):
     return preferred_forms_check(text, preferences, err, msg)
 
 
-@memoize
+
 def check_denizen_labels_norris(text):
     """Suggest the preferred forms.
 

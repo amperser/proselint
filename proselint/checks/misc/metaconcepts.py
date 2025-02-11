@@ -12,10 +12,10 @@ categories: writing
 Point out misuse of scare quotes.
 
 """
-# from proselint.tools import memoize, existence_check
+# from proselint.tools import existence_check
 
 
-# @memoize
+# 
 # def check(text):
 #     """Suggest the preferred forms."""
 #     err = "pinker.metaconcepts"

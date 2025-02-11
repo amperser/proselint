@@ -12,10 +12,10 @@ categories: writing
 Points out sexist language.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
     err = "sexism.misc"

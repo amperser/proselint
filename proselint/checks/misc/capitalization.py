@@ -12,10 +12,10 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
     err = "misc.captalization"
@@ -31,7 +31,7 @@ def check(text):
     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-# @memoize
+# 
 # def check_seasons(text):
 #     """Suggest the preferred forms."""
 #     err = "MAU102"
@@ -47,7 +47,7 @@ def check(text):
 #     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-@memoize
+
 def check_months(text):
     """Suggest the preferred forms."""
     err = "MAU102"
@@ -72,7 +72,7 @@ def check_months(text):
     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-@memoize
+
 def check_days(text):
     """Suggest the preferred forms."""
     err = "MAU102"

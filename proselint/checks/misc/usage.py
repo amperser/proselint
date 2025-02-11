@@ -31,11 +31,11 @@ will require nltk & syntactic parsing)
 grammatical subject.
 """
 
-# from proselint.tools import memoize
+# from proselint.tools import 
 # import re
 
 
-# @memoize
+# 
 # def check(text):
 #     err = "strunk_white.usage"
 #     msg = "Use of '{}'. {}"

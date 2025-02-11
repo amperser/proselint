@@ -13,10 +13,10 @@ A lexical illusion is when a word word is unintentionally repeated twice, and
 and this happens most often between line breaks.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "lexical_illusions.misc"

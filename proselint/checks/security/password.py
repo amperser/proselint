@@ -11,10 +11,10 @@ categories: writing
 
 Don't put pass
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "security.password"

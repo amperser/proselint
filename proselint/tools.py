@@ -1,41 +1,19 @@
 """General-purpose tools shared across linting checks."""
 
 import copy
-import dbm
 import functools
-import hashlib
 import importlib
-import inspect
 import json
 import os
 import re
-import shelve
 import sys
-import traceback
 from warnings import showwarning as warn
 
 from . import config
 
-_cache_shelves = dict()
 proselint_path = os.path.dirname(os.path.realpath(__file__))
 home_dir = os.path.expanduser("~")
 cwd = os.getcwd()
-
-
-def close_cache_shelves():
-    """Close previously opened cache shelves."""
-    for cache in _cache_shelves.values():
-        cache.close()
-    _cache_shelves.clear()
-
-
-def close_cache_shelves_after(f):
-    """Decorate a function to ensure cache shelves are closed after call."""
-    @functools.wraps(f)
-    def wrapped(*args, **kwargs):
-        f(*args, **kwargs)
-        close_cache_shelves()
-    return wrapped
 
 
 def _get_xdg_path(variable_name, default_path):
@@ -48,93 +26,6 @@ def _get_xdg_path(variable_name, default_path):
 
 def _get_xdg_config_home():
     return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
-
-
-def _get_xdg_cache_home():
-    return _get_xdg_path('XDG_CACHE_HOME', os.path.join(home_dir, '.cache'))
-
-
-def _get_cache(cachepath):
-    if cachepath in _cache_shelves:
-        return _cache_shelves[cachepath]
-
-    try:
-        cache = shelve.open(cachepath, protocol=2)
-    except dbm.error:
-        # dbm error on open - delete and retry
-        print('Error (%s) opening %s - will attempt to delete and re-open.' %
-              (sys.exc_info()[1], cachepath))
-        try:
-            os.remove(cachepath)
-            cache = shelve.open(cachepath, protocol=2)
-        except Exception:
-            print('Error on re-open: %s' % sys.exc_info()[1])
-            cache = None
-    except Exception:
-        # unknown error
-        print('Could not open cache file %s, maybe name collision. '
-              'Error: %s' % (cachepath, traceback.format_exc()))
-        cache = None
-
-    # Don't fail on bad caches
-    if cache is None:
-        print('Using in-memory shelf for cache file %s' % cachepath)
-        cache = shelve.Shelf(dict())
-
-    _cache_shelves[cachepath] = cache
-    return cache
-
-
-def memoize(f):
-    """Cache results of computations on disk."""
-    # Determine the location of the cache.
-    cache_dirname = os.path.join(_get_xdg_cache_home(), 'proselint')
-    legacy_cache_dirname = os.path.join(home_dir, ".proselint")
-
-    if not os.path.isdir(cache_dirname):
-        # Migrate the cache from the legacy path to XDG compliant location.
-        if os.path.isdir(legacy_cache_dirname):
-            os.rename(legacy_cache_dirname, cache_dirname)
-        # Create the cache if it does not already exist.
-        else:
-            os.makedirs(cache_dirname)
-
-    cache_filename = f.__module__ + "." + f.__name__
-    cachepath = os.path.join(cache_dirname, cache_filename)
-
-    @functools.wraps(f)
-    def wrapped(*args, **kwargs):
-
-        # handle instance methods
-        if hasattr(f, '__self__'):
-            args = args[1:]
-
-        signature = cache_filename.encode("utf-8")
-
-        tempargdict = inspect.getcallargs(f, *args, **kwargs)
-
-        for item in list(tempargdict.items()):
-            if item[0] == "text":
-                signature += item[1].encode("utf-8")
-
-        key = hashlib.sha256(signature).hexdigest()
-        cache = _get_cache(cachepath)
-
-        try:
-            return cache[key]
-        except KeyError:
-            value = f(*args, **kwargs)
-            cache[key] = value
-            cache.sync()
-            return value
-        except TypeError:
-            call_to = f.__module__ + '.' + f.__name__
-            print('Warning: could not disk cache call to %s;'
-                  'it probably has unhashable args. Error: %s' %
-                  (call_to, traceback.format_exc()))
-            return f(*args, **kwargs)
-
-    return wrapped
 
 
 def get_checks(options):

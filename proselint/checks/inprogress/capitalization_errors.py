@@ -15,10 +15,10 @@ and After.
 
 World War Ii should have correct capitalization.
 """
-from proselint.tools import blacklist, memoize
+from proselint.tools import blacklist
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "MSC104"

@@ -22,10 +22,10 @@ Not guilty beyond a reasonable doubt
 """
 
 
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "misc.not_guilty"

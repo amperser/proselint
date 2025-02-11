@@ -13,10 +13,10 @@ Points out instances where there are two conventions, 1 vs. 2 spaces after
 a period, in the same document.
 
 """
-from proselint.tools import consistency_check, memoize
+from proselint.tools import consistency_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "consistency.spacing"

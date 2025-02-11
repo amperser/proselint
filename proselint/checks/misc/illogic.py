@@ -12,10 +12,10 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Check the text."""
     err = "misc.illogic"
@@ -36,7 +36,7 @@ def check(text):
     return existence_check(text, illogics, err, msg, offset=1)
 
 
-@memoize
+
 def check_coin_a_phrase_from(text):
     """Check the text."""
     err = "misc.illogic.coin"
@@ -47,7 +47,7 @@ def check_coin_a_phrase_from(text):
     return existence_check(text, [regex], err, msg, offset=1)
 
 
-@memoize
+
 def check_without_your_collusion(text):
     """Check the textself."""
     err = "misc.illogic.collusion"

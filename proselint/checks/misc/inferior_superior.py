@@ -12,10 +12,10 @@ categories: writing
 Corrects 'inferior/superior than' to 'inferior/superior to'.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
     err = "misc.inferior_superior"
