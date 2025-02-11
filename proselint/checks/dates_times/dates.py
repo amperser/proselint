@@ -24,10 +24,7 @@ def check_decade_apostrophes_short(text):
     msg = "Apostrophes aren't needed for decades."
 
     regex = r"\d0\'s"
-
-    return existence_check(
-        text, [regex], err, msg, excluded_topics=["50 Cent"])
-
+    return existence_check(text, [regex], err, msg)
 
 
 def check_decade_apostrophes_long(text):

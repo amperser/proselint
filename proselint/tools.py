@@ -211,9 +211,19 @@ def preferred_forms_check(text, list, err, msg, ignore_case=True, offset=0):
     return errors
 
 
-def existence_check(text, list, err, msg, ignore_case=True, str=False,
-                    offset=0, require_padding=True, dotall=False,
-                    excluded_topics=None, exceptions=(), join=False):
+def existence_check(
+    text,
+    list,
+    err,
+    msg,
+    ignore_case=True,
+    str=False,
+    offset=0,
+    require_padding=True,
+    dotall=False,
+    exceptions=(),
+    join=False,
+):
     """Build a checker that prohibits certain words or phrases."""
     flags = 0
 
@@ -234,12 +244,6 @@ def existence_check(text, list, err, msg, ignore_case=True, str=False,
         regex = r"{}"
 
     errors = []
-
-    # If the topic of the text is in the excluded list, return immediately.
-    if excluded_topics:
-        tps = topics(text)
-        if any([t in excluded_topics for t in tps]):
-            return errors
 
     rx = "|".join(regex.format(w) for w in list)
     for m in re.finditer(rx, text, flags=flags):
@@ -388,38 +392,6 @@ def is_quoted(position, text):
         return False
 
     return position_in_ranges(find_ranges(text), position)
-
-
-def detector_50_Cent(text):
-    """Determine whether 50 Cent is a topic."""
-    keywords = [
-        "50 Cent",
-        "rap",
-        "hip hop",
-        "Curtis James Jackson III",
-        "Curtis Jackson",
-        "Eminem",
-        "Dre",
-        "Get Rich or Die Tryin'",
-        "G-Unit",
-        "Street King Immortal",
-        "In da Club",
-        "Interscope",
-    ]
-    num_keywords = sum(word in text for word in keywords)
-    return ("50 Cent", float(num_keywords > 2))
-
-
-def topics(text):
-    """Return a list of topics."""
-    detectors = [
-        detector_50_Cent
-    ]
-    ts = []
-    for detector in detectors:
-        ts.append(detector(text))
-
-    return [t[0] for t in ts if t[1] > 0.95]
 
 
 def context(text, position, level="paragraph"):

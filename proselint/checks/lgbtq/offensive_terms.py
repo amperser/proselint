@@ -34,7 +34,6 @@ def check(text):
         "homosexual lifestyle",
         "gay lifestyle"
         # homo - may create false positives without additional context
-        # FIXME use topic detetor to decide whether "homo" is offensive
     ]
 
     return existence_check(text, list, err, msg, join=True, ignore_case=False)
