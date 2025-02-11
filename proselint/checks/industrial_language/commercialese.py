@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "misc.commercialese"
+    err = "industrial_language.commercialese"
     msg = "'{}' is commercialese."
 
     commercialese = [

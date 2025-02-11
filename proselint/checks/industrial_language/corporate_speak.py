@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "corporate_speak.misc"
+    err = "industrial_language.corporate_speak"
     msg = "Minimize your use of corporate catchphrases like this one."
 
     list = [

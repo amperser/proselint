@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "misc.chatspeak"
+    err = "industrial_language.chatspeak"
     msg = "'{}' is chatspeak. Write it out."
 
     words = [

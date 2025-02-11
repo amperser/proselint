@@ -1,24 +1,25 @@
-"""Cliches.
+"""
+Jargon.
 
 ---
 layout:     post
 source:     Garner's Modern American Usage
 source_url: http://bit.ly/1T4alrY
-title:      a vs. an
-date:       2014-06-10 12:31:19
+title:      Jargon
+date:       2014-06-10
 categories: writing
 ---
 
-Cliches are cliché.
+
 
 """
-from proselint.tools import existence_check
 
+from proselint.tools import existence_check
 
 
 def check(text):
     """Check the text."""
-    err = "jargon.misc"
+    err = "industrial_language.jargon"
     msg = "'{}' is jargon. Can you replace it with something more standard?"
 
     jargon = [

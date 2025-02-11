@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "misc.bureaucratese"
+    err = "industrial_language.bureaucratese"
     msg = "'{}' is bureaucratese."
 
     bureaucratese = [
