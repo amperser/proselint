@@ -1,1 +1,0 @@
-"""Comparing an uncomparable."""

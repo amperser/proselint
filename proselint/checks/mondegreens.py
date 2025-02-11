@@ -15,7 +15,6 @@ Points out preferred form.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Suggest the preferred forms."""
     err = "misc.mondegreens"
