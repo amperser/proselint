@@ -12,10 +12,8 @@ categories: writing
 Elementary
 
 """
-try:
-    from importlib.resources import files
-except ImportError:
-    from importlib_resources import files
+
+from importlib.resources import files
 
 import proselint
 from proselint.tools import reverse_existence_check
