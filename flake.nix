@@ -34,6 +34,7 @@
           packages = check.enabledPackages ++ [
             pyenv
             pkgs.uv
+            pkgs.pyright
           ];
         };
 
@@ -51,7 +52,12 @@
         pre-commit-check = hooks.lib.${system}.run {
           src = ./.;
           hooks = {
+            trim-trailing-whitespace.enable = true;
+            end-of-file-fixer.enable = true;
+            mixed-line-endings.enable = true;
+            markdownlint.enable = true;
             ruff.enable = true;
+            pyright.enable = true;
           };
         };
       };
