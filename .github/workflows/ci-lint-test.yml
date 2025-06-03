@@ -14,60 +14,41 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v3
-      - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v4
+      - name: "[INIT] Install uv"
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: ${{ matrix.python }}
-      - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.3
-      - name: "[INIT] Restore dependency cache"
-        id: cache-restore
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+          enable-cache: true
       - name: "[INIT] Install dependencies"
-        if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: pip install poetry && poetry install
+        run: uv sync --locked --all-extras --dev
       - name: "[EXEC] Lint"
-        run: ./utils ci lint
+        run: uv run poe lint
   test-cover:
     name: Test & Cover
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
     runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
     defaults:
       run:
         shell: bash
     strategy:
       matrix:
-        python: ["3.8", "3.9", "3.10", "pypy3.9", "pypy3.10"]
-        os: [ubuntu-22.04, macos-12, windows-2022]
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v3
-      - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
       - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.3
-      - name: "[INIT] Restore dependency cache"
-        id: cache-restore
-        uses: actions/cache@v3
+        uses: astral-sh/setup-uv@v5
         with:
-          path: |
-            ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
+          enable-cache: true
       - name: "[INIT] Install dependencies"
-        if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: pip install poetry && poetry install
+        run: uv sync --locked --all-extras --dev --group test
       - name: "[EXEC] Test"
-        run: ./utils ci test --coverage
+        run: uv run poe test-cover
       - name: "[EXEC] Upload coverage to Codecov"
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
           flags: ${{ matrix.os }},py${{ matrix.python }}
+          use_oidc: true
