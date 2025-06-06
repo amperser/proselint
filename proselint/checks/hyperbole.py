@@ -1,4 +1,5 @@
-"""Hyperbolic language.
+"""
+Hyperbolic language.
 
 ---
 layout:     post
@@ -15,10 +16,9 @@ Hyperbolic language.
 from proselint.tools import existence_check
 
 
-
 def check(text):
     """Check the text."""
-    err = "hyperbolic.misc"
+    err = "hyperbole.misc"
     msg = "'{}' is hyperbolic."
 
     words = [

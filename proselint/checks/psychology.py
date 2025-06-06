@@ -1,4 +1,5 @@
-"""Psychological and psychiatric terms to avoid.
+"""
+Psychological and psychiatric terms to avoid.
 
 ---
 layout:     post
@@ -12,8 +13,7 @@ categories: writing
 Psychological and psychiatric terms to avoid.
 
 """
-from proselint.tools import existence_checkpreferred_forms_check
-
+from proselint.tools import existence_check, preferred_forms_check
 
 
 def check_lie_detector_test(text):
@@ -22,12 +22,11 @@ def check_lie_detector_test(text):
     msg = "Polygraph machines measure arousal, not lying per se. Try {}."
 
     list = [
-        ["polygraph test",      ["lie detector test"]],
-        ["polygraph machine",   ["lie detector machine"]],
+        ["polygraph test", ["lie detector test"]],
+        ["polygraph machine", ["lie detector machine"]],
     ]
 
     return preferred_forms_check(text, list, err, msg)
-
 
 
 def check_p_equals_zero(text):
@@ -42,7 +41,6 @@ def check_p_equals_zero(text):
     ]
 
     return existence_check(text, list, err, msg, join=True)
-
 
 
 def check_mental_telepathy(text):
