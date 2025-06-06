@@ -1,12 +1,12 @@
-"""Tests for sexism.misc check."""
+"""Tests for social_awareness.sexism check."""
 
-from proselint.checks.sexism import misc as chk
+from proselint.checks.social_awareness import sexism as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for sexism.misc."""
+    """The test class for social_awareness.sexism."""
 
     __test__ = True
 
@@ -16,7 +16,7 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for sexism.misc."""
+        """Basic smoke test for social_awareness.sexism."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes(
             """The legal team had two lawyers and a lady lawyer.""")

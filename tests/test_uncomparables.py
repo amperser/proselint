@@ -1,6 +1,6 @@
 """Test uncomparables.misc"""
 
-from proselint.checks.uncomparables import misc as chk
+from proselint.checks import uncomparables as chk
 
 from .check import Check
 

@@ -1,12 +1,12 @@
-"""Tests for lexical_illusions.misc check."""
+"""Tests for lexical_illusions check."""
 
-from proselint.checks.lexical_illusions import misc as chk
+from proselint.checks import lexical_illusions as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for lexical_illusions.misc."""
+    """The test class for lexical_illusions."""
 
     __test__ = True
 
@@ -16,7 +16,7 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for lexical_illusions.misc."""
+        """Basic smoke test for lexical_illusions."""
         assert self.passes("Smoke phrase with nothing flagged.")
         assert not self.passes("Paris in the the springtime.")
         assert self.passes("And he's gone, gone with the breeze")

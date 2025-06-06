@@ -1,12 +1,12 @@
-"""Tests for lgbtq.offensive_terms check."""
+"""Tests for social_awareness.lgbtq check."""
 
-from proselint.checks.lgbtq import terms as chk
+from proselint.checks.social_awareness import lgbtq as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for lgbtq.terms."""
+    """The test class for social_awareness.lgbtq."""
 
     __test__ = True
 
@@ -16,10 +16,12 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for lgbtq.terms."""
+        """Basic smoke test for social_awareness.lgbtq."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert self.passes("""They were a gay couple.""")
         assert not self.passes("""He was a homosexual man.""")
+        assert self.passes("""I once met a gay man.""")
+        assert not self.passes("""I once met a fag.""")
 
     def test_homosexual_term(self):
         """Check that the term homosexual does not get caught."""

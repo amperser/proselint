@@ -1,12 +1,12 @@
 """Tests for consistency.spelling check."""
 
-from proselint.checks.consistency import spelling as chk
+from proselint.checks.spelling import consistency as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for consistency.spelling."""
+    """The test class for spelling.consistency."""
 
     __test__ = True
 

@@ -1,12 +1,12 @@
-"""Tests for nonwords.misc check."""
+"""Tests for nonwords check."""
 
-from proselint.checks.nonwords import misc as chk
+from proselint.checks import nonwords as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for nonwords.misc."""
+    """The test class for nonwords."""
 
     __test__ = True
 
@@ -16,6 +16,6 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for nonwords.misc."""
+        """Basic smoke test for nonwords."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes("""The test was good irregardless.""")

@@ -1,12 +1,12 @@
-"""Tests for misc.bureaucratese check."""
+"""Tests for industrial_language.bureaucratese check."""
 
-from proselint.checks.misc import bureaucratese as chk
+from proselint.checks.industrial_language import bureaucratese as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for misc.bureaucratese."""
+    """The test class for industrial_language.bureaucratese."""
 
     __test__ = True
 
@@ -16,7 +16,7 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for misc.bureaucratese."""
+        """Basic smoke test for industrial_language.bureaucratese."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes(
             """I hope the report meets with your approval.""")

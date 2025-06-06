@@ -1,12 +1,12 @@
-"""Tests for oxymorons.misc check."""
+"""Tests for oxymorons check."""
 
-from proselint.checks.oxymorons import misc as chk
+from proselint.checks import oxymorons as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for oxymorons.misc."""
+    """The test class for oxymorons."""
 
     __test__ = True
 
@@ -16,6 +16,6 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for oxymorons.misc."""
+        """Basic smoke test for oxymorons."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes("""He needed an exact estimate.""")
