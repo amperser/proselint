@@ -1,22 +1,21 @@
 ---
 name: Rule Request
-about: Make a suggestion on a new rule or check for proselint
+about: Suggest a new check
 title: ''
-labels: type: feat, cat: new-rule, status: awaiting-triage
+labels: 'cat: new-rule, status: awaiting-triage, type: feat'
 assignees: ''
 
 ---
 
-## This would solve...
+## Topic
 
-<!-- A clear and concise description of the linguistic problem this resolves
-and relates to. -->
+<!-- A clear and concise description of the linguistic matter this resolves or relates to. -->
 
-## And this should flag...
+## Things to detect
 
 <!-- A few examples of things this rule should detect. -->
 
-## But it should not flag...
+## Things to avoid
 
 <!-- A few examples of things that are similar to this rule's targeted forms
 but that it should not detect (i.e. potential false positives), if any. -->
