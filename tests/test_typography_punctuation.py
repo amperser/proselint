@@ -26,7 +26,6 @@ class TestCheck(Check):
 
         assert not self.passes("""So exaggerated!!!""")
 
-
     def test_smoke_exclamations_ppm(self):
         """
         Basic smoke test.
