@@ -25,7 +25,7 @@ from proselint.tools import consistency_check
 
 def check(text):
     """Check the text."""
-    err = "consistency.spelling"
+    err = "spelling.consistency"
     msg = "Inconsistent spelling of '{}' (vs. '{}')."
 
     word_pairs = [

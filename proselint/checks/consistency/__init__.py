@@ -1,1 +1,0 @@
-"""Various consistency checks."""
