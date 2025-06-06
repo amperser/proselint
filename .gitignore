@@ -10,9 +10,11 @@ build/*
 *.egg
 *.rdb
 .coverage
+coverage.lcov
 proselint/proselint_develop.sublime-project
 proselint/proselint_develop.sublime-workspace
 corpora/*
 !corpora/README.md
 dist/
 *.pstore
+.pre-commit-config.yaml

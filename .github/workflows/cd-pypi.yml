@@ -1,41 +1,22 @@
 name: "CD: PyPI"
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     defaults:
       run:
         shell: bash
-    strategy:
-      matrix:
-        python: [3.9]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
-      - name: "[INIT] Install Python ${{ matrix.python }}"
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-      - name: "[INIT] Install Poetry"
-        uses: snok/install-poetry@v1.3
-      - name: "[INIT] Restore dependency cache"
-        id: cache-restore
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('**/poetry.lock') }}
-      - name: "[INIT] Install dependencies"
-        if: ${{ !steps.cache-restore.outputs.cache-hit }}
-        run: pip install poetry && poetry install
-      - name: "[EXEC] Build"
-        run: poetry build
-      - name: "[EXEC] Publish to PyPI"
-        run: poetry run twine upload dist/*
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASS }}
+        uses: actions/checkout@v4
+      - name: "[INIT] Install uv"
+        uses: astral-sh/setup-uv@v5
+      - name: "[EXEC] Build project"
+        run: uv build
+      - name: "[EXEC] Publish package"
+        run: uv publish
