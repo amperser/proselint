@@ -21,11 +21,12 @@ class TestCheck(Check):
         assert self.passes("""They were a gay couple.""")
         assert not self.passes("""He was a homosexual man.""")
         assert self.passes("""I once met a gay man.""")
-        assert not self.passes("""I once met a fag.""")
+        assert len(chk.check_offensive("""I once met a fag.""")) == 1
 
     def test_homosexual_term(self):
         """Check that the term homosexual does not get caught."""
         assert self.passes("""Homosexual.""")
+        assert len(chk.check_offensive("""Homosexual.""")) == 0
 
     def test_sexual_prefence(self):
         """Check that sexual preference is flagged."""

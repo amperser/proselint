@@ -17,14 +17,22 @@ class TestCheck(Check):
 
     def test_smoke(self):
         """Basic smoke test for typography.punctuation."""
-        assert self.passes("""Smoke phrase with nothing flagged.""")
-        assert not self.passes("""See Smith et. al.""")
+        assert len(chk.check_misplaced("""See Smith et. al.""")) == 1
 
-        assert self.passes(
-            """This is good. Only one space each time. Every time.""")
-        assert not self.passes("""This is bad.  Not consistent. At all.""")
+        assert (
+            len(
+                chk.check_spacing(
+                    """This is good. Only one space each time. Every time."""
+                )
+            )
+            == 0
+        )
+        assert (
+            len(chk.check_spacing("""This is bad.  Not consistent. At all."""))
+            == 1
+        )
 
-        assert not self.passes("""So exaggerated!!!""")
+        assert len(chk.check_hyperbole("""So exaggerated!!!""")) == 1
 
     def test_smoke_exclamations_ppm(self):
         """
@@ -32,7 +40,10 @@ class TestCheck(Check):
 
         Test for typography.punctuation.exclamation
         """
-        assert chk.check_exclamations_ppm(
-            """Smoke phrase with nothing flagged.""") == []
-        assert chk.check_exclamations_ppm(
-            """I'm really excited! Really!""") != []
+        assert (
+            chk.check_exclamations_ppm("""Smoke phrase with nothing flagged.""")
+            == []
+        )
+        assert (
+            chk.check_exclamations_ppm("""I'm really excited! Really!""") != []
+        )
