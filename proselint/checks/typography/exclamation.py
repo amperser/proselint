@@ -12,11 +12,10 @@ categories: writing
 Too much yelling.
 
 """
-from proselint.tools import existence_check, max_errorsppm_threshold
+from proselint.tools import existence_check, max_errors, ppm_threshold
 
 
 @max_errors(1)
-
 def check_repeated_exclamations(text):
     """Check the text."""
     err = "leonard.exclamation.multiple"
@@ -29,7 +28,6 @@ def check_repeated_exclamations(text):
 
 
 @ppm_threshold(30)
-
 def check_exclamations_ppm(text):
     """Make sure that the exclamation ppm is under 30."""
     err = "leonard.exclamation.30ppm"
