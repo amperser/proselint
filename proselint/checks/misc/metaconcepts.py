@@ -1,4 +1,5 @@
-"""Metaconcepts.
+"""
+Metaconcepts.
 
 ---
 layout:     post
@@ -15,7 +16,7 @@ Point out misuse of scare quotes.
 # from proselint.tools import existence_check
 
 
-# 
+#
 # def check(text):
 #     """Suggest the preferred forms."""
 #     err = "pinker.metaconcepts"

@@ -1,4 +1,5 @@
-"""Elementary Rules of Usage.
+"""
+Elementary Rules of Usage.
 
 ---
 layout:     post
@@ -31,11 +32,11 @@ will require nltk & syntactic parsing)
 grammatical subject.
 """
 
-# from proselint.tools import 
+# from proselint.tools import
 # import re
 
 
-# 
+#
 # def check(text):
 #     err = "strunk_white.usage"
 #     msg = "Use of '{}'. {}"

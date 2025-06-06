@@ -1,4 +1,5 @@
-"""Use the right symbols.
+"""
+Use the right symbols.
 
 source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
@@ -8,7 +9,6 @@ from proselint.tools import existence_check, max_errors
 
 
 @max_errors(3)
-
 def check_ellipsis(text):
     """Use an ellipsis instead of three dots."""
     err = "typography.symbols.ellipsis"
@@ -20,7 +20,6 @@ def check_ellipsis(text):
 
 
 @max_errors(1)
-
 def check_copyright_symbol(text):
     """Use the copyright symbol instead of (c)."""
     err = "typography.symbols.copyright"
@@ -31,7 +30,6 @@ def check_copyright_symbol(text):
 
 
 @max_errors(3)
-
 def check_trademark_symbol(text):
     """Use the trademark symbol instead of (TM)."""
     err = "typography.symbols.trademark"
@@ -42,7 +40,6 @@ def check_trademark_symbol(text):
 
 
 @max_errors(3)
-
 def check_registered_trademark_symbol(text):
     """Use the registered trademark symbol instead of (R)."""
     err = "typography.symbols.trademark"
@@ -53,7 +50,6 @@ def check_registered_trademark_symbol(text):
 
 
 @max_errors(3)
-
 def check_sentence_spacing(text):
     """Use no more than two spaces after a period."""
     err = "typography.symbols.sentence_spacing"
@@ -64,7 +60,6 @@ def check_sentence_spacing(text):
 
 
 @max_errors(3)
-
 def check_multiplication_symbol(text):
     """Use the multiplication symbol ×, not the lowercase letter x."""
     err = "typography.symbols.multiplication_symbol"
@@ -75,7 +70,6 @@ def check_multiplication_symbol(text):
 
 
 @max_errors(3)
-
 def check_curly_quotes(text):
     """Use curly quotes, not straight quotes."""
     err = "typography.symbols.curly_quotes"
@@ -84,7 +78,7 @@ def check_curly_quotes(text):
 
     return existence_check(text, [regex], err, msg, require_padding=False)
 
-# 
+#
 # def check_en_dash_separated_names(text):
 #     """Use an en-dash to separate names."""
 #     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
