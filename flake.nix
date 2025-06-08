@@ -19,7 +19,7 @@
     ...
   }:
     utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system;};
+      pkgs = nixpkgs.legacyPackages.${system};
       python = pkgs.python312;
       project = pyproject.lib.project.loadPyproject {projectRoot = ./.;};
     in {
