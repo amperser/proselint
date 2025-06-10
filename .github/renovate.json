@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:recommended"],
+  "packageRules": [
+    {
+      "groupName": "All non-major Python dependencies",
+      "groupSlug": "all-python-minor-patch",
+      "matchManagers": ["pep621"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "groupName": "All non-major GitHub Actions",
+      "groupSlug": "all-gh-minor-patch",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    }
+  ],
+  "labels": ["cat: deps", "type: chore"],
+  "ignorePaths": ["Gemfile", "plugins/"]
+}
