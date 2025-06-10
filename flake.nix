@@ -1,9 +1,11 @@
 # TODO: use uv2nix
 {
   inputs = {
-    utils.url = "github:numtide/flake-utils";
-    hooks.url = "github:cachix/git-hooks.nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     pyproject = {
       url = "github:pyproject-nix/pyproject.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,53 +15,71 @@
   outputs = {
     self,
     hooks,
-    utils,
     nixpkgs,
     pyproject,
     ...
-  }:
-    utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system;};
+  }: let
+    forAllSystems = function:
+      nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ] (system: function system nixpkgs.legacyPackages.${system});
+    project = pyproject.lib.project.loadPyproject {projectRoot = ./.;};
+  in {
+    devShells = forAllSystems (system: pkgs: let
       python = pkgs.python312;
-      project = pyproject.lib.project.loadPyproject {projectRoot = ./.;};
+      arg = project.renderers.withPackages {inherit python;};
+      pyenv = python.withPackages arg;
+      check = self.checks.${system}.pre-commit-check;
     in {
-      devShells.default = let
-        arg = project.renderers.withPackages {inherit python;};
-        pyenv = python.withPackages arg;
-        check = self.checks.${system}.pre-commit-check;
-      in
-        pkgs.mkShell {
-          inherit (check) shellHook;
+      default = pkgs.mkShell {
+        inherit (check) shellHook;
 
-          packages = check.enabledPackages ++ [
+        packages =
+          check.enabledPackages
+          ++ [
             pyenv
             pkgs.uv
             pkgs.pyright
+            pkgs.hyperfine
           ];
-        };
+      };
+    });
 
-      packages.default = let
-        attrs = project.renderers.buildPythonPackage {inherit python;};
-      in
-        python.pkgs.buildPythonPackage attrs;
+    packages = forAllSystems (system: pkgs: let
+      python = pkgs.python312;
+      attrs = project.renderers.buildPythonPackage {inherit python;};
+    in {
+      default = python.pkgs.buildPythonPackage attrs;
+    });
 
-      apps.default = {
+    apps = forAllSystems (system: _: {
+      default = {
         type = "app";
         program = "${self.packages.${system}.default}/bin/proselint";
       };
+    });
 
-      checks = {
-        pre-commit-check = hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            trim-trailing-whitespace.enable = true;
-            end-of-file-fixer.enable = true;
-            mixed-line-endings.enable = true;
-            markdownlint.enable = true;
-            ruff.enable = true;
-            pyright.enable = true;
+    checks = forAllSystems (system: _: {
+      pre-commit-check = hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          trim-trailing-whitespace.enable = true;
+          end-of-file-fixer.enable = true;
+          mixed-line-endings.enable = true;
+          markdownlint.enable = true;
+          ruff.enable = true;
+          pyright.enable = true;
+          convco.enable = true;
+          alejandra.enable = true;
+          statix = {
+            enable = true;
+            settings.ignore = ["/.direnv"];
           };
         };
       };
     });
+  };
 }

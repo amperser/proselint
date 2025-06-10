@@ -8,15 +8,13 @@ jobs:
     defaults:
       run:
         shell: bash
-    strategy:
-      matrix:
-        python: ["3.10"]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "[INIT] Install uv"
         uses: astral-sh/setup-uv@v5
         with:
+          python-version: "3.10"
           enable-cache: true
       - name: "[INIT] Install dependencies"
         run: uv sync --locked --all-extras --dev
@@ -37,10 +35,11 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "[INIT] Install uv"
         uses: astral-sh/setup-uv@v5
         with:
+          python-version: ${{ matrix.python }}
           enable-cache: true
       - name: "[INIT] Install dependencies"
         run: uv sync --locked --all-extras --dev --group test
