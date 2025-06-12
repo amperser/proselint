@@ -1,38 +1,20 @@
 """General-purpose tools shared across linting checks."""
 
-import copy
 import functools
 import importlib
 import json
-import os
 import re
 import sys
-from warnings import showwarning as warn
 
-from . import config
-
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-home_dir = os.path.expanduser("~")
-cwd = os.getcwd()
+from proselint.config import Config, DEFAULT
+from proselint.config.paths import proselint_path
 
 
-def _get_xdg_path(variable_name, default_path):
-    path = os.environ.get(variable_name)
-    if path is None or path == '':
-        return default_path
-    else:
-        return path
-
-
-def _get_xdg_config_home():
-    return _get_xdg_path('XDG_CONFIG_HOME', os.path.join(home_dir, '.config'))
-
-
-def get_checks(options):
+def get_checks(config: Config):
     """Extract the checks."""
-    sys.path.append(proselint_path)
+    sys.path.append(proselint_path.as_posix())
     checks = []
-    check_names = [key for (key, val) in options["checks"].items() if val]
+    check_names = [key for (key, val) in config["checks"].items() if val]
 
     for check_name in check_names:
         module = importlib.import_module("checks." + check_name)
@@ -41,52 +23,6 @@ def get_checks(options):
                 checks.append(getattr(module, d))
 
     return checks
-
-
-def deepmerge_dicts(dict1, dict2):
-    """Deep merge dictionaries, second dict will take priority."""
-    result = copy.deepcopy(dict1)
-
-    for key, value in dict2.items():
-        if isinstance(value, dict):
-            result[key] = deepmerge_dicts(result[key] or {}, value)
-        else:
-            result[key] = value
-
-    return result
-
-
-def load_options(config_file_path=None, conf_default=None):
-    """Read various proselintrc files, allowing user overrides."""
-    conf_default = conf_default or {}
-    if os.path.isfile("/etc/proselintrc"):
-        conf_default = json.load(open("/etc/proselintrc"))
-
-    user_config_paths = [
-        os.path.join(cwd, '.proselintrc.json'),
-        os.path.join(_get_xdg_config_home(), 'proselint', 'config.json'),
-        os.path.join(home_dir, '.proselintrc.json')
-    ]
-
-    if config_file_path:
-        if not os.path.isfile(config_file_path):
-            raise FileNotFoundError(
-                f"Config file {config_file_path} does not exist")
-        user_config_paths.insert(0, config_file_path)
-
-    user_options = {}
-    for path in user_config_paths:
-        if os.path.isfile(path):
-            user_options = json.load(open(path))
-            break
-        oldpath = path.replace(".json", "")
-        if os.path.isfile(oldpath):
-            warn(f"{oldpath} was found instead of a JSON file."
-                 f" Rename to {path}.", DeprecationWarning, "", 0)
-            user_options = json.load(open(oldpath))
-            break
-
-    return deepmerge_dicts(conf_default, user_options)
 
 
 def errors_to_json(errors):
@@ -121,7 +57,7 @@ def line_and_column(text, position):
     return (line_no, position - position_counter)
 
 
-def lint(input_file, debug=False, config=config.default):
+def lint(input_file, debug=False, config: Config = DEFAULT):
     """Run the linter on the input file."""
     if isinstance(input_file, str):
         text = input_file

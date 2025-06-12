@@ -6,11 +6,12 @@ import shutil
 import subprocess
 import sys
 import traceback
+from pathlib import Path
 
 import click
 
-from .config import default
-from .tools import errors_to_json, lint, load_options
+from proselint.config import DEFAULT, load_from
+from .tools import errors_to_json, lint
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
@@ -59,7 +60,7 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False, type=click.Path(),
+@click.option('--config', is_flag=False, type=click.Path(path_type=Path),
               help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
@@ -76,9 +77,9 @@ def proselint(paths=None, config=None, version=None,
               dump_config=None, dump_default_config=None):
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:
-        return print(json.dumps(default, sort_keys=True, indent=4))
+        return print(json.dumps(DEFAULT, sort_keys=True, indent=4))
 
-    config = load_options(config, default)
+    config = load_from(config)
     if dump_config:
         print(json.dumps(config, sort_keys=True, indent=4))
         return
