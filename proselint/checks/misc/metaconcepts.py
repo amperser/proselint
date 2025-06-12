@@ -19,7 +19,7 @@ Point out misuse of scare quotes.
 #
 # def check(text):
 #     """Suggest the preferred forms."""
-#     err = "pinker.metaconcepts"
+#     err = "misc.metaconcepts"
 #     msg = "Misuse of 'scare quotes'. Delete them."
 
 #     narcissism = [

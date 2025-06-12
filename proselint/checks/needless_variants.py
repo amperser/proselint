@@ -18,7 +18,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "needless_variants.misc"
+    err = "needless_variants"
     msg = "Needless variant. '{}' is the preferred form."
 
     preferences = [

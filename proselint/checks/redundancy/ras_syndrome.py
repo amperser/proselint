@@ -6,7 +6,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.redundancy.ras"
+    err = "redundancy.ras_syndrome"
     msg = "RAS syndrome. Use '{}' instead of '{}'."
 
     redundancies = [

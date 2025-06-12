@@ -15,10 +15,9 @@ Eponymous adjectives.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.eponymous_adjective"
+    err = "terms.eponymous_adjectives"
     msg = "'{}' is the preferred eponymous adjective."
 
     preferences = [

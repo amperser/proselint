@@ -5,14 +5,13 @@ from proselint.tools import (existence_check, max_errors,
 
 
 @max_errors(1)
-
 def check_bottleneck(text):
     """Avoid mixing metaphors about bottles and their necks.
 
     source:     Sir Ernest Gowers
     source_url: http://bit.ly/1CQPH61
     """
-    err = "mixed_metaphors.misc.bottleneck"
+    err = "mixed_metaphors.bottleneck"
     msg = "Mixed metaphor — bottles with big necks are easy to pass through."
     list = [
         "biggest bottleneck",
@@ -27,14 +26,13 @@ def check_bottleneck(text):
     return existence_check(text, list, err, msg)
 
 
-
 def check_misc(text):
     """Avoid mixing metaphors.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
     """
-    err = "mixed_metaphors.misc.misc"
+    err = "mixed_metaphors.misc"
     msg = "Mixed metaphor. Try '{}'."
 
     preferences = [

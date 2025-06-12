@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.apologizing"
+    err = "misc.apologizing"
     msg = "Excessive apologizing."
 
     narcissism = [

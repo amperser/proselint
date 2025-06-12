@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "oxymorons.misc"
+    err = "oxymorons"
     msg = "'{}' is an oxymoron."
 
     oxymorons = [

@@ -51,7 +51,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "uncomparables.misc"
+    err = "uncomparables"
     msg = "Comparison of an uncomparable: '{}' is not comparable."
 
     comparators = [

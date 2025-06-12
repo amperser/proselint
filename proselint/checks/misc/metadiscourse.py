@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.metadiscourse"
+    err = "misc.metadiscourse"
     msg = "Excessive metadiscourse."
 
     metadiscourse = [

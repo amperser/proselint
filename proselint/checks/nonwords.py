@@ -18,7 +18,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "nonwords.misc"
+    err = "nonwords"
     msg = "Nonword, try '{}'."
 
     preferences = [

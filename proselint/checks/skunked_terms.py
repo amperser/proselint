@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Check the text."""
-    err = "skunked_terms.misc"
+    err = "skunked_terms"
     msg = """'{}' is a bit of a skunked term, impossible to use without issue.
              Find some other way to say it."""
 

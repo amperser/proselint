@@ -18,7 +18,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "misc.captalization"
+    err = "misc.capitalization.preferred"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
     list = [
@@ -34,7 +34,7 @@ def check(text):
 #
 # def check_seasons(text):
 #     """Suggest the preferred forms."""
-#     err = "MAU102"
+#     err = "misc.capitalization.seasons"
 #     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
 
 #     list = [
@@ -49,11 +49,10 @@ def check(text):
 
 def check_months(text):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.months"
     msg = "Months should be capitalized. '{}' is the preferred form."
 
     list = [
-
         ["January", ["january"]],
         ["February", ["february"]],
         # ["March",           ["march"]],
@@ -73,7 +72,7 @@ def check_months(text):
 
 def check_days(text):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.days"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
     list = [

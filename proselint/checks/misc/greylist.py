@@ -18,7 +18,7 @@ import re
 
 def check(text):
     """Check the text."""
-    err = "strunk_white.greylist"
+    err = "misc.greylist"
     msg = "Use of '{}'. {}"
 
     bad_words = [

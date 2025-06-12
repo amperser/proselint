@@ -48,10 +48,9 @@ structure.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Suggest the preferred forms."""
-    err = "strunk_white.composition"
+    err = "misc.composition"
     msg = "Try '{}' instead of '{}'."
 
     bad_forms = [

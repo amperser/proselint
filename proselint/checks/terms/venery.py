@@ -15,10 +15,9 @@ Names for groups of animals.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Check the text."""
-    err = "oxford.venery_terms"
+    err = "terms.venery"
     msg = "The venery term is '{}'."
 
     term_list = [

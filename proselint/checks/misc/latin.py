@@ -18,7 +18,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.latin"
+    err = "misc.latin"
     msg = "Use English. '{}' is the preferred form."
 
     list = [

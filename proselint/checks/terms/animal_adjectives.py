@@ -15,10 +15,9 @@ Animal words.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.animal_labels"
+    err = "terms.animal_adjectives"
     msg = "There's a word for this: '{}'."
 
     preferences = [

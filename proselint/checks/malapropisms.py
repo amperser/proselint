@@ -15,10 +15,9 @@ Archaism.
 from proselint.tools import existence_check
 
 
-
 def check(text):
     """Check the text."""
-    err = "malapropisms.misc"
+    err = "malapropisms"
     msg = "'{}' is a malapropism."
 
     illogics = [

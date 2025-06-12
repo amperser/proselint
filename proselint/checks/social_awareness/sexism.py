@@ -18,7 +18,7 @@ from proselint.tools import preferred_forms_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "industrial_language.sexism"
+    err = "social_awareness.sexism"
     msg = "Gender bias. Use '{}' instead of '{}'."
 
     sexism = [

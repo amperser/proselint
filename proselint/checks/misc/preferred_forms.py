@@ -15,10 +15,9 @@ Points out preferred forms.
 from proselint.tools import preferred_forms_check
 
 
-
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.preferred_forms"
+    err = "misc.preferred_forms"
     msg = "'{}' is the preferred form."
 
     preferences = [

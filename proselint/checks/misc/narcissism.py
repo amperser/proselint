@@ -18,7 +18,7 @@ from proselint.tools import existence_check
 
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.narcissism"
+    err = "misc.narcissism"
     msg = "Professional narcissism. Talk about the subject, not its study."
 
     narcissism = [

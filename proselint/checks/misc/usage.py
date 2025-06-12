@@ -38,7 +38,7 @@ grammatical subject.
 
 #
 # def check(text):
-#     err = "strunk_white.usage"
+#     err = "misc.usage"
 #     msg = "Use of '{}'. {}"
 
 #     bad_words = [

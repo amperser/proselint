@@ -15,10 +15,9 @@ Phrasal adjectives.
 from proselint.tools import existence_check, preferred_forms_check
 
 
-
 def check_ly(text):
     """Check the text."""
-    err = "garner.phrasal_adjectives.ly"
+    err = "misc.phrasal_adjectives.ly"
     msg = """No hyphen is necessary in phrasal adjectives with an adverb
               ending in -ly, unless the -ly adverb is part of a longer
               phrase"""
@@ -29,10 +28,9 @@ def check_ly(text):
                            require_padding=False, offset=-1)
 
 
-
 def check(text):
     """Check the text."""
-    err = "garner.phrasal_adjectives.examples"
+    err = "misc.phrasal_adjectives.examples"
     msg = """Hyphenate '{1}', a phrasal adjective, as '{0}'."""
 
     list = [
@@ -143,7 +141,6 @@ def check(text):
         ["second-quarter gain", ["second quarter gain"]],
         ["third-quarter gain", ["third quarter gain"]],
         ["fourth-quarter gain", ["fourth quarter gain"]],
-
     ]
 
     return preferred_forms_check(text, list, err, msg)
