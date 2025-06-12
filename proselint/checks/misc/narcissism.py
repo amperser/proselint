@@ -12,13 +12,13 @@ categories: writing
 Points out academic narcissism.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.narcissism"
+    err = "misc.narcissism"
     msg = "Professional narcissism. Talk about the subject, not its study."
 
     narcissism = [

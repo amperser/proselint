@@ -1,12 +1,11 @@
 """Redundancy."""
 
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "redundancy.wallace"
+    err = "redundancy.misc.wallace"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -16,14 +15,13 @@ def check(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_garner(text):
     """Suggest the preferred forms.
 
     source:     Garner's Modern American Usage
     source_url: http://bit.ly/1T4alrY
     """
-    err = "redundancy.garner"
+    err = "redundancy.misc.garner"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -120,14 +118,13 @@ def check_garner(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_nordquist(text):
     """Suggest the preferred forms.
 
     source:     Richard Nordquist
     source_url: http://grammar.about.com/bio/Richard-Nordquist-22176.htm
     """
-    err = "redundancy.nordquist"
+    err = "redundancy.misc.nordquist"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [
@@ -139,10 +136,9 @@ def check_nordquist(text):
     return preferred_forms_check(text, redundancies, err, msg)
 
 
-@memoize
 def check_atd(text):
     """Check for redundancies from After the Deadline."""
-    err = "after_the_deadline.redundancy"
+    err = "redundancy.misc.after_the_deadline"
     msg = "Redundancy. Use '{}' instead of '{}'."
 
     redundancies = [

@@ -1,9 +1,9 @@
 """-er vs. -or."""
 
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check(text):
     """-er vs. -or."""
     err = "spelling.er_or"

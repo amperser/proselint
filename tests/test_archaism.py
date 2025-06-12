@@ -1,12 +1,12 @@
-"""Tests for archaism.misc check."""
+"""Tests for archaism check."""
 
-from proselint.checks.archaism import misc as chk
+from proselint.checks import archaism as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for archaism.misc."""
+    """The test class for archaism."""
 
     __test__ = True
 
@@ -16,7 +16,7 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for archaism.misc."""
+        """Basic smoke test for archaism."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert self.passes("""I want to sleep, and maybe dream.""")
         assert not self.passes("""I want to sleep, perchance to dream.""")

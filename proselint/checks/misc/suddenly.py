@@ -24,11 +24,11 @@ apparent in the action itself. For example, in “Suddenly, I don’t hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
 """
-from proselint.tools import existence_check, max_errors, memoize
+from proselint.tools import existence_check, max_errors
 
 
 @max_errors(3)
-@memoize
+
 def check(text):
     """Advice on sudden vs suddenly."""
     err = "misc.suddenly"

@@ -12,13 +12,13 @@ categories: writing
 Points out metadiscourse.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.metadiscourse"
+    err = "misc.metadiscourse"
     msg = "Excessive metadiscourse."
 
     metadiscourse = [

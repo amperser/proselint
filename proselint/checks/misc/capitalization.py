@@ -1,4 +1,5 @@
-"""Incorrect capitalization.
+"""
+Incorrect capitalization.
 
 ---
 layout:     post
@@ -12,29 +13,28 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "misc.captalization"
+    err = "misc.capitalization.preferred"
     msg = "Incorrect capitalization. '{}' is the preferred form."
 
     list = [
-        ["Stone Age",          ["stone age"]],
-        ["space age",          ["Space Age"]],
-        ["the American West",  ["the American west"]],
-        ["Mother Nature",      ["mother nature"]],
+        ["Stone Age", ["stone age"]],
+        ["space age", ["Space Age"]],
+        ["the American West", ["the American west"]],
+        ["Mother Nature", ["mother nature"]],
     ]
 
     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-# @memoize
+#
 # def check_seasons(text):
 #     """Suggest the preferred forms."""
-#     err = "MAU102"
+#     err = "misc.capitalization.seasons"
 #     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
 
 #     list = [
@@ -47,46 +47,43 @@ def check(text):
 #     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-@memoize
 def check_months(text):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.months"
     msg = "Months should be capitalized. '{}' is the preferred form."
 
     list = [
-
-        ["January",         ["january"]],
-        ["February",        ["february"]],
+        ["January", ["january"]],
+        ["February", ["february"]],
         # ["March",           ["march"]],
-        ["April",           ["april"]],
+        ["April", ["april"]],
         # ["May",             ["may"]],
-        ["June",            ["june"]],
-        ["July",            ["july"]],
-        ["August",          ["august"]],
-        ["September",       ["september"]],
-        ["October",         ["october"]],
-        ["November",        ["november"]],
-        ["December",        ["december"]],
+        ["June", ["june"]],
+        ["July", ["july"]],
+        ["August", ["august"]],
+        ["September", ["september"]],
+        ["October", ["october"]],
+        ["November", ["november"]],
+        ["December", ["december"]],
     ]
 
     return preferred_forms_check(text, list, err, msg, ignore_case=False)
 
 
-@memoize
 def check_days(text):
     """Suggest the preferred forms."""
-    err = "MAU102"
+    err = "misc.capitalization.days"
     msg = "Days of the week should be capitalized. '{}' is the preferred form."
 
     list = [
 
-        ["Monday",       ["monday"]],
-        ["Tuesday",      ["tuesday"]],
-        ["Wednesday",    ["wednesday"]],
-        ["Thursday",     ["thursday"]],
-        ["Friday",       ["friday"]],
-        ["Saturday",     ["saturday"]],
-        ["Sunday",       ["sunday"]],
+        ["Monday", ["monday"]],
+        ["Tuesday", ["tuesday"]],
+        ["Wednesday", ["wednesday"]],
+        ["Thursday", ["thursday"]],
+        ["Friday", ["friday"]],
+        ["Saturday", ["saturday"]],
+        ["Sunday", ["sunday"]],
     ]
 
     return preferred_forms_check(text, list, err, msg, ignore_case=False)

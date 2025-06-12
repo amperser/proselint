@@ -30,9 +30,15 @@ class Check(TestCase):
 
         errors = []
         for text in lst:
-            errors += self.this_check.check.__wrapped__(text)
+            errors += self.check_fn(text)
 
         return len(errors) == 0
+
+    @property
+    def check_fn(self):
+        """Retrieve the unwrapped check function."""
+        check = self.this_check.check
+        return getattr(check, "__wrapped__", check)
 
     def wpe_too_high(self):
         """Check whether the check is too noisy."""
@@ -50,7 +56,7 @@ class Check(TestCase):
             # Compute the number of words per (wpe) error.
             with codecs.open(example_path, "r", encoding='utf-8') as f:
                 text = f.read()
-                num_errors = len(self.this_check.check.__wrapped__(text))
+                num_errors = len(self.check_fn(text))
                 num_words = len(text)
 
             try:

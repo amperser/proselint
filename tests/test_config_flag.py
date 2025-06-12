@@ -31,8 +31,8 @@ def test_load_options_function(isfile):
     isfile.side_effect = CONFIG_FILE.__eq__
 
     overrides = load_options(CONFIG_FILE, default)
-    assert load_options(conf_default=default)["checks"]["uncomparables.misc"]
-    assert not overrides["checks"]["uncomparables.misc"]
+    assert load_options(conf_default=default)["checks"]["uncomparables"]
+    assert not overrides["checks"]["uncomparables"]
 
     isfile.side_effect = os.path.join(os.getcwd(), ".proselintrc.json").__eq__
 
@@ -42,10 +42,10 @@ def test_load_options_function(isfile):
 def test_config_flag():
     """Test the --config CLI argument"""
     output = runner.invoke(proselint, "--demo")
-    assert "uncomparables.misc" in output.stdout
+    assert "uncomparables" in output.stdout
 
     output = runner.invoke(proselint, f"--demo {FLAG}")
-    assert "uncomparables.misc" not in output.stdout
+    assert "uncomparables" not in output.stdout
     assert "FileNotFoundError" != output.exc_info[0].__name__
 
     output = runner.invoke(proselint, "--demo --config non_existent_file")

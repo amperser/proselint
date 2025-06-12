@@ -12,13 +12,12 @@ categories: writing
 Eponymous adjectives.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "garner.eponymous_adjective"
+    err = "terms.eponymous_adjectives"
     msg = "'{}' is the preferred eponymous adjective."
 
     preferences = [

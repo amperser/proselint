@@ -1,12 +1,12 @@
-"""Tests for mixed_metaphors.misc check."""
+"""Tests for mixed_metaphors check."""
 
-from proselint.checks.mixed_metaphors import misc as chk
+from proselint.checks import mixed_metaphors as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for mixed_metaphors.misc."""
+    """The test class for mixed_metaphors."""
 
     __test__ = True
 

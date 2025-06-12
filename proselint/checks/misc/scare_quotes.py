@@ -12,13 +12,12 @@ categories: writing
 Points out misuse of scare quotes.
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
 def check(text):
     """Suggest the preferred forms."""
-    err = "pinker.scare_quotes"
+    err = "misc.scare_quotes"
     msg = "Misuse of 'scare quotes'. Delete them."
 
     narcissism = [

@@ -10,10 +10,10 @@ categories: writing
 ---
 
 """
-from proselint.tools import existence_check, memoize
+from proselint.tools import existence_check
 
 
-@memoize
+
 def check_lowercase_periods(text):
     """Check the text."""
     err = "dates_times.am_pm.lowercase_periods"
@@ -23,7 +23,7 @@ def check_lowercase_periods(text):
                            ignore_case=False)
 
 
-@memoize
+
 def check_spacing(text):
     """Check the text."""
     err = "dates_times.am_pm.spacing"
@@ -32,7 +32,7 @@ def check_spacing(text):
     return existence_check(text, [r"\d{1,2}[ap]\.?m\.?"], err, msg)
 
 
-@memoize
+
 def check_midnight_noon(text):
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"
@@ -42,7 +42,7 @@ def check_midnight_noon(text):
     return existence_check(text, [r"12 ?[ap]\.?m\.?"], err, msg)
 
 
-@memoize
+
 def check_redundancy(text):
     """Check the text."""
     err = "dates_times.am_pm.midnight_noon"

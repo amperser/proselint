@@ -12,14 +12,13 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, max_errors, memoize
+from proselint.tools import existence_check, max_errors
 
 
 @max_errors(1)
-@memoize
 def check_repeated_exclamations(text):
     """Check the text."""
-    err = "leonard.hell"
+    err = "cliches.hell"
     msg = "Never use the words 'all hell broke loose'."
 
     regex = r"all hell broke loose"

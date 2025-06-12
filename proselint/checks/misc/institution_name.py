@@ -12,17 +12,17 @@ categories: writing
 Institution names.
 
 """
-from proselint.tools import memoize, preferred_forms_check
+from proselint.tools import preferred_forms_check
 
 
-@memoize
+
 def check_vtech(text):
     """Suggest the correct name.
 
     source: Virginia Tech Division of Student Affairs
     source_url: http://bit.ly/2en1zbv
     """
-    err = "institution.vtech"
+    err = "misc.institution_name.vtech"
     msg = "Incorrect name. Use '{}' instead of '{}'."
 
     institution = [

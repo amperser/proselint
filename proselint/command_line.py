@@ -10,8 +10,7 @@ import traceback
 import click
 
 from .config import default
-from .tools import (close_cache_shelves, close_cache_shelves_after,
-                    errors_to_json, lint, load_options)
+from .tools import errors_to_json, lint, load_options
 from .version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
@@ -34,34 +33,6 @@ def timing_test(corpus="0.1.0"):
             subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
-
-
-def clear_cache():
-    """Delete the contents of the cache."""
-    click.echo("Deleting the cache...")
-
-    # see issue #624
-    _delete_compiled_python_files()
-    _delete_cache()
-
-
-def _delete_compiled_python_files():
-    """Remove files with a 'pyc' extension."""
-    for path, _, files in os.walk(os.getcwd()):
-        for fname in [f for f in files if os.path.splitext(f)[1] == ".pyc"]:
-            try:
-                os.remove(os.path.join(path, fname))
-            except OSError:
-                pass
-
-
-def _delete_cache():
-    """Remove the proselint cache."""
-    proselint_cache = os.path.join("proselint", "cache")
-    try:
-        shutil.rmtree(proselint_cache)
-    except OSError:
-        pass
 
 
 def print_errors(filename, errors, output_json=False, compact=False):
@@ -91,7 +62,6 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--config', is_flag=False, type=click.Path(),
               help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
-@click.option('--clean', '-c', is_flag=True, help="Clear the cache.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
               help="Output as JSON.")
 @click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
@@ -101,8 +71,7 @@ def print_errors(filename, errors, output_json=False, compact=False):
 @click.option('--dump-default-config', is_flag=True,
               help="Prints default config.")
 @click.argument('paths', nargs=-1, type=click.Path())
-@close_cache_shelves_after
-def proselint(paths=None, config=None, version=None, clean=None,
+def proselint(paths=None, config=None, version=None,
               debug=None, output_json=None, time=None, demo=None, compact=None,
               dump_config=None, dump_default_config=None):
     """Create the CLI for proselint, a linter for prose."""
@@ -118,10 +87,6 @@ def proselint(paths=None, config=None, version=None, clean=None,
         # click.echo(timing_test())
         print("This option does not work for the time being.")
         return
-
-    # In debug or clean mode, delete cache & *.pyc files before running.
-    if debug or clean:
-        clear_cache()
 
     # Use the demo file by default.
     if demo:
@@ -152,7 +117,6 @@ def proselint(paths=None, config=None, version=None, clean=None,
         print_errors(fp, errors, output_json, compact)
 
     # Return an exit code
-    close_cache_shelves()
     if num_errors > 0:
         sys.exit(1)
     else:

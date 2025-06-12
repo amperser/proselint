@@ -1,12 +1,12 @@
-"""Tests for psychology.misc check."""
+"""Tests for psychology check."""
 
-from proselint.checks.psychology import misc as chk
+from proselint.checks import psychology as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for psychology.misc."""
+    """The test class for psychology."""
 
     __test__ = True
 
@@ -16,21 +16,21 @@ class TestCheck(Check):
         return chk
 
     def test_smoke_lie_detector_test(self):
-        """Basic smoke test for psychology.misc.check_lie_detector_test."""
+        """Basic smoke test for psychology.check_lie_detector_test."""
         assert chk.check_lie_detector_test(
             """Smoke phrase with nothing flagged.""") == []
         assert chk.check_lie_detector_test(
             """The defendant took a lie detector test.""") != []
 
     def test_smoke_p_equals_zero(self):
-        """Basic smoke test for psychology.misc.check_p_equals_zero."""
+        """Basic smoke test for psychology.check_p_equals_zero."""
         assert chk.check_p_equals_zero(
             """Smoke phrase with nothing flagged.""") == []
         assert chk.check_p_equals_zero(
             """The effect was highly signficant at p = 0.00.""") != []
 
     def test_smoke_mental_telepathy(self):
-        """Basic smoke test for psychology.misc.check_mental_telepathy."""
+        """Basic smoke test for psychology.check_mental_telepathy."""
         assert chk.check_mental_telepathy(
             """Smoke phrase with nothing flagged.""") == []
         assert chk.check_mental_telepathy(

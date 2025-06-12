@@ -14,10 +14,7 @@ Archaism.
 """
 import re
 
-from proselint.tools import memoize
 
-
-@memoize
 def check(text):
     """Check the text."""
     err = "misc.tense_present"

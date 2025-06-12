@@ -1,12 +1,12 @@
-"""Tests for needless_variants.misc check."""
+"""Tests for needless_variants check."""
 
-from proselint.checks.needless_variants import misc as chk
+from proselint.checks import needless_variants as chk
 
 from .check import Check
 
 
 class TestCheck(Check):
-    """The test class for needless_variants.misc."""
+    """The test class for needless_variants."""
 
     __test__ = True
 
@@ -16,6 +16,6 @@ class TestCheck(Check):
         return chk
 
     def test_smoke(self):
-        """Basic smoke test for needless_variants.misc."""
+        """Basic smoke test for needless_variants."""
         assert self.passes("""Smoke phrase with nothing flagged.""")
         assert not self.passes("""It was an extensible telescope.""")
