@@ -1,6 +1,8 @@
 """
 Elementary Rules of Usage.
 
+This is currently a placeholder module.
+
 ---
 layout:     post
 source:     Strunk & White
@@ -31,33 +33,3 @@ will require nltk & syntactic parsing)
 11. A participial phrase at the beginning of a sentence must refer to the
 grammatical subject.
 """
-
-# from proselint.tools import
-# import re
-
-
-#
-# def check(text):
-#     err = "misc.usage"
-#     msg = "Use of '{}'. {}"
-
-#     bad_words = [
-#         "obviously",
-#         "utilize"
-#     ]
-
-#     explanations = {
-#         "obviously":
-#         "This is obviously an inadvisable word to use.",
-#         "utilize":
-#         r"Do you know anyone who *needs* to utilize the word utilize?"
-#     }
-
-#     errors = []
-#     for word in bad_words:
-#         occ = [m for m in re.finditer(word, text.lower())]
-#         for o in occ:
-#             errors.append((o.start(), o.end(), err,
-#                           msg.format(word, explanations[word])))
-
-#     return errors
