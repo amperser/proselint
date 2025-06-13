@@ -23,6 +23,6 @@ config_paths = [
     # NOTE: This is in reverse priority order - the order config gets merged in
     config_global_path,
     home_path / ".proselintrc.json",
-    config_user_path / "proselint/config.json",
+    config_user_path / "proselint" / "config.json",
     cwd / ".proselintrc.json",
 ]
