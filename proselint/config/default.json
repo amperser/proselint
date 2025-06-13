@@ -72,7 +72,7 @@
         "typography.diacritical_marks": true,
         "typography.punctuation": true,
         "typography.symbols": true,
-        "uncomparables": false,
+        "uncomparables": true,
         "weasel_words.misc": true,
         "weasel_words.very": true,
         "restricted.top1000": false,
