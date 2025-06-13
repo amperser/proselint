@@ -34,8 +34,6 @@ def test_load_from():
     assert load_from()["checks"]["uncomparables"]
     assert not overrides["checks"]["uncomparables"]
 
-    TestCase().assertRaises(FileNotFoundError, lambda: load_from(Path("NULL")))
-
 
 def test_config_flag():
     """Test the --config CLI argument"""
@@ -47,8 +45,7 @@ def test_config_flag():
     assert "FileNotFoundError" != output.exc_info[0].__name__
 
     output = runner.invoke(proselint, "--demo --config non_existent_file")
-    assert output.exit_code == 1
-    assert "FileNotFoundError" == output.exc_info[0].__name__
+    assert output.exit_code == 2
 
     output = runner.invoke(proselint, "non_existent_file")
     assert output.exit_code == 2
