@@ -40,16 +40,13 @@ def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
 
 
 def load_from(config_path: Optional[Path] = None) -> Config:
-    """Read various config paths, allowing user overrides."""
-    result = DEFAULT
-    config_paths = copy.deepcopy(paths.config_paths)
+    """
+    Read various config paths, allowing user overrides.
 
-    if config_path:
-        if not config_path.is_file():
-            raise FileNotFoundError(
-                f"Config file {config_path} does not exist."
-            )
-        config_paths.append(config_path)
+    NOTE: This assumes that a `config_path` is valid if one is provided.
+    """
+    result = DEFAULT
+    config_paths = paths.config_paths + ([config_path] if config_path else [])
 
     for path in config_paths:
         if path.is_file():

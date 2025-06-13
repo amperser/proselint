@@ -60,7 +60,8 @@ def print_errors(filename, errors, output_json=False, compact=False):
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False, type=click.Path(path_type=Path),
+@click.option('--config', is_flag=False,
+              type=click.Path(exists=True, path_type=Path),
               help="Path to configuration file.")
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
