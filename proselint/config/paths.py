@@ -13,11 +13,7 @@ cwd = Path.cwd()
 
 def _get_xdg_path(env_var: str, default: Path) -> Path:
     """Get an XDG path from an environment variable, or a provided default."""
-    return (
-        Path(xdg_loc)
-        if (xdg_loc := os.environ.get(env_var)) is not None
-        else default
-    )
+    return Path(xdg_path) if (xdg_path := os.environ.get(env_var)) else default
 
 
 config_global_path = Path("/etc/proselintrc")
