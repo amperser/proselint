@@ -60,4 +60,4 @@ def test_dump_config():
     assert json.loads(output.stdout) == DEFAULT
 
     output = runner.invoke(proselint, f"--dump-config {FLAG}")
-    assert json.loads(output.stdout) == json.load(CONFIG_FILE.open())
+    assert json.loads(output.stdout) == json.loads(CONFIG_FILE.read_text())

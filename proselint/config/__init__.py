@@ -24,7 +24,7 @@ class Config(TypedDict):
     checks: dict[str, bool]
 
 
-DEFAULT: Config = json.load(files(config).joinpath("default.json").open())
+DEFAULT: Config = json.loads((files(config) / "default.json").read_text())
 
 
 def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
@@ -50,7 +50,10 @@ def load_from(config_path: Optional[Path] = None) -> Config:
 
     for path in config_paths:
         if path.is_file():
-            result: Config = _deepmerge_dicts(result, json.load(path.open()))
+            result: Config = _deepmerge_dicts(
+                result,
+                json.loads(path.read_text()),
+            )
         if path.suffix == ".json" and (old := path.with_suffix("")).is_file():
             warn(
                 f"{old} was found instead of a JSON file. Rename to {path}.",
