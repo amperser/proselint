@@ -28,15 +28,15 @@ DEFAULT: Config = json.load(files(config).joinpath("default.json").open())
 
 
 def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
-    result = copy.deepcopy(base)
-
-    for key, value in overrides.items():
-        if isinstance(value, dict):
-            result[key] = _deepmerge_dicts(result.get(key, {}), value)
-        else:
-            result[key] = value
-
-    return result
+    return base | overrides | {
+        key: (
+            _deepmerge_dicts(b_value, o_value)
+            if isinstance(b_value := base[key], dict)
+            else o_value
+        )
+        for key in set(base) & set(overrides)
+        if isinstance(o_value := overrides[key], dict)
+    }
 
 
 def load_from(config_path: Optional[Path] = None) -> Config:
