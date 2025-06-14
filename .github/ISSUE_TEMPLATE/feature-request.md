@@ -1,28 +1,28 @@
 ---
 name: Feature Request
-about: Make a suggestion on a feature or improvement for the project
-title: ''
-labels: type: feat, status: awaiting-triage
+about: Suggest a feature or improvement
+title: 'feat: [FEATURE]'
+labels: 'status: awaiting-triage, type: feat'
 assignees: ''
 
 ---
 
-## This would solve...
+## Problem space
 
 <!-- A clear and concise description of the problem this feature request relates
 to, if applicable. -->
 
-## The implementation should look like...
+## Implementation
 
 <!-- A clear and concise description of how you expect this to be resolved or
 implemented. -->
 
-## I have also considered...
+## Considerations
 
 <!-- A clear and concise description of any alternative solutions or features
-you have considered. -->
+you have considered, if applicable. -->
 
 ## Additional context
 
-<!-- Add any other context, screenshots or ideas about the feature request
+<!-- Add any other context, screenshots, ideas, or prior art related to the feature request
 here. -->

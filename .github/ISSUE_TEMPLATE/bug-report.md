@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report an issue
 title: ''
-labels: type: fix, status: awaiting-triage, bug: unconfirmed
+labels: 'bug: unconfirmed, status: awaiting-triage, type: fix'
 assignees: ''
 
 ---
@@ -26,9 +26,9 @@ alternatively add your console logs here. -->
 
 ## Environment
 
-<!-- This is just your OS and environment information [e.g. Ubuntu 18.04 LTS,
-Node v14.14.0] -->
+<!-- Your OS and environment information [e.g. Ubuntu 18.04 LTS,
+Python 3.10] -->
 
-### Additional context
+## Additional context
 
 <!-- Add any other context about the problem here. -->
