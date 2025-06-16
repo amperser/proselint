@@ -62,7 +62,7 @@ class CheckFlags(NamedTuple):
     Carry applicable check flag settings.
 
     Currently, this supports:
-    - `limit_results`: The maximum number of results to output.
+    - `results_limit`: The maximum number of results to output.
     - `ppm_threshold`: A threshold check comparing the number of results
     against the text length.
     """
