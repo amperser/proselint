@@ -89,7 +89,7 @@ class CheckFlags(NamedTuple):
             return results
 
         last_result = results[limit - 1]
-        num_extras = limit - num_results
+        num_extras = num_results - limit
         last_message = last_result.message + " Found {} elsewhere.".format(
             "once" if num_extras == 1 else f"{num_extras} times"
         )
