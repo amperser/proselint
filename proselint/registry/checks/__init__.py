@@ -19,6 +19,7 @@ class Padding(StrEnum):
     WHITESPACE = r"\s{}\s"
     SEPARATOR_IN_TEXT = r"(?:^|\W){}[\W$]"
     WORDS_IN_TEXT = r"\b{}\b"
+    NONWORDS_IN_TEXT = r"\B{}\B"
 
     def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
         """Calculate new offset values based on the applied padding."""
