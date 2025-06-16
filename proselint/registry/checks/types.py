@@ -7,7 +7,6 @@ from re import (
     Match,
     Pattern,
     RegexFlag,
-    findall,
     finditer,
     search,
 )
@@ -32,7 +31,7 @@ class Consistency(NamedTuple):
         pair: tuple[str, str],
     ) -> list[CheckResult]:
         """Check a term pair over `text`."""
-        matches = [findall(term, text, flag) for term in pair]
+        matches = [list(finditer(term, text, flag)) for term in pair]
 
         idx_minority = len(matches[0]) > len(matches[1])
         majority_term = pair[not idx_minority]
