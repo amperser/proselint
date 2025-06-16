@@ -7,6 +7,9 @@ from typing import TYPE_CHECKING, Callable, NamedTuple, Optional
 if TYPE_CHECKING:
     from proselint.registry.checks.types import CheckType
 
+BATCH_COUNT = 150
+"""The maximum number of entries per batch for splitting larger checks."""
+
 
 class Padding(StrEnum):
     """Regex padding types for checks."""
