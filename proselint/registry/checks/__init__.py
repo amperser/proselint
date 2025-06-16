@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 from re import RegexFlag
-from typing import TYPE_CHECKING, Callable, NamedTuple, Optional
+from typing import TYPE_CHECKING, NamedTuple, Optional
 
 if TYPE_CHECKING:
     from proselint.registry.checks.types import CheckType
@@ -162,7 +162,7 @@ class Check(NamedTuple):
         """Apply the check over `text`."""
         return (
             self.check_type
-            if isinstance(self.check_type, Callable)
+            if callable(self.check_type)
             else self.check_type.check
         )(text, self)
 
