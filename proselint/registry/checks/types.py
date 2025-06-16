@@ -165,8 +165,8 @@ class ExistenceSimple(NamedTuple):
 
         return [
             CheckResult(
-                start_pos=m.start(),
-                end_pos=m.end(),
+                start_pos=m.start() + check.offset[0],
+                end_pos=m.end() + check.offset[1],
                 check_path=check.path,
                 message=check.message.format(m_text),
                 replacements=None,
