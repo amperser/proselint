@@ -33,6 +33,9 @@ class Consistency(NamedTuple):
         """Check a term pair over `text`."""
         matches = [list(finditer(term, text, flag)) for term in pair]
 
+        if not len(matches[0]) and not len(matches[1]):
+            return []
+
         idx_minority = len(matches[0]) > len(matches[1])
         majority_term = pair[not idx_minority]
         return [
