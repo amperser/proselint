@@ -2,7 +2,6 @@
 
 import json
 import os
-import shutil
 import subprocess
 import sys
 import traceback
@@ -11,6 +10,8 @@ from pathlib import Path
 import click
 
 from proselint.config import DEFAULT, load_from
+from proselint.registry.checks import LintResult
+
 from .tools import errors_to_json, lint
 from .version import __version__
 
@@ -36,26 +37,21 @@ def timing_test(corpus="0.1.0"):
     return time.time() - start
 
 
-def print_errors(filename, errors, output_json=False, compact=False):
+def print_errors(
+    filename: str,
+    results: list[LintResult],
+    *,
+    output_json: bool = False,
+    compact: bool = False,
+) -> None:
     """Print the errors, resulting from lint, for filename."""
     if output_json:
-        click.echo(errors_to_json(errors))
+        click.echo(errors_to_json(results))
 
-    else:
-        for error in errors:
-
-            (check, message, line, column, start, end,
-             extent, severity, replacements) = error
-
-            if compact:
-                filename = "-"
-
-            click.echo(
-                filename + ":" +
-                str(1 + line) + ":" +
-                str(1 + column) + ": " +
-                check + " " +
-                message)
+    if compact:
+        filename = "-"
+    for result in results:
+        click.echo(f"{filename}:{result}")
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -114,9 +110,9 @@ def proselint(paths=None, config=None, version=None,
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-        errors = lint(f, debug, config)
+        errors = lint(f, config, debug=debug)
         num_errors += len(errors)
-        print_errors(fp, errors, output_json, compact)
+        print_errors(fp, errors, output_json=output_json, compact=compact)
 
     # Return an exit code
     if num_errors > 0:
