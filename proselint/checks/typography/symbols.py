@@ -5,81 +5,75 @@ source:     Butterick's Practical Typography
 source_url: http://practicaltypography.com/
 """
 
-from proselint.tools import existence_check, max_errors
+from proselint.registry.checks import Check, CheckFlags, types
+
+check_ellipsis = Check(
+    check_type=types.ExistenceSimple(pattern=r"\.\.\."),
+    path="typography.symbols.ellipsis",
+    message="'...' is an approximation, use the ellipsis symbol '…'.",
+    flags=CheckFlags(results_limit=3),
+)
+
+check_copyright_symbol = Check(
+    check_type=types.ExistenceSimple(pattern=r"\(c\)"),
+    path="typography.symbols.copyright",
+    message="(c) is a goofy alphabetic approximation, use the symbol ©.",
+    flags=CheckFlags(results_limit=3),
+)
+
+check_trademark_symbol = Check(
+    check_type=types.ExistenceSimple(pattern=r"\(tm\)"),
+    path="typography.symbols.trademark",
+    message="(TM) is a goofy alphabetic approximation, use the symbol ™.",
+    flags=CheckFlags(results_limit=3),
+)
 
 
-@max_errors(3)
-def check_ellipsis(text):
-    """Use an ellipsis instead of three dots."""
-    err = "typography.symbols.ellipsis"
-    msg = "'...' is an approximation, use the ellipsis symbol '…'."
-    regex = r"\.\.\."
-
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           offset=0)
+check_registered_trademark_symbol = Check(
+    check_type=types.ExistenceSimple(pattern=r"\(r\)"),
+    path="typography.symbols.trademark",
+    message="(R) is a goofy alphabetic approximation, use the symbol ®.",
+    flags=CheckFlags(results_limit=3),
+)
 
 
-@max_errors(1)
-def check_copyright_symbol(text):
-    """Use the copyright symbol instead of (c)."""
-    err = "typography.symbols.copyright"
-    msg = "(c) is a goofy alphabetic approximation, use the symbol ©."
-    regex = r"\([cC]\)"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
+check_sentence_spacing = Check(
+    check_type=types.ExistenceSimple(pattern=r"\. {3}"),
+    path="typography.symbols.sentence_spacing",
+    message="More than two spaces after the period; use 1 or 2.",
+    flags=CheckFlags(results_limit=3),
+)
 
 
-@max_errors(3)
-def check_trademark_symbol(text):
-    """Use the trademark symbol instead of (TM)."""
-    err = "typography.symbols.trademark"
-    msg = "(TM) is a goofy alphabetic approximation, use the symbol ™."
-    regex = r"\(TM\)"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
+check_multiplication_symbol = Check(
+    check_type=types.ExistenceSimple(pattern=r"\d+ ?x ?\d+"),
+    path="typography.symbols.multiplication",
+    message="Use the multiplication symbol ×, not the letter x.",
+    flags=CheckFlags(results_limit=3),
+)
 
 
-@max_errors(3)
-def check_registered_trademark_symbol(text):
-    """Use the registered trademark symbol instead of (R)."""
-    err = "typography.symbols.trademark"
-    msg = "(R) is a goofy alphabetic approximation, use the symbol ®."
-    regex = r"\([rR]\)"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
+check_curly_quotes = Check(
+    check_type=types.ExistenceSimple(pattern=r"\"[\w\s\d]+\""),
+    path="typography.symbols.curly_quotes",
+    message='Use curly quotes “”, not straight quotes "".',
+    flags=CheckFlags(results_limit=3),
+)
 
 
-@max_errors(3)
-def check_sentence_spacing(text):
-    """Use no more than two spaces after a period."""
-    err = "typography.symbols.sentence_spacing"
-    msg = "More than two spaces after the period; use 1 or 2."
-    regex = r"\. {3}"
+# TODO: fix this or remove it
+"""
+check_en_dash_separated_names
+    # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
+    #     u"Use an en dash (–) to separate names."],
+"""
 
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-
-@max_errors(3)
-def check_multiplication_symbol(text):
-    """Use the multiplication symbol ×, not the lowercase letter x."""
-    err = "typography.symbols.multiplication_symbol"
-    msg = "Use the multiplication symbol ×, not the letter x."
-    regex = r"[0-9]+ ?x ?[0-9]+"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-
-@max_errors(3)
-def check_curly_quotes(text):
-    """Use curly quotes, not straight quotes."""
-    err = "typography.symbols.curly_quotes"
-    msg = 'Use curly quotes “”, not straight quotes "".'
-    regex = r"\"[\w\s\d]+\""
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-#
-# def check_en_dash_separated_names(text):
-#     """Use an en-dash to separate names."""
-#     # [u"[A-Z][a-z]{1,10}[-\u2014][A-Z][a-z]{1,10}",
-#     #     u"Use an en dash (–) to separate names."],
+__register__ = (
+    check_ellipsis,
+    check_copyright_symbol,
+    check_trademark_symbol,
+    check_registered_trademark_symbol,
+    check_sentence_spacing,
+    check_multiplication_symbol,
+    check_curly_quotes,
+)

@@ -1,4 +1,5 @@
-"""Mondegreens.
+"""
+Mondegreens.
 
 ---
 layout:     post
@@ -9,26 +10,27 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Points out preferred form.
+Mondegreens.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "mondegreens"
-    msg = "'{}' is the preferred form."
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "a girl with colitis goes by": "a girl with kaleidoscope eyes",
+            "a part-red gingerbread tree": "a partridge in a pear tree",
+            "attorney and not a republic": "attorney and notary public",
+            "beckon call": "beck and call",
+            "for all intensive purposes": "for all intents and purposes",
+            "Lady Mondegreen": "laid him on the green",
+            "Olive, the other reindeer": "all of the other reindeer",
+            "to the manor born": "to the manner born",
+        }
+    ),
+    path="mondegreens",
+    message="'{}' is the preferred form.",
+)
 
-    list = [
-        ["a girl with kaleidoscope eyes", ["a girl with colitis goes by"]],
-        ["a partridge in a pear tree",    ["a part-red gingerbread tree"]],
-        ["attorney and notary public",    ["attorney and not a republic"]],
-        ["beck and call",                 ["beckon call"]],
-        ["for all intents and purposes",  ["for all intensive purposes"]],
-        ["laid him on the green",         ["Lady Mondegreen"]],
-        ["all of the other reindeer",     ["Olive, the other reindeer"]],
-        ["to the manner born",            ["to the manor born"]],
-    ]
-
-    return preferred_forms_check(text, list, err, msg)
+__register__ = (check,)

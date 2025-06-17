@@ -1,4 +1,5 @@
-"""Too much yelling.
+"""
+Too much yelling.
 
 ---
 layout:     post
@@ -12,15 +13,14 @@ categories: writing
 Never use the phrase 'all hell broke loose'.
 
 """
-from proselint.tools import existence_check, max_errors
 
+from proselint.registry.checks import Check, CheckFlags, types
 
-@max_errors(1)
-def check_repeated_exclamations(text):
-    """Check the text."""
-    err = "cliches.hell"
-    msg = "Never use the words 'all hell broke loose'."
+check = Check(
+    check_type=types.ExistenceSimple(pattern="all hell broke loose"),
+    path="cliches.hell",
+    message="Never use the phrase 'all hell broke loose'.",
+    flags=CheckFlags(results_limit=1),
+)
 
-    regex = r"all hell broke loose"
-
-    return existence_check(text, [regex], err, msg)
+__register__ = (check,)

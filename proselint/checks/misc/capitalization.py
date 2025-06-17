@@ -13,77 +13,81 @@ categories: writing
 Incorrect capitalization.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.preferred"
-    msg = "Incorrect capitalization. '{}' is the preferred form."
+check_terms = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "age": "Age",
+            "Age": "age",
+            "west": "West",
+            "nature": "Nature",
+        }
+    ),
+    path="misc.capitalization.terms",
+    message="Incorrect capitalization. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-    list = [
-        ["Stone Age", ["stone age"]],
-        ["space age", ["Space Age"]],
-        ["the American West", ["the American west"]],
-        ["Mother Nature", ["mother nature"]],
-    ]
+check_seasons = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "Winter": "winter",
+            # "Fall": "fall",
+            "Summer": "summer",
+            # "Spring": "spring",
+        }
+    ),
+    path="misc.capitalization.seasons",
+    message="Seasons shouldn't be capitalized. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+check_months = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "january": "January",
+            "february": "February",
+            # "march": "March",
+            "april": "April",
+            # "may": "May",
+            "june": "June",
+            "july": "July",
+            "august": "August",
+            "september": "September",
+            "october": "October",
+            "november": "November",
+            "december": "December",
+        }
+    ),
+    path="misc.capitalization.months",
+    message="Months should be capitalized. '{}' is the preferred form.",
+    ignore_case=False,
+)
 
+check_days = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday",
+        }
+    ),
+    path="misc.capitalization.days",
+    message=(
+        "Days of the week should be capitalized. '{}' is the preferred form."
+    ),
+    ignore_case=False,
+)
 
-#
-# def check_seasons(text):
-#     """Suggest the preferred forms."""
-#     err = "misc.capitalization.seasons"
-#     msg = "Seasons shouldn't be capitalized. '{}' is the preferred form."
-
-#     list = [
-#         # ["winter",        ["Winter"]],
-#         # ["fall",          ["Fall"]],
-#         # ["summer",        ["Summer"]],
-#         # ["spring",        ["Spring"]],
-#     ]
-
-#     return preferred_forms_check(text, list, err, msg, ignore_case=False)
-
-
-def check_months(text):
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.months"
-    msg = "Months should be capitalized. '{}' is the preferred form."
-
-    list = [
-        ["January", ["january"]],
-        ["February", ["february"]],
-        # ["March",           ["march"]],
-        ["April", ["april"]],
-        # ["May",             ["may"]],
-        ["June", ["june"]],
-        ["July", ["july"]],
-        ["August", ["august"]],
-        ["September", ["september"]],
-        ["October", ["october"]],
-        ["November", ["november"]],
-        ["December", ["december"]],
-    ]
-
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
-
-
-def check_days(text):
-    """Suggest the preferred forms."""
-    err = "misc.capitalization.days"
-    msg = "Days of the week should be capitalized. '{}' is the preferred form."
-
-    list = [
-
-        ["Monday", ["monday"]],
-        ["Tuesday", ["tuesday"]],
-        ["Wednesday", ["wednesday"]],
-        ["Thursday", ["thursday"]],
-        ["Friday", ["friday"]],
-        ["Saturday", ["saturday"]],
-        ["Sunday", ["sunday"]],
-    ]
-
-    return preferred_forms_check(text, list, err, msg, ignore_case=False)
+__register__ = (
+    check_terms,
+    check_seasons,
+    check_months,
+    check_days,
+)

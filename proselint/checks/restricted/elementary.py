@@ -1,4 +1,5 @@
-"""Check if the text contains only words that elementary kids would know.
+"""
+Check if the text contains only words that elementary kids would know.
 
 ---
 layout:     Website
@@ -9,24 +10,21 @@ date:       2023-04-20 11:53:00
 categories: writing
 ---
 
-Elementary
+Elementary.
 
 """
 
 from importlib.resources import files
 
-import proselint
-from proselint.tools import reverse_existence_check
+from proselint.checks import restricted
+from proselint.registry.checks import Check, types
 
-_CSV_PATH = 'checks/restricted/elementary.csv'
-with files(proselint).joinpath(_CSV_PATH).open('r') as data:
-    ELEMENTARY_WORDS = data.read().split()
+ELEMENTARY_TERMS = (files(restricted) / "elementary").read_text().splitlines()
 
+check = Check(
+    check_type=types.ReverseExistence(allowed=set(ELEMENTARY_TERMS)),
+    path="restricted.elementary",
+    message="'{}' is not a word kids learn in elementary school.",
+)
 
-
-def check(text):
-    """Check the text."""
-    err = "restricted.elementary"
-    msg = "'{}' is not a word kids learn in elementary school."
-
-    return reverse_existence_check(text, ELEMENTARY_WORDS, err, msg)
+__register__ = (check,)

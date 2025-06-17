@@ -1,4 +1,5 @@
-"""Oxymorons.
+"""
+Oxymorons.
 
 ---
 layout:     post
@@ -12,36 +13,36 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "amateur expert",
+            "increasingly less",
+            "advancing backwards?",
+            "alludes explicitly to",
+            "explicitly alludes to",
+            "totally obsolescent",
+            "completely obsolescent",
+            "generally always",
+            "usually always",
+            "build down",
+            "conspicuous absence",
+            "exact estimate",
+            "found missing",
+            "intense apathy",
+            "mandatory choice",
+            "nonworking mother",
+            "organized mess",
+            # "pretty ugly",
+            # "sure bet",
+            # "executive secretary",
+        )
+    ),
+    path="oxymorons",
+    message="'{}' is an oxymoron.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "oxymorons"
-    msg = "'{}' is an oxymoron."
-
-    oxymorons = [
-        "amateur expert",
-        "increasingly less",
-        "advancing backwards?",
-        "alludes explicitly to",
-        "explicitly alludes to",
-        "totally obsolescent",
-        "completely obsolescent",
-        "generally always",
-        "usually always",
-        "build down",
-        "conspicuous absence",
-        "exact estimate",
-        "found missing",
-        "intense apathy",
-        "mandatory choice",
-        "nonworking mother",
-        "organized mess",
-        # "pretty ugly",
-        # "sure bet",
-        # "executive secretary",
-    ]
-
-    return existence_check(text, oxymorons, err, msg, offset=1, join=True)
+__register__ = (check,)

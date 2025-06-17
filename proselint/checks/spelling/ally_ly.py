@@ -1,23 +1,22 @@
 """-ally vs. -ly."""
 
-from proselint.tools import preferred_forms_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "academicly": "academically",
+            "accidently": "accidentally",
+            "automaticly": "automatically",
+            "basicly": "basically",
+            "dramaticly": "dramatically",
+            "emotionly": "emotionally",
+            "incidently": "incidentally",
+            "optimisticly": "optimistically",
+        }
+    ),
+    path="spelling.ally_ly",
+    message="-ally vs. -ly. '{}' is the correct spelling.",
+)
 
-
-def check(text):
-    """-ally vs. -ly."""
-    err = "spelling.ally_ly"
-    msg = "-ally vs. -ly. '{}' is the correct spelling."
-
-    preferences = [
-        ["academically", ["academicly"]],
-        ["accidentally", ["accidently"]],
-        ["automatically", ["automaticly"]],
-        ["basically", ["basicly"]],
-        ["dramatically", ["dramaticly"]],
-        ["emotionally", ["emotionly"]],
-        ["incidentally", ["incidently"]],
-        ["optimistically", ["optimisticly"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

@@ -1,4 +1,5 @@
-"""Inconsistent spelling.
+"""
+Inconsistent spelling.
 
 ---
 layout:     post
@@ -18,30 +19,31 @@ However, 'realize' has been used in British-English for centuries and is
 preferred in the Oxford English Dictionary. However, no matter which spelling
 is preferred, one thing is always wrong: you mustn't use two different
 spellings in the same document.
+
 """
-from proselint.tools import consistency_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Consistency(
+        term_pairs=(
+            ("advisor", "adviser"),
+            ("analyse", "analyze"),
+            ("centre", "center"),
+            ("colour", "color"),
+            ("emphasise", "emphasize"),
+            ("finalise", "finalize"),
+            ("focussed", "focused"),
+            ("labour", "labor"),
+            ("learnt", "learned"),
+            ("organise", "organize"),
+            ("organised", "organized"),
+            ("organising", "organizing"),
+            ("recognise", "recognize"),
+        )
+    ),
+    path="spelling.consistency",
+    message="Inconsistent spelling of '{}' (vs. '{}').",
+)
 
-def check(text):
-    """Check the text."""
-    err = "spelling.consistency"
-    msg = "Inconsistent spelling of '{}' (vs. '{}')."
-
-    word_pairs = [
-        ["advisor", "adviser"],
-        # ["analyse", "analyze"],
-        ["centre", "center"],
-        ["colour", "color"],
-        ["emphasise", "emphasize"],
-        ["finalise", "finalize"],
-        ["focussed", "focused"],
-        ["labour", "labor"],
-        ["learnt", "learned"],
-        ["organise", "organize"],
-        ["organised", "organized"],
-        ["organising", "organizing"],
-        ["recognise", "recognize"],
-    ]
-
-    return consistency_check(text, word_pairs, err, msg)
+__register__ = (check,)

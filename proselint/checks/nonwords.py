@@ -1,4 +1,5 @@
-"""Nonwords.
+"""
+Nonwords.
 
 ---
 layout:     post
@@ -12,51 +13,50 @@ categories: writing
 Nonwords.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "doubtlessly": "doubtless' or 'undoubtedly",
+            "analyzation": "analysis",
+            "annoyment": "annoyance",
+            "confirmant": "confirmand",
+            "confirmants": "confirmands",
+            "conversate": "converse",
+            "crained": "cranded",
+            "dispersement": "disbursement' or 'dispersal",
+            "discomforture": "discomfort' or 'discomfiture",
+            "affrontery": "effrontery",
+            "forebearance": "forbearance",
+            "improprietous": "improper",
+            "inclimate": "inclement",
+            "relative inexpense": "relatively low price' or 'affordability",
+            "inimicable": "inimical",
+            "irregardless": "regardless",
+            "minimalize": "minimize",
+            "minimalized": "minimized",
+            "minimalizes": "minimizes",
+            "minimalizing": "minimizing",
+            # muchly
+            "optimalize": "optimize",
+            "paralyzation": "paralysis",
+            "pettifogger": "pettifog",
+            "proprietous": "proper",
+            "squelch": "quell' or 'quash",
+            "seldomly": "seldom",
+            # slinged
+            "thusly": "thus",
+            "uncategorically": "categorically",
+            "undoubtably": "undoubtedly' or 'indubitably",
+            "unequivocable": "unequivocal",
+            "unmercilessly": "mercilessly",
+            "unrelentlessly": "unrelentingly' or relentlessly",
+        }
+    ),
+    path="nonwords",
+    message="Nonword - try '{}'.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "nonwords"
-    msg = "Nonword, try '{}'."
-
-    preferences = [
-
-        ["doubtless' or 'undoubtedly",   ["doubtlessly"]],
-        ["analysis",                     ["analyzation"]],
-        ["annoyance",                    ["annoyment"]],
-        ["confirmand",                   ["confirmant"]],
-        ["confirmands",                  ["confirmants"]],
-        ["converse",                     ["conversate"]],
-        ["cranded",                      ["crained"]],
-        ["disbursement' or 'dispersal",  ["dispersement"]],
-        ["discomfort' or 'discomfiture", ["discomforture"]],
-        ["effrontery",                   ["affrontery"]],
-        ["forbearance",                  ["forebearance"]],
-        ["improper",                     ["improprietous"]],
-        ["inclement",                    ["inclimate"]],
-        ["relatively low price' or 'affordability", ["relative inexpense"]],
-        ["inimical",                     ["inimicable"]],
-        ["regardless",                   ["irregardless"]],
-        ["minimize",                     ["minimalize"]],
-        ["minimized",                    ["minimalized"]],
-        ["minimizes",                    ["minimalizes"]],
-        ["minimizing",                   ["minimalizing"]],
-        # muchly
-        ["optimize",                     ["optimalize"]],
-        ["paralysis",                    ["paralyzation"]],
-        ["pettifog",                     ["pettifogger"]],
-        ["proper",                       ["proprietous"]],
-        ["quell' or 'quash",             ["squelch"]],
-        ["seldom",                       ["seldomly"]],
-        # slinged
-        ["thus",                         ["thusly"]],
-        ["categorically",                ["uncategorically"]],
-        ["undoubtedly' or 'indubitably", ["undoubtably"]],
-        ["unequivocal",                  ["unequivocable"]],
-        ["mercilessly",                  ["unmercilessly"]],
-        ["unrelentingly' or relentlessly", ["unrelentlessly"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

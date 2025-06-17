@@ -1,4 +1,5 @@
-"""Metadiscourse.
+"""
+Metadiscourse.
 
 ---
 layout:     post
@@ -12,21 +13,21 @@ categories: writing
 Points out metadiscourse.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "The preceeding discussion",
+            "The rest of this article",
+            "This chapter discusses",
+            "The preceding paragraph demonstrated",
+            "The previous section analyzed",
+        )
+    ),
+    path="misc.metadiscourse",
+    message="Excessive metadiscourse.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.metadiscourse"
-    msg = "Excessive metadiscourse."
-
-    metadiscourse = [
-        "The preceeding discussion",
-        "The rest of this article",
-        "This chapter discusses",
-        "The preceding paragraph demonstrated",
-        "The previous section analyzed",
-    ]
-
-    return existence_check(text, metadiscourse, err, msg)
+__register__ = (check,)

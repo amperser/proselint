@@ -1,4 +1,5 @@
-"""Skunked terms.
+"""
+Skunked terms.
 
 ---
 layout:     post
@@ -9,28 +10,28 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Archaism.
+Skunked terms.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "bona fides",
+            "deceptively",
+            "decimate",
+            "effete",
+            "fulsome",
+            "hopefully",
+            "impassionate",
+            "Thankfully,",
+        )
+    ),
+    path="skunked_terms",
+    message="'{}' is a a skunked term - impossible to use without issue."
+    "Find some other way to say it.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "skunked_terms"
-    msg = """'{}' is a bit of a skunked term, impossible to use without issue.
-             Find some other way to say it."""
-
-    skunked_terms = [
-        "bona fides",
-        "deceptively",
-        "decimate",
-        "effete",
-        "fulsome",
-        "hopefully",
-        "impassionate",
-        "Thankfully,",
-    ]
-
-    return existence_check(text, skunked_terms, err, msg)
+__register__ = (check,)

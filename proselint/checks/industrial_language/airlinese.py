@@ -1,4 +1,5 @@
-"""Airlinese.
+"""
+Airlinese.
 
 ---
 layout:     post
@@ -12,19 +13,19 @@ categories: writing
 Airlinese.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "enplan(?:e|ed|ing|ement)",
+            "deplan(?:e|ed|ing|ement)",
+            "taking off momentarily",
+        )
+    ),
+    path="industrial_language.airlinese",
+    message="'{}' is airlinese.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "industrial_language.airlinese"
-    msg = "'{}' is airlinese."
-
-    airlinese = [
-        "enplan(?:e|ed|ing|ement)",
-        "deplan(?:e|ed|ing|ement)",
-        "taking off momentarily",
-    ]
-
-    return existence_check(text, airlinese, err, msg)
+__register__ = (check,)

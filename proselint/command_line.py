@@ -10,6 +10,8 @@ from pathlib import Path
 import click
 
 from proselint.config import DEFAULT, load_from
+from proselint.checks import __register__
+from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
 
 from .tools import errors_to_json, lint
@@ -100,6 +102,7 @@ def proselint(paths=None, config=None, version=None,
     if len(paths) == 0:
         filepaths.append('-')
 
+    CheckRegistry().register_many(__register__)
     for fp in filepaths:
         if fp == '-':
             fp = '<stdin>'

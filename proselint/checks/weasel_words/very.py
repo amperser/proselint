@@ -1,4 +1,5 @@
-"""Very.
+"""
+Very.
 
 ---
 layout:     post
@@ -13,17 +14,16 @@ Substitute 'damn' every time you're inclined to write 'very'; your editor will
 delete it and the writing will be just as it should be.
 
 """
-from proselint.tools import existence_check, max_errors
 
+from proselint.registry.checks import Check, CheckFlags, types
 
-@max_errors(1)
+check = Check(
+    check_type=types.ExistenceSimple(pattern="very"),
+    path="weasel_words.very",
+    message="Substitute 'damn' every time you're "
+    "inclined to write 'very'; your editor will delete it "
+    "and the writing will be just as it should be.",
+    flags=CheckFlags(results_limit=1),
+)
 
-def check(text):
-    """Avoid 'very'."""
-    err = "weasel_words.very"
-    msg = ("Substitute 'damn' every time you're "
-           "inclined to write 'very'; your editor will delete it "
-           "and the writing will be just as it should be.")
-    regex = "very"
-
-    return existence_check(text, [regex], err, msg)
+__register__ = (check,)

@@ -1,4 +1,5 @@
-"""Inferior / Superior.
+"""
+Inferior / Superior.
 
 ---
 layout:     post
@@ -12,18 +13,18 @@ categories: writing
 Corrects 'inferior/superior than' to 'inferior/superior to'.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "inferior than": "inferior to",
+            "superior than": "superior to",
+        }
+    ),
+    path="misc.inferior_superior",
+    message="'Inferior' and 'superior' are not true comparatives. Use '{}'.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.inferior_superior"
-    msg = "'Inferior' and 'superior' are not true comparatives. Use '{}'."
-
-    preferences = [
-        ["inferior to",         ["inferior than"]],
-        ["superior to",         ["superior than"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

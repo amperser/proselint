@@ -1,4 +1,5 @@
-"""Sexism.
+"""
+Sexism.
 
 ---
 layout:     post
@@ -12,61 +13,71 @@ categories: writing
 Points out sexist language.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+CHECK_PATH = "social_awareness.sexism"
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "social_awareness.sexism"
-    msg = "Gender bias. Use '{}' instead of '{}'."
+check_sexism = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "anchorman": "anchor",
+            "anchorwoman": "anchor",
+            "chairman": "chair",
+            "chairwoman": "chair",
+            "draftman": "drafter",
+            "draftwoman": "drafter",
+            "ombudsman": "ombuds",
+            "ombudswoman": "ombuds",
+            "tribesman": "tribe member",
+            "tribeswoman": "tribe member",
+            "policeman": "police officer",
+            "policewoman": "police officer",
+            "fireman": "firefighter",
+            "firewoman": "firefighter",
+            "mailman": "mail carrier",
+            "mailwoman": "mail carrier",
+            "herstory": "history",
+            "womyn": "women",
+            "poetess": "poet",
+            "authoress": "author",
+            "waitress": "waiter",
+            "lady lawyer": "lawyer",
+            "woman doctor": "doctor",
+            "female booksalesman": "bookseller",
+            "female airman": "air pilot",
+            "executrix": "executor",
+            "prosecutrix": "prosecutor",
+            "testatrix": "testator",
+            "man and wife": "husband and wife",
+            "chairmen and chairs": "chairs",
+            "men and girls": "men and women",
+            "comedienne": "comedian",
+            "confidante": "confidant",
+            "woman scientist": "scientist",
+            "women scientists": "scientists",
+            # "heroine": "hero"
+        }
+    ),
+    path=CHECK_PATH,
+    message="Gender bias. Use '{}' instead of '{}'.",
+)
 
-    sexism = [
-        ["anchor",           ["anchorman", "anchorwoman"]],
-        ["chair",            ["chairman", "chairwoman"]],
-        ["drafter",          ["draftman", "draftwoman"]],
-        ["ombuds",           ["ombudsman", "ombudswoman"]],
-        ["tribe member",     ["tribesman", "tribeswoman"]],
-        ["police officer",   ["policeman", "policewoman"]],
-        ["firefighter",      ["fireman", "firewoman"]],
-        ["mail carrier",     ["mailman", "mailwoman"]],
-        ["history",          ["herstory"]],
-        ["women",            ["womyn"]],
-        ["poet",             ["poetess"]],
-        ["author",           ["authoress"]],
-        ["waiter",           ["waitress"]],
-        ["lawyer",           ["lady lawyer"]],
-        ["doctor",           ["woman doctor"]],
-        ["bookseller",       ["female booksalesman"]],
-        ["air pilot",        ["female airman"]],
-        ["executor",         ["executrix"]],
-        ["prosecutor",       ["prosecutrix"]],
-        ["testator",         ["testatrix"]],
-        ["husband and wife", ["man and wife"]],
-        ["chairs",           ["chairmen and chairs"]],
-        ["men and women",    ["men and girls"]],
-        ["comedian",         ["comedienne"]],
-        ["confidant",        ["confidante"]],
-        ["scientist",        ["woman scientist"]],
-        ["scientists",       ["women scientists"]]
-        # ["hero",             ["heroine"]]
-    ]
+check_preferred = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "anchorperson": "anchor",
+            "chairperson": "chair",
+            "draftperson": "drafter",
+            "ombudsperson": "ombuds",
+            "tribesperson": "tribe member",
+            "policeperson": "police officer",
+            "fireperson": "firefighter",
+            "mailperson": "mail carrier",
+        }
+    ),
+    path=CHECK_PATH,
+    message="Not a preferred form. Use '{}' instead of '{}'.",
+)
 
-    errors = preferred_forms_check(text, sexism, err, msg, ignore_case=False)
-
-    msg = "Not a preferred form. Use '{}' instead of '{}'."
-    pref = [
-            ["anchor",           ["anchorperson"]],
-            ["chair",            ["chairperson"]],
-            ["drafter",          ["draftperson"]],
-            ["ombuds",           ["ombudsperson"]],
-            ["tribe member",     ["tribesperson"]],
-            ["police officer",   ["policeperson"]],
-            ["firefighter",      ["fireperson"]],
-            ["mail carrier",     ["mailperson"]],
-    ]
-    errors.extend(
-        preferred_forms_check(text, pref, err, msg, ignore_case=False)
-    )
-
-    return errors
+__register__ = (check_sexism, check_preferred)

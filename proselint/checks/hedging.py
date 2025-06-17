@@ -1,4 +1,5 @@
-"""Hedging.
+"""
+Hedging.
 
 ---
 layout:     post
@@ -12,19 +13,19 @@ categories: writing
 Points out hedging.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "I would argue that",
+            ", so to speak",
+            "to a certain degree",
+        )
+    ),
+    path="hedging",
+    message="Hedging. Just say it.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "hedging.misc"
-    msg = "Hedging. Just say it."
-
-    narcissism = [
-        "I would argue that",
-        ", so to speak",
-        "to a certain degree",
-    ]
-
-    return existence_check(text, narcissism, err, msg)
+__register__ = (check,)

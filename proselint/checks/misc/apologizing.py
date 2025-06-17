@@ -1,4 +1,5 @@
-"""Excessive apologizing.
+"""
+Excessive apologizing.
 
 ---
 layout:     post
@@ -12,17 +13,13 @@ categories: writing
 Points out excessive apologizing.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.ExistenceSimple(pattern="More research is needed"),
+    path="misc.apologizing",
+    message="Excessive apologizing.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.apologizing"
-    msg = "Excessive apologizing."
-
-    narcissism = [
-        "More research is needed",
-    ]
-
-    return existence_check(text, narcissism, err, msg)
+__register__ = (check,)

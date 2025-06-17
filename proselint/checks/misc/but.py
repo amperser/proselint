@@ -1,4 +1,5 @@
-"""Don't start a paragraph with 'But'.
+"""
+Don't start a paragraph with 'But'.
 
 ---
 layout:
@@ -12,14 +13,14 @@ categories: writing
 Paragraphs should not start with certain bad words.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(items=(r"(?:^|([\.\!\?]\s*))But",)),
+    path="misc.but",
+    message="No paragraph should start with a 'But'.",
+    ignore_case=False,
+)
 
-def check(text):
-    """Do not start a paragraph with a 'But'."""
-    err = "misc.but"
-    msg = "No paragraph should start with a 'But'."
-    regex = r"(^|([\n\r]+))(\s*)But"
-
-    return existence_check(text, [regex], err, msg, ignore_case=False)
+__register__ = (check,)

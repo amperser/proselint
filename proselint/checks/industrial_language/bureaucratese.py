@@ -1,4 +1,5 @@
-"""Bureaucratese.
+"""
+Bureaucratese.
 
 ---
 layout:     post
@@ -12,18 +13,13 @@ categories: writing
 Bureaucratese.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.ExistenceSimple(pattern="meets? with your approval"),
+    path="industrial_language.bureaucratese",
+    message="'{}' is bureaucratese.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "industrial_language.bureaucratese"
-    msg = "'{}' is bureaucratese."
-
-    bureaucratese = [
-        "meet with your approval",
-        "meets with your approval",
-    ]
-
-    return existence_check(text, bureaucratese, err, msg, join=True)
+__register__ = (check,)

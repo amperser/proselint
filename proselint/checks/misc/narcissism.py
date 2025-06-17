@@ -1,4 +1,5 @@
-"""Professional narcissism.
+"""
+Professional narcissism.
 
 ---
 layout:     post
@@ -9,20 +10,18 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Points out academic narcissism.
+Points out professional narcissism.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.ExistenceSimple(
+        pattern="In recent years, an increasing number of [a-zA-Z]{3,}sts have",
+    ),
+    path="misc.narcissism",
+    message="Professional narcissism. Talk about the subject, not its study.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.narcissism"
-    msg = "Professional narcissism. Talk about the subject, not its study."
-
-    narcissism = [
-        "In recent years, an increasing number of [a-zA-Z]{3,}sts have",
-    ]
-
-    return existence_check(text, narcissism, err, msg)
+__register__ = (check,)

@@ -1,4 +1,5 @@
-"""Currency.
+"""
+Currency.
 
 ---
 layout:     post
@@ -9,20 +10,19 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Symbols.
+Currency symbols.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, Padding, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(r"\$[\d]* ?(?:dollars|usd|us dollars)",),
+        padding=Padding.SEPARATOR_IN_TEXT,
+    ),
+    path="misc.currency",
+    message="Incorrect use of symbols in {}.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "misc.currency"
-    msg = "Incorrect use of symbols in {}."
-
-    symbols = [
-        r"\$[\d]* ?(?:dollars|usd|us dollars)"
-    ]
-
-    return existence_check(text, symbols, err, msg)
+__register__ = (check,)

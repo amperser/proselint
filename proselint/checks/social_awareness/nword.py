@@ -14,17 +14,12 @@ Take responsibility for the words you want to say.
 
 """
 
-from proselint.tools import existence_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.ExistenceSimple(pattern=r"the n-?word"),
+    path="social_awareness.nword",
+    message="Take responsibility for the words you want to say.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "social_awareness.nword"
-    msg = "Take responsibility for the words you want to say."
-
-    list = [
-        "the n-word",
-        "the n word",
-    ]
-
-    return existence_check(text, list, err, msg)
+__register__ = (check,)

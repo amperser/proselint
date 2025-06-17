@@ -1,4 +1,5 @@
-"""Common errors with institution names.
+"""
+Common errors with institution names.
 
 ---
 layout:     post
@@ -12,21 +13,23 @@ categories: writing
 Institution names.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+"""
+source: Virginia Tech Division of Student Affairs
+source_url: http://bit.ly/2en1zbv
+"""
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "Virginia Polytechnic and State University": (
+                "Virginia Polytechnic Institute and State University"
+            ),
+        }
+    ),
+    path="misc.institution_name",
+    message="Incorrect name. Use '{}' instead of '{}'.",
+)
 
-def check_vtech(text):
-    """Suggest the correct name.
-
-    source: Virginia Tech Division of Student Affairs
-    source_url: http://bit.ly/2en1zbv
-    """
-    err = "misc.institution_name.vtech"
-    msg = "Incorrect name. Use '{}' instead of '{}'."
-
-    institution = [
-        ["Virginia Polytechnic Institute and State University",
-         ["Virginia Polytechnic and State University"]],
-    ]
-    return preferred_forms_check(text, institution, err, msg)
+__register__ = (check,)

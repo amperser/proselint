@@ -1,19 +1,17 @@
 """-ve vs. -of."""
 
-from proselint.tools import preferred_forms_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "could of": "could've",
+            "should of": "should've",
+            "would of": "would've",
+        }
+    ),
+    path="spelling.ve_of",
+    message="-ve vs. -of. '{}' is the preferred spelling.",
+)
 
-
-def check(text):
-    """-ve vs. -of."""
-    err = "spelling.ve_of"
-    msg = "-ve vs. -of. '{}' is the preferred spelling."
-
-    preferences = [
-
-        ["could've", ["could of"]],
-        ["should've", ["should of"]],
-        ["would've", ["would of"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

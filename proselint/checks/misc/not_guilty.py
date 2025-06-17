@@ -1,4 +1,5 @@
-"""Not guilty beyond a reasonable doubt.
+"""
+Not guilty beyond a reasonable doubt.
 
 ---
 layout:     post
@@ -18,18 +19,18 @@ reasonable doubt."
 If somebody is found not guilty, say "not guilty." Omit the standard
 ("beyond a reasonable doubt") to prevent a miscue.
 
-Not guilty beyond a reasonable doubt
+Not guilty beyond a reasonable doubt.
+
 """
 
+from proselint.registry.checks import Check, types
 
-from proselint.tools import existence_check
+check = Check(
+    check_type=types.ExistenceSimple(
+        pattern=r"not guilty beyond (a |any )?reasonable doubt",
+    ),
+    path="misc.not_guilty",
+    message="'not guilty beyond a reasonable doubt' is an ambiguous phrasing.",
+)
 
-
-
-def check(text):
-    """Check the text."""
-    err = "misc.not_guilty"
-    msg = "'not guilty beyond a reasonable doubt' is an ambiguous phrasing."
-    regex = r"not guilty beyond (a |any )?reasonable doubt"
-
-    return existence_check(text, [regex], err, msg)
+__register__ = (check,)

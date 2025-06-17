@@ -1,4 +1,5 @@
-"""Use of greylisted words.
+"""
+Use of greylisted words.
 
 ---
 layout:     post
@@ -9,39 +10,41 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Strunk & White say:
-
+Use of greylisted words.
 
 """
-import re
+
+from itertools import chain
+
+from proselint.registry.checks import Check, CheckResult, types
+
+GREYLISTED_TERMS = {
+    "obviously": "This is obviously an inadvisable word to use.",
+    "utilize": "Do you know anyone who needs to utilize the word utilize?",
+}
 
 
-def check(text):
+def _check_greylist(text: str, check: Check) -> list[CheckResult]:
     """Check the text."""
-    err = "misc.greylist"
-    msg = "Use of '{}'. {}"
+    return list(
+        chain.from_iterable(
+            types.ExistenceSimple(pattern=term).check(
+                text,
+                Check(
+                    check_type=check.check_type,
+                    path=check.path,
+                    message=check.message.format(term, explanation),
+                ),
+            )
+            for term, explanation in GREYLISTED_TERMS.items()
+        )
+    )
 
-    bad_words = [
-        "obviously",
-        "utilize"
-    ]
 
-    explanations = {
-        "obviously":
-        "This is obviously an inadvisable word to use.",
-        "utilize":
-        r"Do you know anyone who *needs* to utilize the word utilize?"
-    }
+check_greylist = Check(
+    check_type=_check_greylist,
+    path="misc.greylist",
+    message="Use of '{}'. {}",
+)
 
-    errors = []
-    for word in bad_words:
-        occ = [m for m in re.finditer(word, text.lower())]
-        for o in occ:
-            errors.append((
-                o.start(),
-                o.end(),
-                err,
-                msg.format(word, explanations[word]),
-                None))
-
-    return errors
+__register__ = (check_greylist,)

@@ -1,19 +1,17 @@
 """-ance vs. -ence."""
 
-from proselint.tools import preferred_forms_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "appearence": "appearance",
+            "occurrance": "occurrence",
+            "resistence": "resistance",
+        }
+    ),
+    path="spelling.ance_ence",
+    message="-ance vs. -ence. '{}' is the correct spelling.",
+)
 
-
-def check(text):
-    """-ance vs. -ence."""
-    err = "spelling.ance_ence"
-    msg = "-ance vs. -ence. '{}' is the correct spelling."
-
-    preferences = [
-
-        ["appearance", ["appearence"]],
-        ["occurrence", ["occurrance"]],
-        ["resistance", ["resistence"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

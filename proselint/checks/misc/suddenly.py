@@ -1,4 +1,5 @@
-"""Suddenly.
+"""
+Suddenly.
 
 ---
 layout:     post
@@ -10,7 +11,7 @@ categories: writing
 ---
 
 “Sudden” means quickly and without warning, but using the word “suddenly” both
-slows down the action and warns your reader. Do you know what’s more effective
+slows down the action and warns your reader. Do you know what's more effective
 for creating the sense of the sudden? Just saying what happens.
 
 When using “suddenly,” you communicate through the narrator that the action
@@ -20,20 +21,20 @@ nondescript, failing to communicate the nature of the action itself; providing
 no sensory experience or concrete fact to hold on to. Just … suddenly.
 
 Feel free to employ “suddenly” in situations where the suddenness is not
-apparent in the action itself. For example, in “Suddenly, I don’t hate you
+apparent in the action itself. For example, in “Suddenly, I don't hate you
 anymore,” the “suddenly” substantially changes the way we think about the
 shift in emotional calibration.
+
 """
-from proselint.tools import existence_check, max_errors
 
+from proselint.registry.checks import Check, CheckFlags, types
 
-@max_errors(3)
+check = Check(
+    check_type=types.ExistenceSimple(pattern="Suddenly,"),
+    path="misc.suddenly",
+    message="Suddenly is nondescript, slows the action, and warns your reader.",
+    flags=CheckFlags(results_limit=3),
+    ignore_case=False,
+)
 
-def check(text):
-    """Advice on sudden vs suddenly."""
-    err = "misc.suddenly"
-    msg = "Suddenly is nondescript, slows the action, and warns your reader."
-    regex = "Suddenly,"
-
-    return existence_check(text, [regex], err, msg, require_padding=False,
-                           offset=-1, ignore_case=False)
+__register__ = (check,)

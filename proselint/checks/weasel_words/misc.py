@@ -1,4 +1,5 @@
-"""Weasel words.
+"""
+Weasel words.
 
 ---
 layout:     post
@@ -13,10 +14,4 @@ Weasel words clearly weaken various aspects of a number of your sentences.
 
 """
 
-
-# def check(text):
-
-#     error_code = "weasel_words.misc"
-#     msg = "Weasel words present."
-
-#     return [(1, 1, error_code, msg)]
+__register__ = ()

@@ -11,49 +11,37 @@ categories: writing
 ---
 """
 
-from proselint.tools import (
-    consistency_check,
-    existence_check,
-    max_errors,
-    ppm_threshold,
+from proselint.registry.checks import Check, CheckFlags, types
+
+check_misplaced = Check(
+    check_type=types.Existence(items=(r"et\. al", r"et\. al\.")),
+    path="typography.punctuation.misplaced",
+    message="Misplaced punctuation. It's 'et al.'",
 )
 
+check_exclamations_ppm = Check(
+    check_type=types.ExistenceSimple(pattern=r"\w!"),
+    path="typography.punctuation.exclamation",
+    message="More than 30 ppm of exclamations. Keep them under control.",
+    flags=CheckFlags(ppm_threshold=30),
+)
 
-def check_misplaced(text):
-    """Check the text."""
-    err = "typography.punctuation.misplaced"
-    msg = "Misplaced punctuation. It's 'et al.'"
+check_hyperbole = Check(
+    check_type=types.ExistenceSimple(pattern=r"\w*(?:!|\?){2,}"),
+    path="typography.punctuation.hyperbole",
+    message="'{}' is hyperbolic.",
+    flags=CheckFlags(results_limit=1),
+)
 
-    list = ["et. al", "et. al."]
-    return existence_check(text, list, err, msg, join=True)
+check_spacing = Check(
+    check_type=types.Consistency(term_pairs=((r"[\.\?!] \w", r"[\.\?!]  \w"),)),
+    path="typography.punctuation.spacing",
+    message="Inconsistent spacing after period (1 vs. 2 spaces).",
+)
 
-
-@ppm_threshold(30)
-def check_exclamations_ppm(text):
-    """Make sure that the exclamation ppm is under 30."""
-    err = "typography.punctuation.exclamation"
-    msg = "More than 30 ppm of exclamations. Keep them under control."
-
-    regex = r"\w!"
-
-    return existence_check(text, [regex], err, msg, require_padding=False)
-
-
-@max_errors(1)
-def check_hyperbole(text):
-    """Check the text."""
-    err = "typography.punctuation.hyperbole"
-    msg = "'{}' is hyperbolic."
-
-    words = [r"\w*!{2,}", r"\w*\?{2,}"]
-
-    return existence_check(text, words, err, msg)
-
-
-def check_spacing(text):
-    """Check the text."""
-    err = "typography.punctuation.spacing"
-    msg = "Inconsistent spacing after period (1 vs. 2 spaces)."
-
-    regex = [r"[\.\?!] [A-Z]", r"[\.\?!]  [A-Z]"]
-    return consistency_check(text, [regex], err, msg)
+__register__ = (
+    check_misplaced,
+    check_exclamations_ppm,
+    check_hyperbole,
+    check_spacing,
+)
