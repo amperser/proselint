@@ -123,7 +123,9 @@ class CheckFlags(NamedTuple):
     ) -> list[CheckResult]:
         """Apply the specified flags to a list of `results`."""
         return CheckFlags.truncate(
-            CheckFlags.apply_threshold(results, self.ppm_threshold, text_len),
+            CheckFlags.apply_threshold(results, self.ppm_threshold, text_len)
+            if self.ppm_threshold
+            else results,
             self.results_limit,
         )
 
