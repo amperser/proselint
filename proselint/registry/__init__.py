@@ -1,6 +1,8 @@
 """Check registry for proselint."""
 
-from typing import Optional, Self
+from importlib import import_module
+from itertools import chain
+from typing import ClassVar, Optional, Self
 
 from proselint.config import DEFAULT
 from proselint.registry.checks import Check
@@ -9,7 +11,7 @@ from proselint.registry.checks import Check
 class CheckRegistry:
     """A global registry for lint checks."""
 
-    _checks: list[Check]
+    _checks: ClassVar[list[Check]] = []
     enabled_checks: Optional[dict[str, bool]] = None
     _instance: Optional[Self] = None
 
@@ -18,10 +20,6 @@ class CheckRegistry:
         if cls._instance is None:
             cls._instance = object.__new__(cls)
         return cls._instance
-
-    def __init__(self) -> None:
-        """Instantiate the registry. This should only happen once."""
-        self._checks = []
 
     def register(self, check: Check) -> None:
         """Register one check."""
