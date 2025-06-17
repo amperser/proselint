@@ -168,12 +168,12 @@ class ExistenceSimple(NamedTuple):
                 start_pos=m.start() + check.offset[0],
                 end_pos=m.end() + check.offset[1],
                 check_path=check.path,
-                message=check.message.format(m_text),
+                message=check.message.format(m.group(0).strip()),
                 replacements=None,
             )
             for m in finditer(self.pattern, text, flag)
             if not any(
-                search(exception, (m_text := m.group(0).strip()), flag)
+                search(exception, m.group(0).strip(), flag)
                 for exception in self.exceptions
             )
         ]
