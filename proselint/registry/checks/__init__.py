@@ -76,7 +76,7 @@ class CheckFlags(NamedTuple):
     # of truncating / alerting if conditions are met after the fact. This may
     # be achieved via iterators instead of working with final lists.
     results_limit: int = 0
-    ppm_threshold: float = 0.0
+    ppm_threshold: int = 0
 
     @staticmethod
     def truncate(results: list[CheckResult], limit: int) -> list[CheckResult]:
@@ -107,7 +107,7 @@ class CheckFlags(NamedTuple):
 
     @staticmethod
     def apply_threshold(
-        results: list[CheckResult], threshold: float, length: int
+        results: list[CheckResult], threshold: int, length: int
     ) -> list[CheckResult]:
         """Return an error if the specified PPM `threshold` is surpassed."""
         if threshold == 0 or length == 0 or (num_results := len(results)) < 2:
