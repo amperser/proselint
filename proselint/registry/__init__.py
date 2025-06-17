@@ -8,6 +8,17 @@ from proselint.config import DEFAULT
 from proselint.registry.checks import Check
 
 
+def build_modules_register(
+    modules: tuple[str, ...], package: str
+) -> tuple[Check, ...]:
+    """Build a register tuple over `modules`."""
+    return tuple(
+        chain.from_iterable(
+            import_module(module, package).__register__ for module in modules
+        )
+    )
+
+
 class CheckRegistry:
     """A global registry for lint checks."""
 
