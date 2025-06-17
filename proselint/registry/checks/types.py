@@ -21,7 +21,7 @@ CheckFn = Callable[[str, Check], list[CheckResult]]
 class Consistency(NamedTuple):
     """Carry consistency check information."""
 
-    term_pairs: tuple[tuple[str, str]]
+    term_pairs: tuple[tuple[str, str], ...]
 
     @staticmethod
     def process_pair(
