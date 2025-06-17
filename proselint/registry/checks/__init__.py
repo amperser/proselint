@@ -155,9 +155,8 @@ class Check(NamedTuple):
         partial_segments = partial.split(".")
         path_segments = self.path_segments
 
-        return (
-            len(partial_segments) <= len(path_segments)
-            and all(a == b for a, b in zip(path_segments, partial_segments))
+        return len(partial_segments) <= len(path_segments) and all(
+            a == b for a, b in zip(path_segments, partial_segments)
         )
 
     def check(self, text: str) -> list[CheckResult]:
