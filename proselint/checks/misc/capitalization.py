@@ -19,10 +19,10 @@ from proselint.registry.checks import Check, types
 check_terms = Check(
     check_type=types.PreferredFormsSimple(
         items={
-            "age": "Age",
-            "Age": "age",
-            "west": "West",
-            "nature": "Nature",
+            "stone age": "Stone Age",
+            "Space Age": "space age",
+            "the American west": "the American West",
+            "mother nature": "Mother Nature",
         }
     ),
     path="misc.capitalization.terms",
