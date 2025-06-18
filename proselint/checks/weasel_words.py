@@ -1,5 +1,6 @@
 """
-Very.
+
+Weasel words.
 
 ---
 layout:     post
@@ -10,14 +11,13 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Substitute 'damn' every time you're inclined to write 'very'; your editor will
-delete it and the writing will be just as it should be.
+Weasel words.
 
 """
 
 from proselint.registry.checks import Check, CheckFlags, types
 
-check = Check(
+check_very = Check(
     check_type=types.ExistenceSimple(pattern="very"),
     path="weasel_words.very",
     message="Substitute 'damn' every time you're "
@@ -26,4 +26,4 @@ check = Check(
     flags=CheckFlags(results_limit=1),
 )
 
-__register__ = (check,)
+__register__ = (check_very,)
