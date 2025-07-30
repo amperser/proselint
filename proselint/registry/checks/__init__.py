@@ -17,7 +17,7 @@ class Padding(StrEnum):
     RAW = r"{}"
     SAFE_JOIN = r"(?:{})"
     WHITESPACE = r"\s{}\s"
-    SEPARATOR_IN_TEXT = r"(?:^|\W){}[\W$]"
+    SEPARATOR_IN_TEXT = r"(?:^|\W){}(?:\W|$)"
     WORDS_IN_TEXT = r"\b{}\b"
     NONWORDS_IN_TEXT = r"\B{}\B"
 
