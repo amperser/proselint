@@ -42,7 +42,7 @@
           ++ [
             pyenv
             pkgs.uv
-            pkgs.pyright
+            pkgs.basedpyright
             pkgs.hyperfine
           ];
       };
@@ -62,7 +62,7 @@
       };
     });
 
-    checks = forAllSystems (system: _: {
+    checks = forAllSystems (system: pkgs: {
       pre-commit-check = hooks.lib.${system}.run {
         src = ./.;
         hooks = {
@@ -71,9 +71,15 @@
           mixed-line-endings.enable = true;
           markdownlint.enable = true;
           ruff.enable = true;
-          pyright.enable = true;
+          pyright = {
+            enable = true;
+            package = pkgs.basedpyright;
+          };
           convco.enable = true;
-          alejandra.enable = true;
+          alejandra = {
+            enable = true;
+            package = pkgs.alejandra;
+          };
           statix = {
             enable = true;
             settings.ignore = ["/.direnv"];
