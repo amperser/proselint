@@ -88,7 +88,7 @@ class PreferredFormsSimple(NamedTuple):
     padding: Padding = Padding.WORDS_IN_TEXT
 
     def map_match(
-        self, check: Check, offset: tuple[int, int], match: Match
+        self, check: Check, offset: tuple[int, int], match: Match[str]
     ) -> CheckResult:
         """Convert a `re.Match` object to a `CheckResult`."""
         original = match.group(0).strip()
@@ -190,7 +190,7 @@ class ReverseExistence(NamedTuple):
 
     @staticmethod
     def _allowed_match(
-        allowed: set[str], match: Match, *, ignore_case: bool = True
+        allowed: set[str], match: Match[str], *, ignore_case: bool = True
     ) -> bool:
         m_text = match.group(0)
         return (
