@@ -179,6 +179,9 @@ class ExistenceSimple(NamedTuple):
         ]
 
 
+_DEFAULT_TOKENIZER = rcompile(r"\w[\w'-]+\w")
+
+
 class ReverseExistence(NamedTuple):
     """Carry reverse existence check information."""
 
@@ -186,7 +189,7 @@ class ReverseExistence(NamedTuple):
 
     # TODO: benchmark performance of this and a digits check compared with
     # excluding digits from results in the first place
-    TOKENIZER: Pattern[str] = rcompile(r"\w[\w'-]+\w")
+    TOKENIZER: Pattern[str] = _DEFAULT_TOKENIZER
 
     @staticmethod
     def _allowed_match(
@@ -214,7 +217,7 @@ class ReverseExistence(NamedTuple):
                 message=check.message.format(m.group(0)),
                 replacements=None,
             )
-            for m in ReverseExistence.TOKENIZER.finditer(text)
+            for m in self.TOKENIZER.finditer(text)
             if not allowed_match(m)
         ]
 
