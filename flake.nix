@@ -74,6 +74,7 @@
           pyright = {
             enable = true;
             package = pkgs.basedpyright;
+            entry = "${pkgs.basedpyright}/bin/basedpyright";
           };
           convco.enable = true;
           alejandra = {
