@@ -14,12 +14,11 @@ Currency symbols.
 
 """
 
-from proselint.registry.checks import Check, Padding, types
+from proselint.registry.checks import Check, types
 
 check = Check(
-    check_type=types.Existence(
-        items=(r"\$[\d]* ?(?:dollars|usd|us dollars)",),
-        padding=Padding.SEPARATOR_IN_TEXT,
+    check_type=types.ExistenceSimple(
+        pattern=r"\B\$[\d]* ?(?:dollars|usd|us dollars)\b",
     ),
     path="misc.currency",
     message="Incorrect use of symbols in {}.",
