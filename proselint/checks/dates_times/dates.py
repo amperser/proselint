@@ -23,7 +23,7 @@ REGEX_MONTHS = Padding.SAFE_JOIN.format("|".join(calendar.month_name[1:]))
 checks_decade_apostrophes = tuple(
     Check(
         check_type=types.ExistenceSimple(pattern=pattern),
-        path="dates_times.dates,decade_apostrophes",
+        path="dates_times.dates.decade_apostrophes",
         message="Apostrophes aren't needed for decades.",
     )
     for pattern in (r"\d0\'s", r"\d\d\d0\'s")
