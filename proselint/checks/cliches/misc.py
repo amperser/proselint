@@ -18,7 +18,7 @@ source_url: http://bit.ly/1T4alrY
 """
 check_garner = Check(
     check_type=types.Existence(items=tuple(GARNER_CLICHES)),
-    path="cliches.garner",
+    path="cliches.misc.garner",
     message=CHECK_MESSAGE,
 )
 
@@ -29,7 +29,7 @@ source_url: https://github.com/btford/write-good
 checks_write_good = tuple(
     Check(
         check_type=types.Existence(items=items),
-        path="cliches.write_good",
+        path="cliches.misc.write_good",
         message=CHECK_MESSAGE,
     )
     for items in batched(WRITE_GOOD_CLICHES, BATCH_COUNT)
@@ -41,7 +41,7 @@ source_url: https://directory.fsf.org/wiki/Diction
 """
 check_diction = Check(
     check_type=types.Existence(items=tuple(DICTION_CLICHES)),
-    path="cliches.gnu_diction",
+    path="cliches.misc.gnu_diction",
     message=CHECK_MESSAGE,
 )
 
