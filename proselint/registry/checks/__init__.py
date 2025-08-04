@@ -15,9 +15,18 @@ class Padding(StrEnum):
     """Regex padding types for checks."""
 
     RAW = r"{}"
+    """Bare text with no padding."""
     SAFE_JOIN = r"(?:{})"
+    """Encapsulate patterns in an anonymous group for joining, e.g. x|y|z."""
     WORDS_IN_TEXT = r"\b{}\b"
+    """
+    Match word position boundaries around the pattern.
+
+    This matches any position between a word character and a non-word character
+    or position.
+    """
     NONWORDS_IN_TEXT = r"\B{}\B"
+    """Match any position that is not a word boundary around the pattern."""
 
     def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
         """Calculate new offset values based on the applied padding."""
