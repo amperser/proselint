@@ -4,7 +4,7 @@
 from bisect import bisect_right
 from itertools import accumulate, chain, combinations, repeat
 from re import escape
-from string import ascii_lowercase
+from string import ascii_letters, ascii_lowercase
 
 from hypothesis import assume, given
 from hypothesis import strategies as st
@@ -385,7 +385,7 @@ def test_existence_s_in_text(
 # ReverseExistence
 TOKEN_STRATEGY = st.from_regex(
     types._DEFAULT_TOKENIZER,  # pyright: ignore[reportPrivateUsage]
-    alphabet=f"{ascii_lowercase}'-_",
+    alphabet=f"{ascii_letters}'-_",
 )
 TOKENS_STRATEGY = st.lists(TOKEN_STRATEGY, min_size=1, max_size=BATCH_COUNT)
 NON_TOKEN_STRATEGY = st.one_of(st.just(r"\w\w?"), st.just(r"\w*\d+\w*"))

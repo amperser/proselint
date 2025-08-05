@@ -1,8 +1,7 @@
 """Check types."""
 
-import string
 from functools import partial
-from itertools import chain
+from itertools import chain, filterfalse
 from re import (
     Match,
     Pattern,
@@ -179,7 +178,9 @@ class ExistenceSimple(NamedTuple):
         ]
 
 
-_DEFAULT_TOKENIZER = rcompile(r"\w[\w'-]+\w")
+_DEFAULT_TOKENIZER = rcompile(
+    Padding.WORDS_IN_TEXT.format(r"[a-zA-Z_][a-zA-Z_'-]+[a-zA-Z_]")
+)
 
 
 class ReverseExistence(NamedTuple):
@@ -187,8 +188,6 @@ class ReverseExistence(NamedTuple):
 
     allowed: set[str]
 
-    # TODO: benchmark performance of this and a digits check compared with
-    # excluding digits from results in the first place
     TOKENIZER: Pattern[str] = _DEFAULT_TOKENIZER
 
     @staticmethod
@@ -196,10 +195,7 @@ class ReverseExistence(NamedTuple):
         allowed: set[str], match: Match[str], *, ignore_case: bool = True
     ) -> bool:
         m_text = match.group(0)
-        return (
-            any(char in string.digits for char in m_text)
-            or (m_text.lower() if ignore_case else m_text) in allowed
-        )
+        return (m_text.lower() if ignore_case else m_text) in allowed
 
     def check(self, text: str, check: Check) -> list[CheckResult]:
         """Check for words in `text` that are not `allowed`."""
@@ -217,8 +213,7 @@ class ReverseExistence(NamedTuple):
                 message=check.message.format(m.group(0)),
                 replacements=None,
             )
-            for m in self.TOKENIZER.finditer(text)
-            if not allowed_match(m)
+            for m in filterfalse(allowed_match, self.TOKENIZER.finditer(text))
         ]
 
 
