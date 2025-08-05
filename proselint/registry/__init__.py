@@ -1,11 +1,15 @@
 """Check registry for proselint."""
 
+from __future__ import annotations
+
 from importlib import import_module
 from itertools import chain
-from typing import ClassVar, Optional, Self
+from typing import TYPE_CHECKING, ClassVar, Optional
 
 from proselint.config import DEFAULT
-from proselint.registry.checks import Check
+
+if TYPE_CHECKING:
+    from proselint.registry.checks import Check
 
 
 def build_modules_register(
@@ -14,7 +18,7 @@ def build_modules_register(
     """Build a register tuple over `modules`."""
     return tuple(
         chain.from_iterable(
-            import_module(module, package).__register__ for module in modules
+            import_module(module, package).__register__ for module in modules  # pyright: ignore[reportAny]
         )
     )
 
@@ -24,9 +28,9 @@ class CheckRegistry:
 
     _checks: ClassVar[list[Check]] = []
     enabled_checks: Optional[dict[str, bool]] = None
-    _instance: Optional[Self] = None
+    _instance: Optional[CheckRegistry] = None
 
-    def __new__(cls) -> Self:
+    def __new__(cls) -> CheckRegistry:  # noqa: PYI034
         """Create a singleton registry."""
         if cls._instance is None:
             cls._instance = object.__new__(cls)
@@ -51,8 +55,8 @@ class CheckRegistry:
         """Filter registered checks by config values based on their keys."""
         self.enabled_checks = enabled
 
-        enabled_checks = []
-        skipped_checks = []
+        enabled_checks: list[str] = []
+        skipped_checks: list[str] = []
         for key, key_enabled in self.enabled_checks.items():
             (skipped_checks, enabled_checks)[key_enabled].append(key)
 

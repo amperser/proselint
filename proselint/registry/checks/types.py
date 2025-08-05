@@ -5,7 +5,6 @@ from itertools import chain, filterfalse
 from re import (
     Match,
     Pattern,
-    RegexFlag,
     finditer,
     search,
 )
@@ -22,11 +21,12 @@ class Consistency(NamedTuple):
 
     term_pairs: tuple[tuple[str, str], ...]
 
+    # TODO: from 3.11+, flag should be a RegexFlag
     @staticmethod
     def process_pair(
         text: str,
         check: Check,
-        flag: RegexFlag,
+        flag: int,
         pair: tuple[str, str],
     ) -> list[CheckResult]:
         """Check a term pair over `text`."""

@@ -1,6 +1,10 @@
 """Check specifications and related options."""
 
-from enum import StrEnum
+# pyright: reportImportCycles=false
+
+from __future__ import annotations
+
+from enum import Enum
 from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, Optional
 
@@ -11,7 +15,7 @@ BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
 
 
-class Padding(StrEnum):
+class Padding(str, Enum):
     """Regex padding types for checks."""
 
     RAW = r"{}"
@@ -53,7 +57,7 @@ class LintResult(NamedTuple):
         """The extent (span width) of the result."""
         return self.end_pos - self.start_pos
 
-    def __str__(self) -> str:
+    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
         """Convert the `LintResult` into a CLI-suitable format."""
         return f":{self.line}:{self.column}: {self.check_path} {self.message}"
 
@@ -146,17 +150,18 @@ class CheckFlags(NamedTuple):
 class Check(NamedTuple):
     """Carry a complete check specification."""
 
-    check_type: "CheckType"
+    check_type: CheckType
     path: str = ""
     message: str = ""
     flags: CheckFlags = CheckFlags()
     ignore_case: bool = True
     offset: tuple[int, int] = (0, 0)
 
+    # TODO: for 3.11+, RegexFlag.NOFLAG exists
     @property
-    def re_flag(self) -> RegexFlag:
-        """Corresponding `RegexFlag` for the `ignore_case` setting."""
-        return RegexFlag.IGNORECASE if self.ignore_case else RegexFlag.NOFLAG
+    def re_flag(self) -> int:
+        """Return a corresponding `RegexFlag` for the `ignore_case` setting."""
+        return RegexFlag.IGNORECASE if self.ignore_case else 0
 
     @property
     def path_segments(self) -> list[str]:
