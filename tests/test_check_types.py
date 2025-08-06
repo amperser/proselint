@@ -45,7 +45,7 @@ def test_consistency_smoke(
     term_pair: tuple[str, str], path: str, noise: str
 ) -> None:
     """Return no matches when no elements are present."""
-    assume(term_pair[0] not in noise and term_pair[1] not in noise)
+    assume(all(term not in noise.lower() for term in term_pair))
     check_type = types.Consistency(term_pairs=(term_pair,))
     check = Check(check_type=check_type, path=path, message="{} || {}")
     assert check.check(noise) == []

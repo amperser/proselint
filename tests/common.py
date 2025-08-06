@@ -2,6 +2,7 @@
 
 import importlib
 from itertools import chain
+from os import walk
 from pathlib import Path
 from types import ModuleType
 
@@ -12,17 +13,17 @@ from proselint.registry.checks import Check
 def assert_pass(check: Check, examples: tuple[str, ...]) -> None:
     """Assert that the `check` does not produce results against `examples`."""
     for example in examples:
-        assert (
-            check.check_with_flags(example) == []
-        ), f"False positive against {check.path}: '{example}'"
+        assert check.check_with_flags(example) == [], (
+            f"False positive against {check.path}: '{example}'"
+        )
 
 
 def assert_fail(check: Check, examples: tuple[str, ...]) -> None:
     """Assert that the `check` produces results against `examples`."""
     for example in examples:
-        assert (
-            check.check_with_flags(example) != []
-        ), f"False negative against {check.path}: '{example}'"
+        assert check.check_with_flags(example) != [], (
+            f"False negative against {check.path}: '{example}'"
+        )
 
 
 def is_check(path: Path) -> bool:
@@ -34,8 +35,8 @@ def get_check_paths() -> list[Path]:
     """Traverse through subdirectories and select check paths."""
     return [
         file
-        for root, _, files in (proselint_path / "checks").walk()
-        for file in map(root.__truediv__, files)
+        for root, _, files in walk(proselint_path / "checks")
+        for file in map(Path(root).__truediv__, files)
         if is_check(file) and (file.parent / "__init__.py").exists()
     ]
 

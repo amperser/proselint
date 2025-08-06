@@ -45,8 +45,8 @@ def test_check_examples(
         result = chain.from_iterable(
             map(Check.check_with_flags, checks, repeat(example))
         )
-        assert (
-            result != []
-            ), f"False negative against {module_name}: '{example}'"
+        assert result != [], (
+            f"False negative against {module_name}: '{example}'"
+        )
     for check in checks:
         assert_pass(check, should_pass)
