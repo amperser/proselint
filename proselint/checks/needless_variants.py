@@ -17,11 +17,11 @@ Points out use of needless variants.
 from importlib.resources import files
 from itertools import batched
 
-from proselint.checks import needless_variants
+from proselint import checks
 from proselint.registry.checks import BATCH_COUNT, Check, types
 
 NEEDLESS_VARIANTS_RAW = (
-    (files(needless_variants) / "needless-variants").read_text().splitlines()
+    (files(checks) / "needless-variants").read_text().splitlines()
 )
 
 checks_needless_variants = tuple(
