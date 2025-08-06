@@ -127,13 +127,15 @@ class CheckFlags(NamedTuple):
         length = max(length, 1000)
         if (ppm := (num_results / length) * 1e6) <= threshold:
             return []
-        return [CheckResult(
-            start_pos=results[0].start_pos,
-            end_pos=results[0].end_pos,
-            check_path=results[0].check_path,
-            message=results[0].message + f" Reached {ppm:.0f} ppm.",
-            replacements=None,
-        )]
+        return [
+            CheckResult(
+                start_pos=results[0].start_pos,
+                end_pos=results[0].end_pos,
+                check_path=results[0].check_path,
+                message=results[0].message + f" Reached {ppm:.0f} ppm.",
+                replacements=None,
+            )
+        ]
 
     def apply(
         self, results: list[CheckResult], text_len: int

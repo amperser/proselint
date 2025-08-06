@@ -18,7 +18,8 @@ def build_modules_register(
     """Build a register tuple over `modules`."""
     return tuple(
         chain.from_iterable(
-            import_module(module, package).__register__ for module in modules  # pyright: ignore[reportAny]
+            import_module(module, package).__register__  # pyright: ignore[reportAny]
+            for module in modules
         )
     )
 
