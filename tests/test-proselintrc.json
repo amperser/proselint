@@ -10,6 +10,7 @@
         "lexical_illusions": true,
         "malapropisms": true,
         "misc": true,
+		"mixed_metaphors": true,
         "mondegreens": true,
         "needless_variants": true,
         "nonwords": true,
