@@ -13,7 +13,7 @@ def assert_pass(check: Check, examples: tuple[str, ...]) -> None:
     """Assert that the `check` does not produce results against `examples`."""
     for example in examples:
         assert (
-            check.check(example) == []
+            check.check_with_flags(example) == []
         ), f"False positive against {check.path}: '{example}'"
 
 
@@ -21,7 +21,7 @@ def assert_fail(check: Check, examples: tuple[str, ...]) -> None:
     """Assert that the `check` produces results against `examples`."""
     for example in examples:
         assert (
-            check.check(example) != []
+            check.check_with_flags(example) != []
         ), f"False negative against {check.path}: '{example}'"
 
 
