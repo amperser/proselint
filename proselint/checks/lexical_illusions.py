@@ -15,11 +15,13 @@ and this happens most often between line breaks.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, Padding, types
 
 check = Check(
     check_type=types.ExistenceSimple(
-        pattern=r"\b(?<!\\|\-)(\w+(?:\s+\w+){0,3})(\s+\1)+\b",
+        pattern=Padding.WORDS_IN_TEXT.format(
+            r"(?<!\\|\-)(\w+(?:\s+\w+){0,3})(\s+\1)+"
+        ),
         exceptions=(r"^had had$", r"^that that$"),
     ),
     path="lexical_illusions",
