@@ -1,8 +1,8 @@
 """Avoid cliches."""
 
-from proselint.checks.cliches import hell, misc
+from proselint.registry import build_modules_register
 
-__register__ = (
-    *hell.__register__,
-    *misc.__register__,
+__register__ = build_modules_register(
+    (".hell", ".misc"),
+    "proselint.checks.cliches",
 )
