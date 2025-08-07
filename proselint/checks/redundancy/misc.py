@@ -10,7 +10,7 @@ CHECK_MESSAGE = "Redundancy. Use '{}' instead of '{}'."
 
 GARNER_RAW = (files(redundancy) / "garner").read_text().splitlines()
 AFTER_THE_DEADLINE_RAW = (
-    (files(redundancy) / "after-the-deadline").read_text().splitlines()
+    (files(redundancy) / "after-the-deadline").read_text("utf8").splitlines()
 )
 
 check_wallace = Check(
