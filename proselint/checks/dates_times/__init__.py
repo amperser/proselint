@@ -1,8 +1,8 @@
 """Dates and times."""
 
-from proselint.checks.dates_times import am_pm, dates
+from proselint.registry import build_modules_register
 
-__register__ = (
-    *am_pm.__register__,
-    *dates.__register__,
+__register__ = build_modules_register(
+    (".am_pm", ".dates"),
+    "proselint.checks.dates_times",
 )
