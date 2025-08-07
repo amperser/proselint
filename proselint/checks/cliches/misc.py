@@ -1,8 +1,8 @@
 """Cliches are cliché."""
 
 from importlib.resources import files
-from itertools import batched
 
+from proselint.backports import batched
 from proselint.checks import cliches
 from proselint.registry.checks import BATCH_COUNT, Check, types
 

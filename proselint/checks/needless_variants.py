@@ -15,9 +15,9 @@ Points out use of needless variants.
 """
 
 from importlib.resources import files
-from itertools import batched
 
 from proselint import checks
+from proselint.backports import batched
 from proselint.registry.checks import BATCH_COUNT, Check, types
 
 NEEDLESS_VARIANTS_RAW = (
