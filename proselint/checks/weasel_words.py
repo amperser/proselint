@@ -20,9 +20,10 @@ from proselint.registry.checks import Check, CheckFlags, types
 check_very = Check(
     check_type=types.ExistenceSimple(pattern="very"),
     path="weasel_words.very",
-    message="Substitute 'damn' every time you're "
-    "inclined to write 'very'; your editor will delete it "
-    "and the writing will be just as it should be.",
+    message=(
+        "Substitute 'damn' every time you're inclined to write 'very'; your"
+        " editor will delete it and the writing will be just as it should be."
+    ),
     flags=CheckFlags(results_limit=1),
 )
 

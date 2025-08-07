@@ -40,7 +40,7 @@ check = Check(
             "thanking you in advance",
             "the undersigned",
             "this acknowledges your letter",
-            r"ult\."
+            r"ult\.",
             "we are pleased to note",
             "with regard to",
             "your favor has come to hand",

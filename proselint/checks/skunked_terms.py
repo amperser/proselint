@@ -30,8 +30,10 @@ check = Check(
         )
     ),
     path="skunked_terms",
-    message="'{}' is a a skunked term - impossible to use without issue."
-    "Find some other way to say it.",
+    message=(
+        "'{}' is a a skunked term - impossible to use without issue."
+        " Find some other way to say it."
+    ),
 )
 
 __register__ = (check,)

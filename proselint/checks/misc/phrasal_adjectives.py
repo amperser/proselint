@@ -19,8 +19,10 @@ from proselint.registry.checks import Check, types
 check_ly = Check(
     check_type=types.ExistenceSimple(pattern=r"\s[^\s-]+ly-"),
     path="misc.phrasal_adjectives.ly",
-    message="No hyphen is necessary in phrasal adjectives with an adverb "
-    "ending in -ly, unless the -ly adverb is part of a longer phrase.",
+    message=(
+        "No hyphen is necessary in phrasal adjectives with an adverb"
+        " ending in -ly, unless the -ly adverb is part of a longer phrase."
+    ),
     offset=(1, 0),
 )
 
