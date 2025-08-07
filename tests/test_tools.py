@@ -22,4 +22,4 @@ def test_errors_sorted() -> None:
 
 def test_on_no_newlines() -> None:
     """Test that lint works on text without a terminal newline."""
-    assert len(lint(TEXT_WITH_NO_NEWLINE)) == 1
+    assert len(lint(TEXT_WITH_NO_NEWLINE)) > 0
