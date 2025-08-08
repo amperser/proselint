@@ -42,8 +42,10 @@ def test_check_examples(
     module = verify_module(module_name)
     checks = extract_checks(module)
     for example in should_fail:
-        result = chain.from_iterable(
-            map(Check.check_with_flags, checks, repeat(example))
+        result = list(
+            chain.from_iterable(
+                map(Check.check_with_flags, checks, repeat(example))
+            )
         )
         assert result != [], (
             f"False negative against {module_name}: '{example}'"
