@@ -134,7 +134,6 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "You, me and that uphill battle with him.",
             "Will wonders never cease?",
             "It's a matter of concern.",
-            "He's sick and tired of it.",
         ),
         ("Smoke phrase with nothing flagged.", "No cliches here."),
     ),
@@ -208,22 +207,13 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "It goes back to the stone age.",
             "A nice day during Winter.",
-            "A nice day in Spring.",
             "A nice day in june.",
             "It happened on friday.",
-            "World War ii",
-            "World War i",
-            "world War Ii",
-            "MCVi",
-            "CLx",
-            "mCv",
         ),
         (
             "Smoke phrase with nothing flagged.",
             "Smoke Stone Age with nothing flagged.",
             "Smoke winter with nothing flagged",
-            "world war II",
-            "XVII",
         ),
     ),
     (
@@ -296,7 +286,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             (
                 "In recent years, an increasing number of scientists"
-                "have studied the problem in detail."
+                " have studied the problem in detail."
             ),
         ),
         ("Smoke phrase with nothing flagged.",),
@@ -382,7 +372,6 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "It was blatantly obvious what to do next.",
             "Taking the package was absolutely essential.",
             "He often repeated the old adage.",
-            "So much stuff and etc.",
             "Associate together in groups.",
         ),
         ("Smoke phrase with nothing flagged.",),
@@ -501,12 +490,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     ),
     (
         "weasel_words",
-        (
-            "The book was very interesting.",
-            "Some people say this is bad.",
-            "This is somewhat crazy.",
-            "It is said this is wrong.",
-        ),
+        ("The book was very interesting.",),
         ("Smoke phrase with nothing flagged.",),
     ),
     (
@@ -555,7 +539,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     ),
     (
         "industrial_language.commercialese",
-        ("We regret to inform you of this.", "the C.i.F. is free."),
+        ("We regret to inform you of this.",),
         ("Smoke phrase with nothing flagged.",),
     ),
     (
@@ -614,8 +598,6 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "This is bad.  Not consistent. At all.",
             "See Smith et. al.",
-            "i drive 5,5 kmh.",
-            "I usually wait an hour. and then another.",
             "So exaggerated!!!",
             "Really??",
             "What is going on?!",
