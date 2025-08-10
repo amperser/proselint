@@ -14,7 +14,7 @@ Points out misspellings.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, Padding, types
 
 CHECK_PATH = "spelling.misc"
 CHECK_MESSAGE = "Misspelling. '{}' is the preferred spelling."
@@ -160,8 +160,9 @@ check = Check(
 check_regex = Check(
     check_type=types.PreferredForms(
         items={
-            "'till?": "till",
-        }
+            r"\B'till?\b": "till",
+        },
+        padding=Padding.RAW,
     ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
