@@ -113,7 +113,7 @@ def proselint(paths=None, config=None, version=None,
             except Exception:
                 traceback.print_exc()
                 sys.exit(2)
-        errors = lint(f, config, debug=debug)
+        errors = lint(f, config)
         num_errors += len(errors)
         print_errors(fp, errors, output_json=output_json, compact=compact)
 

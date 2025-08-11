@@ -1,5 +1,6 @@
 """General-purpose tools shared across linting checks."""
 
+from itertools import islice
 import json
 from io import FileIO
 from operator import itemgetter
@@ -31,43 +32,36 @@ def line_and_column(text, position):
 
 
 def lint(
-    input_file: Union[str,
-    FileIO],
+    input_file: Union[str, FileIO],
     config: Config = DEFAULT,
-    *,
-    debug: bool = False,
 ) -> list[LintResult]:
     """Run the linter on the input file."""
-    text = input_file if isinstance(input_file, str) else input_file.read()
+    text = (
+        input_file
+        if isinstance(input_file, str)
+        else str(input_file.read())
+    )
 
-    checks = CheckRegistry().get_all_enabled(config["checks"])
-
-    lint_results: list[LintResult] = []
-    for check in checks:
-
-        results = check.check_with_flags(text)
-
-        for result in results:
-            (line, column) = line_and_column(text, result.start_pos)
-            if is_quoted(result.start_pos, text):
-                continue
-            lint_results.append(LintResult(
-                check_path=result.check_path,
-                message=result.message,
-                line=line,
-                column=column,
-                start_pos=result.start_pos,
-                end_pos=result.end_pos,
-                severity="warning",
-                replacements=result.replacements
-            ))
-
-        if len(lint_results) > config["max_errors"]:
-            break
-
-    # Sort the errors by line and column number.
-    return sorted(lint_results, key=itemgetter(2, 3))
-
+    return sorted(
+        islice(
+            (
+                LintResult(
+                    result.check_path,
+                    result.message,
+                    *line_and_column(text, result.start_pos),
+                    start_pos=result.start_pos,
+                    end_pos=result.end_pos,
+                    severity="warning",
+                    replacements=result.replacements,
+                )
+                for check in CheckRegistry().get_all_enabled(config["checks"])
+                for result in check.check_with_flags(text)
+                if not is_quoted(result.start_pos, text)
+            ),
+            config["max_errors"],
+        ),
+        key=itemgetter(2, 3),  # sort by line and column
+    )
 
 
 def assert_error(text, check, n=1):

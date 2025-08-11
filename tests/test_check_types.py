@@ -48,7 +48,7 @@ def test_consistency_smoke(
     assume(all(term not in noise.lower() for term in term_pair))
     check_type = types.Consistency(term_pairs=(term_pair,))
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert check.check(noise) == []
+    assert list(check.check(noise)) == []
 
 
 @given(TERM_PAIR_STRATEGY, st.text(), st.integers(0, 1))
@@ -58,7 +58,7 @@ def test_consistency_one_in_text(
     """Return no matches when only one element is present."""
     check_type = types.Consistency(term_pairs=(term_pair,))
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert check.check(term_pair[choice]) == []
+    assert list(check.check(term_pair[choice])) == []
 
 
 @given(
@@ -74,7 +74,7 @@ def test_consistency_both_in_text(
     check = Check(check_type=check_type, path=path, message="{} || {}")
 
     text = f"{term_pair[0]} " * count[0] + f"{term_pair[1]} " * count[1]
-    results = check.check(text)
+    results = list(check.check(text))
     assert len(results) == min(count)
     assert all(result.check_path == path for result in results)
     idx_minority = count[0] > count[1]
@@ -100,7 +100,7 @@ def test_preferred_smoke(
     assume(all(item not in noise.lower() for item in items))
     check_type = types.PreferredForms(items=items, padding=padding)
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert check.check(noise) == []
+    assert list(check.check(noise)) == []
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
@@ -111,12 +111,8 @@ def test_preferred_values_smoke(
     count = n_counts(data, len(items))
     check_type = types.PreferredForms(items=items, padding=padding)
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert (
-        check.check(
-            " ".join(chain.from_iterable(map(repeat, items.values(), count)))
-        )
-        == []
-    )
+    content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
+    assert list(check.check(content)) == []
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
@@ -140,7 +136,7 @@ def test_preferred_in_text(
         selected_matches = [f"_{x}_" for x in selected_matches]
 
     content = "  ".join(selected_matches)
-    results = check.check(content)
+    results = list(check.check(content))
     assert len(results) == sum(count)
 
     cum_count = list(accumulate(count))
@@ -165,7 +161,7 @@ def test_preferred_s_smoke(
     assume(all(item not in noise.lower() for item in items))
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert check.check(noise) == []
+    assert list(check.check(noise)) == []
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
@@ -176,12 +172,8 @@ def test_preferred_s_values_smoke(
     count = n_counts(data, len(items))
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
     check = Check(check_type=check_type, path=path, message="{} || {}")
-    assert (
-        check.check(
-            " ".join(chain.from_iterable(map(repeat, items.values(), count)))
-        )
-        == []
-    )
+    content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
+    assert list(check.check(content)) == []
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
@@ -205,7 +197,7 @@ def test_preferred_s_in_text(
         selected_matches = [f"_{x}_" for x in selected_matches]
 
     content = "  ".join(selected_matches)
-    results = check.check(content)
+    results = list(check.check(content))
     assert len(results) == sum(count)
 
     cum_count = list(accumulate(count))
@@ -255,7 +247,7 @@ def test_existence_smoke(
         items=items, padding=padding, exceptions=exceptions
     )
     check = Check(check_type=check_type, path=path, message="{}")
-    assert check.check(noise) == []
+    assert list(check.check(noise)) == []
 
 
 @given(items_split(), PADDING_STRATEGY, st.text(), st.data())
@@ -272,12 +264,8 @@ def test_existence_exceptions_smoke(
         items=items, padding=padding, exceptions=exceptions
     )
     check = Check(check_type=check_type, path=path, message="{}")
-    assert (
-        check.check(
-            " ".join(chain.from_iterable(map(repeat, exceptions, count)))
-        )
-        == []
-    )
+    content = " ".join(chain.from_iterable(map(repeat, exceptions, count)))
+    assert list(check.check(content)) == []
 
 
 @given(items_split(), PADDING_STRATEGY, st.text(), st.data())
@@ -307,7 +295,7 @@ def test_existence_in_text(
         selected_matches = [f"_{x}_" for x in selected_matches]
 
     content = "  ".join(selected_matches)
-    results = check.check(content)
+    results = list(check.check(content))
     cum_count = list(accumulate(count))
     assert len(results) == cum_count[len(count) - len(exceptions) - 1]
 
@@ -333,7 +321,7 @@ def test_existence_s_smoke(
     assume(pattern not in noise.lower())
     check_type = types.ExistenceSimple(pattern=pattern, exceptions=exceptions)
     check = Check(check_type=check_type, path=path, message="{}")
-    assert check.check(noise) == []
+    assert list(check.check(noise)) == []
 
 
 @given(EXISTENCE_ITEMS_STRATEGY, st.text(), st.data())
@@ -347,12 +335,8 @@ def test_existence_s_exceptions_smoke(
     count = n_counts(data, len(exceptions))
     check_type = types.ExistenceSimple(pattern=pattern, exceptions=exceptions)
     check = Check(check_type=check_type, path=path, message="{}")
-    assert (
-        check.check(
-            " ".join(chain.from_iterable(map(repeat, exceptions, count)))
-        )
-        == []
-    )
+    content = " ".join(chain.from_iterable(map(repeat, exceptions, count)))
+    assert list(check.check(content)) == []
 
 
 @given(EXISTENCE_ITEMS_STRATEGY, st.text(), st.data())
@@ -373,7 +357,7 @@ def test_existence_s_in_text(
     )
 
     content = "  ".join(selected_matches)
-    results = check.check(content)
+    results = list(check.check(content))
     cum_count = list(accumulate(count))
     assert len(results) == cum_count[len(count) - len(exceptions) - 1]
     for result, entry in zip(results, selected_matches):
@@ -408,10 +392,8 @@ def test_rev_existence_allowed_smoke(
     count = n_counts(data, len(allowed))
     check_type = types.ReverseExistence(allowed=allowed)
     check = Check(check_type=check_type, path=path, message="{}")
-    assert (
-        check.check(" ".join(chain.from_iterable(map(repeat, allowed, count))))
-        == []
-    )
+    content = " ".join(chain.from_iterable(map(repeat, allowed, count)))
+    assert check.check(content)
 
 
 @given(REV_ALLOWED_STRATEGY, st.text(), NON_TOKENS_STRATEGY)
@@ -421,7 +403,7 @@ def test_rev_existence_non_token_smoke(
     """Return no matches when only non-tokenizable items are present."""
     check_type = types.ReverseExistence(allowed=allowed)
     check = Check(check_type=check_type, path=path, message="{}")
-    assert check.check(" ".join(map(xeger, non_tokens))) == []
+    assert list(check.check(" ".join(map(xeger, non_tokens)))) == []
 
 
 @given(REV_ALLOWED_STRATEGY, st.text(), TOKENS_STRATEGY)
@@ -432,7 +414,7 @@ def test_rev_existence_forbidden(
     assume(all(token not in allowed for token in tokens))
     check_type = types.ReverseExistence(allowed=allowed)
     check = Check(check_type=check_type, path=path, message="{}")
-    results = check.check(" ".join(tokens))
+    results = list(check.check(" ".join(tokens)))
 
     assert len(results) == len(tokens)
 
