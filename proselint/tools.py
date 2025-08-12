@@ -128,7 +128,7 @@ class LintFile:
         name = "-" if compact else self.source_name
 
         for result in results:
-            print(f"{name}:{result}")
+            print(f"{name}{result}")
 
 
 def find_spans(
