@@ -7,6 +7,7 @@ XDG_CONFIG_VAR = "XDG_CONFIG_HOME"
 XDG_CACHE_VAR = "XDG_CACHE_HOME"
 
 proselint_path = Path(__file__).parent.parent
+demo_path = proselint_path / "demo.md"
 home_path = Path.home()
 cwd = Path.cwd()
 
