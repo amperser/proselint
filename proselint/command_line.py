@@ -4,7 +4,6 @@ import json
 import os
 import subprocess
 import sys
-from itertools import chain
 from pathlib import Path
 
 import click
@@ -13,7 +12,7 @@ from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
 from proselint.registry import CheckRegistry
-from proselint.tools import LintFile
+from proselint.tools import LintFile, extract_files
 from proselint.version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
@@ -34,21 +33,6 @@ def timing_test(corpus="0.1.0"):
             subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
-
-
-def extract_files(paths: list[Path]) -> list[Path]:
-    """Expand list of paths to include all text files matching the pattern."""
-    accepted_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
-
-    return list(chain.from_iterable(
-        (
-            file
-            for root, _, files in path.walk()
-            for file in map(root.__truediv__, files)
-            if file.suffix in accepted_extensions
-        ) if path.is_dir() else (path,)
-        for path in paths
-    ))
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)

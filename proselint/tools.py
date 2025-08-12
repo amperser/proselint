@@ -2,7 +2,7 @@
 
 import json
 from collections.abc import Callable
-from itertools import accumulate, islice
+from itertools import accumulate, chain, islice
 from operator import itemgetter
 from pathlib import Path
 from re import Pattern, finditer
@@ -13,6 +13,60 @@ from typing import NamedTuple, Union, cast, overload
 from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
+
+ACCEPTED_EXTENSIONS = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
+
+
+def extract_files(paths: list[Path]) -> list[Path]:
+    """Expand `paths` to include all text files accepted by the linter."""
+    return list(chain.from_iterable(
+        (
+            file
+            for root, _, files in path.walk()
+            for file in map(root.__truediv__, files)
+            if file.suffix in ACCEPTED_EXTENSIONS
+        ) if path.is_dir() else (path,)
+        for path in paths
+    ))
+
+
+def find_spans(
+    text: str,
+    pattern: Pattern[str],
+    predicate: Callable[[tuple[str, str]], bool],
+) -> list[tuple[int, int]]:
+    """Find spans of matching characters (e.g. quotes)."""
+    active = tuple((m.group(0), m.start()) for m in finditer(pattern, text))
+    prev: list[tuple[str, int]] = []
+    spans: list[tuple[int, int]] = []
+    for char, span_end in active:
+        for potential, span_start in reversed(prev):
+            if predicate((char, potential)):
+                _ = prev.pop()
+                spans.append((span_start, span_end))
+                break
+        else:
+            prev.append((char, span_end))
+    return spans
+
+
+STRAIGHT_QUOTES = {'"', "'"}
+CURLY_QUOTES = {"“", "”"}
+
+
+def check_matching_quotes(chars: tuple[str, str]) -> bool:
+    """Check if a pair of quotes match."""
+    return (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1]) or (
+        set(chars) == CURLY_QUOTES
+    )
+
+
+QUOTE_PATTERN = rcompile(r"[\"'“”]")
+
+
+def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
+    """Find the ranges of quote pairs in text."""
+    return find_spans(text, QUOTE_PATTERN, check_matching_quotes)
 
 
 def errors_to_json(errors: list[LintResult]) -> str:
@@ -129,42 +183,3 @@ class LintFile:
 
         for result in results:
             print(f"{name}{result}")
-
-
-def find_spans(
-    text: str,
-    pattern: Pattern[str],
-    predicate: Callable[[tuple[str, str]], bool],
-) -> list[tuple[int, int]]:
-    """Find spans of matching characters (e.g. quotes)."""
-    active = tuple((m.group(0), m.start()) for m in finditer(pattern, text))
-    prev: list[tuple[str, int]] = []
-    spans: list[tuple[int, int]] = []
-    for char, span_end in active:
-        for potential, span_start in reversed(prev):
-            if predicate((char, potential)):
-                _ = prev.pop()
-                spans.append((span_start, span_end))
-                break
-        else:
-            prev.append((char, span_end))
-    return spans
-
-
-STRAIGHT_QUOTES = {'"', "'"}
-CURLY_QUOTES = {"“", "”"}
-
-
-def check_matching_quotes(chars: tuple[str, str]) -> bool:
-    """Check if a pair of quotes match."""
-    return (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1]) or (
-        set(chars) == CURLY_QUOTES
-    )
-
-
-QUOTE_PATTERN = rcompile(r"[\"'“”]")
-
-
-def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
-    """Find the ranges of quote pairs in text."""
-    return find_spans(text, QUOTE_PATTERN, check_matching_quotes)
