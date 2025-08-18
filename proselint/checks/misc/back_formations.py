@@ -1,4 +1,5 @@
-"""Back-formations.
+"""
+Back-formations.
 
 ---
 layout:     post
@@ -12,17 +13,13 @@ categories: writing
 Back-formations.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(items={"improprietous": "improper"}),
+    path="misc.back_formations",
+    message="Back-formation. '{}' is the preferred form.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.back_formations"
-    msg = "Back-formation. '{}' is the preferred form."
-
-    list = [
-        ["improper",       ["improprietous"]],
-    ]
-
-    return preferred_forms_check(text, list, err, msg)
+__register__ = (check,)

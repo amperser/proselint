@@ -1,4 +1,5 @@
-"""False plurals.
+"""
+False plurals.
 
 ---
 layout:     post
@@ -12,27 +13,24 @@ categories: writing
 Using the incorrect form of the plural.
 
 """
-from proselint.tools import existence_check, preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "talismen": "talismans",
+            "phenomenons": "phenomena",
+        }
+    ),
+    path="misc.false_plurals.misc",
+    message="The correct plural is '{}'.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.false_plurals.examples"
-    msg = "The plural is {}"
+check_kudos = Check(
+    check_type=types.ExistenceSimple(pattern="many kudos"),
+    path="misc.false_plurals.kudos",
+    message="Kudos is singular.",
+)
 
-    preferences = [
-        ["talismans", ["talismen"]],
-        ["phenomena", ["phenomenons"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
-
-
-
-def check_kudos(text):
-    """Check the text."""
-    err = "misc.false_plurals.kudos"
-    msg = "Kudos is singular."
-
-    return existence_check(text, ["many kudos"], err, msg)
+__register__ = (check, check_kudos)

@@ -14,21 +14,21 @@ categories: writing
 
 """
 
-from proselint.tools import existence_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "in the affirmative",
+            "in the negative",
+            "agendize",
+            "per your order",
+            "per your request",
+            "disincentivize",
+        )
+    ),
+    path="industrial_language.jargon",
+    message="'{}' is jargon. Can you replace it with something more standard?",
+)
 
-def check(text):
-    """Check the text."""
-    err = "industrial_language.jargon"
-    msg = "'{}' is jargon. Can you replace it with something more standard?"
-
-    jargon = [
-        "in the affirmative",
-        "in the negative",
-        "agendize",
-        "per your order",
-        "per your request",
-        "disincentivize",
-    ]
-
-    return existence_check(text, jargon, err, msg, join=True)
+__register__ = (check,)

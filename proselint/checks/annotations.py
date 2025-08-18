@@ -1,4 +1,5 @@
-"""Annotation left in text.
+"""
+Annotation left in text.
 
 ---
 layout:     post
@@ -12,23 +13,23 @@ categories: writing
 Annotation left in text.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "FIXME",
+            "FIX ME",
+            "TODO",
+            "todo",
+            "ERASE THIS",
+            "FIX THIS",
+        )
+    ),
+    path="annotations.misc",
+    message="Annotation left in text.",
+    ignore_case=False,
+)
 
-def check(text):
-    """Check the text."""
-    err = "annotations.misc"
-    msg = "Annotation left in text."
-
-    annotations = [
-        "FIXME",
-        "FIX ME",
-        "TODO",
-        "todo",
-        "ERASE THIS",
-        "FIX THIS",
-    ]
-
-    return existence_check(
-        text, annotations, err, msg, ignore_case=False, join=True)
+__register__ = (check,)

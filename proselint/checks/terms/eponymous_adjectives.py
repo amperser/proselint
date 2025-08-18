@@ -1,4 +1,5 @@
-"""Eponymous adjectives.
+"""
+Eponymous adjectives.
 
 ---
 layout:     post
@@ -12,18 +13,18 @@ categories: writing
 Eponymous adjectives.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "terms.eponymous_adjectives"
-    msg = "'{}' is the preferred eponymous adjective."
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "Mephistophelian": "Mephistophelean",
+            "Shakespearian": "Shakespearean",
+        }
+    ),
+    path="terms.eponymous_adjectives",
+    message="'{}' is the preferred eponymous adjective.",
+)
 
-    preferences = [
-
-        ["Mephistophelean",    ["Mephistophelian"]],
-        ["Shakespearean",      ["Shakespearian"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

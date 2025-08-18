@@ -1,4 +1,5 @@
-"""Check if the text contains only words in top 1000 most popular words.
+"""
+Check if the text contains only words in top 1000 most popular words.
 
 ---
 layout:     Website
@@ -15,19 +16,15 @@ Top 1000.
 
 from importlib.resources import files
 
-import proselint
-from proselint.tools import reverse_existence_check
+from proselint.checks import restricted
+from proselint.registry.checks import Check, types
 
-_CSV_PATH = 'checks/restricted/top1000.csv'
+TOP1000_TERMS = (files(restricted) / "top1000").read_text().splitlines()
 
-with files(proselint).joinpath(_CSV_PATH).open('r') as data:
-    TOP1000_WORDS = data.read().split()
+check = Check(
+    check_type=types.ReverseExistence(allowed=set(TOP1000_TERMS)),
+    path="restricted.top1000",
+    message="'{}' is not in the top 1000 most common words.",
+)
 
-
-
-def check(text):
-    """Check the text."""
-    err = "restricted.top1000"
-    msg = "'{}' is not in the top 1000 most common words."
-
-    return reverse_existence_check(text, TOP1000_WORDS, err, msg)
+__register__ = (check,)

@@ -46,39 +46,53 @@ structure.
 11. Place the emphatic word of a sentence at the end.
     * MDPNB: Principle of recency.
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.composition"
-    msg = "Try '{}' instead of '{}'."
+CHECK_PATH = "misc.composition"
+CHECK_MESSAGE = "Try '{}' instead of '{}'."
 
-    bad_forms = [
-        # Put statements in positive form
-        ["dishonest", ["not honest"]],
-        ["trifling", ["not important"]],
-        ["forgot", ["did not remember"]],
-        ["ignored", ["did not pay (any )?attention to"]],
-        ["distrusted", ["did not have much confidence in"]],
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            # Put statements in positive form
+            "not honest": "dishonest",
+            "not important": "unimportant",
+            "did not remember": "forgot",
+            "did not pay attention to": "ignored",
+            "did not have much confidence in": "distrusted",
+            # Omit needless words
+            "the question as to whether": "whether",
+            "there is no doubt but that": "no doubt",
+            "used for fuel purposes": "used for fuel",
+            "he is a man who": "he",
+            "in a hasty manner": "hastily",
+            "this is a subject that": "this subject",
+            "a strange one": "strange.",
+            "the reason why is that": "because",
+            "owing to the fact that": "because / since",
+            "in spite of the fact that": "although / though",
+            "call your attention to the fact that": "remind you / notify you",
+            "was unaware of the fact": "did not know / was unaware",
+            "did not succeed": "failed",
+            "not succeed": "fail",
+            "the fact that i had arrived": "my arrival",
+        }
+    ),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+)
 
-        # Omit needless words
-        ["whether", ["the question as to whether"]],
-        ["no doubt", ["there is no doubt but that"]],
-        ["used for fuel", ["used for fuel purposes"]],
-        ["he", ["he is a man who"]],
-        ["hastily", ["in a hasty manner"]],
-        ["this subject", ["this is a subject that"]],
-        ["Her story is strange.", ["Her story is a strange one."]],
-        ["because", ["the reason why is that"]],
-        ["because / since", ["owing to the fact that"]],
-        ["although / though", ["in spite of the fact that"]],
-        ["remind you / notify you",
-            ["call your attention to the fact that"]],
-        ["I did not know that / I was unaware that",
-            ["I was unaware of the fact that"]],
-        ["his failure", ["the fact that he had not succeeded"]],
-        ["my arrival", ["the fact that i had arrived"]]
-    ]
+check_regex = Check(
+    check_type=types.PreferredForms(
+        items={
+            "did not pay (any )?attention to": "ignored",
+            "did not have (much )?(confidence|faith) in": "distrusted",
+            "(had )?not succeeded": "failed",
+        }
+    ),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+)
 
-    return preferred_forms_check(text, bad_forms, err, msg)
+__register__ = (check, check_regex)

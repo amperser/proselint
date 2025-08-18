@@ -1,4 +1,5 @@
-"""Chatspeak.
+"""
+Chatspeak.
 
 ---
 layout:     post
@@ -12,39 +13,39 @@ categories: writing
 Chatspeak.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "2day",
+            "4U",
+            "AFAIK",
+            "AFK",
+            "AFK",
+            "ASAP",
+            "B4",
+            "brb",
+            "btw",
+            "cya",
+            "GR8",
+            "lol",
+            "LOL",
+            "LUV",
+            "OMG",
+            "rofl",
+            "roftl",
+            "sum1",
+            "SWAK",
+            "THNX",
+            "THX",
+            "TTYL",
+            "XOXO",
+        )
+    ),
+    path="industrial_language.chatspeak",
+    message="'{}' is chatspeak. Write it out.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "industrial_language.chatspeak"
-    msg = "'{}' is chatspeak. Write it out."
-
-    words = [
-        "2day",
-        "4U",
-        "AFAIK",
-        "AFK",
-        "AFK",
-        "ASAP",
-        "B4",
-        "brb",
-        "btw",
-        "cya",
-        "GR8",
-        "lol",
-        "LOL",
-        "LUV",
-        "OMG",
-        "rofl",
-        "roftl",
-        "sum1",
-        "SWAK",
-        "THNX",
-        "THX",
-        "TTYL",
-        "XOXO"
-    ]
-
-    return existence_check(text, words, err, msg)
+__register__ = (check,)

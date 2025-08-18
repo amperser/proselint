@@ -1,31 +1,32 @@
-"""Debased language.
+"""
+Debased language.
 
 ---
 layout:     post
 source:     ???
 source_url: ???
-title:      yelling
+title:      ???
 date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Too much yelling.
+Debased language.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "a not unjustifiable assumption",
+            "leaves much to be desired",
+            "would serve no purpose",
+            "a consideration which we should do well to bear in mind",
+        )
+    ),
+    path="misc.debased",
+    message="Debased language is a continuous temptation.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "misc.debased"
-    msg = "Bad usage, debased language, a continuous temptation."
-
-    list = [
-        "a not unjustifiable assumption",
-        "leaves much to be desired",
-        "would serve no purpose",
-        "a consideration which we should do well to bear in mind",
-    ]
-
-    return existence_check(text, list, err, msg)
+__register__ = (check,)

@@ -1,4 +1,5 @@
-"""Malaproprisms.
+"""
+Malaproprisms.
 
 ---
 layout:     post
@@ -9,21 +10,22 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Archaism.
+Malapropisms.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Check the text."""
-    err = "malapropisms"
-    msg = "'{}' is a malapropism."
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "the infinitesimal universe",
+            "a serial experience",
+            "attack my voracity",
+        )
+    ),
+    path="malapropisms",
+    message="'{}' is a malapropism.",
+)
 
-    illogics = [
-        "the infinitesimal universe",
-        "a serial experience",
-        "attack my voracity",
-    ]
-
-    return existence_check(text, illogics, err, msg, offset=1)
+__register__ = (check,)

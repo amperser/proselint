@@ -1,4 +1,5 @@
-"""Comparing uncomparables.
+"""
+Comparing uncomparables.
 
 ---
 layout:     post
@@ -15,12 +16,12 @@ David Foster Wallace says:
 can be a little tricky. Among other uncomparables are precise, exact, correct,
 entire, accurate, preferable, inevitable, possible, false; there are probably
 two dozen in all. These adjectives all describe absolute, non-negotiable
-states: something is either false or it’s not; something is either inevitable
-or it’s not. Many writers get careless and try to modify uncomparables with
+states: something is either false or it's not; something is either inevitable
+or it's not. Many writers get careless and try to modify uncomparables with
 comparatives like more and less or intensives like very. But if you really
 think about them, the core assertions in sentences like “War is becoming
 increasingly inevitable as Middle East tensions rise”; “Their cost estimate was
-more accurate than the other firms’”; and “As a mortician, he has a very unique
+more accurate than the other firms'”; and “As a mortician, he has a very unique
 attitude” are nonsense. If something is inevitable, it is bound to happen; it
 cannot be bound to happen and then somehow even more bound to happen. Unique
 already means one-of-a-kind, so the adj. phrase very unique is at best
@@ -33,7 +34,7 @@ Super-special! - Mega-Special!!), and so on. A deeper issue implicit in the
 problem of uncomparables is the dissimilarities between Standard Written
 English and the language of advertising. Advertising English, which probably
 deserves to be studied as its own dialect, operates under different syntactic
-rules than SWE, mainly because AE’s goals and assumptions are different.
+rules than SWE, mainly because AE's goals and assumptions are different.
 Sentences like “We offer a totally unique dining experience”; “Come on down and
 receive your free gift”; and “Save up to 50 per cent… and more!” are perfectly
 OK in Advertising English — but this is because Advertising English is aimed at
@@ -42,78 +43,86 @@ involuntary, distracted and numbed, then free gift and totally unique stand a
 better chance of penetrating — and simple penetration is what AE is all about.
 One axiom of Standard Written English is that your reader is paying close
 attention and expects you to have done the same.
+
 """
-import itertools
 
-from proselint.tools import existence_check
+from itertools import product
+
+from proselint.registry.checks import Check, CheckResult, types
+
+COMPARATORS = (
+    "most",
+    "more",
+    "less",
+    "least",
+    "very",
+    "quite",
+    "largely",
+    "extremely",
+    "increasingly",
+    "kind of",
+    "mildly",
+)
+UNCOMPARABLES = (
+    "absolute",
+    "adequate",
+    "chief",
+    "complete",
+    "correct",
+    "devoid",
+    "entire",
+    "false",
+    "fatal",
+    "favorite",
+    "final",
+    "ideal",
+    "impossible",
+    "inevitable",
+    "infinite",
+    "irrevocable",
+    "main",
+    "manifest",
+    "only",
+    "paramount",
+    "perfect",
+    "perpetual",
+    "possible",
+    "preferable",
+    "principal",
+    "singular",
+    "stationary",
+    "sufficient",
+    "true",
+    "unanimous",
+    "unavoidable",
+    "unbroken",
+    "uniform",
+    "unique",
+    "universal",
+    "void",
+    "whole",
+)
+EXCEPTIONS = (
+    ("more", "perfect"),
+    ("more", "possible"),  # FIXME
+)
 
 
-
-def check(text):
+def _check_uncomparables(text: str, check: Check) -> list[CheckResult]:
     """Check the text."""
-    err = "uncomparables"
-    msg = "Comparison of an uncomparable: '{}' is not comparable."
+    return types.Existence(
+        items=tuple(
+            rf"{pair[0]}\s{pair[1]}"
+            for pair in product(COMPARATORS, UNCOMPARABLES)
+            if pair not in EXCEPTIONS
+        )
+    ).check(text, check)
 
-    comparators = [
-        "most",
-        "more",
-        "less",
-        "least",
-        "very",
-        "quite",
-        "largely",
-        "extremely",
-        "increasingly",
-        "kind of",
-        "mildly"
-    ]
 
-    uncomparables = [
-        "absolute",
-        "adequate",
-        "chief",
-        "complete",
-        "correct",
-        "devoid",
-        "entire",
-        "false",
-        "fatal",
-        "favorite",
-        "final",
-        "ideal",
-        "impossible",
-        "inevitable",
-        "infinite",
-        "irrevocable",
-        "main",
-        "manifest",
-        "only",
-        "paramount",
-        "perfect",
-        "perpetual",
-        "possible",
-        "preferable",
-        "principal",
-        "singular",
-        "stationary",
-        "sufficient",
-        "true",
-        "unanimous",
-        "unavoidable",
-        "unbroken",
-        "uniform",
-        "unique",
-        "universal",
-        "void",
-        "whole",
-    ]
+check_uncomparables = Check(
+    check_type=_check_uncomparables,
+    path="uncomparables",
+    message="Comparison of an uncomparable: '{}' is not comparable.",
+)
 
-    exceptions = [
-        ("more", "perfect"),
-        ("more", "possible")  # FIXME
-    ]
-
-    uncomparables = [fr"{i[0]}\s{i[1]}" for i in itertools.product(
-        comparators, uncomparables) if i not in exceptions]
-
-    return existence_check(text, uncomparables, err, msg, require_padding=True)
+__register__ = (check_uncomparables,)

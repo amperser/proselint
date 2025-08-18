@@ -1,4 +1,5 @@
-"""Dates.
+"""
+Dates.
 
 ---
 layout:     post
@@ -12,54 +13,43 @@ categories: writing
 Dates.
 
 """
+
 import calendar
 
-from proselint.tools import existence_check
+from proselint.registry.checks import Check, Padding, types
 
+REGEX_MONTHS = Padding.SAFE_JOIN.format("|".join(calendar.month_name[1:]))
 
+checks_decade_apostrophes = tuple(
+    Check(
+        check_type=types.ExistenceSimple(pattern=pattern),
+        path="dates_times.dates.decade_apostrophes",
+        message="Apostrophes aren't needed for decades.",
+    )
+    for pattern in (r"\d0\'s", r"\d\d\d0\'s")
+)
 
-def check_decade_apostrophes_short(text):
-    """Check the text for dates of the form X0's."""
-    err = "dates_times.dates"
-    msg = "Apostrophes aren't needed for decades."
+check_dash_and_from = Check(
+    check_type=types.ExistenceSimple(pattern=r"from \d+[^ \t\n\r\f\v\w_\.]\d+"),
+    path="dates_times.dates.dash_and_from",
+    message="When specifying a date range, write 'from X to Y'.",
+)
 
-    regex = r"\d0\'s"
-    return existence_check(text, [regex], err, msg)
+check_month_year_comma = Check(
+    check_type=types.ExistenceSimple(pattern=REGEX_MONTHS + r", \d{3,}"),
+    path="dates_times.dates.month_year_comma",
+    message="When specifying a month and year, no comma is needed.",
+)
 
+check_month_of_year = Check(
+    check_type=types.ExistenceSimple(pattern=REGEX_MONTHS + r" of \d{3,}"),
+    path="dates_times.dates.month_of_year",
+    message="When specifying a month and year, 'of' is unnecessary.",
+)
 
-def check_decade_apostrophes_long(text):
-    """Check the text for dates of the form XXX0's."""
-    err = "dates_times.dates"
-    msg = "Apostrophes aren't needed for decades."
-
-    regex = r"\d\d\d0\'s"
-    return existence_check(text, [regex], err, msg)
-
-
-
-def check_dash_and_from(text):
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a date range, write 'from X to Y'."
-
-    regex = r"[fF]rom \d+[^ \t\n\r\f\va-zA-Z0-9_\.]\d+"
-    return existence_check(text, [regex], err, msg)
-
-
-def check_month_year_comma(text):
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a month and year, no comma is needed."
-
-    regex = r"(?:" + "|".join(calendar.month_name[1:]) + r"), \d{3,}"
-    return existence_check(text, [regex], err, msg)
-
-
-
-def check_month_of_year(text):
-    """Check the text."""
-    err = "dates_times.dates"
-    msg = "When specifying a month and year, 'of' is unnecessary."
-
-    regex = r"(?:" + "|".join(calendar.month_name[1:]) + r") of \d{3,}"
-    return existence_check(text, [regex], err, msg)
+__register__ = (
+    *checks_decade_apostrophes,
+    check_dash_and_from,
+    check_month_year_comma,
+    check_month_of_year,
+)

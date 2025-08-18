@@ -1,4 +1,5 @@
-"""Illogic.
+"""
+Illogic.
 
 ---
 layout:     post
@@ -9,51 +10,40 @@ date:       2014-06-10 12:31:19
 categories: writing
 ---
 
-Archaism.
+Illogic.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "preplan",
+            "more than .{1,10} all",
+            "appraisal valuations?",
+            "(?:i|you|he|she|it|y'all|all y'all|you all|they) could care less",
+            "least worst",
+            "much-needed gaps?",
+            "much-needed voids?",
+            "no longer requires oxygen",
+            "without scarcely",
+        )
+    ),
+    path="misc.illogic",
+    message="'{}' is illogical.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "misc.illogic"
-    msg = "'{}' is illogical."
+check_coin_a_phrase_from = Check(
+    check_type=types.ExistenceSimple(pattern="to coin a phrase from"),
+    path="misc.illogic.coin",
+    message="You can't coin an existing phrase. Did you mean 'borrow'?",
+)
 
-    illogics = [
-        "preplan",
-        "more than .{1,10} all",
-        "appraisal valuations?",
-        "(?:i|you|he|she|it|y'all|all y'all|you all|they) could care less",
-        "least worst",
-        "much-needed gaps?",
-        "much-needed voids?",
-        "no longer requires oxygen",
-        "without scarcely",
-    ]
+check_without_your_collusion = Check(
+    check_type=types.ExistenceSimple(pattern="without your collusion"),
+    path="misc.illogic.collusion",
+    message="It's impossible to defraud yourself. Try 'aquiescence'.",
+)
 
-    return existence_check(text, illogics, err, msg, offset=1)
-
-
-
-def check_coin_a_phrase_from(text):
-    """Check the text."""
-    err = "misc.illogic.coin"
-    msg = "You can't coin an existing phrase. Did you mean 'borrow'?"
-
-    regex = "to coin a phrase from"
-
-    return existence_check(text, [regex], err, msg, offset=1)
-
-
-
-def check_without_your_collusion(text):
-    """Check the textself."""
-    err = "misc.illogic.collusion"
-    msg = "It's impossible to defraud yourself. Try 'aquiescence'."
-
-    regex = "without your collusion"
-
-    return existence_check(
-        text, [regex], err, msg, require_padding=False, offset=-1)
+__register__ = (check, check_coin_a_phrase_from, check_without_your_collusion)

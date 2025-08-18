@@ -1,4 +1,5 @@
-"""Misuse of scare quotes.
+"""
+Misuse of scare quotes.
 
 ---
 layout:     post
@@ -12,16 +13,13 @@ categories: writing
 Points out misuse of scare quotes.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.scare_quotes"
-    msg = "Misuse of 'scare quotes'. Delete them."
+check = Check(
+    check_type=types.ExistenceSimple(pattern=r"\bthe 'take-home message'\B"),
+    path="misc.scare_quotes",
+    message="Misuse of 'scare quotes'. Delete them.",
+)
 
-    narcissism = [
-        "the 'take-home message'",
-    ]
-
-    return existence_check(text, narcissism, err, msg)
+__register__ = (check,)

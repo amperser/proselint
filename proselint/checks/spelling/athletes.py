@@ -1,4 +1,5 @@
-"""Misspellings.
+"""
+Misspellings.
 
 ---
 layout:     post
@@ -12,33 +13,33 @@ categories: writing
 Points out misspellings.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "Dwayne Wade": "Dwyane Wade",
+            "Mikka Kiprusoff": "Miikka Kiprusoff",
+            "Mark Buerhle": "Mark Buehrle",
+            "Skyler Diggins": "Skylar Diggins",
+            "Agnieska Radwanska": "Agnieszka Radwanska",
+            r"J\.J\. Reddick": r"J\.J\. Redick",
+            "Manny Packquaio": "Manny Pacquiao",
+            "Antwan Jamison": "Antawn Jamison",
+            "Cal Ripkin": "Cal Ripken",
+            "Johnny Peralta": "Jhonny Peralta",
+            "Monte Ellis": "Monta Ellis",
+            "Alex Rodriquez": "Alex Rodriguez",
+            "Mark Texeira": "Mark Teixeira",
+            "Brett Farve": "Brett Favre",
+            "Tori Hunter": "Torii Hunter",
+            "Stephon Curry": "Stephen Curry",
+            "Mike Kryzewski": "Mike Krzyzewski",
+        }
+    ),
+    path="spelling.athletes",
+    message="Misspelling of athlete's name. '{}' is the preferred form.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "spelling.athletes"
-    msg = "Misspelling of athlete's name. '{}' is the preferred form."
-
-    misspellings = [
-        ["Dwyane Wade",         ["Dwayne Wade"]],
-        ["Miikka Kiprusoff",    ["Mikka Kiprusoff"]],
-        ["Mark Buehrle",        ["Mark Buerhle"]],
-        ["Skylar Diggins",      ["Skyler Diggins"]],
-        ["Agnieszka Radwanska", ["Agnieska Radwanska"]],
-        ["J.J. Redick",         ["J.J. Reddick"]],
-        ["Manny Pacquiao",      ["Manny Packquaio"]],
-        ["Antawn Jamison",      ["Antwan Jamison"]],
-        ["Cal Ripken",          ["Cal Ripkin"]],
-        ["Jhonny Peralta",      ["Johnny Peralta"]],
-        ["Monta Ellis",         ["Monte Ellis"]],
-        ["Alex Rodriguez",      ["Alex Rodriquez"]],
-        ["Mark Teixeira",       ["Mark Texeira"]],
-        ["Brett Favre",         ["Brett Farve"]],
-        ["Torii Hunter",        ["Tori Hunter"]],
-        ["Stephen Curry",       ["Stephon Curry"]],
-        ["Mike Krzyzewski",     ["Mike Kryzewski"]],
-    ]
-
-    return preferred_forms_check(text, misspellings, err, msg)
+__register__ = (check,)

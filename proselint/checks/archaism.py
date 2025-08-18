@@ -1,4 +1,5 @@
-"""Archaism.
+"""
+Archaism.
 
 ---
 layout:     post
@@ -12,70 +13,70 @@ categories: writing
 Archaism.
 
 """
-from proselint.tools import existence_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.Existence(
+        items=(
+            "alack",
+            "anent",
+            # "anon",
+            "begat",
+            "belike",
+            "betimes",
+            "boughten",
+            "brocage",
+            "brokage",
+            "camarade",
+            "chiefer",
+            "chiefest",
+            "Christiana",
+            "completely obsolescent",
+            "cozen",
+            "divers",
+            "deflexion",
+            "durst",
+            "fain",
+            "forsooth",
+            "foreclose from",
+            "haply",
+            "howbeit",
+            "illumine",
+            "in sooth",
+            "maugre",
+            "meseems",
+            "methinks",
+            "nigh",
+            "peradventure",
+            "perchance",
+            "saith",
+            "shew",
+            "sistren",
+            "spake",
+            "to wit",
+            "verily",
+            "whilom",
+            "withal",
+            "wot",
+            "enclosed please find",
+            "please find enclosed",
+            "enclosed herewith",
+            "enclosed herein",
+            "inforce",
+            "ex postfacto",
+            "forewent",
+            "for ever",
+            # "designer", when used to mean a plotter against Christ
+            # "demean", when used to mean "to behave" in legal contexts
+            # "by the bye", # variant, modern is "by the by"
+            # "comptroller" # in British English
+            # "abortive" Abortive is archaic in reference to abortions
+            # except in the sense “causing an abortion.”
+        )
+    ),
+    path="archaism",
+    message="'{}' is archaic.",
+)
 
-def check(text):
-    """Check the text."""
-    err = "archaism.misc"
-    msg = "'{}' is archaic."
-
-    archaisms = [
-        "alack",
-        "anent",
-        # "anon",
-        "begat",
-        "belike",
-        "betimes",
-        "boughten",
-        "brocage",
-        "brokage",
-        "camarade",
-        "chiefer",
-        "chiefest",
-        "Christiana",
-        "completely obsolescent",
-        "cozen",
-        "divers",
-        "deflexion",
-        "durst",
-        "fain",
-        "forsooth",
-        "foreclose from",
-        "haply",
-        "howbeit",
-        "illumine",
-        "in sooth",
-        "maugre",
-        "meseems",
-        "methinks",
-        "nigh",
-        "peradventure",
-        "perchance",
-        "saith",
-        "shew",
-        "sistren",
-        "spake",
-        "to wit",
-        "verily",
-        "whilom",
-        "withal",
-        "wot",
-        "enclosed please find",
-        "please find enclosed",
-        "enclosed herewith",
-        "enclosed herein",
-        "inforce",
-        "ex postfacto",
-        "forewent",
-        "for ever",
-        # "designer", when used to mean a plotter against Christ
-        # "demean", when used to mean "to behave" in legal contexts
-        # "by the bye", # variant, modern is "by the by"
-        # "comptroller" # in British English
-        # "abortive" Abortive is archaic in reference to abortions of fetuses,
-        # except in the sense “causing an abortion.”
-    ]
-
-    return existence_check(text, archaisms, err, msg, join=True)
+__register__ = (check,)

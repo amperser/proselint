@@ -1,20 +1,18 @@
 """in- vs. un-."""
 
-from proselint.tools import preferred_forms_check
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "unadvisable": "inadvisable",
+            "unalienable": "inalienable",
+            "unexpressive": "inexpressive",
+            "unfeasible": "infeasible",
+        }
+    ),
+    path="spelling.in_un",
+    message="in- vs. un-. '{}' is the preferred spelling.",
+)
 
-
-def check(text):
-    """in- vs un-."""
-    err = "spelling.in_un"
-    msg = "in- vs. un-. '{}' is the preferred spelling."
-
-    preferences = [
-
-        ["inadvisable",         ["unadvisable"]],
-        ["inalienable",         ["unalienable"]],
-        ["inexpressive",        ["unexpressive"]],
-        ["infeasible",          ["unfeasible"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

@@ -1,4 +1,5 @@
-"""Waxed lyrical.
+"""
+Waxed lyrical.
 
 ---
 layout:     post
@@ -14,41 +15,54 @@ Its primary meaning 'grow larger, increase' (as opposed to 'wane') leads
 naturally to the sense 'pass into a specified state or mood, begin to use a
 specified tone. In this meaning a following modifier must be an adj. not an
 adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
+
 """
-from proselint.tools import preferred_forms_check
+
+from re import search
+
+from proselint.registry.checks import Check, CheckResult, Padding, types
+
+WAXES = ("wax", "waxes", "waxed", "waxing")
+MODIFIERS = {
+    "ebulliently": "ebullient",
+    "ecstatically": "ecstatic",
+    "eloquently": "eloquent",
+    "enthusiastically": "enthusiastic",
+    "euphorically": "euphoric",
+    "indignantly": "indignant",
+    "lyrically": "lyrical",
+    "melancholically": "melancholic",
+    "metaphorically": "metaphorical",
+    "nostalgically": "nostalgic",
+    "patriotically": "patriotic",
+    "philosophically": "philosophical",
+    "poetically": "poetic",
+    "rhapsodically": "rhapsodic",
+    "romantically": "romantic",
+    "sentimentally": "sentimental",
+}
 
 
-
-def check(text):
+def _check_waxed(text: str, check: Check) -> list[CheckResult]:
     """Suggest the preferred forms."""
-    err = "misc.waxed"
-    msg = "The modifier following 'waxed' must be an adj.: '{}' is correct"
+    if not search(
+        Padding.SAFE_JOIN.format("|".join(WAXES)), text, check.re_flag
+    ):
+        return []
 
-    waxes = ["wax", "waxes", "waxed", "waxing"]
-    modifiers = [("ebullient", "ebulliently"),
-                 ("ecstatic", "ecstatically"),
-                 ("eloquent", "eloquently"),
-                 ("enthusiastic", "enthusiastically"),
-                 ("euphoric", "euphorically"),
-                 ("indignant", "indignantly"),
-                 ("lyrical", "lyrically"),
-                 ("melancholic", "melancholically"),
-                 ("metaphorical", "metaphorically"),
-                 ("nostalgic", "nostalgically"),
-                 ("patriotic", "patriotically"),
-                 ("philosophical", "philosophically"),
-                 ("poetic", "poetically"),
-                 ("rhapsodic", "rhapsodically"),
-                 ("romantic", "romantically"),
-                 ("sentimental", "sentimentally")
-                 ]
+    return types.PreferredFormsSimple(
+        items={
+            f"{wax} {original}": f"{wax} {replacement}"
+            for original, replacement in MODIFIERS.items()
+            for wax in WAXES
+        }
+    ).check(text, check)
 
-    def pairs(word):
-        return [[word + ' ' + pair[0], [word + ' ' + pair[1]]]
-                for pair in modifiers]
 
-    preferred = []
-    for word in waxes:
-        preferred += pairs(word)
+check_waxed = Check(
+    check_type=_check_waxed,
+    path="misc.waxed",
+    message="The modifier following 'waxed' must be an adj.: '{}' is correct.",
+)
 
-    return preferred_forms_check(text, preferred, err, msg)
+__register__ = (check_waxed,)

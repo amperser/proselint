@@ -1,4 +1,5 @@
-"""Many a singular.
+"""
+Many a singular.
 
 ---
 layout:     post
@@ -12,19 +13,19 @@ categories: writing
 The idiom 'many a' requires a singular verb.
 
 """
-from proselint.tools import preferred_forms_check
 
+from proselint.registry.checks import Check, types
 
+check = Check(
+    check_type=types.PreferredFormsSimple(
+        items={
+            "are many a": "is many a",
+            "have been many a": "has been many a",
+            "were many a": "was many a",
+        }
+    ),
+    path="misc.many_a",
+    message="'many a' requires a singular verb.",
+)
 
-def check(text):
-    """Suggest the preferred forms."""
-    err = "misc.many_a"
-    msg = "'many a' requires a singular verb."
-
-    preferences = [
-        ["is many a",          ["are many a"]],
-        ["has been many a",    ["have been many a"]],
-        ["was many a",         ["were many a"]],
-    ]
-
-    return preferred_forms_check(text, preferences, err, msg)
+__register__ = (check,)

@@ -40,10 +40,9 @@ format = "ruff format --preview proselint tests"
 
 [dependency-groups]
 test = [
-	"coverage>=7.4.0",
-	"mock>=2.0.0",
-	"pytest>=7.0.0",
-	"pytest-cov>=4.0.0",
+	"hypothesis>=6.135.11",
+	"pytest>=8.4.1",
+	"pytest-cov>=6.2.1",
 	"rstr>=3.2.2",
 ]
 dev = [
