@@ -18,6 +18,8 @@ else:
         iterable: Iterable[T], n: int, *, strict: bool = False
     ) -> Generator[tuple[T, ...]]:
         """Batch data from the `iterable` into `n`-tuples."""
+        if n < 0:
+            raise ValueError("n must be at least one")
         iterator = iter(iterable)
         while batch := tuple(islice(iterator, n)):
             if strict and len(batch) != n:
