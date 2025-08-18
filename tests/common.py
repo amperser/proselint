@@ -64,15 +64,15 @@ def extract_checks(module: ModuleType) -> list[Check]:
     """Extract `Check`s from a module without relying on the registry."""
     return list(
         chain.from_iterable(
-            [x] if isinstance(x, Check) else x  # pyright: ignore[reportUnknownArgumentType]
-            for d in dir(module)
+            [value] if isinstance(value, Check) else value  # pyright: ignore[reportUnknownArgumentType]
+            for attr in dir(module)
             if (
-                d != "__register__"
+                attr != "__register__"
                 and (
-                    isinstance(x := getattr(module, d), Check)  # pyright: ignore[reportAny]
+                    isinstance(value := getattr(module, attr), Check)  # pyright: ignore[reportAny]
                     or (
-                        isinstance(x, tuple)
-                        and all(isinstance(entry, Check) for entry in x)  # pyright: ignore[reportUnknownVariableType]
+                        isinstance(value, tuple)
+                        and all(isinstance(entry, Check) for entry in value)  # pyright: ignore[reportUnknownVariableType]
                     )
                 )
             )
