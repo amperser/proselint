@@ -56,8 +56,8 @@ def verify_module(name: str) -> ModuleType:
     """Verify that a module is importable."""
     try:
         return importlib.import_module(f".{name}", "proselint.checks")
-    except ModuleNotFoundError as exc:
-        raise ImportError(f"Is {name} broken?") from exc
+    except (ModuleNotFoundError, ImportError) as exc:
+        raise ImportError(f"Could not import {name}") from exc
 
 
 def extract_checks(module: ModuleType) -> list[Check]:
