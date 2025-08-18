@@ -173,11 +173,8 @@ class Check(NamedTuple):
     def matches_partial(self, partial: str) -> bool:
         """Check if `partial` is a subset key of the full check path."""
         partial_segments = partial.split(".")
-        path_segments = self.path_segments
 
-        return len(partial_segments) <= len(path_segments) and all(
-            a == b for a, b in zip(path_segments, partial_segments)
-        )
+        return self.path_segments[:len(partial_segments)] == partial_segments
 
     def check(self, text: str) -> list[CheckResult]:
         """Apply the check over `text`."""
