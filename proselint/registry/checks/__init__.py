@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from enum import Enum
 from itertools import chain, islice
 from math import ceil
@@ -12,6 +11,8 @@ from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, Optional
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from proselint.registry.checks.types import CheckType
 
 BATCH_COUNT = 150
