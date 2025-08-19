@@ -33,7 +33,7 @@ def extract_files(paths: list[Path]) -> list[Path]:
 def find_spans(
     text: str,
     pattern: Pattern[str],
-    predicate: Callable[[tuple[str, str]], bool],
+    predicate: Callable[[tuple[str, str]], tuple[tuple[int, int], bool]],
 ) -> list[tuple[int, int]]:
     """Find spans of matching characters (e.g. quotes)."""
     active = tuple((m.group(0), m.start()) for m in finditer(pattern, text))
@@ -41,9 +41,10 @@ def find_spans(
     spans: list[tuple[int, int]] = []
     for char, span_end in active:
         for potential, span_start in reversed(prev):
-            if predicate((char, potential)):
+            offset, match = predicate((potential, char))
+            if match:
                 _ = prev.pop()
-                spans.append((span_start, span_end))
+                spans.append((span_start + offset[0], span_end + offset[1]))
                 break
         else:
             prev.append((char, span_end))
@@ -52,16 +53,26 @@ def find_spans(
 
 STRAIGHT_QUOTES = {'"', "'"}
 CURLY_QUOTES = {"“", "”"}
+CURLY_SINGLE_QUOTES = {"‘", "’"}  # noqa: RUF001
 
 
-def check_matching_quotes(chars: tuple[str, str]) -> bool:
+def check_matching_quotes(
+    chars: tuple[str, str],
+) -> tuple[tuple[int, int], bool]:
     """Check if a pair of quotes match."""
-    return (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1]) or (
-        set(chars) == CURLY_QUOTES
+    end_offset = 1 if chars[1][0] in ",.!?" else 0
+    chars = (chars[0], chars[1].lstrip(",.!?"))
+    return (
+        (0, end_offset),
+        (
+            (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1])
+            or set(chars) in (CURLY_QUOTES, CURLY_SINGLE_QUOTES)
+        ),
     )
 
 
-QUOTE_PATTERN = rcompile(r"[\"'“”]")
+QUOTES = "".join(STRAIGHT_QUOTES | CURLY_QUOTES | CURLY_SINGLE_QUOTES)
+QUOTE_PATTERN = rcompile(rf"(?:\B[{QUOTES}]\b|\b[,.!?]?[{QUOTES}]\B)")
 
 
 def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
