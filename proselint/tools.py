@@ -19,15 +19,19 @@ ACCEPTED_EXTENSIONS = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
 
 def extract_files(paths: list[Path]) -> list[Path]:
     """Expand `paths` to include all text files accepted by the linter."""
-    return list(chain.from_iterable(
-        (
-            file
-            for root, _, files in path.walk()
-            for file in map(root.__truediv__, files)
-            if file.suffix in ACCEPTED_EXTENSIONS
-        ) if path.is_dir() else (path,)
-        for path in paths
-    ))
+    return list(
+        chain.from_iterable(
+            (
+                file
+                for root, _, files in path.walk()
+                for file in map(root.__truediv__, files)
+                if file.suffix in ACCEPTED_EXTENSIONS
+            )
+            if path.is_dir()
+            else (path,)
+            for path in paths
+        )
+    )
 
 
 def find_spans(
