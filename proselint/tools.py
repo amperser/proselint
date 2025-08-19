@@ -14,7 +14,7 @@ from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
 
-ACCEPTED_EXTENSIONS = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
+ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 
 
 def extract_files(paths: list[Path]) -> list[Path]:
