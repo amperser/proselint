@@ -8,7 +8,7 @@ from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
 from sys import stdin
-from typing import NamedTuple, Union, cast, overload
+from typing import Union, cast, overload
 
 from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
@@ -74,7 +74,7 @@ def errors_to_json(errors: list[LintResult]) -> str:
     return json.dumps(
         {
             "status": "success",
-            "data": {"errors": list(map(NamedTuple._asdict, errors))},
+            "data": {"errors": [err._asdict() for err in errors]},
         },
         sort_keys=True,
     )
