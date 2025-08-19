@@ -1,8 +1,8 @@
 """General-purpose tools shared across linting checks."""
 
-from itertools import islice
 import json
 from io import FileIO
+from itertools import islice
 from operator import itemgetter
 from typing import NamedTuple, Union
 
@@ -32,14 +32,14 @@ def line_and_column(text, position):
 
 
 def lint(
-    input_file: Union[str, FileIO],
+    content_or_file: Union[str, FileIO],
     config: Config = DEFAULT,
 ) -> list[LintResult]:
     """Run the linter on the input."""
-    text = (
-        input_file
-        if isinstance(input_file, str)
-        else str(input_file.read())
+    content = (
+        content_or_file
+        if isinstance(content_or_file, str)
+        else str(content_or_file.read())
     )
 
     return sorted(
@@ -48,15 +48,15 @@ def lint(
                 LintResult(
                     result.check_path,
                     result.message,
-                    *line_and_column(text, result.start_pos),
+                    *line_and_column(content, result.start_pos),
                     start_pos=result.start_pos,
                     end_pos=result.end_pos,
                     severity="warning",
                     replacements=result.replacements,
                 )
                 for check in CheckRegistry().get_all_enabled(config["checks"])
-                for result in check.check_with_flags(text)
-                if not is_quoted(result.start_pos, text)
+                for result in check.check_with_flags(content)
+                if not is_quoted(result.start_pos, content)
             ),
             config["max_errors"],
         ),
