@@ -35,7 +35,7 @@ def lint(
     input_file: Union[str, FileIO],
     config: Config = DEFAULT,
 ) -> list[LintResult]:
-    """Run the linter on the input file."""
+    """Run the linter on the input."""
     text = (
         input_file
         if isinstance(input_file, str)
