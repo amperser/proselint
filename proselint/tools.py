@@ -32,15 +32,11 @@ def line_and_column(text, position):
 
 
 def lint(
-    content_or_file: Union[str, FileIO],
+    source: Union[str, FileIO],
     config: Config = DEFAULT,
 ) -> list[LintResult]:
     """Run the linter on the input."""
-    content = (
-        content_or_file
-        if isinstance(content_or_file, str)
-        else str(content_or_file.read())
-    )
+    content = source if isinstance(source, str) else str(source.read())
 
     return sorted(
         islice(
