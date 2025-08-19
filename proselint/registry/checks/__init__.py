@@ -5,10 +5,14 @@
 from __future__ import annotations
 
 from enum import Enum
+from itertools import chain, islice
+from math import ceil
 from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, Optional
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from proselint.registry.checks.types import CheckType
 
 BATCH_COUNT = 150
@@ -90,61 +94,57 @@ class CheckFlags(NamedTuple):
     ppm_threshold: int = 0
 
     @staticmethod
-    def truncate(results: list[CheckResult], limit: int) -> list[CheckResult]:
+    def truncate(
+        results: Iterator[CheckResult], limit: int
+    ) -> Iterator[CheckResult]:
         """
         Truncate a list of results to a given threshold.
 
         This also notes how many times the check flagged prior to truncation.
         """
-        if limit == 0 or (num_results := len(results)) <= limit:
+        if limit == 0:
             return results
 
-        last_result = results[limit - 1]
-        num_extras = num_results - limit
-        last_message = last_result.message + " Found {} elsewhere.".format(
-            "once" if num_extras == 1 else f"{num_extras} times"
-        )
-
-        return [
-            *results[0 : limit - 1],
-            CheckResult(
-                start_pos=last_result.start_pos,
-                end_pos=last_result.end_pos,
-                check_path=last_result.check_path,
-                message=last_message,
-                replacements=None,
+        return chain(
+            islice(results, limit - 1),
+            (
+                CheckResult(
+                    start_pos=result.start_pos,
+                    end_pos=result.end_pos,
+                    check_path=result.check_path,
+                    message=f"{result.message} Also found elsewhere.",
+                    replacements=result.replacements,
+                )
+                for result in islice(results, 1)
             ),
-        ]
+        )
 
     @staticmethod
     def apply_threshold(
-        results: list[CheckResult], threshold: int, length: int
-    ) -> list[CheckResult]:
+        results: Iterator[CheckResult], threshold: int, length: int
+    ) -> Iterator[CheckResult]:
         """Return an error if the specified PPM `threshold` is surpassed."""
-        if threshold == 0 or length == 0 or (num_results := len(results)) < 2:
-            return []
+        if 0 in {threshold, length}:
+            return results
 
-        length = max(length, 1000)
-        if (ppm := (num_results / length) * 1e6) <= threshold:
-            return []
-        return [
+        req_results = max(ceil((threshold / 1e6) * max(length, 1000)), 2)
+        return (
             CheckResult(
-                start_pos=results[0].start_pos,
-                end_pos=results[0].end_pos,
-                check_path=results[0].check_path,
-                message=results[0].message + f" Reached {ppm:.0f} ppm.",
+                start_pos=result.start_pos,
+                end_pos=result.end_pos,
+                check_path=result.check_path,
+                message=f"{result.message} Surpassed {threshold} ppm.",
                 replacements=None,
             )
-        ]
+            for result in islice(results, req_results - 1, req_results)
+        )
 
     def apply(
-        self, results: list[CheckResult], text_len: int
-    ) -> list[CheckResult]:
-        """Apply the specified flags to a list of `results`."""
+        self, results: Iterator[CheckResult], text_len: int
+    ) -> Iterator[CheckResult]:
+        """Apply the specified flags to an iterator of `results`."""
         return CheckFlags.truncate(
-            CheckFlags.apply_threshold(results, self.ppm_threshold, text_len)
-            if self.ppm_threshold
-            else results,
+            CheckFlags.apply_threshold(results, self.ppm_threshold, text_len),
             self.results_limit,
         )
 
@@ -176,7 +176,7 @@ class Check(NamedTuple):
 
         return self.path_segments[:len(partial_segments)] == partial_segments
 
-    def check(self, text: str) -> list[CheckResult]:
+    def check(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`."""
         return (
             self.check_type
@@ -184,6 +184,6 @@ class Check(NamedTuple):
             else self.check_type.check
         )(text, self)
 
-    def check_with_flags(self, text: str) -> list[CheckResult]:
+    def check_with_flags(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`, including specified `CheckFlags`."""
         return self.flags.apply(self.check(text), len(text))
