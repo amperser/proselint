@@ -34,49 +34,46 @@ def extract_files(paths: list[Path]) -> list[Path]:
     )
 
 
-def find_spans(
-    text: str,
-    pattern: Pattern[str],
-    predicate: Callable[[tuple[str, str]], tuple[tuple[int, int], bool]],
-) -> list[tuple[int, int]]:
-    """Find spans of matching characters (e.g. quotes)."""
-    active = tuple((m.group(0), m.start()) for m in finditer(pattern, text))
-    prev: list[tuple[str, int]] = []
-    spans: list[tuple[int, int]] = []
-    for char, span_end in active:
-        for potential, span_start in reversed(prev):
-            offset, match = predicate((potential, char))
-            if match:
-                _ = prev.pop()
-                spans.append((span_start + offset[0], span_end + offset[1]))
-                break
-        else:
-            prev.append((char, span_end))
-    return spans
-
-
+SEPARATORS = " ,.!?:;-\r\n"
 STRAIGHT_QUOTES = {'"', "'"}
 CURLY_QUOTES = {"“", "”"}
 CURLY_SINGLE_QUOTES = {"‘", "’"}  # noqa: RUF001
+QUOTES = "".join(STRAIGHT_QUOTES | CURLY_QUOTES | CURLY_SINGLE_QUOTES)
+QUOTE_PATTERN = rcompile(rf"(?:\B[{QUOTES}]|[{QUOTES}]\B)")
 
 
-def check_matching_quotes(
-    chars: tuple[str, str],
-) -> tuple[tuple[int, int], bool]:
+def check_matching_quotes(chars: tuple[str, str]) -> bool:
     """Check if a pair of quotes match."""
-    end_offset = 1 if chars[1][0] in ",.!?" else 0
-    chars = (chars[0], chars[1].lstrip(",.!?"))
     return (
-        (0, end_offset),
-        (
-            (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1])
-            or set(chars) in (CURLY_QUOTES, CURLY_SINGLE_QUOTES)
-        ),
+        (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1])
+        or set(chars) in (CURLY_QUOTES, CURLY_SINGLE_QUOTES)
     )
 
 
-QUOTES = "".join(STRAIGHT_QUOTES | CURLY_QUOTES | CURLY_SINGLE_QUOTES)
-QUOTE_PATTERN = rcompile(rf"(?:\B[{QUOTES}]\b|\b[,.!?]?[{QUOTES}]\B)")
+def find_spans(
+    text: str,
+    pattern: Pattern[str],
+    predicate: Callable[[tuple[str, str]], bool],
+) -> list[tuple[int, int]]:
+    """
+    Find spans of matching characters (e.g. quotes).
+
+    Note that this ignores nested spans, and currently requires a separator
+    around the matched items. Its only function within proselint is to find
+    quotes, but either of these behaviours may change in the future.
+    """
+    prev: tuple[str, int] | None = None
+    spans: list[tuple[int, int]] = []
+    for match in finditer(pattern, text):
+        char, span_end = (match.group(0), match.start())
+        if not prev:
+            if text[span_end - 1] in SEPARATORS:
+                prev = (char, span_end)
+            continue
+        if predicate((prev[0], char)) and text[span_end + 1] in SEPARATORS:
+            spans.append((prev[1], span_end))
+            prev = None
+    return spans
 
 
 def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
@@ -124,7 +121,9 @@ class LintFile:
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
-        self.quote_spans = tuple(find_quoted_ranges(self.content))
+        self.quote_spans = tuple(
+            find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
+        )
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
