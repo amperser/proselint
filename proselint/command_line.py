@@ -19,22 +19,6 @@ CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
 base_url = "proselint.com/"
 
 
-# TODO: fix broken corpus
-def timing_test(corpus="0.1.0"):
-    """Measure timing performance on the named corpus."""
-    import time
-    dirname = os.path.dirname
-    corpus_path = os.path.join(
-        dirname(dirname(os.path.realpath(__file__))), "corpora", corpus)
-    start = time.time()
-    for file in os.listdir(corpus_path):
-        filepath = os.path.join(corpus_path, file)
-        if filepath[-3:] == ".md":
-            subprocess.call(["proselint", filepath, ">/dev/null"])
-
-    return time.time() - start
-
-
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(__version__, '--version', '-v', message='%(version)s')
 @click.option('--config', is_flag=False,
@@ -43,7 +27,6 @@ def timing_test(corpus="0.1.0"):
 @click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
 @click.option('--json', '-j', 'output_json', is_flag=True,
               help="Output as JSON.")
-@click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
 @click.option('--demo', is_flag=True, help="Run over demo file.")
 @click.option('--compact', is_flag=True, help="Shorten output.")
 @click.option('--dump-config', is_flag=True, help="Prints current config.")
@@ -52,7 +35,7 @@ def timing_test(corpus="0.1.0"):
 @click.argument('paths', nargs=-1, type=click.Path(exists=True, path_type=Path))
 def proselint(
     paths: list[Path], config=None, version=None,
-    debug=None, output_json=None, time=None, demo=None, compact=None,
+    debug=None, output_json=None, demo=None, compact=None,
     dump_config=None, dump_default_config=None
 ) -> None:
     """Create the CLI for proselint, a linter for prose."""
@@ -62,11 +45,6 @@ def proselint(
     config = load_from(config)
     if dump_config:
         print(json.dumps(config, sort_keys=True, indent=4))
-        return None
-
-    if time:
-        # click.echo(timing_test())
-        print("This option does not work for the time being.")
         return None
 
     # Lint the files
