@@ -13,6 +13,6 @@ jobs:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v2
       - name: "[EXEC] Synchronize labels"
-        uses: crazy-max/ghaction-github-labeler@v3
+        uses: crazy-max/ghaction-github-labeler@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
