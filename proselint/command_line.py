@@ -4,23 +4,19 @@ import json
 import os
 import subprocess
 import sys
-import traceback
 from pathlib import Path
 
 import click
 
-from proselint.config import DEFAULT, load_from
 from proselint.checks import __register__
+from proselint.config import DEFAULT, load_from
+from proselint.config import paths as config_paths
 from proselint.registry import CheckRegistry
-from proselint.registry.checks import LintResult
-
-from .tools import errors_to_json, lint
-from .version import __version__
+from proselint.tools import LintFile, extract_files
+from proselint.version import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
 base_url = "proselint.com/"
-proselint_path = os.path.dirname(os.path.realpath(__file__))
-demo_file = os.path.join(proselint_path, "demo.md")
 
 
 # TODO: fix broken corpus
@@ -33,27 +29,10 @@ def timing_test(corpus="0.1.0"):
     start = time.time()
     for file in os.listdir(corpus_path):
         filepath = os.path.join(corpus_path, file)
-        if ".md" == filepath[-3:]:
+        if filepath[-3:] == ".md":
             subprocess.call(["proselint", filepath, ">/dev/null"])
 
     return time.time() - start
-
-
-def print_errors(
-    filename: str,
-    results: list[LintResult],
-    *,
-    output_json: bool = False,
-    compact: bool = False,
-) -> None:
-    """Print the errors, resulting from lint, for filename."""
-    if output_json:
-        click.echo(errors_to_json(results))
-
-    if compact:
-        filename = "-"
-    for result in results:
-        click.echo(f"{filename}:{result}")
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -70,10 +49,12 @@ def print_errors(
 @click.option('--dump-config', is_flag=True, help="Prints current config.")
 @click.option('--dump-default-config', is_flag=True,
               help="Prints default config.")
-@click.argument('paths', nargs=-1, type=click.Path())
-def proselint(paths=None, config=None, version=None,
-              debug=None, output_json=None, time=None, demo=None, compact=None,
-              dump_config=None, dump_default_config=None):
+@click.argument('paths', nargs=-1, type=click.Path(exists=True, path_type=Path))
+def proselint(
+    paths: list[Path], config=None, version=None,
+    debug=None, output_json=None, time=None, demo=None, compact=None,
+    dump_config=None, dump_default_config=None
+) -> None:
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:
         return print(json.dumps(DEFAULT, sort_keys=True, indent=4))
@@ -81,69 +62,32 @@ def proselint(paths=None, config=None, version=None,
     config = load_from(config)
     if dump_config:
         print(json.dumps(config, sort_keys=True, indent=4))
-        return
+        return None
 
     if time:
         # click.echo(timing_test())
         print("This option does not work for the time being.")
-        return
-
-    # Use the demo file by default.
-    if demo:
-        paths = [demo_file]
-
-    # Expand the list of directories and files.
-    filepaths = extract_files(list(paths))
+        return None
 
     # Lint the files
     num_errors = 0
 
-    # Use stdin if no paths were specified
-    if len(paths) == 0:
-        filepaths.append('-')
-
     CheckRegistry().register_many(__register__)
-    for fp in filepaths:
-        if fp == '-':
-            fp = '<stdin>'
-            f = sys.stdin
-        else:
-            try:
-                f = click.open_file(fp, 'r', "utf-8", "replace")
-            except Exception:
-                traceback.print_exc()
-                sys.exit(2)
-        errors = lint(f, config)
-        num_errors += len(errors)
-        print_errors(fp, errors, output_json=output_json, compact=compact)
 
-    # Return an exit code
-    if num_errors > 0:
-        sys.exit(1)
+    lint_files: list[LintFile] = []
+    if demo:
+        lint_files = [LintFile(config_paths.demo_path)]
+    elif len(paths) == 0:
+        lint_files = [LintFile.from_stdin()]
     else:
-        sys.exit(0)
+        lint_files = list(map(LintFile, extract_files(paths)))
 
-
-def extract_files(files):
-    """Expand list of paths to include all text files matching the pattern."""
-    expanded_files = []
-    legal_extensions = [".md", ".txt", ".rtf", ".html", ".tex", ".markdown"]
-
-    for f in files:
-        # If it's a directory, recursively walk through it and find the files.
-        if os.path.isdir(f):
-            for dir_, _, filenames in os.walk(f):
-                for filename in filenames:
-                    fn, file_extension = os.path.splitext(filename)
-                    if file_extension in legal_extensions:
-                        joined_file = os.path.join(dir_, filename)
-                        expanded_files.append(joined_file)
-
-        # Otherwise add the file directly.
-        else:
-            expanded_files.append(f)
-
-    return expanded_files
+    for lint_file in lint_files:
+        results = lint_file.lint(config)
+        num_errors += len(results)
+        lint_file.output_errors(results, output_json=output_json, compact=compact)
+    # Return an exit code
+    sys.exit(int(num_errors > 0))
 
 
 if __name__ == '__main__':
