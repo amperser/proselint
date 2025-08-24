@@ -9,6 +9,8 @@ import sys
 from argparse import ArgumentParser
 from enum import IntEnum
 from pathlib import Path
+from signal import Signals, signal
+from typing import TYPE_CHECKING, Optional
 
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
@@ -18,6 +20,8 @@ from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, OutputFormat, extract_files
 from proselint.version import __version__
 
+if TYPE_CHECKING:
+    from types import FrameType
 
 
 class ExitStatus(IntEnum):
@@ -26,10 +30,20 @@ class ExitStatus(IntEnum):
     SUCCESS = 0
     SUCCESS_ERR = 1
     UNACCEPTED_ARGS = 2
+    INTERRUPT = 3
+
+
+def interrupt_handler(_signalnum: int, _frame: Optional[FrameType]) -> None:
+    """Exit proselint gracefully from an interrupt."""
+    log.warning("Exiting.")
+    sys.exit(ExitStatus.INTERRUPT)
 
 
 def proselint() -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
+    signal(Signals.SIGTERM, interrupt_handler)
+    signal(Signals.SIGINT, interrupt_handler)
+
     global_parser = ArgumentParser()
     global_parser.add_argument("--config", type=Path)
     global_parser.add_argument(
