@@ -591,9 +591,6 @@ wheels = [
 [[package]]
 name = "proselint"
 source = { editable = "." }
-dependencies = [
-    { name = "click" },
-]
 
 [package.dev-dependencies]
 dev = [
@@ -622,7 +619,6 @@ web = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "click", specifier = ">=8.0.0" }]
 
 [package.metadata.requires-dev]
 dev = [
