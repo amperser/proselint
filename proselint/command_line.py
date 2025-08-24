@@ -3,19 +3,27 @@
 import json
 import sys
 from argparse import ArgumentParser
+from enum import Enum
 from pathlib import Path
 
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
+from proselint.log import log
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, OutputFormat, extract_files
 from proselint.version import __version__
 
-base_url = "proselint.com/"
+
+class ExitStatus(int, Enum):
+    """Exit status for proselint's command line."""
+
+    SUCCESS = 0
+    SUCCESS_ERR = 1
+    UNACCEPTED_ARGS = 2
 
 
-def proselint() -> None:
+def proselint() -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
     global_parser = ArgumentParser()
     _ = global_parser.add_argument("--config", type=Path)
@@ -49,21 +57,27 @@ def proselint() -> None:
 
     config = load_from(args.config)
 
+    log.setup(verbose=args.verbose)
+
+    # TODO: should this be a subcommand? it acts like one
     if args.version:
-        return print(f"Proselint {__version__}\nPython {sys.version}")
+        log.info("Proselint %s", __version__)
+        log.debug("Python %s", sys.version)
+        return ExitStatus.SUCCESS
 
     if args.subcommand is None:
-        return parser.print_help()
+        parser.print_help()
+        return ExitStatus.UNACCEPTED_ARGS
+
     if args.subcommand == "dump-config":
-        return print(
+        log.info(
             json.dumps(
                 DEFAULT if args.default else config, sort_keys=True, indent=4
             )
         )
+        return ExitStatus.SUCCESS
 
     # Lint the files
-    num_errors = 0
-
     CheckRegistry().register_many(__register__)
 
     lint_files: list[LintFile] = []
@@ -74,13 +88,15 @@ def proselint() -> None:
     else:
         lint_files = list(map(LintFile, extract_files(args.paths)))
 
+    num_errors = 0
+
     for lint_file in lint_files:
         results = lint_file.lint(config)
         num_errors += len(results)
         lint_file.output_errors(results, args.output_format)
-    # Return an exit code
-    sys.exit(int(num_errors > 0))
+
+    return ExitStatus(int(num_errors > 0))
 
 
 if __name__ == "__main__":
-    proselint()
+    sys.exit(proselint())

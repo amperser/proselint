@@ -12,6 +12,7 @@ from sys import stdin
 from typing import Union, cast, overload
 
 from proselint.config import DEFAULT, Config
+from proselint.log import log
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
 
@@ -198,7 +199,7 @@ class LintFile:
     ) -> None:
         """Log lint results from the LintFile."""
         if output_format is OutputFormat.JSON:
-            print(errors_to_json(results))
+            log.warning(errors_to_json(results))
             return
 
         name = (
@@ -206,4 +207,4 @@ class LintFile:
         )
 
         for result in results:
-            print(f"{name}{result}")
+            log.warning(f"{name}{result}")
