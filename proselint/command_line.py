@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 import sys
 from argparse import ArgumentParser
-from enum import Enum
+from enum import IntEnum
 from pathlib import Path
 
 from proselint.checks import __register__
@@ -19,7 +19,8 @@ from proselint.tools import LintFile, OutputFormat, extract_files
 from proselint.version import __version__
 
 
-class ExitStatus(int, Enum):
+
+class ExitStatus(IntEnum):
     """Exit status for proselint's command line."""
 
     SUCCESS = 0
