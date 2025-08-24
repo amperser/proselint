@@ -2,6 +2,7 @@
 
 import json
 from collections.abc import Callable
+from enum import Enum
 from itertools import accumulate, chain, islice
 from operator import itemgetter
 from pathlib import Path
@@ -13,6 +14,15 @@ from typing import Union, cast, overload
 from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
+
+
+class OutputFormat(str, Enum):
+    """The format to output results in."""
+
+    FULL = "full"
+    JSON = "json"
+    COMPACT = "compact"
+
 
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 
@@ -184,16 +194,16 @@ class LintFile:
     def output_errors(
         self,
         results: list[LintResult],
-        *,
-        output_json: bool = False,
-        compact: bool = False,
+        output_format: OutputFormat,
     ) -> None:
         """Log lint results from the LintFile."""
-        if output_json:
+        if output_format is OutputFormat.JSON:
             print(errors_to_json(results))
             return
 
-        name = "-" if compact else self.source_name
+        name = (
+            "-" if output_format is OutputFormat.COMPACT else self.source_name
+        )
 
         for result in results:
             print(f"{name}{result}")
