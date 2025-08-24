@@ -1,4 +1,8 @@
 """Command line utility for proselint."""
+# pyright: reportUnusedCallResult=false, reportAny=false
+# TODO: explore options for typing argparse.Namespace
+
+from __future__ import annotations
 
 import json
 import sys
@@ -26,16 +30,16 @@ class ExitStatus(int, Enum):
 def proselint() -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
     global_parser = ArgumentParser()
-    _ = global_parser.add_argument("--config", type=Path)
-    _ = global_parser.add_argument(
+    global_parser.add_argument("--config", type=Path)
+    global_parser.add_argument(
         "--output-format",
         "-o",
         choices=[output_format.value for output_format in OutputFormat],
         default=OutputFormat.FULL,
         type=OutputFormat,
     )
-    _ = global_parser.add_argument("--verbose", "-v", action="store_true")
-    _ = global_parser.add_argument("--version", "-V", action="store_true")
+    global_parser.add_argument("--verbose", "-v", action="store_true")
+    global_parser.add_argument("--version", "-V", action="store_true")
 
     parser = ArgumentParser(
         parents=(global_parser,), conflict_handler="resolve"
@@ -45,13 +49,13 @@ def proselint() -> ExitStatus:
     check_parser = subparsers.add_parser(
         "check", parents=(global_parser,), conflict_handler="resolve"
     )
-    _ = check_parser.add_argument("--demo", action="store_true")
-    _ = check_parser.add_argument("paths", nargs="*", type=Path)
+    check_parser.add_argument("--demo", action="store_true")
+    check_parser.add_argument("paths", nargs="*", type=Path)
 
     dump_config_parser = subparsers.add_parser(
         "dump-config", parents=(global_parser,), conflict_handler="resolve"
     )
-    _ = dump_config_parser.add_argument("--default", action="store_true")
+    dump_config_parser.add_argument("--default", action="store_true")
 
     args = parser.parse_args()
 
