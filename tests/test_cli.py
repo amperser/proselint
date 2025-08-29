@@ -1,46 +1,46 @@
 """Verify that the CLI behaves correctly."""
 
+import logging
 from pathlib import Path
 
-from click.testing import CliRunner
-from pytest import fixture
+from pytest import LogCaptureFixture
 
-from proselint.command_line import proselint
+from proselint.command_line import ExitStatus, get_parser, proselint
 from proselint.version import __version__
 
 CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
+PARSER = get_parser()
 
 
-@fixture
-def _runner() -> CliRunner:  # pyright: ignore[reportUnusedFunction]
-    return CliRunner()
-
-
-def test_exit_code_demo(_runner: CliRunner) -> None:
+def test_exit_code_demo() -> None:
     """Ensure that linting the demo returns an exit code of 1."""
-    output = _runner.invoke(proselint, "--demo")
-    assert output.exit_code == 1
+    assert (
+        proselint(
+            PARSER.parse_args(
+                (
+                    "check",
+                    "--demo",
+                )
+            ),
+            PARSER,
+        )
+        == ExitStatus.SUCCESS_ERR
+    )
 
 
-def test_exit_code_version(_runner: CliRunner) -> None:
-    """Ensure that getting the version returns an exit code of 0."""
-    output = _runner.invoke(proselint, "--version")
-    assert output.exit_code == 0
+def test_version(caplog: LogCaptureFixture) -> None:
+    """Ensure that the version is logged and exits correctly."""
+    with caplog.at_level("INFO", logger="proselint"):
+        result = proselint(PARSER.parse_args(("version",)), PARSER)
+        assert result == ExitStatus.SUCCESS
+        assert caplog.record_tuples == [
+            ("proselint", logging.INFO, f"Proselint {__version__}")
+        ]
 
 
-def test_invalid_characters(_runner: CliRunner) -> None:
+def test_invalid_characters() -> None:
     """Ensure that invalid characters do not break proselint."""
-    runner = CliRunner()
-
-    output = runner.invoke(proselint, CHAR_FILE.as_posix())
-
-    assert "UnicodeDecodeError" not in output.stdout
-    assert "FileNotFoundError" not in output.stdout
-
-
-def test_version(_runner: CliRunner) -> None:
-    """Ensure that the version number is correct."""
-    runner = CliRunner()
-
-    output = runner.invoke(proselint, "--version")
-    assert __version__ in output.stdout
+    assert (
+        proselint(PARSER.parse_args(("check", CHAR_FILE.as_posix())), PARSER)
+        == ExitStatus.SUCCESS
+    )
