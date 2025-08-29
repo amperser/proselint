@@ -75,12 +75,12 @@ def get_parser() -> ArgumentParser:
     return parser
 
 
-def proselint(args: Namespace, help_text: str) -> ExitStatus:
+def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
     config = load_from(args.config)
 
     if args.subcommand is None:
-        log.info(help_text)
+        parser.print_help()
         return ExitStatus.UNACCEPTED_ARGS
 
     if args.subcommand == "version":
@@ -126,4 +126,4 @@ if __name__ == "__main__":
 
     log.setup(verbose=args.verbose)
 
-    sys.exit(proselint(args, parser.format_help()))
+    sys.exit(proselint(args, parser))
