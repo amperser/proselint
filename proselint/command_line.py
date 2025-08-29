@@ -117,7 +117,8 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     return ExitStatus(int(num_errors > 0))
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Run the CLI."""
     signal(Signals.SIGTERM, interrupt_handler)
     signal(Signals.SIGINT, interrupt_handler)
 

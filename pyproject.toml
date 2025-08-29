@@ -24,7 +24,7 @@ Repository = "https://github.com/amperser/proselint"
 Issues = "https://github.com/amperser/proselint/issues"
 
 [project.scripts]
-proselint = "proselint.command_line:proselint"
+proselint = "proselint.command_line:main"
 
 [build-system]
 requires = ["setuptools"]
