@@ -17,7 +17,7 @@ from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
 from proselint.log import log
 from proselint.registry import CheckRegistry
-from proselint.tools import LintFile, OutputFormat, extract_files
+from proselint.tools import LintFile, OutputFormat, extract_files, verify_path
 from proselint.version import __version__
 
 if TYPE_CHECKING:
@@ -77,7 +77,9 @@ def get_parser() -> ArgumentParser:
 
 def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
-    config = load_from(args.config)
+    config = load_from(
+        args.config and verify_path(args.config, resolve=True, reject_dir=True)
+    )
 
     if args.subcommand is None:
         parser.print_help()
