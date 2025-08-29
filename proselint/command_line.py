@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from enum import IntEnum
 from pathlib import Path
 from signal import Signals, signal
@@ -33,17 +33,14 @@ class ExitStatus(IntEnum):
     INTERRUPT = 3
 
 
-def interrupt_handler(_signalnum: int, _frame: Optional[FrameType]) -> None:
+def interrupt_handler(signalnum: int, _frame: Optional[FrameType]) -> None:
     """Exit proselint gracefully from an interrupt."""
-    log.warning("Exiting.")
+    log.warning(f"Exiting (received {Signals(signalnum)}).")
     sys.exit(ExitStatus.INTERRUPT)
 
 
-def proselint() -> ExitStatus:
-    """Create the CLI for proselint, a linter for prose."""
-    signal(Signals.SIGTERM, interrupt_handler)
-    signal(Signals.SIGINT, interrupt_handler)
-
+def get_parser() -> ArgumentParser:
+    """Create an `ArgumentParser` for command line arguments."""
     global_parser = ArgumentParser()
     global_parser.add_argument("--config", type=Path)
     global_parser.add_argument(
@@ -75,14 +72,15 @@ def proselint() -> ExitStatus:
     )
     dump_config_parser.add_argument("--default", action="store_true")
 
-    args = parser.parse_args()
+    return parser
 
-    log.setup(verbose=args.verbose)
 
+def proselint(args: Namespace, help_text: str) -> ExitStatus:
+    """Create the CLI for proselint, a linter for prose."""
     config = load_from(args.config)
 
     if args.subcommand is None:
-        parser.print_help()
+        log.info(help_text)
         return ExitStatus.UNACCEPTED_ARGS
 
     if args.subcommand == "version":
@@ -120,4 +118,12 @@ def proselint() -> ExitStatus:
 
 
 if __name__ == "__main__":
-    sys.exit(proselint())
+    signal(Signals.SIGTERM, interrupt_handler)
+    signal(Signals.SIGINT, interrupt_handler)
+
+    parser = get_parser()
+    args = parser.parse_args()
+
+    log.setup(verbose=args.verbose)
+
+    sys.exit(proselint(args, parser.format_help()))
