@@ -13,15 +13,7 @@ PARSER = get_parser()
 def test_exit_code_demo() -> None:
     """Ensure that linting the demo returns an exit code of 1."""
     assert (
-        proselint(
-            PARSER.parse_args(
-                (
-                    "check",
-                    "--demo",
-                )
-            ),
-            PARSER,
-        )
+        proselint(PARSER.parse_args(("check", "--demo")), PARSER)
         == ExitStatus.SUCCESS_ERR
     )
 
