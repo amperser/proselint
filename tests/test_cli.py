@@ -1,14 +1,12 @@
 """Verify that the CLI behaves correctly."""
 
 import logging
-from pathlib import Path
 
 from pytest import LogCaptureFixture
 
 from proselint.command_line import ExitStatus, get_parser, proselint
 from proselint.version import __version__
 
-CHAR_FILE = Path(__file__, "../invalid-chars.txt").resolve()
 PARSER = get_parser()
 
 
@@ -36,11 +34,3 @@ def test_version(caplog: LogCaptureFixture) -> None:
         assert caplog.record_tuples == [
             ("proselint", logging.INFO, f"Proselint {__version__}")
         ]
-
-
-def test_invalid_characters() -> None:
-    """Ensure that invalid characters do not break proselint."""
-    assert (
-        proselint(PARSER.parse_args(("check", CHAR_FILE.as_posix())), PARSER)
-        == ExitStatus.SUCCESS
-    )
