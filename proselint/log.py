@@ -1,7 +1,29 @@
 """Handle logging for proselint."""
 
+from __future__ import annotations
+
 import logging
 from sys import stderr, stdout
+from typing import Callable, TextIO
+
+
+def _get_level_filter(
+    level: int, *, invert: bool = False,
+) -> Callable[[logging.LogRecord], bool]:
+    """Create a filter function that allows log records of a given `level`."""
+    def _filter(record: logging.LogRecord) -> bool:
+        return record.levelno >= level if invert else record.levelno <= level
+    return _filter
+
+
+def _init_stream_handler(
+    stream: TextIO, level: int, *, invert: bool = False
+) -> logging.StreamHandler[TextIO]:
+    """Test."""
+    handler = logging.StreamHandler(stream)
+    handler.setLevel(level)
+    handler.addFilter(_get_level_filter(level, invert=invert))
+    return handler
 
 
 class Logger(logging.Logger):
@@ -10,11 +32,11 @@ class Logger(logging.Logger):
     @staticmethod
     def setup(*, verbose: bool = False) -> None:
         """Initialise the logger."""
-        base_handler = logging.StreamHandler(stdout)
-        err_handler = logging.StreamHandler(stderr)
+        base_handler = _init_stream_handler(
+            stdout, logging.DEBUG if verbose else logging.INFO
+        )
+        err_handler = _init_stream_handler(stderr, logging.WARNING, invert=True)
 
-        base_handler.setLevel(logging.DEBUG if verbose else logging.INFO)
-        err_handler.setLevel(logging.WARNING)
         logging.basicConfig(
             level=logging.NOTSET,
             format="[%(levelname)08s] %(name)s: %(message)s"
