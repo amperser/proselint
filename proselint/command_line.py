@@ -77,9 +77,9 @@ def proselint() -> ExitStatus:
 
     args = parser.parse_args()
 
-    config = load_from(args.config)
-
     log.setup(verbose=args.verbose)
+
+    config = load_from(args.config)
 
     if args.subcommand is None:
         parser.print_help()
