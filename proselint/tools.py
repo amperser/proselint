@@ -40,7 +40,7 @@ def verify_path(
     if resolve:
         path = path.resolve()
 
-    stat_res = path.stat(follow_symlinks=False)
+    stat_res = path.stat()
 
     if reject_file and stat.S_ISREG(stat_res.st_mode):
         raise OSError("Files not permitted - found file %s", path)
