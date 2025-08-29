@@ -54,12 +54,15 @@ def proselint() -> ExitStatus:
         type=OutputFormat,
     )
     global_parser.add_argument("--verbose", "-v", action="store_true")
-    global_parser.add_argument("--version", "-V", action="store_true")
 
     parser = ArgumentParser(
         parents=(global_parser,), conflict_handler="resolve"
     )
     subparsers = parser.add_subparsers(dest="subcommand")
+
+    subparsers.add_parser(
+        "version", parents=(global_parser,), conflict_handler="resolve"
+    )
 
     check_parser = subparsers.add_parser(
         "check", parents=(global_parser,), conflict_handler="resolve"
@@ -78,15 +81,14 @@ def proselint() -> ExitStatus:
 
     log.setup(verbose=args.verbose)
 
-    # TODO: should this be a subcommand? it acts like one
-    if args.version:
-        log.info("Proselint %s", __version__)
-        log.debug("Python %s", sys.version)
-        return ExitStatus.SUCCESS
-
     if args.subcommand is None:
         parser.print_help()
         return ExitStatus.UNACCEPTED_ARGS
+
+    if args.subcommand == "version":
+        log.info("Proselint %s", __version__)
+        log.debug("Python %s", sys.version)
+        return ExitStatus.SUCCESS
 
     if args.subcommand == "dump-config":
         log.info(
