@@ -116,7 +116,7 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
         num_errors += len(results)
         lint_file.output_errors(results, args.output_format)
 
-    return ExitStatus(int(num_errors > 0))
+    return ExitStatus.SUCCESS_ERR if num_errors else ExitStatus.SUCCESS
 
 
 def main() -> None:
