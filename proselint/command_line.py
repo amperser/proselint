@@ -20,7 +20,7 @@ base_url = "proselint.com/"
 
 
 # TODO: fix broken corpus
-def timing_test(corpus="0.1.0"):
+def timing_test(corpus: str = "0.1.0") -> float:
     """Measure timing performance on the named corpus."""
     import time
     dirname = os.path.dirname
@@ -51,9 +51,10 @@ def timing_test(corpus="0.1.0"):
               help="Prints default config.")
 @click.argument('paths', nargs=-1, type=click.Path(exists=True, path_type=Path))
 def proselint(
-    paths: list[Path], config=None, version=None,
-    debug=None, output_json=None, time=None, demo=None, compact=None,
-    dump_config=None, dump_default_config=None
+    paths: list[Path], config: Path = None, version: bool = None,
+    debug: bool = None, output_json: bool = None, time: bool = None, 
+    demo: bool = None, compact: bool = None,
+    dump_config: bool = None, dump_default_config: bool = None
 ) -> None:
     """Create the CLI for proselint, a linter for prose."""
     if dump_default_config:

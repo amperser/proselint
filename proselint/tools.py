@@ -119,7 +119,18 @@ class LintFile:
         self.source = source
 
         # NOTE: necessary to prevent edge cases for padding and line boundaries
-        content = content or cast("Path", source).read_text()
+        if content is None:
+            from proselint.memory import MemoryEfficientFileReader
+            from proselint.errors import ProselintError
+            
+            try:
+                # Use memory-efficient reader for large files
+                reader = MemoryEfficientFileReader(cast("Path", source))
+                content = reader.read()
+            except ProselintError:
+                raise
+            except (IOError, OSError) as e:
+                raise ProselintError(f"Failed to read file {source}: {e}")
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
@@ -130,7 +141,12 @@ class LintFile:
     @classmethod
     def from_stdin(cls) -> "LintFile":
         """Return a new `LintFile` with content from standard input."""
-        return cls("<stdin>", stdin.read())
+        try:
+            content = stdin.read()
+        except (IOError, OSError) as e:
+            from proselint.errors import ProselintError
+            raise ProselintError(f"Failed to read from stdin: {e}")
+        return cls("<stdin>", content)
 
     @property
     def source_name(self) -> str:
@@ -139,17 +155,32 @@ class LintFile:
 
     def _line_bounds(self) -> tuple[int, ...]:
         """Return the starting positions of each line in the text."""
+        if not self.content:
+            return (0,)
+        
+        lines = self.content.splitlines(keepends=True)
+        if not lines:
+            return (0,)
+            
         return tuple(
             map(
                 (1).__rsub__,
-                accumulate(map(len, self.content.splitlines(keepends=True))),
+                accumulate(map(len, lines)),
             )
         )
 
     @lru_cache(maxsize=2048)
     def line_col_of(self, position: int) -> tuple[int, int]:
         """Return the line and column numbers using binary search."""
-        if not self.line_bounds or position < 0:
+        # Handle edge cases
+        if not self.line_bounds or not self.content:
+            return (1, 1)
+        
+        # Clamp position to valid range
+        position = max(0, min(position, len(self.content) - 1))
+        
+        # Handle position at the very beginning
+        if position <= 0:
             return (1, 1)
         
         # Binary search for the line
@@ -157,13 +188,17 @@ class LintFile:
         
         while left < right:
             mid = (left + right + 1) // 2
-            if self.line_bounds[mid] <= position:
+            if mid < len(self.line_bounds) and self.line_bounds[mid] <= position:
                 left = mid
             else:
                 right = mid - 1
         
+        # Ensure we have valid bounds
+        if left >= len(self.line_bounds):
+            left = len(self.line_bounds) - 1
+        
         line = left + 1
-        col = position - self.line_bounds[left] + 1
+        col = max(1, position - self.line_bounds[left] + 1)
         return (line, col)
 
     def is_quoted_pos(self, position: int) -> bool:

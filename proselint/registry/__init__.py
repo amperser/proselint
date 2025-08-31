@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import threading
 from importlib import import_module
 from itertools import chain
 from typing import TYPE_CHECKING, ClassVar, Optional
@@ -25,36 +26,50 @@ def build_modules_register(
 
 
 class CheckRegistry:
-    """A global registry for lint checks."""
+    """A global registry for lint checks (thread-safe singleton)."""
 
     _instance: Optional[CheckRegistry] = None
+    _lock: threading.Lock = threading.Lock()
     
     def __new__(cls) -> CheckRegistry:  # noqa: PYI034
-        """Create a singleton registry."""
+        """Create a singleton registry (thread-safe)."""
         if cls._instance is None:
-            cls._instance = object.__new__(cls)
-            cls._instance._checks = []  # type: ignore
-            cls._instance.enabled_checks = None  # type: ignore
+            with cls._lock:
+                # Double-check pattern for thread safety
+                if cls._instance is None:
+                    cls._instance = object.__new__(cls)
+                    cls._instance._checks = []  # type: ignore
+                    cls._instance._checks_lock = threading.RLock()  # type: ignore
+                    cls._instance.enabled_checks = None  # type: ignore
         return cls._instance
 
     def register(self, check: Check) -> None:
-        """Register one check."""
-        if not hasattr(self, '_checks'):
-            self._checks = []
-        self._checks.append(check)
+        """Register one check (thread-safe)."""
+        if not hasattr(self, '_checks_lock'):
+            self._checks_lock = threading.RLock()
+        with self._checks_lock:
+            if not hasattr(self, '_checks'):
+                self._checks = []
+            self._checks.append(check)
 
     def register_many(self, checks: tuple[Check, ...]) -> None:
-        """Register multiple checks."""
-        if not hasattr(self, '_checks'):
-            self._checks = []
-        self._checks.extend(checks)
+        """Register multiple checks (thread-safe)."""
+        if not hasattr(self, '_checks_lock'):
+            self._checks_lock = threading.RLock()
+        with self._checks_lock:
+            if not hasattr(self, '_checks'):
+                self._checks = []
+            self._checks.extend(checks)
 
     @property
     def checks(self) -> list[Check]:
-        """All registered checks."""
-        if not hasattr(self, '_checks'):
-            self._checks = []
-        return self._checks
+        """All registered checks (thread-safe)."""
+        if not hasattr(self, '_checks_lock'):
+            self._checks_lock = threading.RLock()
+        with self._checks_lock:
+            if not hasattr(self, '_checks'):
+                self._checks = []
+            return self._checks.copy()  # Return a copy to prevent external modification
 
     def get_all_enabled(
         self, enabled: dict[str, bool] = DEFAULT["checks"]

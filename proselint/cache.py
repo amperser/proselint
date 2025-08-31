@@ -8,7 +8,13 @@ from typing import Union
 @lru_cache(maxsize=512)
 def get_compiled_pattern(pattern: str, flags: int = 0) -> Pattern[str]:
     """Get a compiled regex pattern with caching."""
-    return rcompile(pattern, flags)
+    from re import error as RegexError
+    from proselint.errors import ProselintError
+    
+    try:
+        return rcompile(pattern, flags)
+    except RegexError as e:
+        raise ProselintError(f"Invalid regex pattern '{pattern}': {e}")
 
 
 class PatternCache:
@@ -23,13 +29,20 @@ class PatternCache:
     
     def get(self, pattern: str, flags: int = 0) -> Pattern[str]:
         """Get a compiled pattern from cache or compile and cache it."""
+        from re import error as RegexError
+        from proselint.errors import ProselintError
+        
         key = (pattern, flags)
         if key in self._cache:
             self._hits += 1
             return self._cache[key]
         
         self._misses += 1
-        compiled = rcompile(pattern, flags)
+        
+        try:
+            compiled = rcompile(pattern, flags)
+        except RegexError as e:
+            raise ProselintError(f"Invalid regex pattern '{pattern}': {e}")
         
         # Simple LRU: if cache is full, remove oldest entry
         if len(self._cache) >= self._maxsize:

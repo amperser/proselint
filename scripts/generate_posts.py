@@ -30,8 +30,14 @@ for root, subdirs, files in listing:
     for file in files:
         fn = os.path.join(root, file)
         if is_check(fn):
-            M = ast.parse(''.join(open(os.path.join(checks_dir, fn))))
+            # Fix: Properly close file after reading
+            with open(os.path.join(checks_dir, fn)) as f:
+                M = ast.parse(''.join(f))
             docstring = ast.get_docstring(M)
+            
+            if not docstring:
+                continue
+                
             head, sep, tail = docstring.partition("title: ")
             docstring = head + sep + "     &#58;" + tail[4:]
 
