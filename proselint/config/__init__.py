@@ -39,21 +39,60 @@ def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
     }
 
 
+def validate_config(config: dict) -> bool:
+    """Validate a configuration dictionary."""
+    if not isinstance(config, dict):
+        return False
+    
+    # Check required keys
+    if 'max_errors' not in config or 'checks' not in config:
+        return False
+    
+    # Validate max_errors
+    if not isinstance(config['max_errors'], int) or config['max_errors'] < 0:
+        return False
+    
+    # Validate checks
+    if not isinstance(config['checks'], dict):
+        return False
+    
+    # All check values should be booleans
+    for key, value in config['checks'].items():
+        if not isinstance(key, str) or not isinstance(value, bool):
+            return False
+    
+    return True
+
+
 def load_from(config_path: Optional[Path] = None) -> Config:
     """
     Read various config paths, allowing user overrides.
 
     NOTE: This assumes that a `config_path` is valid if one is provided.
     """
-    result = DEFAULT
+    result = copy.deepcopy(DEFAULT)
     config_paths = paths.config_paths + ([config_path] if config_path else [])
 
     for path in config_paths:
         if path.is_file():
-            result: Config = _deepmerge_dicts(
-                result,
-                json.loads(path.read_text()),
-            )
+            try:
+                config_data = json.loads(path.read_text())
+                if validate_config(config_data):
+                    result: Config = _deepmerge_dicts(result, config_data)
+                else:
+                    warn(
+                        f"Invalid configuration in {path}, skipping.",
+                        UserWarning,
+                        "",
+                        0,
+                    )
+            except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                warn(
+                    f"Error reading configuration from {path}: {e}",
+                    UserWarning,
+                    "",
+                    0,
+                )
         if path.suffix == ".json" and (old := path.with_suffix("")).is_file():
             warn(
                 f"{old} was found instead of a JSON file. Rename to {path}.",
