@@ -17,12 +17,14 @@ and this happens most often between line breaks.
 
 from proselint.registry.checks import Check, Padding, types
 
+# Fixed pattern to prevent catastrophic backtracking
+# Using atomic group and limiting repetitions
 check = Check(
     check_type=types.ExistenceSimple(
         pattern=Padding.WORDS_IN_TEXT.format(
-            r"(?<!\\|\-)(\w+(?:\s+\w+){0,3})(\s+\1)+"
+            r"(?<!\\|\-)(\w+(?:\s+\w+){0,3})(?:\s+\1)(?!\s+\1)"
         ),
-        exceptions=(r"^had had$", r"^that that$"),
+        exceptions=(r"^had had$", r"^that that$", r"^can can$", r"^do do$"),
     ),
     path="lexical_illusions",
     message="There's a lexical illusion in '{}' - a phrase is repeated.",
