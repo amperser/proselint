@@ -207,14 +207,23 @@ class LintFile:
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
         """Run the linter against the file with optimized processing."""
+        from proselint.checks import __register__
+        
         registry = CheckRegistry()
+        registry.register_many(__register__)
         enabled_checks = registry.get_all_enabled(config["checks"])
         
         # Process all checks and collect results
         all_results = []
         for check in enabled_checks:
             for result in check.check_with_flags(self.content):
-                if not self.is_quoted_pos(result.start_pos):
+                # Skip quote filtering for typography checks that specifically target quotes
+                skip_quote_filter = (
+                    'typography.symbols.curly_quotes' in result.check_path or
+                    'typography.punctuation' in result.check_path
+                )
+                
+                if skip_quote_filter or not self.is_quoted_pos(result.start_pos):
                     # Convert to LintResult immediately to cache line_col_of
                     line, col = self.line_col_of(result.start_pos)
                     lint_result = LintResult(

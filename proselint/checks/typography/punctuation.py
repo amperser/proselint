@@ -27,7 +27,13 @@ check_exclamations_ppm = Check(
 )
 
 check_hyperbole = Check(
-    check_type=types.ExistenceSimple(pattern=r"\w*(?:!|\?){2,}"),
+    check_type=types.ExistenceSimple(
+        pattern=r"\w*(?:!|\?){2,}",
+        exceptions=(
+            r"^\?{3,}$",      # Allow exactly 3+ question marks (data markers)
+            r"^\?{3,}[^\w]",  # Allow 3+ question marks followed by non-word (like ???,)
+        )
+    ),
     path="typography.punctuation.hyperbole",
     message="'{}' is hyperbolic.",
     flags=CheckFlags(results_limit=1),

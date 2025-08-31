@@ -124,7 +124,6 @@ check = Check(
             "maddening crowd": "madding crowd",
             "Magna Charta": "Magna Carta",
             "mariage de convenance": "marriage of convenience",
-            "Meantime,": "Meanwhile,",
             "Middle West": "Midwest",
             "Middle Western": "Midwestern",
             "modes of operandi": "modi operandi",
