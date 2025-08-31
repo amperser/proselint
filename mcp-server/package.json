@@ -1,0 +1,32 @@
+{
+  "name": "proselint-mcp",
+  "version": "1.0.0",
+  "description": "MCP server wrapper for proselint - a linter for prose",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "proselint",
+    "linter",
+    "prose",
+    "writing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.2"
+  },
+  "bin": {
+    "proselint-mcp": "./dist/index.js"
+  }
+}

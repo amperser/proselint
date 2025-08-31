@@ -2,6 +2,7 @@
 
 import json
 from collections.abc import Callable
+from functools import lru_cache
 from itertools import accumulate, chain, islice
 from operator import itemgetter
 from pathlib import Path
@@ -10,6 +11,7 @@ from re import compile as rcompile
 from sys import stdin
 from typing import Union, cast, overload
 
+from proselint.cache import get_compiled_pattern
 from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
@@ -36,10 +38,10 @@ def extract_files(paths: list[Path]) -> list[Path]:
 
 SEPARATORS = " ,.!?:;-\r\n"
 STRAIGHT_QUOTES = {'"', "'"}
-CURLY_QUOTES = {"“", "”"}
-CURLY_SINGLE_QUOTES = {"‘", "’"}  # noqa: RUF001
+CURLY_QUOTES = {""", """}
+CURLY_SINGLE_QUOTES = {"'", "'"}  # noqa: RUF001
 QUOTES = "".join(STRAIGHT_QUOTES | CURLY_QUOTES | CURLY_SINGLE_QUOTES)
-QUOTE_PATTERN = rcompile(rf"(?:\B[{QUOTES}]|[{QUOTES}]\B)")
+QUOTE_PATTERN = get_compiled_pattern(rf"(?:\B[{QUOTES}]|[{QUOTES}]\B)")
 
 
 def check_matching_quotes(chars: tuple[str, str]) -> bool:
@@ -144,14 +146,19 @@ class LintFile:
             )
         )
 
+    @lru_cache(maxsize=1024)
     def line_col_of(self, position: int) -> tuple[int, int]:
         """Return the line and column numbers of a position in the content."""
-        line_delta, bound = next(
-            filter(
-                lambda x: position > x[1], enumerate(reversed(self.line_bounds))
+        try:
+            line_delta, bound = next(
+                filter(
+                    lambda x: position > x[1], enumerate(reversed(self.line_bounds))
+                )
             )
-        )
-        return (len(self.line_bounds) - line_delta, position - bound)
+            return (len(self.line_bounds) - line_delta, position - bound)
+        except StopIteration:
+            # Handle edge case where position is at the very beginning
+            return (1, 1)
 
     def is_quoted_pos(self, position: int) -> bool:
         """Determine if the content position falls within quotes."""

@@ -27,27 +27,33 @@ def build_modules_register(
 class CheckRegistry:
     """A global registry for lint checks."""
 
-    _checks: ClassVar[list[Check]] = []
-    enabled_checks: Optional[dict[str, bool]] = None
     _instance: Optional[CheckRegistry] = None
-
+    
     def __new__(cls) -> CheckRegistry:  # noqa: PYI034
         """Create a singleton registry."""
         if cls._instance is None:
             cls._instance = object.__new__(cls)
+            cls._instance._checks = []  # type: ignore
+            cls._instance.enabled_checks = None  # type: ignore
         return cls._instance
 
     def register(self, check: Check) -> None:
         """Register one check."""
+        if not hasattr(self, '_checks'):
+            self._checks = []
         self._checks.append(check)
 
     def register_many(self, checks: tuple[Check, ...]) -> None:
         """Register multiple checks."""
+        if not hasattr(self, '_checks'):
+            self._checks = []
         self._checks.extend(checks)
 
     @property
     def checks(self) -> list[Check]:
         """All registered checks."""
+        if not hasattr(self, '_checks'):
+            self._checks = []
         return self._checks
 
     def get_all_enabled(
