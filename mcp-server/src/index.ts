@@ -8,17 +8,35 @@ import {
   ErrorCode,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import { promisify } from 'util';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as os from 'os';
 import { fileURLToPath } from 'url';
 
 const execAsync = promisify(exec);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+interface ProselintResult {
+  status: string;
+  data?: {
+    errors: Array<{
+      check_path: string;
+      message: string;
+      line: number;
+      column: number;
+      start_pos: number;
+      end_pos: number;
+      severity: string;
+      replacements: string | null;
+    }>;
+  };
+}
+
 class ProselintServer {
   private server: Server;
+  private pythonCommand: string = 'python';
 
   constructor() {
     this.server = new Server(
@@ -33,7 +51,26 @@ class ProselintServer {
       }
     );
 
+    this.detectPythonCommand();
     this.setupHandlers();
+  }
+
+  private async detectPythonCommand(): Promise<void> {
+    // Try to find the best Python command
+    const commands = ['python3', 'python', 'py'];
+    
+    for (const cmd of commands) {
+      try {
+        const { stdout } = await execAsync(`${cmd} --version`);
+        if (stdout.includes('Python 3.')) {
+          this.pythonCommand = cmd;
+          console.error(`Using Python command: ${cmd}`);
+          break;
+        }
+      } catch {
+        // Continue to next command
+      }
+    }
   }
 
   private setupHandlers() {
@@ -123,14 +160,16 @@ class ProselintServer {
 
   private async lintText(text: string): Promise<any> {
     try {
-      // Create temporary file
-      const tempFile = path.join('/tmp', `proselint-${Date.now()}.txt`);
-      await fs.writeFile(tempFile, text);
+      // Create temporary file in OS temp directory
+      const tempDir = os.tmpdir();
+      const tempFile = path.join(tempDir, `proselint-${Date.now()}.txt`);
+      await fs.writeFile(tempFile, text, 'utf8');
 
       try {
-        // Run proselint
+        // Run proselint with timeout
         const { stdout } = await execAsync(
-          `python -m proselint --json "${tempFile}"`
+          `${this.pythonCommand} -m proselint --json "${tempFile}"`,
+          { timeout: 30000 }
         );
         
         // Parse JSON output
@@ -190,9 +229,13 @@ class ProselintServer {
       // Check if file exists
       await fs.access(filepath);
       
-      // Run proselint
+      // Validate file path
+      const resolvedPath = path.resolve(filepath);
+      
+      // Run proselint with timeout
       const { stdout } = await execAsync(
-        `python -m proselint --json "${filepath}"`
+        `${this.pythonCommand} -m proselint --json "${resolvedPath}"`,
+        { timeout: 30000 }
       );
       
       // Parse JSON output
@@ -243,7 +286,10 @@ class ProselintServer {
     try {
       if (action === 'get') {
         // Get current configuration
-        const { stdout } = await execAsync('python -m proselint --dump-config');
+        const { stdout } = await execAsync(
+          `${this.pythonCommand} -m proselint --dump-config`,
+          { timeout: 10000 }
+        );
         const currentConfig = JSON.parse(stdout);
         
         return {
@@ -263,10 +309,8 @@ class ProselintServer {
         }
         
         // Find proselint config path
-        const configPath = path.join(
-          process.env.HOME || '~',
-          '.proselintrc'
-        );
+        const homeDir = os.homedir();
+        const configPath = path.join(homeDir, '.proselintrc');
         
         // Write new configuration
         await fs.writeFile(configPath, JSON.stringify(config, null, 2));
@@ -294,6 +338,14 @@ class ProselintServer {
   }
 
   async run() {
+    try {
+      // Verify proselint is installed
+      await execAsync(`${this.pythonCommand} -m proselint --version`);
+    } catch (error) {
+      console.error('Warning: proselint may not be installed correctly');
+      console.error('Install with: pip install proselint');
+    }
+    
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('Proselint MCP server running on stdio');
