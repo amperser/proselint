@@ -19,7 +19,7 @@ def _get_level_filter(
 def _init_stream_handler(
     stream: TextIO, level: int, *, invert: bool = False
 ) -> logging.StreamHandler[TextIO]:
-    """Test."""
+    """Initialise a `StreamHandler` for logging with a level filter."""
     handler = logging.StreamHandler(stream)
     handler.setLevel(level)
     handler.addFilter(_get_level_filter(level, invert=invert))
