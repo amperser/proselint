@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { createHash } from 'crypto';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
@@ -37,6 +38,11 @@ interface ProselintResult {
 class ProselintServer {
   private server: Server;
   private pythonCommand: string = 'python';
+  private resultCache: Map<string, ProselintResult> = new Map();
+  private healthStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
+  private requestCount = 0;
+  private errorCount = 0;
+  private lastError: string | null = null;
 
   constructor() {
     this.server = new Server(
@@ -123,6 +129,14 @@ class ProselintServer {
             required: ['action'],
           },
         },
+        {
+          name: 'health_check',
+          description: 'Get server health status and metrics',
+          inputSchema: {
+            type: 'object',
+            properties: {},
+          },
+        },
       ],
     }));
 
@@ -149,6 +163,9 @@ class ProselintServer {
             args.config as any
           );
         
+        case 'health_check':
+          return await this.getHealth();
+        
         default:
           throw new McpError(
             ErrorCode.MethodNotFound,
@@ -159,10 +176,41 @@ class ProselintServer {
   }
 
   private async lintText(text: string): Promise<any> {
+    this.requestCount++;
+    
+    // Check cache first
+    const textHash = createHash('md5').update(text).digest('hex');
+    if (this.resultCache.has(textHash)) {
+      console.error(`Cache hit for text hash ${textHash}`);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(this.resultCache.get(textHash), null, 2),
+          },
+        ],
+      };
+    }
+    
     try {
+      // Validate input
+      if (!text || typeof text !== 'string') {
+        throw new McpError(
+          ErrorCode.InvalidParams,
+          'Text must be a non-empty string'
+        );
+      }
+      
+      if (text.length > 1024 * 1024) { // 1MB limit
+        throw new McpError(
+          ErrorCode.InvalidParams,
+          'Text exceeds maximum size of 1MB'
+        );
+      }
+      
       // Create temporary file in OS temp directory
       const tempDir = os.tmpdir();
-      const tempFile = path.join(tempDir, `proselint-${Date.now()}.txt`);
+      const tempFile = path.join(tempDir, `proselint-${Date.now()}-${process.pid}.txt`);
       await fs.writeFile(tempFile, text, 'utf8');
 
       try {
@@ -173,10 +221,21 @@ class ProselintServer {
         );
         
         // Parse JSON output
-        const result = JSON.parse(stdout);
+        const result = JSON.parse(stdout) as ProselintResult;
+        
+        // Cache result
+        this.resultCache.set(textHash, result);
+        
+        // Limit cache size
+        if (this.resultCache.size > 100) {
+          const firstKey = this.resultCache.keys().next().value;
+          if (firstKey !== undefined) {
+            this.resultCache.delete(firstKey);
+          }
+        }
         
         // Clean up temp file
-        await fs.unlink(tempFile);
+        await fs.unlink(tempFile).catch(() => {});
         
         return {
           content: [
@@ -217,6 +276,10 @@ class ProselintServer {
         throw error;
       }
     } catch (error: any) {
+      this.errorCount++;
+      this.lastError = error.message;
+      this.updateHealthStatus();
+      
       throw new McpError(
         ErrorCode.InternalError,
         `Failed to lint text: ${error.message}`
@@ -337,18 +400,82 @@ class ProselintServer {
     }
   }
 
+  private updateHealthStatus(): void {
+    const errorRate = this.errorCount / Math.max(this.requestCount, 1);
+    
+    if (errorRate > 0.5) {
+      this.healthStatus = 'unhealthy';
+    } else if (errorRate > 0.1) {
+      this.healthStatus = 'degraded';
+    } else {
+      this.healthStatus = 'healthy';
+    }
+  }
+  
+  private async getHealth(): Promise<any> {
+    const uptime = process.uptime();
+    const memoryUsage = process.memoryUsage();
+    
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            status: this.healthStatus,
+            uptime: uptime,
+            requestCount: this.requestCount,
+            errorCount: this.errorCount,
+            errorRate: (this.errorCount / Math.max(this.requestCount, 1) * 100).toFixed(2) + '%',
+            cacheSize: this.resultCache.size,
+            memoryUsage: {
+              rss: `${(memoryUsage.rss / 1024 / 1024).toFixed(2)} MB`,
+              heapUsed: `${(memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB`,
+            },
+            lastError: this.lastError,
+            pythonCommand: this.pythonCommand,
+          }, null, 2),
+        },
+      ],
+    };
+  }
+  
   async run() {
     try {
       // Verify proselint is installed
-      await execAsync(`${this.pythonCommand} -m proselint --version`);
+      const { stdout } = await execAsync(
+        `${this.pythonCommand} -m proselint --version`,
+        { timeout: 5000 }
+      );
+      console.error(`Proselint version: ${stdout.trim()}`);
     } catch (error) {
-      console.error('Warning: proselint may not be installed correctly');
-      console.error('Install with: pip install proselint');
+      console.error('ERROR: proselint is not installed or not accessible');
+      console.error('Please install with: pip install proselint');
+      process.exit(1);
     }
+    
+    // Set up graceful shutdown
+    process.on('SIGINT', () => {
+      console.error('\nShutting down gracefully...');
+      process.exit(0);
+    });
+    
+    process.on('SIGTERM', () => {
+      console.error('Received SIGTERM, shutting down...');
+      process.exit(0);
+    });
     
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('Proselint MCP server running on stdio');
+    console.error(`Health status: ${this.healthStatus}`);
+    
+    // Periodic health check
+    setInterval(() => {
+      this.updateHealthStatus();
+      if (this.healthStatus === 'unhealthy') {
+        console.error(`WARNING: Server health is ${this.healthStatus}`);
+      }
+    }, 60000); // Every minute
   }
 }
 
