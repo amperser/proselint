@@ -146,47 +146,63 @@ class LintFile:
             )
         )
 
-    @lru_cache(maxsize=1024)
+    @lru_cache(maxsize=2048)
     def line_col_of(self, position: int) -> tuple[int, int]:
-        """Return the line and column numbers of a position in the content."""
-        try:
-            line_delta, bound = next(
-                filter(
-                    lambda x: position > x[1], enumerate(reversed(self.line_bounds))
-                )
-            )
-            return (len(self.line_bounds) - line_delta, position - bound)
-        except StopIteration:
-            # Handle edge case where position is at the very beginning
+        """Return the line and column numbers using binary search."""
+        if not self.line_bounds or position < 0:
             return (1, 1)
+        
+        # Binary search for the line
+        left, right = 0, len(self.line_bounds) - 1
+        
+        while left < right:
+            mid = (left + right + 1) // 2
+            if self.line_bounds[mid] <= position:
+                left = mid
+            else:
+                right = mid - 1
+        
+        line = left + 1
+        col = position - self.line_bounds[left] + 1
+        return (line, col)
 
     def is_quoted_pos(self, position: int) -> bool:
         """Determine if the content position falls within quotes."""
         return any(start <= position < end for start, end in self.quote_spans)
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
-        """Run the linter against the file."""
+        """Run the linter against the file with optimized processing."""
         registry = CheckRegistry()
-        return sorted(
-            islice(
-                (
-                    LintResult(
+        enabled_checks = registry.get_all_enabled(config["checks"])
+        
+        # Process all checks and collect results
+        all_results = []
+        for check in enabled_checks:
+            for result in check.check_with_flags(self.content):
+                if not self.is_quoted_pos(result.start_pos):
+                    # Convert to LintResult immediately to cache line_col_of
+                    line, col = self.line_col_of(result.start_pos)
+                    lint_result = LintResult(
                         result.check_path,
                         result.message,
-                        *self.line_col_of(result.start_pos),
+                        line,
+                        col,
                         start_pos=result.start_pos,
                         end_pos=result.end_pos,
                         severity="warning",
                         replacements=result.replacements,
                     )
-                    for check in registry.get_all_enabled(config["checks"])
-                    for result in check.check_with_flags(self.content)
-                    if not self.is_quoted_pos(result.start_pos)
-                ),
-                config["max_errors"],
-            ),
-            key=itemgetter(2, 3),  # sort by line and column
-        )
+                    all_results.append(lint_result)
+                    
+                    # Early exit if we hit max_errors
+                    if len(all_results) >= config["max_errors"]:
+                        break
+            
+            if len(all_results) >= config["max_errors"]:
+                break
+        
+        # Sort only once at the end
+        return sorted(all_results, key=itemgetter(2, 3))
 
     def output_errors(
         self,
