@@ -35,7 +35,7 @@ class ExitStatus(IntEnum):
 
 def interrupt_handler(signalnum: int, _frame: Optional[FrameType]) -> None:
     """Exit proselint gracefully from an interrupt."""
-    log.warning(f"Exiting (received {Signals(signalnum)}).")
+    log.warning(f"\nExiting (received {Signals(signalnum).name} {signalnum}).")
     sys.exit(ExitStatus.INTERRUPT)
 
 
