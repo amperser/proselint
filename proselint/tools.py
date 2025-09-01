@@ -170,8 +170,8 @@ class LintFile:
                     for check in registry.get_all_enabled(config["checks"])
                     for result in check.check_with_flags(self.content)
                     if (
-                        not self.is_quoted_pos(result.start_pos)
-                        or check.flags.allow_quotes
+                        check.flags.allow_quotes
+                        or not self.is_quoted_pos(result.start_pos)
                     )
 
                 ),
