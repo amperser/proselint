@@ -92,6 +92,7 @@ class CheckFlags(NamedTuple):
     # be achieved via iterators instead of working with final lists.
     results_limit: int = 0
     ppm_threshold: int = 0
+    allow_quotes: bool = False
 
     @staticmethod
     def truncate(
