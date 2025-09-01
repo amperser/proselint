@@ -58,6 +58,7 @@ check_curly_quotes = Check(
     path="typography.symbols.curly_quotes",
     message='Use curly quotes “”, not straight quotes "".',
     flags=CheckFlags(results_limit=3),
+    allow_quotes=True,
 )
 
 

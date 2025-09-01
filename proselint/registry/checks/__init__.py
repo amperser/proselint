@@ -157,6 +157,7 @@ class Check(NamedTuple):
     message: str = ""
     flags: CheckFlags = CheckFlags()
     ignore_case: bool = True
+    allow_quotes: bool = False
     offset: tuple[int, int] = (0, 0)
 
     # TODO: for 3.11+, RegexFlag.NOFLAG exists

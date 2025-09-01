@@ -121,7 +121,9 @@ class LintFile:
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
-        self.quote_spans = tuple(find_quoted_ranges(self.content))
+        self.quote_spans = tuple(
+            find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
+        )
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
@@ -172,7 +174,11 @@ class LintFile:
                     )
                     for check in registry.get_all_enabled(config["checks"])
                     for result in check.check_with_flags(self.content)
-                    if not self.is_quoted_pos(result.start_pos)
+                    if (
+                        not self.is_quoted_pos(result.start_pos)
+                        or check.allow_quotes
+                    )
+
                 ),
                 config["max_errors"],
             ),
