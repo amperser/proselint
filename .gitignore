@@ -18,5 +18,4 @@ corpora/*
 dist/
 *.pstore
 .pre-commit-config.yaml
-.direnv/
 .hypothesis
