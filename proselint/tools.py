@@ -76,11 +76,6 @@ def find_spans(
     return spans
 
 
-def find_quoted_ranges(text: str) -> list[tuple[int, int]]:
-    """Find the ranges of quote pairs in text."""
-    return find_spans(text, QUOTE_PATTERN, check_matching_quotes)
-
-
 def errors_to_json(errors: list[LintResult]) -> str:
     """Convert the errors to JSON."""
     return json.dumps(
