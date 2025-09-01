@@ -171,7 +171,7 @@ class LintFile:
                     for result in check.check_with_flags(self.content)
                     if (
                         not self.is_quoted_pos(result.start_pos)
-                        or check.allow_quotes
+                        or check.flags.allow_quotes
                     )
 
                 ),
