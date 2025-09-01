@@ -121,9 +121,7 @@ class LintFile:
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
-        self.quote_spans = tuple(
-            find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
-        )
+        self.quote_spans = tuple(find_quoted_ranges(self.content))
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
