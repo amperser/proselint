@@ -42,35 +42,66 @@ def interrupt_handler(signalnum: int, _frame: Optional[FrameType]) -> None:
 def get_parser() -> ArgumentParser:
     """Create an `ArgumentParser` for command line arguments."""
     global_parser = ArgumentParser()
-    global_parser.add_argument("--config", type=Path)
+    global_parser.add_argument(
+        "--config",
+        type=Path,
+        help="path to a configuration file (`.proselintrc.json`)",
+    )
     global_parser.add_argument(
         "--output-format",
         "-o",
         choices=[output_format.value for output_format in OutputFormat],
         default=OutputFormat.FULL,
         type=OutputFormat,
+        help="the format to display results in",
     )
-    global_parser.add_argument("--verbose", "-v", action="store_true")
+    global_parser.add_argument(
+        "--verbose", "-v", action="store_true", help="enable verbose logging"
+    )
 
     parser = ArgumentParser(
-        parents=(global_parser,), conflict_handler="resolve"
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        description="proselint, a linter for prose.",
+        usage="%(prog)s [options] <command>",
     )
-    subparsers = parser.add_subparsers(dest="subcommand")
+    subparsers = parser.add_subparsers(
+        title="commands", dest="subcommand", metavar=""
+    )
 
     subparsers.add_parser(
-        "version", parents=(global_parser,), conflict_handler="resolve"
+        "version",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="display the current version and exit",
     )
 
     check_parser = subparsers.add_parser(
-        "check", parents=(global_parser,), conflict_handler="resolve"
+        "check",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="run proselint against paths",
     )
-    check_parser.add_argument("--demo", action="store_true")
-    check_parser.add_argument("paths", nargs="*", type=Path)
+    check_parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="run proselint against the demo file",
+    )
+    check_parser.add_argument(
+        "paths", nargs="*", type=Path, help="target paths to lint"
+    )
 
     dump_config_parser = subparsers.add_parser(
-        "dump-config", parents=(global_parser,), conflict_handler="resolve"
+        "dump-config",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="display the loaded configuration and exit",
     )
-    dump_config_parser.add_argument("--default", action="store_true")
+    dump_config_parser.add_argument(
+        "--default",
+        action="store_true",
+        help="display the default configuration",
+    )
 
     return parser
 
