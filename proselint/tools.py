@@ -2,6 +2,7 @@
 
 import json
 import stat
+from bisect import bisect_left
 from collections.abc import Callable
 from enum import Enum
 from itertools import accumulate, chain, islice
@@ -177,16 +178,16 @@ class LintFile:
 
     def line_col_of(self, position: int) -> tuple[int, int]:
         """Return the line and column numbers of a position in the content."""
-        line_delta, bound = next(
-            filter(
-                lambda x: position > x[1], enumerate(reversed(self.line_bounds))
-            )
-        )
-        return (len(self.line_bounds) - line_delta, position - bound)
+        bound_idx = bisect_left(self.line_bounds, position)
+        return (bound_idx, position - self.line_bounds[bound_idx - 1])
 
     def is_quoted_pos(self, position: int) -> bool:
         """Determine if the content position falls within quotes."""
-        return any(start <= position < end for start, end in self.quote_spans)
+        bound_idx = bisect_left(self.quote_spans, position, key=itemgetter(0))
+        if bound_idx:
+            # NOTE: bisect checks span start, so we only need to check span end
+            return position < self.quote_spans[bound_idx - 1][1]
+        return False
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
         """Run the linter against the file."""
@@ -209,7 +210,6 @@ class LintFile:
                         check.flags.allow_quotes
                         or not self.is_quoted_pos(result.start_pos)
                     )
-
                 ),
                 config["max_errors"],
             ),
