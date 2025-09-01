@@ -1,94 +1,163 @@
 """Command line utility for proselint."""
+# pyright: reportUnusedCallResult=false, reportAny=false
+# TODO: explore options for typing argparse.Namespace
+
+from __future__ import annotations
 
 import json
-import os
-import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
+from enum import IntEnum
 from pathlib import Path
-
-import click
+from signal import Signals, signal
+from typing import TYPE_CHECKING, Optional
 
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
+from proselint.log import log
 from proselint.registry import CheckRegistry
-from proselint.tools import LintFile, extract_files
+from proselint.tools import LintFile, OutputFormat, extract_files, verify_path
 from proselint.version import __version__
 
-CONTEXT_SETTINGS = {"help_option_names": ['-h', '--help']}
-base_url = "proselint.com/"
+if TYPE_CHECKING:
+    from types import FrameType
 
 
-# TODO: fix broken corpus
-def timing_test(corpus="0.1.0"):
-    """Measure timing performance on the named corpus."""
-    import time
-    dirname = os.path.dirname
-    corpus_path = os.path.join(
-        dirname(dirname(os.path.realpath(__file__))), "corpora", corpus)
-    start = time.time()
-    for file in os.listdir(corpus_path):
-        filepath = os.path.join(corpus_path, file)
-        if filepath[-3:] == ".md":
-            subprocess.call(["proselint", filepath, ">/dev/null"])
+class ExitStatus(IntEnum):
+    """Exit status for proselint's command line."""
 
-    return time.time() - start
+    SUCCESS = 0
+    SUCCESS_ERR = 1
+    UNACCEPTED_ARGS = 2
+    INTERRUPT = 3
 
 
-@click.command(context_settings=CONTEXT_SETTINGS)
-@click.version_option(__version__, '--version', '-v', message='%(version)s')
-@click.option('--config', is_flag=False,
-              type=click.Path(exists=True, path_type=Path),
-              help="Path to configuration file.")
-@click.option('--debug', '-d', is_flag=True, help="Give verbose output.")
-@click.option('--json', '-j', 'output_json', is_flag=True,
-              help="Output as JSON.")
-@click.option('--time', '-t', is_flag=True, help="Time on a corpus.")
-@click.option('--demo', is_flag=True, help="Run over demo file.")
-@click.option('--compact', is_flag=True, help="Shorten output.")
-@click.option('--dump-config', is_flag=True, help="Prints current config.")
-@click.option('--dump-default-config', is_flag=True,
-              help="Prints default config.")
-@click.argument('paths', nargs=-1, type=click.Path(exists=True, path_type=Path))
-def proselint(
-    paths: list[Path], config=None, version=None,
-    debug=None, output_json=None, time=None, demo=None, compact=None,
-    dump_config=None, dump_default_config=None
-) -> None:
+def interrupt_handler(signalnum: int, _frame: Optional[FrameType]) -> None:
+    """Exit proselint gracefully from an interrupt."""
+    log.warning(f"\nExiting (received {Signals(signalnum).name} {signalnum}).")
+    sys.exit(ExitStatus.INTERRUPT)
+
+
+def get_parser() -> ArgumentParser:
+    """Create an `ArgumentParser` for command line arguments."""
+    global_parser = ArgumentParser()
+    global_parser.add_argument(
+        "--config",
+        type=Path,
+        help="path to a configuration file (`.proselintrc.json`)",
+    )
+    global_parser.add_argument(
+        "--output-format",
+        "-o",
+        choices=[output_format.value for output_format in OutputFormat],
+        default=OutputFormat.FULL,
+        type=OutputFormat,
+        help="the format to display results in",
+    )
+    global_parser.add_argument(
+        "--verbose", "-v", action="store_true", help="enable verbose logging"
+    )
+
+    parser = ArgumentParser(
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        description="proselint, a linter for prose.",
+        usage="%(prog)s [options] <command>",
+    )
+    subparsers = parser.add_subparsers(
+        title="commands", dest="subcommand", metavar=""
+    )
+
+    subparsers.add_parser(
+        "version",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="display the current version and exit",
+    )
+
+    check_parser = subparsers.add_parser(
+        "check",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="run proselint against paths",
+    )
+    check_parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="run proselint against the demo file",
+    )
+    check_parser.add_argument(
+        "paths", nargs="*", type=Path, help="target paths to lint"
+    )
+
+    dump_config_parser = subparsers.add_parser(
+        "dump-config",
+        parents=(global_parser,),
+        conflict_handler="resolve",
+        help="display the loaded configuration and exit",
+    )
+    dump_config_parser.add_argument(
+        "--default",
+        action="store_true",
+        help="display the default configuration",
+    )
+
+    return parser
+
+
+def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
-    if dump_default_config:
-        return print(json.dumps(DEFAULT, sort_keys=True, indent=4))
+    config = load_from(
+        args.config and verify_path(args.config, resolve=True, reject_dir=True)
+    )
 
-    config = load_from(config)
-    if dump_config:
-        print(json.dumps(config, sort_keys=True, indent=4))
-        return None
+    if args.subcommand is None:
+        parser.print_help()
+        return ExitStatus.UNACCEPTED_ARGS
 
-    if time:
-        # click.echo(timing_test())
-        print("This option does not work for the time being.")
-        return None
+    if args.subcommand == "version":
+        log.info("Proselint %s", __version__)
+        log.debug("Python %s", sys.version)
+        return ExitStatus.SUCCESS
+
+    if args.subcommand == "dump-config":
+        log.info(
+            json.dumps(
+                DEFAULT if args.default else config, sort_keys=True, indent=4
+            )
+        )
+        return ExitStatus.SUCCESS
 
     # Lint the files
-    num_errors = 0
-
     CheckRegistry().register_many(__register__)
 
     lint_files: list[LintFile] = []
-    if demo:
+    if args.demo:
         lint_files = [LintFile(config_paths.demo_path)]
-    elif len(paths) == 0:
+    elif len(args.paths) == 0:
         lint_files = [LintFile.from_stdin()]
     else:
-        lint_files = list(map(LintFile, extract_files(paths)))
+        lint_files = list(map(LintFile, extract_files(args.paths)))
+
+    num_errors = 0
 
     for lint_file in lint_files:
         results = lint_file.lint(config)
         num_errors += len(results)
-        lint_file.output_errors(results, output_json=output_json, compact=compact)
-    # Return an exit code
-    sys.exit(int(num_errors > 0))
+        lint_file.output_errors(results, args.output_format)
+
+    return ExitStatus.SUCCESS_ERR if num_errors else ExitStatus.SUCCESS
 
 
-if __name__ == '__main__':
-    proselint()
+def main() -> None:
+    """Run the CLI."""
+    signal(Signals.SIGTERM, interrupt_handler)
+    signal(Signals.SIGINT, interrupt_handler)
+
+    parser = get_parser()
+    args = parser.parse_args()
+
+    log.setup(verbose=args.verbose)
+
+    sys.exit(proselint(args, parser))

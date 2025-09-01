@@ -1,7 +1,9 @@
 """General-purpose tools shared across linting checks."""
 
 import json
+import stat
 from collections.abc import Callable
+from enum import Enum
 from itertools import accumulate, chain, islice
 from operator import itemgetter
 from pathlib import Path
@@ -11,10 +13,41 @@ from sys import stdin
 from typing import Union, cast, overload
 
 from proselint.config import DEFAULT, Config
+from proselint.log import log
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
 
+
+class OutputFormat(str, Enum):
+    """The format to output results in."""
+
+    FULL = "full"
+    JSON = "json"
+    COMPACT = "compact"
+
+
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
+
+
+def verify_path(
+    path: Path,
+    *,
+    resolve: bool = False,
+    reject_file: bool = False,
+    reject_dir: bool = False,
+) -> Path:
+    """Check a path for specified conditions."""
+    if resolve:
+        path = path.resolve()
+
+    stat_res = path.stat()
+
+    if reject_file and stat.S_ISREG(stat_res.st_mode):
+        raise OSError("Files not permitted - found file %s", path)
+    if reject_dir and stat.S_ISDIR(stat_res.st_mode):
+        raise OSError("Directories not permitted - found directory %s", path)
+
+    return path
 
 
 def extract_files(paths: list[Path]) -> list[Path]:
@@ -29,7 +62,10 @@ def extract_files(paths: list[Path]) -> list[Path]:
             )
             if path.is_dir()
             else (path,)
-            for path in paths
+            for path in (
+                verify_path(path_unchecked, resolve=True)
+                for path_unchecked in paths
+            )
         )
     )
 
@@ -184,16 +220,16 @@ class LintFile:
     def output_errors(
         self,
         results: list[LintResult],
-        *,
-        output_json: bool = False,
-        compact: bool = False,
+        output_format: OutputFormat,
     ) -> None:
         """Log lint results from the LintFile."""
-        if output_json:
-            print(errors_to_json(results))
+        if output_format is OutputFormat.JSON:
+            log.warning(errors_to_json(results))
             return
 
-        name = "-" if compact else self.source_name
+        name = (
+            "-" if output_format is OutputFormat.COMPACT else self.source_name
+        )
 
         for result in results:
-            print(f"{name}{result}")
+            log.warning(f"{name}{result}")

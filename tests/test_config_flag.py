@@ -3,19 +3,17 @@
 import json
 from pathlib import Path
 
-from click.testing import CliRunner
+from pytest import LogCaptureFixture, raises
 
-from proselint.command_line import proselint
+from proselint.command_line import get_parser, proselint
 from proselint.config import (
     DEFAULT,
     _deepmerge_dicts,  # pyright: ignore[reportUnknownVariableType, reportPrivateUsage]
     load_from,
 )
 
-runner = CliRunner()
-
 CONFIG_FILE = Path(__file__).parent / "test-proselintrc.json"
-FLAG = f"--config '{CONFIG_FILE}'"
+PARSER = get_parser()
 
 
 def test_deepmerge_dicts() -> None:
@@ -38,26 +36,48 @@ def test_load_from() -> None:
     assert not overrides["checks"]["uncomparables"]
 
 
-def test_config_flag() -> None:
+def test_config_flag(caplog: LogCaptureFixture) -> None:
     """Test the --config CLI argument."""
-    output = runner.invoke(proselint, "--demo")
-    assert "uncomparables" in output.stdout
+    with caplog.at_level("WARNING", "proselint"):
+        _ = proselint(
+            PARSER.parse_args(
+                (
+                    "check",
+                    "--demo",
+                )
+            ),
+            PARSER,
+        )
+        assert "uncomparables" in caplog.text
+        caplog.clear()
+        _ = proselint(
+            PARSER.parse_args(
+                ("check", "--demo", "--config", CONFIG_FILE.as_posix())
+            ),
+            PARSER,
+        )
+        assert "uncomparables" not in caplog.text
 
-    output = runner.invoke(proselint, f"--demo {FLAG}")
-    assert "uncomparables" not in output.stdout
-    assert not isinstance(output.exception, FileNotFoundError)
-
-    output = runner.invoke(proselint, "--demo --config non_existent_file")
-    assert output.exit_code == 2
-
-    output = runner.invoke(proselint, "non_existent_file")
-    assert output.exit_code == 2
+    with raises(FileNotFoundError):
+        _ = proselint(
+            PARSER.parse_args(
+                ("check", "--demo", "--config", "non_existent_file")
+            ),
+            PARSER,
+        )
 
 
-def test_dump_config() -> None:
-    """Test --dump-default-config and --dump-config."""
-    output = runner.invoke(proselint, "--dump-default-config")
-    assert json.loads(output.stdout) == DEFAULT
-
-    output = runner.invoke(proselint, f"--dump-config {FLAG}")
-    assert json.loads(output.stdout) == json.loads(CONFIG_FILE.read_text())
+def test_dump_config(caplog: LogCaptureFixture) -> None:
+    """Test dump-config."""
+    with caplog.at_level("INFO", "proselint"):
+        _ = proselint(PARSER.parse_args(("dump-config", "--default")), PARSER)
+        assert json.loads(caplog.records[0].message) == DEFAULT
+        _ = proselint(
+            PARSER.parse_args(
+                ("dump-config", "--config", CONFIG_FILE.as_posix())
+            ),
+            PARSER,
+        )
+        assert json.loads(caplog.records[1].message) == json.loads(
+            CONFIG_FILE.read_text()
+        )
