@@ -130,7 +130,8 @@ class LintFile:
     source: Union[str, Path]
     content: str
     line_bounds: tuple[int, ...]
-    quote_spans: tuple[tuple[int, int], ...]
+    quote_bounds: tuple[int, ...]
+    """A flat sequence of positions guaranteed to come in pairs."""
 
     @overload
     def __init__(
@@ -153,9 +154,9 @@ class LintFile:
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
-        self.quote_spans = tuple(
+        self.quote_bounds = tuple(chain.from_iterable(
             find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
-        )
+        ))
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
@@ -183,11 +184,8 @@ class LintFile:
 
     def is_quoted_pos(self, position: int) -> bool:
         """Determine if the content position falls within quotes."""
-        bound_idx = bisect_left(self.quote_spans, position, key=itemgetter(0))
-        if bound_idx:
-            # NOTE: bisect checks span start, so we only need to check span end
-            return position < self.quote_spans[bound_idx - 1][1]
-        return False
+        # NOTE: since bounds are paired, odd elements are always within a span
+        return bisect_left(self.quote_bounds, position) % 2 == 1
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
         """Run the linter against the file."""
