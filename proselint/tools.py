@@ -184,7 +184,7 @@ class LintFile:
 
     def is_quoted_pos(self, position: int) -> bool:
         """Determine if the content position falls within quotes."""
-        # NOTE: since bounds are paired, odd elements are always within a span
+        # NOTE: since bounds are paired, odd insertions are always within a span
         return bisect_left(self.quote_bounds, position) % 2 == 1
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
