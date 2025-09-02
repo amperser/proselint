@@ -1,34 +1,32 @@
 ---
-name: False Positive Report
-about: Report a false positive for a rule
+name: False-positive Report
+about: Report a false-positive condition for a check
 title: ''
-labels: type: fix, status: awaiting-triage, bug: unconfirmed, cat: false-positive
+labels: 'type: fix, bug: unconfirmed, cat: false-positive'
 assignees: ''
 
 ---
 
-## Bug Description
+## Brief
 
-<!-- A clear and concise description of what the bug is. -->
+### Description
 
-## Reproducible By
+<!--
+The check path, and the types of circumstances that raise a false-positive.
 
-<!-- A step by step list on how the bug can be reproduced for examination. -->
+Example:
+`misc.but` matches lines that start with "But," not just paragraphs.
+-->
 
-## Expected Behavior
+### Examples
 
-<!-- A clear and concise description of what you expected to happen. -->
+<!--
+Examples of acceptable forms that trigger the false-positive.
+-->
 
-## Logs & Screenshots
+## References
 
-<!-- If applicable, add screenshots to help explain your problem, or 
-alternatively add your console logs here. -->
-
-## Environment
-
-<!-- This is just your OS and environment information [e.g. Ubuntu 18.04 LTS,
-Node v14.14.0] -->
-
-### Additional context
-
-<!-- Add any other context about the problem here. -->
+<!--
+Excerpts from various sources on the matter, including relevant discussions
+from other issues if applicable.
+-->
