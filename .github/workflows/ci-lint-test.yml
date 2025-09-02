@@ -73,13 +73,15 @@ jobs:
         if: runner.os == 'Windows'
         run: uv sync --locked --all-extras --dev --group test
 
-      - name: "[EXEC] Test & Coverage"
-        run: |
-          if [ "${{ runner.os }}" = "Windows" ]; then
-            uv run poe test-cover
-          else
-            nix develop --command uv run poe test-cover
-          fi
+      - name: "[EXEC] Test & Coverage (Windows)"
+        if: runner.os == 'Windows'
+        run: uv run poe test-cover
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+
+      - name: "[EXEC] Test & Coverage (Unix)"
+        if: runner.os != 'Windows'
+        run: nix develop --command uv run poe test-cover
         env:
           PYTHON_VERSION: ${{ matrix.python }}
 
