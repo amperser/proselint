@@ -14,6 +14,7 @@ Names for groups of animals.
 
 """
 
+from collections.abc import Iterator
 from re import search
 
 from proselint.registry.checks import Check, CheckResult, Padding, types
@@ -72,12 +73,12 @@ TERM_MAP = (
 GENERIC_TERMS = ("group", "bunch")
 
 
-def _check_venery(text: str, check: Check) -> list[CheckResult]:
+def _check_venery(text: str, check: Check) -> Iterator[CheckResult]:
     """Check the text."""
     if not search(
         Padding.SAFE_JOIN.format("|".join(GENERIC_TERMS)), text, check.re_flag
     ):
-        return []
+        return iter(())
 
     return types.PreferredFormsSimple(
         items={
