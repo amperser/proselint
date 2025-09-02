@@ -3,10 +3,10 @@ SublimeLinter-contrib-proselint
 
 [![Build Status](https://travis-ci.org/amperser/proselint.svg?branch=main)](https://travis-ci.org/amperser/proselint)
 
-This linter plugin for [SublimeLinter][docs] provides an interface to [proselint](http://proselint.com). It will be used with files that have the “markdown”, “text”, or “plain text” syntaxes.
+This linter plugin for [SublimeLinter][docs] provides an interface to [proselint](http://proselint.com).
 
 ## Installation
-SublimeLinter 3 must be installed in order to use this plugin. If SublimeLinter 3 is not installed, please follow the instructions [here][installation].
+SublimeLinter 4 must be installed in order to use this plugin. If SublimeLinter 4 is not installed, please follow the instructions [here][installation].
 
 ### Linter installation
 Before using this plugin, you must ensure that `proselint` is installed on your system. To install `proselint`, do the following:
@@ -37,7 +37,26 @@ To install via Package Control, do the following:
 ## Settings
 For general information on how SublimeLinter works with settings, please see [Settings][settings]. For information on generic linter settings, please see [Linter Settings][linter-settings].
 
-In addition to the standard SublimeLinter settings, SublimeLinter-contrib-proselint provides its own settings through a config file, `.proselintrc`.
+### Example configuration
+The SublimeLinter settings file can be found under the Preferences menu at Preferences -> Package Settings -> SublimeLinter -> Settings.
+
+```json
+// SublimeLinter Settings - User
+{
+    "linters": {
+        "proselint": {
+            "lint_mode": "save",
+            "selector": "text - meta.environment.math",
+            "styles": [
+                {
+                    "mark_style": "squiggly_underline",
+                    "scope": "region.bluish"
+                }
+            ]
+        }
+    }
+}
+```
 
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
@@ -57,11 +76,10 @@ Please note that modifications should follow these coding guidelines:
 
 Thank you for helping out!
 
-[docs]: http://sublimelinter.readthedocs.org
-[installation]: http://sublimelinter.readthedocs.org/en/latest/installation.html
-[locating-executables]: http://sublimelinter.readthedocs.org/en/latest/usage.html#how-linter-executables-are-located
-[pc]: https://sublime.wbond.net/installation
+[docs]: http://www.sublimelinter.com/
+[installation]: http://sublimelinter.readthedocs.org/en/stable/installation.html
+[locating-executables]: http://sublimelinter.readthedocs.org/en/stable/usage.html#how-linter-executables-are-located
+[pc]: https://packagecontrol.io/installation
 [cmd]: http://docs.sublimetext.info/en/sublime-text-3/extensibility/command_palette.html
-[settings]: http://sublimelinter.readthedocs.org/en/latest/settings.html
-[linter-settings]: http://sublimelinter.readthedocs.org/en/latest/linter_settings.html
-[inline-settings]: http://sublimelinter.readthedocs.org/en/latest/settings.html#inline-settings
+[settings]: http://sublimelinter.readthedocs.org/en/stable/settings.html
+[linter-settings]: http://sublimelinter.readthedocs.org/en/stable/linter_settings.html
