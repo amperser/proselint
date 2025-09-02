@@ -2,33 +2,55 @@
 name: Bug Report
 about: Report an issue
 title: ''
-labels: type: fix, status: awaiting-triage, bug: unconfirmed
+labels: type: fix, bug: unconfirmed
 assignees: ''
 
 ---
 
-## Bug Description
+## Brief
 
-<!-- A clear and concise description of what the bug is. -->
+### Expected Behaviour
 
-## Reproducible By
+<!--
+What proselint should do in this situation.
 
-<!-- A step by step list on how the bug can be reproduced for examination. -->
+Example:
+Print line numbers corresponding with where the check matched.
+-->
 
-## Expected Behavior
+### Actual Behaviour
 
-<!-- A clear and concise description of what you expected to happen. -->
+<!--
+What proselint did in this situation.
 
-## Logs & Screenshots
+Example:
+Line numbers were offset by 1.
+-->
 
-<!-- If applicable, add screenshots to help explain your problem, or 
-alternatively add your console logs here. -->
+### Reproduction
 
-## Environment
+<!--
+Minimal steps required to encounter the problem, if you were able to find some.
 
-<!-- This is just your OS and environment information [e.g. Ubuntu 18.04 LTS,
-Node v14.14.0] -->
+Example:
+- Create a markdown file with a code block and some surrounding text
+- Run proselint against this new file
+-->
 
-### Additional context
+### Environment
 
-<!-- Add any other context about the problem here. -->
+<!--
+Information about your operating system and working environment.
+
+Example:
+nixos-25.05 running proselint 0.14 via Python 3.12.
+-->
+
+## Additional Context
+
+<!--
+Other information about the problem, such as logs or screenshots.
+
+If the bug relates to a specific check, this should also include the content
+you ran proselint against, if possible.
+-->

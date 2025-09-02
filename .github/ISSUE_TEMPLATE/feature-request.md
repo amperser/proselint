@@ -1,28 +1,32 @@
 ---
 name: Feature Request
-about: Make a suggestion on a feature or improvement for the project
+about: Suggest a new feature for proselint
 title: ''
-labels: type: feat, status: awaiting-triage
+labels: type: feat
 assignees: ''
 
 ---
 
-## This would solve...
+## Brief
 
-<!-- A clear and concise description of the problem this feature request relates
-to, if applicable. -->
+### Description
 
-## The implementation should look like...
+<!--
+What you would like proselint to be able to do.
 
-<!-- A clear and concise description of how you expect this to be resolved or
-implemented. -->
+Example:
+A reverse existence check type for restricted writing.
+-->
 
-## I have also considered...
+### Considerations
 
-<!-- A clear and concise description of any alternative solutions or features
-you have considered. -->
+<!--
+Details of things the feature should or should not aim to achieve, and if
+applicable, the different acceptable solutions.
+-->
 
-## Additional context
+## References & Prior Art
 
-<!-- Add any other context, screenshots or ideas about the feature request
-here. -->
+<!--
+Resources about the feature or linters with similar features, if applicable.
+-->
