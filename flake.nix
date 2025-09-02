@@ -41,7 +41,12 @@
 		devShells =
 			forAllSystems (system: pkgs: let
 					python = pkgs."python${getPythonVersion}";
-					arg = project.renderers.withPackages {inherit python;};
+					arg =
+						project.renderers.withPackages {
+							inherit python;
+							groups = ["test"];
+						};
+
 					pyenv = python.withPackages arg;
 					check = self.checks.${system}.pre-commit-check;
 				in {
