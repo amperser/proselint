@@ -19,18 +19,21 @@
 		pyproject,
 		...
 	}: let
-		forAllSystems = function:
-			nixpkgs.lib.genAttrs [
-				"x86_64-linux"
-				"aarch64-linux"
-				"x86_64-darwin"
-				"aarch64-darwin"
-			] (system: function system nixpkgs.legacyPackages.${system});
+		forAllSystems = function: nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"] (system: function system nixpkgs.legacyPackages.${system});
+		getPythonVersion = let
+			val = builtins.getEnv "PYTHON_VERSION";
+			result =
+				if val == ""
+				then "3.12"
+				else val;
+		in
+			builtins.replaceStrings ["."] [""] result;
+
 		project = pyproject.lib.project.loadPyproject {projectRoot = ./.;};
 	in {
 		devShells =
 			forAllSystems (system: pkgs: let
-					python = pkgs.python312;
+					python = pkgs."python${getPythonVersion}";
 					arg = project.renderers.withPackages {inherit python;};
 					pyenv = python.withPackages arg;
 					check = self.checks.${system}.pre-commit-check;
@@ -50,7 +53,7 @@
 
 		packages =
 			forAllSystems (system: pkgs: let
-					python = pkgs.python312;
+					python = pkgs."python${getPythonVersion}";
 					attrs = project.renderers.buildPythonPackage {inherit python;};
 				in {
 					default = python.pkgs.buildPythonPackage attrs;
@@ -75,10 +78,12 @@
 								mixed-line-endings.enable = true;
 								markdownlint.enable = true;
 								ruff.enable = true;
-								pyright = {
+								pyright = let
+									pyright = pkgs.basedpyright;
+								in {
 									enable = true;
-									package = pkgs.basedpyright;
-									entry = "${pkgs.basedpyright}/bin/basedpyright";
+									package = pyright;
+									entry = "${pyright}/bin/basedpyright";
 								};
 								convco.enable = true;
 								alejandra.enable = true;
