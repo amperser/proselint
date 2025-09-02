@@ -164,6 +164,29 @@ def test_preferred_s_smoke(
     assert list(check.check(noise)) == []
 
 
+@given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text())
+def test_preferred_s_ignore_case_lower(
+    items: dict[str, str], padding: Padding, path: str
+) -> None:
+    """Return correct matches when ignore_case=True with case variations."""
+    check = Check(
+        check_type=types.PreferredFormsSimple(items=items, padding=padding),
+        path=path,
+        message="{} || {}",
+        ignore_case=True,
+    )
+
+    text = "  ".join(
+        k.swapcase() if i % 2 == 0 else k.upper()
+        for i, k in enumerate(items.keys())
+    )
+
+    check_type = types.PreferredFormsSimple(items=items, padding=padding)
+    results = list(check_type.check(text, check))
+
+    assert all(result.replacements in items.values() for result in results)
+
+
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
 def test_preferred_s_values_smoke(
     items: dict[str, str], padding: Padding, path: str, data: st.DataObject
