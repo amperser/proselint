@@ -2,7 +2,7 @@
 name: Check Request
 about: Suggest a new check, or source to extract checks from
 title: ''
-labels: type: feat, cat: new-check
+labels: 'type: feat, cat: new-check'
 assignees: ''
 
 ---

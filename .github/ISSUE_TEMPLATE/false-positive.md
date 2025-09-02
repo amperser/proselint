@@ -2,7 +2,7 @@
 name: False-positive Report
 about: Report a false-positive condition for a check
 title: ''
-labels: type: fix, bug: unconfirmed, cat: false-positive
+labels: 'type: fix, bug: unconfirmed, cat: false-positive'
 assignees: ''
 
 ---

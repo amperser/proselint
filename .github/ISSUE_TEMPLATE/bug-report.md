@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report an issue
 title: ''
-labels: type: fix, bug: unconfirmed
+labels: 'type: fix, bug: unconfirmed'
 assignees: ''
 
 ---

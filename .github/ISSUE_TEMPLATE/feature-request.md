@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest a new feature for proselint
 title: ''
-labels: type: feat
+labels: 'type: feat'
 assignees: ''
 
 ---

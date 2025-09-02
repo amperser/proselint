@@ -2,7 +2,7 @@
 name: RFC or Aggregate
 about: Make a broad proposal or combine existing issues
 title: '[rfc/aggregate] '
-labels: cat: rfc
+labels: 'cat: rfc'
 assignees: ''
 
 ---
