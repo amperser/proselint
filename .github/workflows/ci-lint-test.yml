@@ -17,12 +17,6 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "[INIT] Setup Cachix"
-        uses: cachix/cachix-action@v15
-        with:
-          name: proselint
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-
       - name: "[EXEC] Lint"
         run: nix develop --command ruff check proselint tests
 
@@ -47,13 +41,6 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "[INIT] Setup Cachix (Unix)"
-        if: runner.os != 'Windows'
-        uses: cachix/cachix-action@v15
-        with:
-          name: proselint
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: "[INIT] Install uv (Windows)"
         if: runner.os == 'Windows'
