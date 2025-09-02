@@ -49,9 +49,9 @@ def _check_waxed(text: str, check: Check) -> Iterator[CheckResult]:
     if not search(
         Padding.SAFE_JOIN.format("|".join(WAXES)), text, check.re_flag
     ):
-        return
+        return iter(())
 
-    yield from types.PreferredFormsSimple(
+    return types.PreferredFormsSimple(
         items={
             f"{wax} {original}": f"{wax} {replacement}"
             for original, replacement in MODIFIERS.items()

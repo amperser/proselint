@@ -78,9 +78,9 @@ def _check_venery(text: str, check: Check) -> Iterator[CheckResult]:
     if not search(
         Padding.SAFE_JOIN.format("|".join(GENERIC_TERMS)), text, check.re_flag
     ):
-        return
+        return iter(())
 
-    yield from types.PreferredFormsSimple(
+    return types.PreferredFormsSimple(
         items={
             f"{generic} of {animal}": f"{venery} of {animal}"
             for animal, venery in TERM_MAP
