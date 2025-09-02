@@ -40,6 +40,7 @@ check = Check(
     ),
     path="spelling.athletes",
     message="Misspelling of athlete's name. '{}' is the preferred form.",
+    ignore_case=False,
 )
 
 __register__ = (check,)

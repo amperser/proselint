@@ -54,6 +54,7 @@ check_garner = Check(
     ),
     path="terms.denizen_labels.garner",
     message="'{}' is the preferred denizen label.",
+    ignore_case=False,
 )
 
 """
@@ -86,6 +87,7 @@ check_norris = Check(
     ),
     path="terms.denizen_labels.norris",
     message="Would you like '{}'?",
+    ignore_case=False,
 )
 
 __register__ = (check_garner, check_norris)

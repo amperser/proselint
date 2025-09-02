@@ -29,6 +29,7 @@ check = Check(
     ),
     path="redundancy.ras_syndrome",
     message="RAS syndrome. Use '{}' instead of '{}'.",
+    ignore_case=False,
 )
 
 __register__ = (check,)

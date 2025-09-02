@@ -19,10 +19,10 @@ from proselint.registry.checks import Check, types
 check_terms = Check(
     check_type=types.PreferredFormsSimple(
         items={
-            "stone age": "Stone Age",
-            "Space Age": "space age",
-            "the American west": "the American West",
             "mother nature": "Mother Nature",
+            "Space Age": "space age",
+            "stone age": "Stone Age",
+            "the American west": "the American West",
         }
     ),
     path="misc.capitalization.terms",
@@ -34,8 +34,8 @@ check_seasons = Check(
     check_type=types.PreferredFormsSimple(
         items={
             "Winter": "winter",
-            # "Fall": "fall",
             "Summer": "summer",
+            # "Fall": "fall",
             # "Spring": "spring",
         }
     ),
@@ -49,9 +49,7 @@ check_months = Check(
         items={
             "january": "January",
             "february": "February",
-            # "march": "March",
             "april": "April",
-            # "may": "May",
             "june": "June",
             "july": "July",
             "august": "August",
@@ -59,6 +57,8 @@ check_months = Check(
             "october": "October",
             "november": "November",
             "december": "December",
+            # "march": "March",
+            # "may": "May",
         }
     ),
     path="misc.capitalization.months",

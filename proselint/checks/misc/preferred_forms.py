@@ -22,34 +22,33 @@ check = Check(
             # Obsolete words
             "imprimature": "imprimatur",
             # Proper nouns
-            "haloween": "Halloween",
             "hallowe'en": "Halloween",
+            "haloween": "Halloween",
             "Khruschev": "Khrushchev",
-            "Kruschev": "Khrushchev",
             "Klu Klux Klan": "Ku Klux Klan",
+            "Kruschev": "Khrushchev",
             "Pontius Pilot": "Pontius Pilate",
             # Plurals
             "hippopotami": "hippopotamuses",
+            "longstanding": "long-standing",
             "manifesti": "manifestos",
             "matrixes": "matrices",
             "mongeese": "mongooses",
             "narcissuses": "narcissi",
+            "non-sequitur": "non sequitur",
             "retinae": "retinas",
-            "soprani": "sopranos",
-            "titmouses": "titmice",
-            # Hyphenated words
-            "longstanding": "long-standing",
             "sans-serif": "sans serif",
             "sanserif": "sans serif",
+            "soprani": "sopranos",
+            "titmouses": "titmice",
             "tort feasor": "tortfeasor",
             "tort-feasor": "tortfeasor",
-            "tranship": "transship",
             "trans-ship": "transship",
-            "transhipped": "transshiped",
             "trans-shipped": "transshipped",
-            "transhipping": "transshipping",
             "trans-shipping": "transshipping",
-            "non-sequitur": "non sequitur",
+            "tranship": "transship",
+            "transhipped": "transshiped",
+            "transhipping": "transshipping",
             # Misc
             "mental attitude": "attitude",
             "Chief Justice of the United States Supreme Court": (
@@ -175,6 +174,7 @@ check = Check(
     ),
     path="misc.preferred_forms",
     message="'{}' is the preferred form.",
+    ignore_case=False,
 )
 
 __register__ = (check,)

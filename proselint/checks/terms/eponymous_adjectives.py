@@ -25,6 +25,7 @@ check = Check(
     ),
     path="terms.eponymous_adjectives",
     message="'{}' is the preferred eponymous adjective.",
+    ignore_case=False,
 )
 
 __register__ = (check,)

@@ -31,6 +31,7 @@ checks_needless_variants = tuple(
         ),
         path="needless_variants",
         message="Needless variant. '{}' is the preferred form.",
+        ignore_case=False,  # only for Zoroastrianism
     )
     for lines in batched(NEEDLESS_VARIANTS_RAW, BATCH_COUNT)
 )

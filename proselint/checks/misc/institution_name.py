@@ -30,6 +30,7 @@ check = Check(
     ),
     path="misc.institution_name",
     message="Incorrect name. Use '{}' instead of '{}'.",
+    ignore_case=False,
 )
 
 __register__ = (check,)
