@@ -19,7 +19,14 @@
 		pyproject,
 		...
 	}: let
-		forAllSystems = function: nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"] (system: function system nixpkgs.legacyPackages.${system});
+		forAllSystems = function:
+			nixpkgs.lib.genAttrs [
+				"x86_64-linux"
+				"aarch64-linux"
+				"x86_64-darwin"
+				"aarch64-darwin"
+			] (system: function system nixpkgs.legacyPackages.${system});
+
 		getPythonVersion = let
 			val = builtins.getEnv "PYTHON_VERSION";
 			result =
