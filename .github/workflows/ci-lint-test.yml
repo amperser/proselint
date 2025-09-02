@@ -64,7 +64,7 @@ jobs:
 
       - name: "[INIT] Install uv (Windows)"
         if: runner.os == 'Windows'
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
