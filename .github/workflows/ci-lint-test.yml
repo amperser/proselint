@@ -1,5 +1,13 @@
 name: "CI: Lint & Test"
-on: [push, pull_request, workflow_dispatch]
+
+on:
+  push:
+  pull_request:
+    branches:
+      - "main"
+      - "ci/nix"
+    paths:
+      - ".github/workflows/ci-lint-test.yml"
 
 jobs:
   lint:
