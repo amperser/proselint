@@ -1,9 +1,3 @@
----
-name: Pull Request
-about: Merge changes into proselint
-
----
-
 <!--
 Before submitting a Pull Request, please read our contribution guidelines, which
 can be found at CONTRIBUTING.md in the repository root.
