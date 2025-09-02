@@ -44,7 +44,6 @@ test = [
 	"rstr>=3.2.2",
 ]
 dev = [
-	"bumpversion>=0.5.3",
 	"ruff>=0.1.14",
 	"poethepoet>=0.34.0",
 ]
