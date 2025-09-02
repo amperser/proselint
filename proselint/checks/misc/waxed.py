@@ -18,6 +18,7 @@ adverb ('He waxed enthusiastic [not enthusiastically] about Australia').
 
 """
 
+from collections.abc import Iterator
 from re import search
 
 from proselint.registry.checks import Check, CheckResult, Padding, types
@@ -43,14 +44,14 @@ MODIFIERS = {
 }
 
 
-def _check_waxed(text: str, check: Check) -> list[CheckResult]:
+def _check_waxed(text: str, check: Check) -> Iterator[CheckResult]:
     """Suggest the preferred forms."""
     if not search(
         Padding.SAFE_JOIN.format("|".join(WAXES)), text, check.re_flag
     ):
-        return []
+        return
 
-    return types.PreferredFormsSimple(
+    yield from types.PreferredFormsSimple(
         items={
             f"{wax} {original}": f"{wax} {replacement}"
             for original, replacement in MODIFIERS.items()
