@@ -2,6 +2,7 @@
 # pyright: reportUnusedCallResult=false
 
 from bisect import bisect_right
+from dataclasses import dataclass
 from itertools import accumulate, chain, combinations, repeat
 from re import escape
 from string import ascii_letters, ascii_lowercase
@@ -13,7 +14,32 @@ from rstr import xeger
 from proselint.registry.checks import BATCH_COUNT, Check, Padding, types
 
 PADDING_STRATEGY = st.sampled_from(Padding)
-ITEM_TEXT_STRATEGY = st.text(min_size=1, alphabet=ascii_lowercase)
+
+
+@dataclass(frozen=True)
+class _TermStrategies:
+    item_text: st.SearchStrategy[str]
+    term_pair: st.SearchStrategy[tuple[str, str]]
+    term_pairs: st.SearchStrategy[list[tuple[str, str]]]
+
+
+def _build_term_strategies(
+    alphabet: str,
+) -> _TermStrategies:
+    item: st.SearchStrategy[str] = st.text(min_size=1, alphabet=alphabet)
+    pair: st.SearchStrategy[tuple[str, str]] = st.tuples(item, item).filter(
+        lambda x: x[0] not in x[1] and x[1] not in x[0]
+    )
+    pairs: st.SearchStrategy[list[tuple[str, str]]] = st.lists(
+        pair, min_size=1, max_size=BATCH_COUNT
+    ).filter(
+        lambda x: all(
+            item[0] not in item[1] and item[1] not in item[0]
+            for item in combinations(chain(*x), 2)
+        )
+    )
+
+    return _TermStrategies(item, pair, pairs)
 
 
 def n_counts(data: st.DataObject, n: int) -> list[int]:
@@ -21,25 +47,16 @@ def n_counts(data: st.DataObject, n: int) -> list[int]:
     return data.draw(st.lists(st.integers(1, 100), min_size=n, max_size=n))
 
 
+LOWER_STRATEGIES = _build_term_strategies(ascii_lowercase)
+ITEM_TEXT_STRATEGY = LOWER_STRATEGIES.item_text
+TERM_PAIR_STRATEGY = LOWER_STRATEGIES.term_pair
+TERM_PAIRS_STRATEGY = LOWER_STRATEGIES.term_pairs
+
+
+CASED_STRATEGIES = _build_term_strategies(ascii_letters)
+
+
 # Consistency
-
-TERM_PAIR_STRATEGY = st.tuples(
-    ITEM_TEXT_STRATEGY,
-    ITEM_TEXT_STRATEGY,
-).filter(lambda x: x[0] not in x[1] and x[1] not in x[0])
-
-TERM_PAIRS_STRATEGY = st.lists(
-    TERM_PAIR_STRATEGY,
-    min_size=1,
-    max_size=BATCH_COUNT,
-).filter(
-    lambda x: all(
-        item[0] not in item[1] and item[1] not in item[0]
-        for item in combinations(chain(*x), 2)
-    )
-)
-
-
 @given(TERM_PAIR_STRATEGY, st.text(), st.text())
 def test_consistency_smoke(
     term_pair: tuple[str, str], path: str, noise: str
@@ -88,7 +105,12 @@ def test_consistency_both_in_text(
 # PreferredForms
 PREFERRED_ITEMS_STRATEGY: st.SearchStrategy[dict[str, str]] = st.builds(  # pyright: ignore[reportUnknownVariableType]
     dict,
-    TERM_PAIRS_STRATEGY,
+    CASED_STRATEGIES.term_pairs,
+)
+
+PREFERRED_ITEMS_CASED_STRATEGY: st.SearchStrategy[dict[str, str]] = st.builds(  # pyright: ignore[reportUnknownVariableType]
+    dict,
+    CASED_STRATEGIES.term_pairs,
 )
 
 
@@ -164,11 +186,31 @@ def test_preferred_s_smoke(
     assert list(check.check(noise)) == []
 
 
-@given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text())
-def test_preferred_s_ignore_case_lower(
+@given(PREFERRED_ITEMS_CASED_STRATEGY, PADDING_STRATEGY, st.text())
+def test_preferred_s_case_sensitive(
+    items: dict[str, str], padding: Padding, path: str
+) -> None:
+    """Return correct matches when ignore_case=False with case variations."""
+    check = Check(
+        check_type=types.PreferredFormsSimple(items=items, padding=padding),
+        path=path,
+        message="{} || {}",
+        ignore_case=False,
+    )
+
+    text = " ".join(items.keys())
+    check_type = types.PreferredFormsSimple(items=items, padding=padding)
+    results = list(check_type.check(text, check))
+
+    assert all(result.replacements in items.values() for result in results)
+
+
+@given(PREFERRED_ITEMS_CASED_STRATEGY, PADDING_STRATEGY, st.text())
+def test_preferred_s_case_insensitive(
     items: dict[str, str], padding: Padding, path: str
 ) -> None:
     """Return correct matches when ignore_case=True with case variations."""
+    normalised = {k.lower(): v for k, v in items.items()}
     check = Check(
         check_type=types.PreferredFormsSimple(items=items, padding=padding),
         path=path,
@@ -181,10 +223,9 @@ def test_preferred_s_ignore_case_lower(
         for i, k in enumerate(items.keys())
     )
 
-    check_type = types.PreferredFormsSimple(items=items, padding=padding)
+    check_type = types.PreferredFormsSimple(items=normalised, padding=padding)
     results = list(check_type.check(text, check))
-
-    assert all(result.replacements in items.values() for result in results)
+    assert all(result.replacements in normalised.values() for result in results)
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
