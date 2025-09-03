@@ -24,10 +24,10 @@ check = Check(
             # Proper nouns
             "hallowe'en": "Halloween",
             "haloween": "Halloween",
-            "Khruschev": "Khrushchev",
-            "Klu Klux Klan": "Ku Klux Klan",
-            "Kruschev": "Khrushchev",
-            "Pontius Pilot": "Pontius Pilate",
+            "khruschev": "Khrushchev",
+            "klu klux klan": "Ku Klux Klan",
+            "kruschev": "Khrushchev",
+            "pontius pilot": "Pontius Pilate",
             # Plurals
             "hippopotami": "hippopotamuses",
             "longstanding": "long-standing",
@@ -51,10 +51,10 @@ check = Check(
             "transhipping": "transshipping",
             # Misc
             "mental attitude": "attitude",
-            "Chief Justice of the United States Supreme Court": (
+            "chief justice of the united states supreme court": (
                 "Chief Justice of the United States"
             ),
-            "Chief Justice of the Supreme Court of the United States": (
+            "chief justice of the supreme court of the united states": (
                 "Chief Justice of the United States"
             ),
             "chitlings": "chitterlings",
@@ -121,11 +121,11 @@ check = Check(
             "in the meanwhile": "in the meantime",
             "lengthy distances": "long distances",
             "maddening crowd": "madding crowd",
-            "Magna Charta": "Magna Carta",
+            "magna charta": "Magna Carta",
             "mariage de convenance": "marriage of convenience",
-            "Meantime,": "Meanwhile,",
-            "Middle West": "Midwest",
-            "Middle Western": "Midwestern",
+            "meantime,": "Meanwhile,",
+            "middle west": "Midwest",
+            "middle western": "Midwestern",
             "modes of operandi": "modi operandi",
             "mode of operandi": "modus operandi",
             "notion seconded": "motion seconded",
@@ -143,8 +143,8 @@ check = Check(
             "both of the last": "the last two",
             "inorganic food": "unorganic food",
             "veil of tears": "vale of tears",
-            "Venus's flytrap": "Venus flytrap",
-            "Venus' flytrap": "Venus flytrap",
+            "venus's flytrap": "Venus flytrap",
+            "venus' flytrap": "Venus flytrap",
             "was accused with": "was accused of",
             # Verbosity
             "make an attempt to": "try to",
@@ -174,7 +174,6 @@ check = Check(
     ),
     path="misc.preferred_forms",
     message="'{}' is the preferred form.",
-    ignore_case=False,
 )
 
 __register__ = (check,)

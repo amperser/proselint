@@ -97,7 +97,6 @@ checks_after_the_deadline = tuple(
         ),
         path="redundancy.misc.after_the_deadline",
         message="Redundancy. Use '{}' instead of '{}'.",
-        ignore_case=False,
     )
     for lines in batched(AFTER_THE_DEADLINE_RAW, BATCH_COUNT)
 )

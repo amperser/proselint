@@ -24,14 +24,13 @@ check = Check(
             "attorney and not a republic": "attorney and notary public",
             "beckon call": "beck and call",
             "for all intensive purposes": "for all intents and purposes",
-            "Lady Mondegreen": "laid him on the green",
-            "Olive, the other reindeer": "all of the other reindeer",
+            "lady mondegreen": "laid him on the green",
+            "olive, the other reindeer": "all of the other reindeer",
             "to the manor born": "to the manner born",
         }
     ),
     path="mondegreens",
     message="'{}' is the preferred form.",
-    ignore_case=False,
-)
+    )
 
 __register__ = (check,)

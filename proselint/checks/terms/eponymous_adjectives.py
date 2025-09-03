@@ -19,13 +19,12 @@ from proselint.registry.checks import Check, types
 check = Check(
     check_type=types.PreferredFormsSimple(
         items={
-            "Mephistophelian": "Mephistophelean",
-            "Shakespearian": "Shakespearean",
+            "mephistophelian": "Mephistophelean",
+            "shakespearian": "Shakespearean",
         }
     ),
     path="terms.eponymous_adjectives",
     message="'{}' is the preferred eponymous adjective.",
-    ignore_case=False,
 )
 
 __register__ = (check,)

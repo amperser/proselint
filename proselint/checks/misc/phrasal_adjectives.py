@@ -37,8 +37,8 @@ check = Check(
             "criminal law professor": "criminal-law professor",
             "cut and dried issue": "cut-and-dried issue",
             "downward sloping line": "downward-sloping line",
-            "English language learners": "English-language learners",
-            "English speaking people": "English-speaking people",
+            "english language learners": "English-language learners",
+            "english speaking people": "English-speaking people",
             "even numbered": "even-numbered",
             "fact to face meeting": "face-to-face meeting",
             "fixed rate mortgage": "fixed-rate mortgage",
@@ -54,8 +54,8 @@ check = Check(
             "heath care coverage": "health-care coverage",
             "high school student": "high-school student",
             "hit and run statute": "hit-and-run statute",
-            "HIV negative person": "HIV-negative person",
-            "HIV positive person": "HIV-positive person",
+            "hiv negative person": "HIV-negative person",
+            "hiv positive person": "HIV-positive person",
             "information technology personnel": (
                 "information-technology personnel"
             ),
@@ -117,7 +117,7 @@ check = Check(
             "wire transfer service": "wire-transfer service",
             "yes or no question": "yes-or-no question",
             "zero sum game": "zero-sum game",
-            r"U\.S\. led campaign": r"U\.S\.-led campaign",
+            r"u\.s\. led campaign": r"U\.S\.-led campaign",
             # Harmony
             "three part harmony": "three-part harmony",
             "four part harmony": "four-part harmony",
@@ -136,7 +136,6 @@ check = Check(
     ),
     path="misc.phrasal_adjectives.examples",
     message="""Hyphenate '{1}', a phrasal adjective, as '{0}'.""",
-    ignore_case=False,
 )
 
 __register__ = (check_ly, check)
