@@ -14,13 +14,12 @@ Never use the phrase 'all hell broke loose'.
 
 """
 
-from proselint.registry.checks import Check, CheckFlags, types
+from proselint.registry.checks import Check, types
 
 check = Check(
     check_type=types.ExistenceSimple(pattern="all hell broke loose"),
     path="cliches.hell",
     message="Never use the phrase 'all hell broke loose'.",
-    flags=CheckFlags(results_limit=1),
 )
 
 __register__ = (check,)

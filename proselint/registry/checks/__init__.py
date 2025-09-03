@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from itertools import chain, islice
+from itertools import islice
 from math import ceil
 from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, Optional
@@ -81,44 +81,12 @@ class CheckFlags(NamedTuple):
     Carry applicable check flag settings.
 
     Currently, this supports:
-    - `results_limit`: The maximum number of results to output.
     - `ppm_threshold`: A threshold check comparing the number of results
     against the text length.
     """
 
-    # TODO: it would be more efficient if these could interrupt instead of
-    # postprocessing - that is, halt searching if limits are surpassed instead
-    # of truncating / alerting if conditions are met after the fact. This may
-    # be achieved via iterators instead of working with final lists.
-    results_limit: int = 0
     ppm_threshold: int = 0
     allow_quotes: bool = False
-
-    @staticmethod
-    def truncate(
-        results: Iterator[CheckResult], limit: int
-    ) -> Iterator[CheckResult]:
-        """
-        Truncate a list of results to a given threshold.
-
-        This also notes how many times the check flagged prior to truncation.
-        """
-        if limit == 0:
-            return results
-
-        return chain(
-            islice(results, limit - 1),
-            (
-                CheckResult(
-                    start_pos=result.start_pos,
-                    end_pos=result.end_pos,
-                    check_path=result.check_path,
-                    message=f"{result.message} Also found elsewhere.",
-                    replacements=result.replacements,
-                )
-                for result in islice(results, 1)
-            ),
-        )
 
     @staticmethod
     def apply_threshold(
@@ -144,10 +112,7 @@ class CheckFlags(NamedTuple):
         self, results: Iterator[CheckResult], text_len: int
     ) -> Iterator[CheckResult]:
         """Apply the specified flags to an iterator of `results`."""
-        return CheckFlags.truncate(
-            CheckFlags.apply_threshold(results, self.ppm_threshold, text_len),
-            self.results_limit,
-        )
+        return CheckFlags.apply_threshold(results, self.ppm_threshold, text_len)
 
 
 class Check(NamedTuple):

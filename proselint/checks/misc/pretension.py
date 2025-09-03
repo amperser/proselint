@@ -14,7 +14,7 @@ Pretension.
 
 """
 
-from proselint.registry.checks import Check, CheckFlags, types
+from proselint.registry.checks import Check, types
 
 check = Check(
     check_type=types.Existence(
@@ -27,7 +27,6 @@ check = Check(
     ),
     path="misc.pretension",
     message="Jargon words like '{}' are the hallmarks of a pretentious ass.",
-    flags=CheckFlags(results_limit=1),
 )
 
 __register__ = (check,)
