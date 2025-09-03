@@ -6,6 +6,7 @@
 			url = "github:cachix/git-hooks.nix";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+
 		pyproject = {
 			url = "github:pyproject-nix/pyproject.nix";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -43,7 +44,7 @@
 					python = pkgs."python${getPythonVersion}";
 					arg =
 						project.renderers.withPackages {
-							inherit python;
+							inherit python project;
 							groups = ["test"];
 						};
 
@@ -66,9 +67,10 @@
 		packages =
 			forAllSystems (system: pkgs: let
 					python = pkgs."python${getPythonVersion}";
-					attrs = project.renderers.buildPythonPackage {inherit python;};
-				in {
+					attrs = project.renderers.buildPythonPackage {inherit python project;};
+				in rec {
 					default = python.pkgs.buildPythonPackage attrs;
+					wheel = default.dist;
 				});
 
 		apps =
