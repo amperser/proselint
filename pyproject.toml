@@ -1,6 +1,7 @@
 [project]
 name = "proselint"
 description = "A linter for prose."
+version = "0.14.0"
 license = {file = "LICENSE.md"}
 authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
 readme = "README.md"
@@ -14,7 +15,6 @@ classifiers = [
 	"Programming language :: Python :: 3.13",
 	"License :: OSI Approved :: BSD License",
 ]
-dynamic = ["version"]
 requires-python = ">=3.9"
 dependencies = []
 
@@ -27,8 +27,8 @@ Issues = "https://github.com/amperser/proselint/issues"
 proselint = "proselint.command_line:main"
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.7.22,<0.8.0"]
+build-backend = "uv_build"
 
 [tool.poe.tasks]
 test = "pytest"
@@ -44,9 +44,7 @@ test = [
 	"rstr>=3.2.2",
 ]
 dev = [
-	"bumpversion>=0.5.3",
 	"ruff>=0.1.14",
-	"hatchling>=1.27.0",
 	"poethepoet>=0.34.0",
 ]
 web = [
@@ -62,8 +60,7 @@ web = [
 	"rq>=0.12.0",
 ]
 
-[tool.setuptools]
-packages = ["proselint"]
-
-[tool.setuptools.dynamic]
-version = { attr = "proselint.version.__version__" }
+[tool.uv.build-backend]
+module-name = "proselint"
+module-root = ""
+source-include = ["tests/**"]

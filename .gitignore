@@ -19,3 +19,5 @@ dist/
 *.pstore
 .pre-commit-config.yaml
 .hypothesis
+.direnv/
+.envrc

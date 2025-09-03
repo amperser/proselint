@@ -2,7 +2,7 @@ name: "CI: Synchronize Labels"
 on:
   push:
     branches:
-      - "master"
+      - "main"
     paths:
       - ".github/labels.yml"
       - ".github/workflows/ci-label.yml"
@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
       - name: "[EXEC] Synchronize labels"
-        uses: crazy-max/ghaction-github-labeler@v3
+        uses: crazy-max/ghaction-github-labeler@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
