@@ -105,7 +105,7 @@ def test_consistency_both_in_text(
 # PreferredForms
 PREFERRED_ITEMS_STRATEGY: st.SearchStrategy[dict[str, str]] = st.builds(  # pyright: ignore[reportUnknownVariableType]
     dict,
-    CASED_STRATEGIES.term_pairs,
+    LOWER_STRATEGIES.term_pairs,
 )
 
 PREFERRED_ITEMS_CASED_STRATEGY: st.SearchStrategy[dict[str, str]] = st.builds(  # pyright: ignore[reportUnknownVariableType]
