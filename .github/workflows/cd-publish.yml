@@ -58,37 +58,37 @@ jobs:
             *.tar.gz
           if-no-files-found: error
 
-    github-release:
-      name: Create Github Release
-      runs-on: ubuntu-latest
-      needs: [build]
-      permissions:
-        contents: write
-      steps:
-        - name: "[INIT] Checkout repository"
-          uses: actions/checkout@v5
+  github-release:
+    name: Create Github Release
+    runs-on: ubuntu-latest
+    needs: [build]
+    permissions:
+      contents: write
+    steps:
+      - name: "[INIT] Checkout repository"
+        uses: actions/checkout@v5
 
-        - name: "[DOWNLOAD] Get built artifacts"
-          uses: actions/download-artifact@v4
-          with:
-            name: dist-artifacts
-            path: dist/
+      - name: "[DOWNLOAD] Get built artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist/
 
-        - name: "[EXTRACT] Get tag version"
-          id: version
-          run: |
-            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - name: "[EXTRACT] Get tag version"
+        id: version
+        run: |
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-        - name: "[RELEASE] Create GitHub release"
-          uses: softprops/action-gh-release@v2
-          with:
-            tag_name: ${{ steps.version.outputs.tag }}
-            name: Release ${{ steps.version.outputs.tag }}
-            prerelease: ${{ contains(steps.version.outputs.version, 'alpha') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'rc') }}
-            draft: false
-            files: |
-              dist/*.whl
-              dist/*.tar.gz
+      - name: "[RELEASE] Create GitHub release"
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Release ${{ steps.version.outputs.tag }}
+          prerelease: ${{ contains(steps.version.outputs.version, 'alpha') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'rc') }}
+          draft: false
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
