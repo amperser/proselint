@@ -1,23 +1,36 @@
-*.egg-info
-*.pyc
-cached_func_calls/*
-profile_output
-site/write/*
-tests/corpus/newyorker/*
-cache/*
-proselint/cache/*
-build/*
-*.egg
-*.rdb
-.coverage
-coverage.lcov
-proselint/proselint_develop.sublime-project
-proselint/proselint_develop.sublime-workspace
-corpora/*
-!corpora/README.md
-dist/
-*.pstore
-.pre-commit-config.yaml
-.hypothesis
+# Nix
 .direnv/
 .envrc
+.result/
+.pre-commit-config.yaml
+
+# Python
+*.egg
+*.egg-info
+*.pyc
+*.pstore
+*.rdb
+__pycache__/
+build/
+dist/
+cache/
+proselint/cache/
+cached_func_calls/*
+
+# Coverage
+.coverage
+coverage.lcov
+profile_output
+
+# Tests
+.hypothesis/
+tests/corpus/newyorker/*
+
+# Corpora
+corpora/*
+!corpora/README.md
+
+# Editor
+proselint/proselint_develop.sublime-workspace
+.proselint/proselint_develop.sublime-project
+.site/write/*
