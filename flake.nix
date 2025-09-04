@@ -79,29 +79,56 @@
 					pkgs,
 					system,
 					python,
+					pythonSet,
 					...
 				}: let
 					check = self.checks.${system}.pre-commit-check;
 				in {
-					# note: impure, editable overlays in uv2nix are unstable
-					default =
-						pkgs.mkShell {
-							packages = check.enabledPackages ++ [python pkgs.uv];
-							env =
-								{
-									UV_PYTHON_DOWNLOADS = "never";
-									UV_PYTHON = python.interpreter;
-								}
-								// lib.optionalAttrs pkgs.stdenv.isLinux {
-									LD_LIBRARY_PATH = lib.makeLibraryPath pkgs.pythonManylinuxPackages.manylinux1;
-								};
-						};
+					pure = let
+						editableOverlay =
+							workspace.mkEditablePyprojectOverlay {
+								root = "$REPO_ROOT";
+							};
 
-					shellHook =
-						''
-							unset PYTHONPATH
-						''
-						++ check.shellHook;
+						editablePythonSet =
+							pythonSet.overrideScope (
+								lib.composeManyExtensions [
+									editableOverlay
+
+									(final: prev: {
+											proselint =
+												prev.proselint.overrideAttrs (old: {
+														nativeBuildInputs =
+															old.nativeBuildInputs
+															++ final.resolveBuildSystem {
+																editables = [];
+															};
+													});
+										})
+								]
+							);
+
+						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" workspace.deps.all;
+					in
+						pkgs.mkShell {
+							packages = [
+								virtualenv
+								pkgs.uv
+							];
+
+							env = {
+								UV_NO_SYNC = "1";
+								UV_PYTHON = python.interpreter;
+								UV_PYTHON_DOWNLOADS = "never";
+							};
+
+							shellHook =
+								''
+									unset PYTHONPATH
+									export REPO_ROOT=$(git rev-parse --show-toplevel)
+								''
+								++ check.shellHook;
+						};
 				});
 
 		packages =
