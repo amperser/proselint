@@ -81,7 +81,9 @@ jobs:
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: "[RELEASE] Create GitHub release"
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2        
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: Release ${{ steps.version.outputs.tag }}
@@ -90,5 +92,3 @@ jobs:
           files: |
             dist/*.whl
             dist/*.tar.gz
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
