@@ -34,12 +34,12 @@ jobs:
 
       - name: "[BUILD] Build wheel"
         run: |
-          nix build .#wheel
+          nix build -L .#wheel
           cp result/*.whl ./
 
       - name: "[BUILD] Build sdist"
         run: |
-          nix build .#sdist
+          nix build -L .#sdist
           cp result/*.tar.gz ./
 
       - name: "[VERIFY] List built artifacts"
