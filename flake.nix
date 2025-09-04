@@ -84,7 +84,7 @@
 				}: let
 					check = self.checks.${system}.pre-commit-check;
 				in {
-					pure = let
+					default = let
 						editableOverlay =
 							workspace.mkEditablePyprojectOverlay {
 								root = "$REPO_ROOT";
@@ -108,9 +108,11 @@
 								]
 							);
 
-						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" workspace.deps.all;
+						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev"];};
 					in
 						pkgs.mkShell {
+							buildInputs = check.enabledPackages;
+
 							packages = [
 								virtualenv
 								pkgs.uv
@@ -124,10 +126,10 @@
 
 							shellHook =
 								''
+									         export REPO_ROOT=$(git rev-parse --show-toplevel)
 									unset PYTHONPATH
-									export REPO_ROOT=$(git rev-parse --show-toplevel)
 								''
-								++ check.shellHook;
+								+ check.shellHook;
 						};
 				});
 
