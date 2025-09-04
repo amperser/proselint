@@ -29,7 +29,7 @@ jobs:
       - name: "[INIT] Setup Cachix"
         uses: cachix/cachix-action@v15
         with:
-          name: ${{ secrets.CACHIX_CACHE_NAME }}
+          name: proselint
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: "[BUILD] Build wheel"
