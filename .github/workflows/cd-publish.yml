@@ -1,0 +1,95 @@
+name: "CD: Build & Publish to PyPI, GitHub, and Cachix"
+
+# TODO: Notify
+# TODO: Generate summary
+# TODO: Publish to PyPI
+# TODO: Generate provenance/hashes
+
+on:
+  # TODO: Remove after finished; for testing purposes only
+  pull:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: "[INIT] Checkout repository"
+        uses: actions/checkout@v5
+
+      - name: "[INIT] Install Nix"
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "[INIT] Setup Cachix"
+        uses: cachix/cachix-action@v15
+        with:
+          name: ${{ secrets.CACHIX_CACHE_NAME }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          pushFilter: "(-source$|nixpkgs\.tar\.xz$)"
+
+      - name: "[BUILD] Build wheel"
+        run: |
+          nix build .#wheel
+          cp result/*.whl ./
+
+      - name: "[BUILD] Build sdist"
+        run: |
+          nix build .#sdist
+          cp result/*.tar.gz ./
+
+      - name: "[VERIFY] List built artifacts"
+        run: |
+          ls -la *.whl *.tar.gz
+          echo "Built artifacts:"
+          echo "- $(ls *.whl)"
+          echo "- $(ls *.tar.gz)"
+
+      - name: "[UPLOAD] Store built artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: |
+            *.whl
+            *.tar.gz
+          if-no-files-found: error
+
+    github-release:
+      name: Create Github Release
+      runs-on: ubuntu-latest
+      needs: [build]
+      permissions:
+        contents: write
+      steps:
+        - name: "[INIT] Checkout repository"
+          uses: actions/checkout@v5
+
+        - name: "[DOWNLOAD] Get built artifacts"
+          uses: actions/download-artifact@v4
+          with:
+            name: dist-artifacts
+            path: dist/
+
+        - name: "[EXTRACT] Get tag version"
+          id: version
+          run: |
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+        - name: "[RELEASE] Create GitHub release"
+          uses: softprops/action-gh-release@v2
+          with:
+            tag_name: ${{ steps.version.outputs.tag }}
+            name: Release ${{ steps.version.outputs.tag }}
+            prerelease: ${{ contains(steps.version.outputs.version, 'alpha') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'rc') }}
+            draft: false
+            files: |
+              dist/*.whl
+              dist/*.tar.gz
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
