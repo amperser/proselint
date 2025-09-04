@@ -7,6 +7,7 @@ jobs:
     name: Lint
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
     runs-on: ubuntu-latest
+
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
@@ -39,7 +40,7 @@ jobs:
 
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "[INIT] Install Nix (Unix)"
         if: runner.os != 'Windows'
@@ -49,8 +50,8 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "[INIT] Setup Cachix (Unix)"
-        uses: cachix/cachix-action@v15
         if: runner.os != 'Windows'
+        uses: cachix/cachix-action@v15
         with:
           name: proselint
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
