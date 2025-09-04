@@ -1,10 +1,26 @@
-# TODO: use uv2nix
 {
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 		hooks = {
 			url = "github:cachix/git-hooks.nix";
 			inputs.nixpkgs.follows = "nixpkgs";
+		};
+
+		uv = {
+			url = "github:pyproject-nix/uv2nix";
+			inputs = {
+				nixpkgs.follows = "nixpkgs";
+				pyproject-nix.follows = "pyproject";
+			};
+		};
+
+		build-systems = {
+			url = "github:pyproject-nix/build-system-pkgs";
+			inputs = {
+				uv2nix.follows = "uv";
+				nixpkgs.follows = "nixpkgs";
+				pyproject-nix.follows = "pyproject";
+			};
 		};
 
 		pyproject = {
@@ -14,19 +30,15 @@
 	};
 
 	outputs = {
+		uv,
 		self,
 		hooks,
 		nixpkgs,
 		pyproject,
+		build-systems,
 		...
 	}: let
-		forAllSystems = function:
-			nixpkgs.lib.genAttrs [
-				"x86_64-linux"
-				"aarch64-linux"
-				"x86_64-darwin"
-				"aarch64-darwin"
-			] (system: function system nixpkgs.legacyPackages.${system});
+		inherit (nixpkgs) lib;
 
 		getPythonVersion = let
 			val = builtins.getEnv "PYTHON_VERSION";
@@ -37,44 +49,80 @@
 		in
 			builtins.replaceStrings ["."] [""] result;
 
-		project = pyproject.lib.project.loadPyproject {projectRoot = ./.;};
+		workspace = uv.lib.workspace.loadWorkspace {workspaceRoot = ./.;};
+		overlay = workspace.mkPyprojectOverlay {sourcePreference = "wheel";};
+
+		forAllSystems = f:
+			lib.genAttrs [
+				"x86_64-linux"
+				"aarch64-linux"
+				"x86_64-darwin"
+				"aarch64-darwin"
+			] (system:
+					f rec {
+						inherit system;
+
+						pkgs = nixpkgs.legacyPackages.${system};
+						python = pkgs."python${getPythonVersion}";
+
+						pythonSet =
+							(pkgs.callPackage pyproject.build.packages {inherit python;}).overrideScope (
+								lib.composeManyExtensions [
+									build-systems.overlays.default
+									overlay
+								]
+							);
+					});
 	in {
 		devShells =
-			forAllSystems (system: pkgs: let
-					python = pkgs."python${getPythonVersion}";
-					arg =
-						project.renderers.withPackages {
-							inherit python project;
-							groups = ["test"];
-						};
-
-					pyenv = python.withPackages arg;
+			forAllSystems ({
+					pkgs,
+					system,
+					python,
+					...
+				}: let
 					check = self.checks.${system}.pre-commit-check;
 				in {
+					# note: impure, editable overlays in uv2nix are unstable
 					default =
 						pkgs.mkShell {
-							inherit (check) shellHook;
-
-							packages =
-								check.enabledPackages
-								++ [
-									pyenv
-									pkgs.uv
-								];
+							packages = check.enabledPackages ++ [python pkgs.uv];
+							env =
+								{
+									UV_PYTHON_DOWNLOADS = "never";
+									UV_PYTHON = python.interpreter;
+								}
+								// lib.optionalAttrs pkgs.stdenv.isLinux {
+									LD_LIBRARY_PATH = lib.makeLibraryPath pkgs.pythonManylinuxPackages.manylinux1;
+								};
 						};
+
+					shellHook =
+						''
+							unset PYTHONPATH
+						''
+						++ check.shellHook;
 				});
 
 		packages =
-			forAllSystems (system: pkgs: let
-					python = pkgs."python${getPythonVersion}";
-					attrs = project.renderers.buildPythonPackage {inherit python project;};
-				in rec {
-					default = python.pkgs.buildPythonPackage attrs;
-					wheel = default.dist;
+			forAllSystems ({pythonSet, ...}: {
+					default = pythonSet.mkVirtualEnv "proselint-env" workspace.deps.default;
+
+					wheel =
+						pythonSet.proselint.override {
+							pyprojectHook = pythonSet.pyprojectDistHook;
+						};
+
+					sdist =
+						(pythonSet.proselint.override {
+								pyprojectHook = pythonSet.pyprojectDistHook;
+							}).overrideAttrs (old: {
+								env.uvBuildType = "sdist";
+							});
 				});
 
 		apps =
-			forAllSystems (system: _: {
+			forAllSystems ({system, ...}: {
 					default = {
 						type = "app";
 						program = "${self.packages.${system}.default}/bin/proselint";
@@ -82,7 +130,11 @@
 				});
 
 		checks =
-			forAllSystems (system: pkgs: {
+			forAllSystems ({
+					system,
+					pkgs,
+					...
+				}: {
 					pre-commit-check =
 						hooks.lib.${system}.run {
 							src = ./.;
