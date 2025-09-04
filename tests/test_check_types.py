@@ -203,6 +203,13 @@ def test_preferred_s_case_sensitive(
     results = list(check_type.check(text, check))
 
     assert all(result.replacements in items.values() for result in results)
+    for i, result in enumerate(results):
+        key = list(items.keys())[i]
+        expected_replacement = items[key]
+
+        assert result.check_path == path
+        assert result.message == f"{expected_replacement} || {key}"
+        assert result.replacements == expected_replacement
 
 
 @given(PREFERRED_ITEMS_CASED_STRATEGY, PADDING_STRATEGY, st.text())
@@ -226,6 +233,20 @@ def test_preferred_s_case_insensitive(
     check_type = types.PreferredFormsSimple(items=normalised, padding=padding)
     results = list(check_type.check(text, check))
     assert all(result.replacements in normalised.values() for result in results)
+
+    text_keys = [
+        k.swapcase() if i % 2 == 0 else k.upper()
+        for i, k in enumerate(items.keys())
+    ]
+
+    for i, result in enumerate(results):
+        original_key = list(items.keys())[i]
+        text_key = text_keys[i]
+        expected_replacement = normalised[original_key.lower()]
+
+        assert result.check_path == path
+        assert result.message == f"{expected_replacement} || {text_key}"
+        assert result.replacements == expected_replacement
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
