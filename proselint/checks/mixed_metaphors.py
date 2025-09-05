@@ -1,6 +1,6 @@
 """Mixed metaphors."""
 
-from proselint.registry.checks import Check, CheckFlags, types
+from proselint.registry.checks import Check, types
 
 """
 source:     Sir Ernest Gowers
@@ -20,7 +20,6 @@ check_bottleneck = Check(
     ),
     path="mixed_metaphors.bottleneck",
     message="Mixed metaphor — bottles with big necks are easy to pass through.",
-    flags=CheckFlags(results_limit=1),
 )
 
 """

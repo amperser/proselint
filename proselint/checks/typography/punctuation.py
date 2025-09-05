@@ -30,7 +30,6 @@ check_hyperbole = Check(
     check_type=types.ExistenceSimple(pattern=r"\w*(?:!|\?){2,}"),
     path="typography.punctuation.hyperbole",
     message="'{}' is hyperbolic.",
-    flags=CheckFlags(results_limit=1),
 )
 
 check_spacing = Check(
