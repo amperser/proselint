@@ -22,24 +22,24 @@ class _TermStrategies:
     term_pair: st.SearchStrategy[tuple[str, str]]
     term_pairs: st.SearchStrategy[list[tuple[str, str]]]
 
+    @staticmethod
+    def _not_substring(pair: tuple[str, str]) -> bool:
+        a, b = (s.lower() for s in pair)
+        return a not in b and b not in a
 
-def _not_substring(pair: tuple[str, str]) -> bool:
-    a, b = (s.lower() for s in pair)
-    return a not in b and b not in a
+    @classmethod
+    def from_alphabet(cls, alphabet: str) -> "_TermStrategies":
+        item: st.SearchStrategy[str] = st.text(min_size=1, alphabet=alphabet)
+        pair: st.SearchStrategy[tuple[str, str]] = st.tuples(item, item).filter(
+            cls._not_substring
+        )
+        pairs: st.SearchStrategy[list[tuple[str, str]]] = st.lists(
+            pair, min_size=1, max_size=BATCH_COUNT
+        ).filter(
+            lambda xs: all(map(cls._not_substring, combinations(chain(*xs), 2)))
+        )
 
-
-def _build_term_strategies(
-    alphabet: str,
-) -> _TermStrategies:
-    item: st.SearchStrategy[str] = st.text(min_size=1, alphabet=alphabet)
-    pair: st.SearchStrategy[tuple[str, str]] = st.tuples(item, item).filter(
-        _not_substring
-    )
-    pairs: st.SearchStrategy[list[tuple[str, str]]] = st.lists(
-        pair, min_size=1, max_size=BATCH_COUNT
-    ).filter(lambda xs: all(map(_not_substring, combinations(chain(*xs), 2))))
-
-    return _TermStrategies(item, pair, pairs)
+        return cls(item, pair, pairs)
 
 
 def n_counts(data: st.DataObject, n: int) -> list[int]:
@@ -47,13 +47,13 @@ def n_counts(data: st.DataObject, n: int) -> list[int]:
     return data.draw(st.lists(st.integers(1, 100), min_size=n, max_size=n))
 
 
-LOWER_STRATEGIES = _build_term_strategies(ascii_lowercase)
+LOWER_STRATEGIES = _TermStrategies.from_alphabet(ascii_lowercase)
 ITEM_TEXT_STRATEGY = LOWER_STRATEGIES.item_text
 TERM_PAIR_STRATEGY = LOWER_STRATEGIES.term_pair
 TERM_PAIRS_STRATEGY = LOWER_STRATEGIES.term_pairs
 
 
-CASED_STRATEGIES = _build_term_strategies(ascii_letters)
+CASED_STRATEGIES = _TermStrategies.from_alphabet(ascii_letters)
 
 
 # Consistency
