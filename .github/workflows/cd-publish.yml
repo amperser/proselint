@@ -67,6 +67,8 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: "[DOWNLOAD] Get built artifacts"
         uses: actions/download-artifact@v4
@@ -80,6 +82,25 @@ jobs:
           echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
+      - name: "[CHANGELOG] Generate changelog"
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: "[CHANGELOG] Commit changelog"
+        run: |
+          git checkout main
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          set +email
+          git add CHANGELOG.md
+          git commit -m 'chore(release): update changelog for ${{ steps.version.outputs.tag }}'
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ GITHUB_REPOSITORY }}.git <branch>
+
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
         env:
@@ -89,6 +110,7 @@ jobs:
           name: Release ${{ steps.version.outputs.tag }}
           prerelease: ${{ contains(steps.version.outputs.version, 'alpha') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'rc') }}
           draft: false
+          body_path: CHANGELOG.md
           files: |
             dist/*.whl
             dist/*.tar.gz
