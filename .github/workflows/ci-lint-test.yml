@@ -78,8 +78,6 @@ jobs:
         run: nix develop --command uv run poe test-cover
         env:
           PYTHON_VERSION: ${{ matrix.python }}
-          LC_ALL: C.UTF-8
-          LANG: C.UTF-8
 
       - name: "[EXEC] Upload coverage to Codecov"
         uses: codecov/codecov-action@v5
