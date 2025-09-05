@@ -1,7 +1,6 @@
 name: "CD: Build & Publish to PyPI, GitHub, and Cachix"
 
 # TODO: Notify
-# TODO: Generate summary
 # TODO: Publish to PyPI
 # TODO: Generate provenance/hashes
 
@@ -75,6 +74,8 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: "[DOWNLOAD] Get built artifacts"
         uses: actions/download-artifact@v4
