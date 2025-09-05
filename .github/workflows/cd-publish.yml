@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5rser/proselint/pull/1416
 
       - name: "[INIT] Install Nix"
         uses: cachix/install-nix-action@v31
@@ -99,7 +99,7 @@ jobs:
           set +email
           git add CHANGELOG.md
           git commit -m 'chore(release): update changelog for ${{ steps.version.outputs.tag }}'
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ GITHUB_REPO }}.git <branch>
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git <branch>
 
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
