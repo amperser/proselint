@@ -126,7 +126,7 @@
 
 							shellHook =
 								''
-									         export REPO_ROOT=$(git rev-parse --show-toplevel)
+									export REPO_ROOT=$(git rev-parse --show-toplevel)
 									unset PYTHONPATH
 								''
 								+ check.shellHook;
