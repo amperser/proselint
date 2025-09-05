@@ -3,7 +3,7 @@
 
 from bisect import bisect_right
 from dataclasses import dataclass
-from itertools import accumulate, chain, combinations, repeat, starmap
+from itertools import accumulate, chain, combinations, repeat
 from re import escape
 from string import ascii_letters, ascii_lowercase
 
@@ -23,8 +23,8 @@ class _TermStrategies:
     term_pairs: st.SearchStrategy[list[tuple[str, str]]]
 
 
-def _not_substring(a: str, b: str) -> bool:
-    a, b = a.lower(), b.lower()
+def _not_substring(pair: tuple[str, str]) -> bool:
+    a, b = (s.lower() for s in pair)
     return a not in b and b not in a
 
 
@@ -33,15 +33,11 @@ def _build_term_strategies(
 ) -> _TermStrategies:
     item: st.SearchStrategy[str] = st.text(min_size=1, alphabet=alphabet)
     pair: st.SearchStrategy[tuple[str, str]] = st.tuples(item, item).filter(
-        lambda x: _not_substring(*x)
+        _not_substring
     )
     pairs: st.SearchStrategy[list[tuple[str, str]]] = st.lists(
         pair, min_size=1, max_size=BATCH_COUNT
-    ).filter(
-        lambda xs: all(
-            starmap(_not_substring, combinations(chain(*xs), 2))
-        )
-    )
+    ).filter(lambda xs: all(map(_not_substring, combinations(chain(*xs), 2))))
 
     return _TermStrategies(item, pair, pairs)
 
