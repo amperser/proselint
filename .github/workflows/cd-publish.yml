@@ -99,7 +99,7 @@ jobs:
           set +email
           git add CHANGELOG.md
           git commit -m 'chore(release): update changelog for ${{ steps.version.outputs.tag }}'
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ GITHUB_REPOSITORY }}.git <branch>
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ GITHUB_REPO }}.git <branch>
 
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
