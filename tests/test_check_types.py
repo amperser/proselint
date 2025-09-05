@@ -202,14 +202,10 @@ def test_preferred_s_case_sensitive(
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
     results = list(check_type.check(text, check))
 
-    assert all(result.replacements in items.values() for result in results)
-    for i, result in enumerate(results):
-        key = list(items.keys())[i]
-        expected_replacement = items[key]
-
+    for result, (original, replacement) in zip(results, items.items()):
         assert result.check_path == path
-        assert result.message == f"{expected_replacement} || {key}"
-        assert result.replacements == expected_replacement
+        assert result.message == f"{replacement} || {original}"
+        assert result.replacements == replacement
 
 
 @given(PREFERRED_ITEMS_CASED_STRATEGY, PADDING_STRATEGY, st.text())
@@ -218,35 +214,28 @@ def test_preferred_s_case_insensitive(
 ) -> None:
     """Return correct matches when ignore_case=True with case variations."""
     normalised = {k.lower(): v for k, v in items.items()}
+
+    check_type = types.PreferredFormsSimple(items=normalised, padding=padding)
     check = Check(
-        check_type=types.PreferredFormsSimple(items=items, padding=padding),
+        check_type=check_type,
         path=path,
         message="{} || {}",
         ignore_case=True,
     )
 
-    text = "  ".join(
-        k.swapcase() if i % 2 == 0 else k.upper()
-        for i, k in enumerate(items.keys())
-    )
-
-    check_type = types.PreferredFormsSimple(items=normalised, padding=padding)
-    results = list(check_type.check(text, check))
-    assert all(result.replacements in normalised.values() for result in results)
-
-    text_keys = [
+    text_variations = [
         k.swapcase() if i % 2 == 0 else k.upper()
         for i, k in enumerate(items.keys())
     ]
 
-    for i, result in enumerate(results):
-        original_key = list(items.keys())[i]
-        text_key = text_keys[i]
-        expected_replacement = normalised[original_key.lower()]
+    results = list(check_type.check(" ".join(text_variations), check))
+
+    for result, text in zip(results, text_variations):
+        replacements = normalised[text.lower()]
 
         assert result.check_path == path
-        assert result.message == f"{expected_replacement} || {text_key}"
-        assert result.replacements == expected_replacement
+        assert result.message == f"{replacements} || {text}"
+        assert result.replacements == replacements
 
 
 @given(PREFERRED_ITEMS_STRATEGY, PADDING_STRATEGY, st.text(), st.data())
