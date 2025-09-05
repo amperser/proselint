@@ -91,12 +91,16 @@ jobs:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
+      - name: "[CHANGELOG] Generate changelog"
+        run: |
+          nix develop --command git-cliff -c cliff.toml -o CHANGELOG.md --verbose
+
       - name: "[CHANGELOG] Commit changelog"
         run: |
           git checkout main
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          set +email
+          set +e
           git add CHANGELOG.md
           git commit -m 'chore(release): update changelog for ${{ steps.version.outputs.tag }}'
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git <branch>

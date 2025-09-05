@@ -115,6 +115,8 @@
 
 							packages = [
 								virtualenv
+								pkgs.git-cliff
+								pkgs.typos
 								pkgs.uv
 							];
 
