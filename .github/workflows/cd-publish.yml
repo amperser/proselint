@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: "[INIT] Install Nix"
         uses: cachix/install-nix-action@v31
@@ -42,10 +44,15 @@ jobs:
           nix build -L .#sdist
           cp result/*.tar.gz ./
 
+      - name: "[CHANGELOG] Generate changelog"
+        run: |
+          nix develop --command git-cliff -c cliff.toml -o CHANGELOG.md --verbose
+
       - name: "[VERIFY] List built artifacts"
         run: |
           ls -la *.whl *.tar.gz
           echo "Built artifacts:"
+          echo "- CHANGELOG.md"
           echo "- $(ls *.whl)"
           echo "- $(ls *.tar.gz)"
 
@@ -56,6 +63,7 @@ jobs:
           path: |
             *.whl
             *.tar.gz
+            CHANGELOG.md
           if-no-files-found: error
 
   github-release:
@@ -67,8 +75,6 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - name: "[DOWNLOAD] Get built artifacts"
         uses: actions/download-artifact@v4
@@ -82,28 +88,16 @@ jobs:
           echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: "[CHANGELOG] Generate changelog"
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: --verbose
-        env:
-          OUTPUT: CHANGELOG.md
-          GITHUB_REPO: ${{ github.repository }}
-
-      - name: "[CHANGELOG] Generate changelog"
-        run: |
-          nix develop --command git-cliff -c cliff.toml -o CHANGELOG.md --verbose
-
       - name: "[CHANGELOG] Commit changelog"
         run: |
           git checkout main
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           set +e
+          mv ./dist/CHANGELOG.md ./CHANGELOG.md
           git add CHANGELOG.md
           git commit -m 'chore(release): update changelog for ${{ steps.version.outputs.tag }}'
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git <branch>
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
 
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
