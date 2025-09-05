@@ -14,7 +14,10 @@ Points out preferred forms.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, Padding, types
+
+CHECK_PATH = "misc.preferred_forms"
+CHECK_MESSAGE = "'{}' is the preferred form."
 
 check = Check(
     check_type=types.PreferredFormsSimple(
@@ -123,7 +126,6 @@ check = Check(
             "maddening crowd": "madding crowd",
             "magna charta": "Magna Carta",
             "mariage de convenance": "marriage of convenience",
-            "meantime,": "Meanwhile,",
             "middle west": "Midwest",
             "middle western": "Midwestern",
             "modes of operandi": "modi operandi",
@@ -176,4 +178,23 @@ check = Check(
     message="'{}' is the preferred form.",
 )
 
-__register__ = (check,)
+check_meantime_capital = Check(
+    check_type=types.PreferredForms(items={
+        r"\bMeantime,\B": "Meanwhile,",
+    }, padding=Padding.RAW),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    ignore_case=False,
+)
+
+check_meantime_clause = Check(
+    check_type=types.PreferredForms(items={
+        r"[;,] meantime,\B": "meanwhile,"
+    }, padding=Padding.RAW),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    ignore_case=False,
+    offset=(2, 0),
+)
+
+__register__ = (check, check_meantime_capital, check_meantime_clause)
