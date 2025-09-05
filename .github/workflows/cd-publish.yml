@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: "[INIT] Checkout repository"
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - name: "[INIT] Install Nix"
         uses: cachix/install-nix-action@v31
