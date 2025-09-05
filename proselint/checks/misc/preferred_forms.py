@@ -189,7 +189,7 @@ check_meantime_capital = Check(
 
 check_meantime_clause = Check(
     check_type=types.PreferredForms(items={
-        r"[;,] meantime,\B": "meanwhile,"
+        r"\b[;,] meantime,\B": "meanwhile,"
     }, padding=Padding.RAW),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
