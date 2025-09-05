@@ -17,10 +17,11 @@ Paragraphs should not start with certain bad words.
 from proselint.registry.checks import Check, types
 
 check = Check(
-    check_type=types.Existence(items=(r"(?:^|([\.\!\?]\s*))But",)),
+    check_type=types.ExistenceSimple(r"(?:\n\n|^\n)But"),
     path="misc.but",
     message="No paragraph should start with a 'But'.",
     ignore_case=False,
+    offset=(2, 0)
 )
 
 __register__ = (check,)
