@@ -5,11 +5,9 @@ name: "CD: Build & Publish to PyPI, GitHub, and Cachix"
 # TODO: Generate provenance/hashes
 
 on:
+  workflow_dispatch:
   # TODO: Remove after finished; for testing purposes only
   pull_request:
-  push:
-    tags:
-      - "v*.*.*"
 
 jobs:
   build:
