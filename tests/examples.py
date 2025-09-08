@@ -499,7 +499,11 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     (
         "weasel_words",
         ("The book was very interesting.",),
-        ("Smoke phrase with nothing flagged.",),
+        (
+            "Smoke phrase with nothing flagged.",
+            "Very well, Headmaster, thank you.",
+            "The discovery and development of new approaches."
+        ),
     ),
     (
         "restricted.elementary",
