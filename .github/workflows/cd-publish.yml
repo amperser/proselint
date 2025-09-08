@@ -20,9 +20,42 @@ on:
         type: boolean
 
 jobs:
+  version:
+    name: Bump Version & Tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "[INIT] Checkout"
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "[INIT] Git Config"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: "[VERSION] Bump & Commit"
+        run: |
+          nix develop --command uv version ${{ github.event.inputs.version }}
+          nix develop --command git-cliff -c cliff.toml \
+          --tag v${{ github.event.inputs.version }} \
+          -o CHANGELOG.md
+
+          git commit -am "chore: prepare release v${{ github.event.inputs.version }}" || echo "no changes to commit"
+
+      - name: "[GIT] Create tag"
+        run: |
+          git tag v${{ github.event.inputs.version }}
+          git push origin HEAD
+          git push origin v${{ github.event.inputs.version }}
+
   build:
     name: Build Artifacts
     runs-on: ubuntu-latest
+    needs: [version]
     steps:
       - name: "[INIT] Checkout"
         uses: actions/checkout@v5
@@ -51,11 +84,12 @@ jobs:
           nix build -L .#sdist
           cp result/*.tar.gz ./
 
-      - name: "[CHANGELOG] Generate unreleased changelog"
+      - name: "[CHANGELOG] Generate release notes"
         run: |
           nix develop --command git-cliff -c cliff.toml \
             --unreleased --verbose \
-            -o CHANGELOG.md
+            -o RELEASE_NOTES.md
+
 
       - name: "[UPLOAD] Artifacts"
         uses: actions/upload-artifact@v4
@@ -64,7 +98,7 @@ jobs:
           path: |
             *.whl
             *.tar.gz
-            CHANGELOG.md
+            RELEASE_NOTES.md
           if-no-files-found: error
 
   github-release:
@@ -98,7 +132,7 @@ jobs:
           name: Release ${{ steps.input.outputs.tag }}
           tag_name: ${{ steps.input.outputs.tag }}
           prerelease: ${{ steps.input.outputs.prerelease }}
-          body_path: CHANGELOG.md
+          body_path: dist/RELEASE_NOTES.md
           files: |
             dist/*.whl
             dist/*.tar.gz
