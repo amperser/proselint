@@ -92,16 +92,6 @@ jobs:
           echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
 
-      - name: "[CHANGELOG] Commit tagged changelog"
-        run: |
-          git checkout main
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          mv ./dist/CHANGELOG.md ./CHANGELOG.md
-          git add CHANGELOG.md
-          git commit -m "chore(release): update changelog for ${{ steps.input.outputs.tag }}" || echo "No changes"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
-
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
         with:
