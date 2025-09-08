@@ -49,6 +49,7 @@ jobs:
 
 
       - name: "[VERSION] Bump & Commit"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           nix develop --command uv version ${{ github.event.inputs.version }}
           nix develop --command git-cliff -c cliff.toml \
@@ -58,6 +59,7 @@ jobs:
           git commit -am "chore: prepare release v${{ github.event.inputs.version }}" || echo "no changes to commit"
 
       - name: "[GIT] Create tag"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git tag v${{ github.event.inputs.version }}
           git push origin HEAD --tags
@@ -138,6 +140,7 @@ jobs:
 
       - name: "[INPUT] Get input"
         id: input
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
@@ -145,6 +148,7 @@ jobs:
 
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         with:
           name: Release ${{ steps.input.outputs.tag }}
           tag_name: ${{ steps.input.outputs.tag }}
