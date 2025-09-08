@@ -37,6 +37,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: "[INIT] Install Nix"
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "[INIT] Setup Cachix"
+        uses: cachix/cachix-action@v15
+        with:
+          name: amperser
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+
       - name: "[VERSION] Bump & Commit"
         run: |
           nix develop --command uv version ${{ github.event.inputs.version }}
@@ -49,8 +62,7 @@ jobs:
       - name: "[GIT] Create tag"
         run: |
           git tag v${{ github.event.inputs.version }}
-          git push origin HEAD
-          git push origin v${{ github.event.inputs.version }}
+          git push origin HEAD --tags
 
   build:
     name: Build Artifacts
