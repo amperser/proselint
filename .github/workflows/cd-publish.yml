@@ -108,6 +108,7 @@ jobs:
             -o dist/RELEASE_NOTES.md
 
       - name: "[VERIFY] Provenance"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: actions/attest-build-provenance@v3
         with:
           subject-path: 'dist/*'
