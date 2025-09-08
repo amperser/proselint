@@ -15,10 +15,12 @@ Weasel words.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, Padding, types
 
 check_very = Check(
-    check_type=types.ExistenceSimple(pattern="very"),
+    check_type=types.ExistenceSimple(
+        pattern=Padding.WORDS_IN_TEXT.format(r"very(?! well)")
+    ),
     path="weasel_words.very",
     message=(
         "Substitute 'damn' every time you're inclined to write 'very'; your"
