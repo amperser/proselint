@@ -23,7 +23,7 @@ source_url: http://bit.ly/2en1zbv
 check = Check(
     check_type=types.PreferredFormsSimple(
         items={
-            "Virginia Polytechnic and State University": (
+            "virginia polytechnic and state university": (
                 "Virginia Polytechnic Institute and State University"
             ),
         }

@@ -314,8 +314,16 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "It was almost haloween.",
             "He is Chief Justice of the Supreme Court of the United States.",
+            "Meantime, I had tea.",
+            "In the meanwhile, something happened.",
+            "She went to bed; meantime, I had tea.",
         ),
-        ("Smoke phrase with nothing flagged.",),
+        (
+            "Smoke phrase with nothing flagged.",
+            "Meanwhile, I had tea.",
+            "In the meantime, something happened.",
+            "She went to bed; meanwhile, I had tea."
+        ),
     ),
     (
         "misc.pretension",
@@ -491,7 +499,11 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     (
         "weasel_words",
         ("The book was very interesting.",),
-        ("Smoke phrase with nothing flagged.",),
+        (
+            "Smoke phrase with nothing flagged.",
+            "Very well, Headmaster, thank you.",
+            "The discovery and development of new approaches."
+        ),
     ),
     (
         "restricted.elementary",

@@ -14,7 +14,10 @@ Points out preferred forms.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, Padding, types
+
+CHECK_PATH = "misc.preferred_forms"
+CHECK_MESSAGE = "'{}' is the preferred form."
 
 check = Check(
     check_type=types.PreferredFormsSimple(
@@ -22,40 +25,39 @@ check = Check(
             # Obsolete words
             "imprimature": "imprimatur",
             # Proper nouns
-            "haloween": "Halloween",
             "hallowe'en": "Halloween",
-            "Khruschev": "Khrushchev",
-            "Kruschev": "Khrushchev",
-            "Klu Klux Klan": "Ku Klux Klan",
-            "Pontius Pilot": "Pontius Pilate",
+            "haloween": "Halloween",
+            "khruschev": "Khrushchev",
+            "klu klux klan": "Ku Klux Klan",
+            "kruschev": "Khrushchev",
+            "pontius pilot": "Pontius Pilate",
             # Plurals
             "hippopotami": "hippopotamuses",
+            "longstanding": "long-standing",
             "manifesti": "manifestos",
             "matrixes": "matrices",
             "mongeese": "mongooses",
             "narcissuses": "narcissi",
+            "non-sequitur": "non sequitur",
             "retinae": "retinas",
-            "soprani": "sopranos",
-            "titmouses": "titmice",
-            # Hyphenated words
-            "longstanding": "long-standing",
             "sans-serif": "sans serif",
             "sanserif": "sans serif",
+            "soprani": "sopranos",
+            "titmouses": "titmice",
             "tort feasor": "tortfeasor",
             "tort-feasor": "tortfeasor",
-            "tranship": "transship",
             "trans-ship": "transship",
-            "transhipped": "transshiped",
             "trans-shipped": "transshipped",
-            "transhipping": "transshipping",
             "trans-shipping": "transshipping",
-            "non-sequitur": "non sequitur",
+            "tranship": "transship",
+            "transhipped": "transshiped",
+            "transhipping": "transshipping",
             # Misc
             "mental attitude": "attitude",
-            "Chief Justice of the United States Supreme Court": (
+            "chief justice of the united states supreme court": (
                 "Chief Justice of the United States"
             ),
-            "Chief Justice of the Supreme Court of the United States": (
+            "chief justice of the supreme court of the united states": (
                 "Chief Justice of the United States"
             ),
             "chitlings": "chitterlings",
@@ -122,11 +124,10 @@ check = Check(
             "in the meanwhile": "in the meantime",
             "lengthy distances": "long distances",
             "maddening crowd": "madding crowd",
-            "Magna Charta": "Magna Carta",
+            "magna charta": "Magna Carta",
             "mariage de convenance": "marriage of convenience",
-            "Meantime,": "Meanwhile,",
-            "Middle West": "Midwest",
-            "Middle Western": "Midwestern",
+            "middle west": "Midwest",
+            "middle western": "Midwestern",
             "modes of operandi": "modi operandi",
             "mode of operandi": "modus operandi",
             "notion seconded": "motion seconded",
@@ -144,8 +145,8 @@ check = Check(
             "both of the last": "the last two",
             "inorganic food": "unorganic food",
             "veil of tears": "vale of tears",
-            "Venus's flytrap": "Venus flytrap",
-            "Venus' flytrap": "Venus flytrap",
+            "venus's flytrap": "Venus flytrap",
+            "venus' flytrap": "Venus flytrap",
             "was accused with": "was accused of",
             # Verbosity
             "make an attempt to": "try to",
@@ -177,4 +178,23 @@ check = Check(
     message="'{}' is the preferred form.",
 )
 
-__register__ = (check,)
+check_meantime_capital = Check(
+    check_type=types.PreferredForms(items={
+        r"\bMeantime,\B": "Meanwhile,",
+    }, padding=Padding.RAW),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    ignore_case=False,
+)
+
+check_meantime_clause = Check(
+    check_type=types.PreferredForms(items={
+        r"\b[;,] meantime,\B": "meanwhile,"
+    }, padding=Padding.RAW),
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    ignore_case=False,
+    offset=(2, 0),
+)
+
+__register__ = (check, check_meantime_capital, check_meantime_clause)
