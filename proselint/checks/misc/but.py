@@ -19,10 +19,11 @@ from collections.abc import Iterator
 
 from proselint.registry.checks import Check, CheckResult
 
+PATTERN = re.compile(r"(^|^\n|\n\n)But\b")
+
 
 def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
-    pattern = r"(^|^\n|\n\n)But\b"
-    for m in re.finditer(pattern, text):
+    for m in re.finditer(PATTERN, text):
         count = m.group(0).count("\n", 0, 2)
         yield CheckResult(
             start_pos=m.start() + count + check.offset[0],
