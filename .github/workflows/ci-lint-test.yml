@@ -1,50 +1,82 @@
 name: "CI: Lint & Test"
+
 on: [push, pull_request]
+
 jobs:
   lint:
     name: Lint
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v4
-      - name: "[INIT] Install uv"
-        uses: astral-sh/setup-uv@v5
+        uses: actions/checkout@v5
+
+      - name: "[INIT] Install Nix"
+        uses: cachix/install-nix-action@v31
         with:
-          python-version: "3.10"
-          enable-cache: true
-      - name: "[INIT] Install dependencies"
-        run: uv sync --locked --all-extras --dev
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: "[INIT] Setup Cachix"
+        uses: cachix/cachix-action@v15
+        with:
+          name: amperser
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: "[EXEC] Lint"
-        run: uv run poe lint
+        run: nix develop --command ruff check proselint tests
+
   test-cover:
     name: Test & Cover
     if: "!(contains(github.event.head_commit.message, '[skip_ci]'))"
     runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
-    defaults:
-      run:
-        shell: bash
     strategy:
       matrix:
         python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
         os: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v4
-      - name: "[INIT] Install uv"
-        uses: astral-sh/setup-uv@v5
+        uses: actions/checkout@v5
+
+      - name: "[INIT] Install Nix (Unix)"
+        if: runner.os != 'Windows'
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: "[INIT] Setup Cachix (Unix)"
+        if: runner.os != 'Windows'
+        uses: cachix/cachix-action@v15
+        with:
+          name: amperser
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: "[INIT] Install uv (Windows)"
+        if: runner.os == 'Windows'
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
-      - name: "[INIT] Install dependencies"
+
+      - name: "[INIT] Install dependencies (Windows)"
+        if: runner.os == 'Windows'
         run: uv sync --locked --all-extras --dev --group test
-      - name: "[EXEC] Test"
+
+      - name: "[EXEC] Test & Coverage (Windows)"
+        if: runner.os == 'Windows'
         run: uv run poe test-cover
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+
+      - name: "[EXEC] Test & Coverage (Unix)"
+        if: runner.os != 'Windows'
+        run: nix develop --command uv run poe test-cover
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+
       - name: "[EXEC] Upload coverage to Codecov"
         uses: codecov/codecov-action@v5
         with:

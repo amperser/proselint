@@ -1,0 +1,162 @@
+name: "CD: Build & Publish"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        required: true
+        type: string
+      prerelease:
+        description: "Mark as prerelease"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  version:
+    name: Bump Version & Tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "[INIT] Checkout"
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: "[INIT] Git Config"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: "[INIT] Install Nix"
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: "[INIT] Setup Cachix"
+        uses: cachix/cachix-action@v15
+        with:
+          name: amperser
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+
+      - name: "[VERSION] Bump & Commit"
+        run: |
+          nix develop --command uv version ${{ github.event.inputs.version }}
+          nix develop --command git-cliff -c cliff.toml \
+          --tag v${{ github.event.inputs.version }} \
+          -o CHANGELOG.md
+
+          git commit -am "chore: prepare release v${{ github.event.inputs.version }}" || echo "no changes to commit"
+
+      - name: "[GIT] Create tag"
+        run: |
+          git tag v${{ github.event.inputs.version }}
+          git push origin HEAD --tags
+
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    needs: [version]
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: "[INIT] Checkout"
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: "[INIT] Install Nix"
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: "[INIT] Setup Cachix"
+        uses: cachix/cachix-action@v15
+        with:
+          name: amperser
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: "[BUILD] Wheel"
+        run: |
+          mkdir -p dist
+          nix build -L .#wheel
+          cp result/*.whl dist/
+
+
+      - name: "[BUILD] Source dist"
+        run: |
+          nix build -L .#sdist
+          cp result/*.tar.gz dist/
+
+      - name: "[CHANGELOG] Generate release notes"
+        run: |
+          nix develop --command git-cliff -c cliff.toml \
+            --unreleased --verbose \
+            -o dist/RELEASE_NOTES.md
+
+      - name: "[VERIFY] Provenance"
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'dist/*'
+
+      - name: "[UPLOAD] Artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist/
+          if-no-files-found: error
+
+  github-release:
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build]
+    permissions:
+      contents: write
+    steps:
+      - name: "[INIT] Checkout"
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: "[DOWNLOAD] Artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist/
+
+      - name: "[INPUT] Get input"
+        id: input
+        run: |
+          echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
+
+      - name: "[RELEASE] Create GitHub release"
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ steps.input.outputs.tag }}
+          tag_name: ${{ steps.input.outputs.tag }}
+          prerelease: ${{ steps.input.outputs.prerelease }}
+          body_path: dist/RELEASE_NOTES.md
+          files: dist/*
+
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: [build]
+    permissions:
+      id-token: write
+    steps:
+      - name: "[DOWNLOAD] Artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: dist/
+
+      - name: "[PUBLISH] PyPI"
+        uses: pypa/gh-action-pypi-publish@release/v1
