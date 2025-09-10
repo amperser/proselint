@@ -190,8 +190,8 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             'But I never start with the word "but".',
             "But why are you like that.",
-            "This is cool! But that not so much.",
-            "Is this cool? But that not so much.",
+            "This is a paragraph.\n\nBut this starts a new paragraph",
+            "Some text here.\n\nBut wait, there's more",
         ),
         (
             "Smoke phrase with nothing flagged.",
@@ -200,6 +200,8 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
                 "\nbut might use it after a linebreak."
             ),
             "Butter is the best.",
+            "This is cool! But that not so much.",
+            "Is this cool? But that not so much.",
         ),
     ),
     (
