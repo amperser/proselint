@@ -200,8 +200,8 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
                 "\nbut might use it after a linebreak."
             ),
             "Butter is the best.",
-            'This is cool! But that not so much.',
-            'Is this cool? But that not so much.',
+            "This is cool! But that not so much.",
+            "Is this cool? But that not so much.",
         ),
     ),
     (
