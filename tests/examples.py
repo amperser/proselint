@@ -191,7 +191,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             'But I never start with the word "but".',
             "But why are you like that.",
             "This is a paragraph.\n\nBut this starts a new paragraph",
-            'Some text here.\n\nBut wait, there\'s more',
+            "Some text here.\n\nBut wait, there's more",
         ),
         (
             "Smoke phrase with nothing flagged.",
