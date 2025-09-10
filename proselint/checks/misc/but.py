@@ -38,7 +38,6 @@ check = Check(
     path="misc.but",
     message="No paragraph should start with a 'But'.",
     ignore_case=False,
-    offset=(0, 0)
 )
 
 __register__ = (check,)
