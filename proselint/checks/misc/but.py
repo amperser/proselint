@@ -23,15 +23,20 @@ PATTERN = re.compile(r"(^|^\n|\n\n)But\b")
 
 
 def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
-    for m in re.finditer(PATTERN, text):
-        count = m.group(0).count("\n", 0, 2)
-        yield CheckResult(
-            start_pos=m.start() + count + check.offset[0],
+    return (
+        CheckResult(
+            start_pos=(
+                m.start()
+                + m.group(0).count("\n", 0, 2)
+                + check.offset[0]
+            ),
             end_pos=m.end(),
             check_path=check.path,
             message=check.message,
             replacements=None,
         )
+        for m in re.finditer(PATTERN, text)
+    )
 
 
 check = Check(
