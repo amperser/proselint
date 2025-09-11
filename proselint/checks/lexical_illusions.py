@@ -19,8 +19,8 @@ from proselint.registry.checks import Check, Padding, types
 
 check = Check(
     check_type=types.ExistenceSimple(
-        pattern=Padding.WORDS_IN_TEXT.format(
-            r"(?<!\\|\-)(\w+(?:\s+\w+){0,3})(\s+\1)+"
+        pattern=Padding.STRICT_WORDS_IN_TEXT.format(
+            r"(\w+(?:\s+\w+){0,3})(\s+\1)+"
         ),
         exceptions=(r"^had had$", r"^that that$"),
     ),
