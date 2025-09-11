@@ -317,12 +317,14 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "It was almost haloween.",
             "He is Chief Justice of the Supreme Court of the United States.",
             "Meantime, I had tea.",
+            "He jumped off of the couch.",
             "In the meanwhile, something happened.",
             "She went to bed; meantime, I had tea.",
         ),
         (
             "Smoke phrase with nothing flagged.",
             "Meanwhile, I had tea.",
+            "A 4th order low-pass with a roll-off of 24 db/octave",
             "In the meantime, something happened.",
             "She went to bed; meanwhile, I had tea."
         ),

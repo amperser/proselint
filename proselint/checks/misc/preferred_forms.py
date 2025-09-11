@@ -21,6 +21,7 @@ CHECK_MESSAGE = "'{}' is the preferred form."
 
 check = Check(
     check_type=types.PreferredFormsSimple(
+        padding=Padding.STRICT_WORDS_IN_TEXT,
         items={
             # Obsolete words
             "imprimature": "imprimatur",
