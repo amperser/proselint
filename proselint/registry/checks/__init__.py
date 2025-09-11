@@ -36,7 +36,7 @@ class Padding(str, Enum):
     NONWORDS_IN_TEXT = r"\B{}\B"
     """Match any position that is not a word boundary around the pattern."""
     STRICT_WORDS_IN_TEXT = r"(?<![A-Za-z'-]){}(?![A-Za-z'-])"
-    """WORDS_IN_TEXT but disallows matches with hyphens and apostrophes"""
+    """Lookaround-based `WORDS_IN_TEXT`, prohibiting hyphens and apostrophes."""
 
     def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
         """Calculate new offset values based on the applied padding."""
