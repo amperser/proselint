@@ -51,6 +51,8 @@ from itertools import product
 
 from proselint.registry.checks import Check, CheckResult, types
 
+POSSIBLE_PATTERN = r"possible(?!\s*\?)"
+
 COMPARATORS = (
     "most",
     "more",
@@ -87,7 +89,7 @@ UNCOMPARABLES = (
     "paramount",
     "perfect",
     "perpetual",
-    "possible",
+    POSSIBLE_PATTERN,
     "preferable",
     "principal",
     "singular",
@@ -105,7 +107,7 @@ UNCOMPARABLES = (
 )
 EXCEPTIONS = (
     ("more", "perfect"),
-    ("more", "possible"),  # FIXME
+    ("more", POSSIBLE_PATTERN),
 )
 
 
