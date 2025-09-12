@@ -40,6 +40,7 @@ check = Check(
             ("organised", "organized"),
             ("organising", "organizing"),
             ("recognise", "recognize"),
+            ("chocolatey", "chocolaty"),
         )
     ),
     path="spelling.consistency",
