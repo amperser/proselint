@@ -103,12 +103,14 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "This sentence is very\nunique.",
             "Kind of complete.",
             "An increasingly possible future.",
+            "It was the least possible outcome.",
         ),
         (
             "Smoke phrase with nothing flagged.",
             "Every perfect instance.",
             "A more perfect union.",
             "A more possible future.",
+            "But is it at least possible?",
         ),
     ),
     (
