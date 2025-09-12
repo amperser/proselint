@@ -30,6 +30,7 @@ check = Check(
             ("advisor", "adviser"),
             ("analyse", "analyze"),
             ("centre", "center"),
+            ("chocolatey", "chocolaty"),
             ("colour", "color"),
             ("emphasise", "emphasize"),
             ("finalise", "finalize"),
@@ -40,7 +41,6 @@ check = Check(
             ("organised", "organized"),
             ("organising", "organizing"),
             ("recognise", "recognize"),
-            ("chocolatey", "chocolaty"),
         )
     ),
     path="spelling.consistency",
