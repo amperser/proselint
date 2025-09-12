@@ -36,7 +36,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: "[INIT] Setup Cachix"
-        uses: cachix/cachix-action@v15
+        uses: cachix/cachix-action@v16
         with:
           name: amperser
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -76,7 +76,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: "[INIT] Setup Cachix"
-        uses: cachix/cachix-action@v15
+        uses: cachix/cachix-action@v16
         with:
           name: amperser
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
