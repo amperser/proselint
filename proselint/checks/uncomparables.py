@@ -46,6 +46,7 @@ attention and expects you to have done the same.
 
 """
 
+from collections.abc import Iterator
 from itertools import product
 
 from proselint.registry.checks import Check, CheckResult, types
@@ -108,7 +109,7 @@ EXCEPTIONS = (
 )
 
 
-def _check_uncomparables(text: str, check: Check) -> list[CheckResult]:
+def _check_uncomparables(text: str, check: Check) -> Iterator[CheckResult]:
     """Check the text."""
     return types.Existence(
         items=tuple(
