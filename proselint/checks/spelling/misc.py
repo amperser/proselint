@@ -33,7 +33,6 @@ check = Check(
             "chinchy": "chintzy",
             "chipolte": "chipotle",
             "chlorophyl": "chlorophyll",
-            "chocolatey": "chocolaty",
             "chronical": "chronicle",
             "chronicals": "chronicles",
             "coldslaw": "coleslaw",

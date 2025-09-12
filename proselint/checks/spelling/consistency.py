@@ -30,6 +30,7 @@ check = Check(
             ("advisor", "adviser"),
             ("analyse", "analyze"),
             ("centre", "center"),
+            ("chocolatey", "chocolaty"),
             ("colour", "color"),
             ("emphasise", "emphasize"),
             ("finalise", "finalize"),

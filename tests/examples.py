@@ -602,7 +602,10 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     ),
     (
         "spelling.consistency",
-        ("The centre of the arts is the art center.",),
+        (
+            "The centre of the arts is the art center.",
+            "The most chocolatey cake had the chocolaty frosting.",
+        ),
         (
             "Smoke phrase with nothing flagged.",
             "The centre for the arts is the art centre.",
