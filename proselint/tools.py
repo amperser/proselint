@@ -7,6 +7,7 @@ from collections.abc import Callable
 from enum import Enum
 from itertools import accumulate, chain, islice
 from operator import itemgetter
+from os import walk
 from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
@@ -57,8 +58,8 @@ def extract_files(paths: list[Path]) -> list[Path]:
         chain.from_iterable(
             (
                 file
-                for root, _, files in path.walk()
-                for file in map(root.__truediv__, files)
+                for root, _, files in walk(path)
+                for file in map(Path(root).__truediv__, files)
                 if file.suffix in ACCEPTED_EXTENSIONS
             )
             if path.is_dir()
