@@ -44,7 +44,7 @@
 			val = builtins.getEnv "PYTHON_VERSION";
 			result =
 				if val == ""
-				then "3.12"
+				then "3.13"
 				else val;
 		in
 			builtins.replaceStrings ["."] [""] result;
