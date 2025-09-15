@@ -22,5 +22,6 @@
     }
   ],
   "labels": ["cat: deps", "type: chore"],
-  "ignorePaths": ["Gemfile", "plugins/"]
+  "ignorePaths": ["Gemfile", "plugins/"],
+  "ignoreDeps": ["uv_build"]
 }
