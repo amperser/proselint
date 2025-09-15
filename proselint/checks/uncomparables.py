@@ -51,8 +51,6 @@ from itertools import product
 
 from proselint.registry.checks import Check, CheckResult, types
 
-POSSIBLE_PATTERN = r"possible(?!\s*\?)"
-
 COMPARATORS = (
     "most",
     "more",
@@ -89,7 +87,7 @@ UNCOMPARABLES = (
     "paramount",
     "perfect",
     "perpetual",
-    POSSIBLE_PATTERN,
+    "possible",
     "preferable",
     "principal",
     "singular",
@@ -107,17 +105,21 @@ UNCOMPARABLES = (
 )
 EXCEPTIONS = (
     ("more", "perfect"),
-    ("more", POSSIBLE_PATTERN),
+    ("more", "possible"),
 )
 
 
 def _check_uncomparables(text: str, check: Check) -> Iterator[CheckResult]:
-    """Check the text."""
+    """Check the text for uncomparables."""
     return types.Existence(
         items=tuple(
-            rf"{pair[0]}\s{pair[1]}"
-            for pair in product(COMPARATORS, UNCOMPARABLES)
-            if pair not in EXCEPTIONS
+            (
+                rf"(?<!at\s)\bleast\s+{adj}\b"
+                if comp == "least"
+                else rf"\b{comp}\s+{adj}\b"
+            )
+            for comp, adj in product(COMPARATORS, UNCOMPARABLES)
+            if (comp, adj) not in EXCEPTIONS
         )
     ).check(text, check)
 
