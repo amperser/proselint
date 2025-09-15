@@ -31,6 +31,6 @@ check = Check(
     ),
     path="mondegreens",
     message="'{}' is the preferred form.",
-    )
+)
 
 __register__ = (check,)

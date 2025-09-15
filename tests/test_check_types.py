@@ -148,7 +148,7 @@ def test_preferred_in_text(
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)
-            for a, b in zip(items.keys(), count)
+            for a, b in zip(items.keys(), count, strict=True)
         )
     )
 
@@ -202,7 +202,9 @@ def test_preferred_s_case_sensitive(
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
     results = list(check_type.check(text, check))
 
-    for result, (original, replacement) in zip(results, items.items()):
+    for result, (original, replacement) in zip(
+        results, items.items(), strict=False
+    ):
         assert result.check_path == path
         assert result.message == f"{replacement} || {original}"
         assert result.replacements == replacement
@@ -230,7 +232,7 @@ def test_preferred_s_case_insensitive(
 
     results = list(check_type.check(" ".join(text_variations), check))
 
-    for result, text in zip(results, text_variations):
+    for result, text in zip(results, text_variations, strict=False):
         replacements = normalised[text.lower()]
 
         assert result.check_path == path
@@ -261,7 +263,7 @@ def test_preferred_s_in_text(
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)
-            for a, b in zip(items.keys(), count)
+            for a, b in zip(items.keys(), count, strict=True)
         )
     )
 
@@ -359,7 +361,7 @@ def test_existence_in_text(
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)
-            for a, b in zip(chain(items, exceptions), count)
+            for a, b in zip(chain(items, exceptions), count, strict=True)
         )
     )
 
@@ -373,7 +375,7 @@ def test_existence_in_text(
     cum_count = list(accumulate(count))
     assert len(results) == cum_count[len(count) - len(exceptions) - 1]
 
-    for result, raw_entry in zip(results, selected_matches):
+    for result, raw_entry in zip(results, selected_matches, strict=False):
         entry = raw_entry.strip()
         if padding == Padding.NONWORDS_IN_TEXT:
             entry = entry[1:-1]
@@ -426,7 +428,8 @@ def test_existence_s_in_text(
     check = Check(check_type=check_type, path=path, message="{}")
     selected_matches = list(
         chain.from_iterable(
-            repeat(xeger(escape(a)), b) for a, b in zip(items_exceptions, count)
+            repeat(xeger(escape(a)), b)
+            for a, b in zip(items_exceptions, count, strict=True)
         )
     )
 
@@ -434,7 +437,7 @@ def test_existence_s_in_text(
     results = list(check.check(content))
     cum_count = list(accumulate(count))
     assert len(results) == cum_count[len(count) - len(exceptions) - 1]
-    for result, entry in zip(results, selected_matches):
+    for result, entry in zip(results, selected_matches, strict=False):
         assert result.check_path == path
         assert result.message == entry.strip()
         assert result.replacements is None
@@ -492,7 +495,7 @@ def test_rev_existence_forbidden(
 
     assert len(results) == len(tokens)
 
-    for result, token in zip(results, tokens):
+    for result, token in zip(results, tokens, strict=True):
         assert result.check_path == path
         assert result.message == token.strip("'-")
         assert result.replacements is None

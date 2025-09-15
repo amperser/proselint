@@ -1,6 +1,6 @@
 """Check types."""
 
-from collections.abc import Generator, Iterable, Iterator
+from collections.abc import Callable, Generator, Iterable, Iterator
 from functools import partial
 from itertools import chain, filterfalse, zip_longest
 from re import (
@@ -11,7 +11,7 @@ from re import (
     search,
 )
 from re import compile as rcompile
-from typing import Callable, NamedTuple, TypeVar, Union
+from typing import NamedTuple, TypeVar
 
 from proselint.registry.checks import Check, CheckResult, Padding
 
@@ -43,18 +43,19 @@ class Consistency(NamedTuple):
     def process_pair(
         text: str,
         check: Check,
-        flag: Union[RegexFlag, int],
+        flag: RegexFlag | int,
         pair: tuple[str, str],
     ) -> Iterator[CheckResult]:
         """Check a term pair over `text`."""
         # Unzip the zip of pair matches while both of the last pair were truthy
         # Reads the minimum possible elements to generate results
-        matches: tuple[tuple[Union[Match[str], None], ...], ...] = tuple(
+        matches: tuple[tuple[Match[str] | None, ...], ...] = tuple(
             zip(
                 *_takewhile_peek(
                     all,
                     zip_longest(*(finditer(term, text, flag) for term in pair)),
-                )
+                ),
+                strict=True,
             )
         )
 
@@ -242,12 +243,12 @@ class ReverseExistence(NamedTuple):
         )
 
 
-CheckType = Union[
-    CheckFn,
-    Consistency,
-    PreferredForms,
-    PreferredFormsSimple,
-    Existence,
-    ExistenceSimple,
-    ReverseExistence,
-]
+CheckType = (
+    CheckFn
+    | Consistency
+    | PreferredForms
+    | PreferredFormsSimple
+    | Existence
+    | ExistenceSimple
+    | ReverseExistence
+)

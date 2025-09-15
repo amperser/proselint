@@ -14,6 +14,7 @@ T = TypeVar("T")
 if version_info >= (3, 13):
     from itertools import batched
 else:
+
     def batched(
         iterable: Iterable[T], n: int, *, strict: bool = False
     ) -> Generator[tuple[T, ...]]:

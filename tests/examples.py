@@ -326,7 +326,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "Meanwhile, I had tea.",
             "A 4th order low-pass with a roll-off of 24 db/octave",
             "In the meantime, something happened.",
-            "She went to bed; meanwhile, I had tea."
+            "She went to bed; meanwhile, I had tea.",
         ),
     ),
     (
@@ -506,7 +506,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         (
             "Smoke phrase with nothing flagged.",
             "Very well, Headmaster, thank you.",
-            "The discovery and development of new approaches."
+            "The discovery and development of new approaches.",
         ),
     ),
     (

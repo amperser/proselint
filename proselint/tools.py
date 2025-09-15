@@ -11,7 +11,7 @@ from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
 from sys import stdin
-from typing import Union, cast, overload
+from typing import cast, overload
 
 from proselint.config import DEFAULT, Config
 from proselint.log import log
@@ -81,6 +81,7 @@ QUOTE_PATTERN = rcompile(rf"(?:\B[{QUOTES}]|[{QUOTES}]\B)")
 
 def check_matching_quotes(chars: tuple[str, str]) -> bool:
     """Check if a pair of quotes match."""
+    # fmt: off
     return (
         (chars[0] in STRAIGHT_QUOTES and chars[0] == chars[1])
         or set(chars) in (CURLY_QUOTES, CURLY_SINGLE_QUOTES)
@@ -127,22 +128,18 @@ def errors_to_json(errors: list[LintResult]) -> str:
 class LintFile:
     """A prepared file with span information for linting against."""
 
-    source: Union[str, Path]
+    source: str | Path
     content: str
     line_bounds: tuple[int, ...]
     quote_bounds: tuple[int, ...]
     """A flat sequence of positions guaranteed to come in pairs."""
 
     @overload
-    def __init__(
-        self, source: Path, content: Union[str, None] = None
-    ) -> None: ...
+    def __init__(self, source: Path, content: str | None = None) -> None: ...
 
     @overload
     def __init__(self, source: str, content: str) -> None: ...
-    def __init__(
-        self, source: Union[str, Path], content: Union[str, None] = None
-    ) -> None:
+    def __init__(self, source: str | Path, content: str | None = None) -> None:
         """Initialise a file for the linter from a given `source`."""
         if isinstance(source, str) and content is None:
             raise ValueError("Content must be given if the file path is not.")
@@ -154,9 +151,11 @@ class LintFile:
         self.content = f"\n{content}\n"
 
         self.line_bounds = self._line_bounds()
-        self.quote_bounds = tuple(chain.from_iterable(
-            find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
-        ))
+        self.quote_bounds = tuple(
+            chain.from_iterable(
+                find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
+            )
+        )
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
