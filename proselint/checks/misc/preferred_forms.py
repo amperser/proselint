@@ -14,7 +14,7 @@ Points out preferred forms.
 
 """
 
-from proselint.registry.checks import Check, Padding, types
+from proselint.registry.checks import Check, Padding, engine, types
 
 CHECK_PATH = "misc.preferred_forms"
 CHECK_MESSAGE = "'{}' is the preferred form."
@@ -177,6 +177,7 @@ check = Check(
     ),
     path="misc.preferred_forms",
     message="'{}' is the preferred form.",
+    matcher=engine.Matcher(engine=engine.Engine.FANCY),
 )
 
 # fmt: off
@@ -186,7 +187,7 @@ check_meantime_capital = Check(
     ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
-    ignore_case=False,
+    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
 )
 # fmt: on
 
@@ -196,7 +197,7 @@ check_meantime_clause = Check(
     ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
-    ignore_case=False,
+    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
     offset=(2, 0),
 )
 

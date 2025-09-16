@@ -15,7 +15,7 @@ Weasel words.
 
 """
 
-from proselint.registry.checks import Check, Padding, types
+from proselint.registry.checks import Check, Padding, engine, types
 
 check_very = Check(
     check_type=types.ExistenceSimple(
@@ -26,6 +26,7 @@ check_very = Check(
         "Substitute 'damn' every time you're inclined to write 'very'; your"
         " editor will delete it and the writing will be just as it should be."
     ),
+    matcher=engine.Matcher(engine=engine.Engine.FANCY),
 )
 
 __register__ = (check_very,)

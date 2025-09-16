@@ -14,7 +14,7 @@ Annotation left in text.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, engine, types
 
 check = Check(
     check_type=types.Existence(
@@ -29,7 +29,7 @@ check = Check(
     ),
     path="annotations.misc",
     message="Annotation left in text.",
-    ignore_case=False,
+    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (check,)

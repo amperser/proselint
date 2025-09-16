@@ -3,17 +3,10 @@
 from collections.abc import Callable, Generator, Iterable, Iterator
 from functools import partial
 from itertools import chain, filterfalse, zip_longest
-from re import (
-    Match,
-    Pattern,
-    RegexFlag,
-    finditer,
-    search,
-)
-from re import compile as rcompile
 from typing import NamedTuple, TypeVar
 
 from proselint.registry.checks import Check, CheckResult, Padding
+from proselint.registry.checks.engine import Match
 
 CheckFn = Callable[[str, Check], Iterator[CheckResult]]
 
@@ -43,17 +36,18 @@ class Consistency(NamedTuple):
     def process_pair(
         text: str,
         check: Check,
-        flag: RegexFlag | int,
         pair: tuple[str, str],
     ) -> Iterator[CheckResult]:
         """Check a term pair over `text`."""
         # Unzip the zip of pair matches while both of the last pair were truthy
         # Reads the minimum possible elements to generate results
-        matches: tuple[tuple[Match[str] | None, ...], ...] = tuple(
+        matches: tuple[tuple[Match | None, ...], ...] = tuple(
             zip(
                 *_takewhile_peek(
                     all,
-                    zip_longest(*(finditer(term, text, flag) for term in pair)),
+                    zip_longest(
+                        *(check.matcher.finditer(term, text) for term in pair)
+                    ),
                 ),
                 strict=True,
             )
@@ -77,8 +71,7 @@ class Consistency(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check the consistency of given term pairs in `text`."""
-        flag = check.re_flag
-        process_pair = partial(Consistency.process_pair, text, check, flag)
+        process_pair = partial(Consistency.process_pair, text, check)
 
         return chain.from_iterable(map(process_pair, self.term_pairs))
 
@@ -92,7 +85,6 @@ class PreferredForms(NamedTuple):
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for terms to be replaced with a preferred form in `text`."""
         offset = self.padding.to_offset_from(check.offset)
-        flag = check.re_flag
 
         return (
             CheckResult(
@@ -103,7 +95,7 @@ class PreferredForms(NamedTuple):
                 replacements=replacement,
             )
             for original, replacement in self.items.items()
-            for m in finditer(self.padding.format(original), text, flag)
+            for m in check.matcher.finditer(self.padding.format(original), text)
         )
 
 
@@ -114,12 +106,14 @@ class PreferredFormsSimple(NamedTuple):
     padding: Padding = Padding.WORDS_IN_TEXT
 
     def map_match(
-        self, check: Check, offset: tuple[int, int], match: Match[str]
+        self, check: Check, offset: tuple[int, int], match: Match
     ) -> CheckResult:
         """Convert a `re.Match` object to a `CheckResult`."""
         original = match.group(0).strip()
         replacement = self.items.get(
-            original.lower() if check.ignore_case else original
+            original.lower()
+            if check.matcher.opts.case_insensitive
+            else original
         )
 
         return CheckResult(
@@ -133,40 +127,32 @@ class PreferredFormsSimple(NamedTuple):
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for terms to be replaced with a preferred form in `text`."""
         offset = self.padding.to_offset_from(check.offset)
-        flag = check.re_flag
         map_match = partial(self.map_match, check, offset)
 
-        pattern = self.padding.format(
-            Padding.SAFE_JOIN.format("|".join(self.items.keys()))
-            if len(self.items) > 1
-            else next(iter(self.items))
-        )
+        pattern = self.padding.format(Padding.safe_join(self.items))
 
-        return map(map_match, finditer(pattern, text, flag))
+        return map(map_match, check.matcher.finditer(pattern, text))
 
 
 def _process_existence(
     pattern: str,
-    exceptions: tuple[str, ...],
+    exceptions_pattern: str,
     offset: tuple[int, int],
     text: str,
     check: Check,
 ) -> Iterator[CheckResult]:
     """Match against `pattern` respecting `offset` in `text`."""
-    flag = check.re_flag
-
     return (
         CheckResult(
             start_pos=m.start() + offset[0],
             end_pos=m.end() + offset[1],
             check_path=check.path,
-            message=check.message.format(m.group(0).strip()),
+            message=check.message.format(m_text),
             replacements=None,
         )
-        for m in finditer(pattern, text, flag)
-        if not any(
-            search(exception, m.group(0).strip(), flag)
-            for exception in exceptions
+        for m in check.matcher.finditer(pattern, text)
+        if not check.matcher.exists_in(
+            exceptions_pattern, m_text := m.group(0).strip()
         )
     )
 
@@ -182,13 +168,12 @@ class Existence(NamedTuple):
         """Check for the existence of terms in `text`."""
         offset = self.padding.to_offset_from(check.offset)
 
-        pattern = self.padding.format(
-            Padding.SAFE_JOIN.format("|".join(self.items))
-            if len(self.items) > 1
-            else next(iter(self.items))
-        )
+        pattern = self.padding.format(Padding.safe_join(self.items))
+        exceptions_pattern = Padding.safe_join(self.exceptions)
 
-        return _process_existence(pattern, self.exceptions, offset, text, check)
+        return _process_existence(
+            pattern, exceptions_pattern, offset, text, check
+        )
 
 
 class ExistenceSimple(NamedTuple):
@@ -199,13 +184,14 @@ class ExistenceSimple(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for the existence of a single pattern in `text`."""
+        exceptions_pattern = Padding.safe_join(self.exceptions)
         return _process_existence(
-            self.pattern, self.exceptions, check.offset, text, check
+            self.pattern, exceptions_pattern, check.offset, text, check
         )
 
 
-_DEFAULT_TOKENIZER = rcompile(
-    Padding.WORDS_IN_TEXT.format(r"[a-zA-Z_][a-zA-Z_'-]+[a-zA-Z_]")
+_DEFAULT_TOKENIZER = Padding.WORDS_IN_TEXT.format(
+    r"[a-zA-Z_][a-zA-Z_'-]+[a-zA-Z_]"
 )
 
 
@@ -214,21 +200,21 @@ class ReverseExistence(NamedTuple):
 
     allowed: set[str]
 
-    TOKENIZER: Pattern[str] = _DEFAULT_TOKENIZER
+    TOKENIZER: str = _DEFAULT_TOKENIZER
 
     @staticmethod
     def _allowed_match(
-        allowed: set[str], match: Match[str], *, ignore_case: bool = True
+        allowed: set[str], match: Match, *, case_insensitive: bool = True
     ) -> bool:
         m_text = match.group(0)
-        return (m_text.lower() if ignore_case else m_text) in allowed
+        return (m_text.lower() if case_insensitive else m_text) in allowed
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for words in `text` that are not `allowed`."""
         allowed_match = partial(
             ReverseExistence._allowed_match,
             self.allowed,
-            ignore_case=check.ignore_case,
+            case_insensitive=check.matcher.opts.case_insensitive,
         )
 
         return (
@@ -239,7 +225,9 @@ class ReverseExistence(NamedTuple):
                 message=check.message.format(m.group(0)),
                 replacements=None,
             )
-            for m in filterfalse(allowed_match, self.TOKENIZER.finditer(text))
+            for m in filterfalse(
+                allowed_match, check.matcher.finditer(self.TOKENIZER, text)
+            )
         )
 
 

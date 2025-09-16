@@ -7,11 +7,12 @@ from __future__ import annotations
 from enum import Enum
 from itertools import islice
 from math import ceil
-from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple
 
+from proselint.registry.checks.engine import Matcher
+
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Collection, Iterator
 
     from proselint.registry.checks.types import CheckType
 
@@ -48,6 +49,19 @@ class Padding(str, Enum):
         }:
             return offset
         return (offset[0] + 1, max(offset[1] - 1, 0))
+
+    @staticmethod
+    def safe_join(patterns: Collection[str]) -> str:
+        """Join a collection of patterns with `Padding.SAFE_JOIN`."""
+        return (
+            (
+                Padding.SAFE_JOIN.format("|".join(patterns))
+                if len(patterns) > 1
+                else next(iter(patterns))
+            )
+            if patterns
+            else ""
+        )
 
 
 # TODO: use position and span for (line, column) and (start_pos, end_pos)?
@@ -126,17 +140,11 @@ class Check(NamedTuple):
     """Carry a complete check specification."""
 
     check_type: CheckType
+    matcher: Matcher = Matcher()
     path: str = ""
     message: str = ""
     flags: CheckFlags = CheckFlags()
-    ignore_case: bool = True
     offset: tuple[int, int] = (0, 0)
-
-    # TODO: for 3.11+, RegexFlag.NOFLAG exists
-    @property
-    def re_flag(self) -> int:
-        """Return a corresponding `RegexFlag` for the `ignore_case` setting."""
-        return RegexFlag.IGNORECASE if self.ignore_case else 0
 
     @property
     def path_segments(self) -> list[str]:
