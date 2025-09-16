@@ -114,8 +114,8 @@ def _check_uncomparables(text: str, check: Check) -> Iterator[CheckResult]:
     return types.Existence(
         items=tuple(
             (
-                rf"(?<!at\s)\bleast\s+{adj}\b"
-                if comp == "least"
+                rf"(?<!at\s)\b{comp}\s+{adj}\b"
+                if comp in {"least", "most"}
                 else rf"\b{comp}\s+{adj}\b"
             )
             for comp, adj in product(COMPARATORS, UNCOMPARABLES)
