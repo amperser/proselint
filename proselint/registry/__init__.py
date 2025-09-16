@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from importlib import import_module
 from itertools import chain
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, ClassVar
 
 from proselint.config import DEFAULT
 
@@ -28,8 +28,8 @@ class CheckRegistry:
     """A global registry for lint checks."""
 
     _checks: ClassVar[list[Check]] = []
-    enabled_checks: Optional[dict[str, bool]] = None
-    _instance: Optional[CheckRegistry] = None
+    enabled_checks: dict[str, bool] | None = None
+    _instance: CheckRegistry | None = None
 
     def __new__(cls) -> CheckRegistry:  # noqa: PYI034
         """Create a singleton registry."""

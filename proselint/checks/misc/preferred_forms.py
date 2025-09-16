@@ -173,25 +173,27 @@ check = Check(
             # Accents
             "ne": "né",
             "nee": "née",
-        }
+        },
     ),
     path="misc.preferred_forms",
     message="'{}' is the preferred form.",
 )
 
+# fmt: off
 check_meantime_capital = Check(
-    check_type=types.PreferredForms(items={
-        r"\bMeantime,\B": "Meanwhile,",
-    }, padding=Padding.RAW),
+    check_type=types.PreferredForms(
+        items={r"\bMeantime,\B": "Meanwhile,"}, padding=Padding.RAW,
+    ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
     ignore_case=False,
 )
+# fmt: on
 
 check_meantime_clause = Check(
-    check_type=types.PreferredForms(items={
-        r"\b[;,] meantime,\B": "meanwhile,"
-    }, padding=Padding.RAW),
+    check_type=types.PreferredForms(
+        items={r"\b[;,] meantime,\B": "meanwhile,"}, padding=Padding.RAW
+    ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
     ignore_case=False,

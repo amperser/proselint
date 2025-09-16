@@ -8,7 +8,7 @@ from enum import Enum
 from itertools import islice
 from math import ceil
 from re import RegexFlag
-from typing import TYPE_CHECKING, NamedTuple, Optional
+from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -61,7 +61,7 @@ class LintResult(NamedTuple):
     start_pos: int
     end_pos: int
     severity: str
-    replacements: Optional[str]
+    replacements: str | None
 
     @property
     def extent(self) -> int:
@@ -80,7 +80,7 @@ class CheckResult(NamedTuple):
     end_pos: int
     check_path: str
     message: str
-    replacements: Optional[str]
+    replacements: str | None
 
 
 class CheckFlags(NamedTuple):
@@ -147,7 +147,7 @@ class Check(NamedTuple):
         """Check if `partial` is a subset key of the full check path."""
         partial_segments = partial.split(".")
 
-        return self.path_segments[:len(partial_segments)] == partial_segments
+        return self.path_segments[: len(partial_segments)] == partial_segments
 
     def check(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`."""

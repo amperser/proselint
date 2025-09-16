@@ -3,7 +3,7 @@
 import json
 from importlib.resources import files
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import TypedDict
 from warnings import showwarning as warn
 
 from proselint import config
@@ -27,6 +27,7 @@ DEFAULT: Config = json.loads((files(config) / "default.json").read_text())
 
 
 def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
+    # fmt: off
     return base | overrides | {
         key: (
             _deepmerge_dicts(b_value, o_value)
@@ -38,7 +39,7 @@ def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
     }
 
 
-def load_from(config_path: Optional[Path] = None) -> Config:
+def load_from(config_path: Path | None = None) -> Config:
     """
     Read various config paths, allowing user overrides.
 

@@ -2,7 +2,6 @@
 
 from itertools import chain, repeat
 from operator import itemgetter
-from typing import Union
 
 from pytest import mark
 
@@ -17,7 +16,7 @@ from .common import (
 from .examples import data
 
 
-def _id(value: Union[str, tuple[str, ...]]) -> str:
+def _id(value: str | tuple[str, ...]) -> str:
     """Return parameter ID."""
     if isinstance(value, str):
         return value

@@ -26,9 +26,7 @@ def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
     return (
         CheckResult(
             start_pos=(
-                m.start()
-                + m.group(0).count("\n", 0, 2)
-                + check.offset[0]
+                m.start() + m.group(0).count("\n", 0, 2) + check.offset[0]
             ),
             end_pos=m.end(),
             check_path=check.path,

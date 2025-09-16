@@ -8,14 +8,14 @@ readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
 	"Programming language :: Python :: 3",
-	"Programming language :: Python :: 3.9",
 	"Programming language :: Python :: 3.10",
 	"Programming language :: Python :: 3.11",
 	"Programming language :: Python :: 3.12",
 	"Programming language :: Python :: 3.13",
+	"Programming language :: Python :: 3.14",
 	"License :: OSI Approved :: BSD License",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = []
 
 [project.urls]
@@ -64,3 +64,57 @@ web = [
 module-name = "proselint"
 module-root = ""
 source-include = ["tests/**"]
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+	"A",    # flake8-builtins
+	"ANN",  # flake8-annotations
+	"ARG",  # flake8-unused-arguments
+	"B",    # Bugbear
+	"COM",  # flake8-commas
+	"C4",   # flake8-comprehensions
+	"DTZ",  # flake8-datetimez
+	"D",    # pydocstyle
+	"E",    # pycodestyle errors
+	"F",    # pyflakes
+	"FA",   # flake8-future-annotations
+	"FBT",  # boolean traps
+	"FLY",  # flynt
+	"FURB", # refurb
+	"G",    # flake8-logging-format
+	"I",    # incomplete isort
+	"INP",  # flake8-no-pep420
+	"LOG",  # flake8-logging
+	"N",    # naming
+	"NPY",  # NumPy-specific rules
+	"PD",   # pandas-vet
+	"PERF", # Perflint
+	"PL",   # Pylint
+	"PTH",  # flake8-use-pathlib
+	"PYI",  # flake8-pyi
+	"RET",  # flake8-return
+	"RUF",  # Ruff-specific rules
+	"S",    # bandit, security
+	"SLF",  # flake8-self
+	"SIM",  # flake8-simplify
+	"TID",  # flake8-tidy-imports
+	"TCH",  # flake8-type-checking
+	"T10",  # flake8-print
+	"UP",   # pyupgrade
+	"W",    # pycodestyle warnings
+	"YTT",  # flake8-2020
+]
+ignore = [
+	"COM812",  # trailing comma -> done by formatter
+	"D203",    # no blank lines between classes and documentation
+	"D212",    # consistent start level for multi-line edocumentation
+	"D415",    # first line of docs should end with a period
+]
+preview = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "SLF001", "PLC2701"]
+"proselint/checks/**" = ["RUF001"]

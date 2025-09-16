@@ -10,7 +10,7 @@ from argparse import ArgumentParser, Namespace
 from enum import IntEnum
 from pathlib import Path
 from signal import Signals, signal
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
@@ -33,7 +33,7 @@ class ExitStatus(IntEnum):
     INTERRUPT = 3
 
 
-def interrupt_handler(signalnum: int, _frame: Optional[FrameType]) -> None:
+def interrupt_handler(signalnum: int, _frame: FrameType | None) -> None:
     """Exit proselint gracefully from an interrupt."""
     log.warning(f"\nExiting (received {Signals(signalnum).name} {signalnum}).")
     sys.exit(ExitStatus.INTERRUPT)
