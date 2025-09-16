@@ -46,6 +46,7 @@ attention and expects you to have done the same.
 
 """
 
+from collections.abc import Iterator
 from itertools import product
 
 from proselint.registry.checks import Check, CheckResult, types
@@ -104,17 +105,21 @@ UNCOMPARABLES = (
 )
 EXCEPTIONS = (
     ("more", "perfect"),
-    ("more", "possible"),  # FIXME
+    ("more", "possible"),
 )
 
 
-def _check_uncomparables(text: str, check: Check) -> list[CheckResult]:
-    """Check the text."""
+def _check_uncomparables(text: str, check: Check) -> Iterator[CheckResult]:
+    """Check the text for uncomparables."""
     return types.Existence(
         items=tuple(
-            rf"{pair[0]}\s{pair[1]}"
-            for pair in product(COMPARATORS, UNCOMPARABLES)
-            if pair not in EXCEPTIONS
+            (
+                rf"(?<!at\s)\b{comp}\s+{adj}\b"
+                if comp in {"least", "most"}
+                else rf"\b{comp}\s+{adj}\b"
+            )
+            for comp, adj in product(COMPARATORS, UNCOMPARABLES)
+            if (comp, adj) not in EXCEPTIONS
         )
     ).check(text, check)
 
