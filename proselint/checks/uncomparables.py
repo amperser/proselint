@@ -49,7 +49,7 @@ attention and expects you to have done the same.
 from collections.abc import Iterator
 from itertools import product
 
-from proselint.registry.checks import Check, CheckResult, types
+from proselint.registry.checks import Check, CheckResult, engine, types
 
 COMPARATORS = (
     "most",
@@ -128,6 +128,7 @@ check_uncomparables = Check(
     check_type=_check_uncomparables,
     path="uncomparables",
     message="Comparison of an uncomparable: '{}' is not comparable.",
+    matcher=engine.Matcher(engine=engine.Engine.FANCY),
 )
 
 __register__ = (check_uncomparables,)
