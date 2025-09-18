@@ -20,14 +20,14 @@
   </head>
   <body class="bg-neutral-50 text-neutral-900">
     <main class="max-w-2xl mx-auto my-16 px-6">
-      <h1 class="text-4xl font-bold mb-6">Proselint</h1>
+      <h1 class="text-4xl font-bold">Proselint</h1>
       <p class="mb-8 text-lg text-neutral-700">
         <em>Proselint</em> is a linter for English prose.
         It highlights <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and other stylistic issues,
         much like a spellchecker for style.
       </p>
-      <section class="mt-8">
-        <h2 class="text-2xl font-semibold mt-8 mb-4">Install &amp; Use</h2>
+
+        <h2 class="text-2xl font-semibold mt-8">Install</h2>
         <p class="text-neutral-700 mb-4">Install via <em>pip</em> and try a quick example from the command line.</p>
         <div class="space-y-4">
           <pre onclick="copyCode(this)"
@@ -38,8 +38,8 @@
             title="Click to copy"><code><span class="text-blue-600 font-semibold">echo</span> <span class="text-green-600">"This is very unique and literally perfect."</span> <span class="text-red-600">|</span> <span class="text-blue-600 font-semibold">proselint</span> <span class="text-purple-600">check</span>
 <span class="text-blue-600 font-semibold">proselint</span> <span class="text-purple-600">check</span> <span class="text-amber-600">README.md</span></code></pre>
         </div>
-      </section>
-      <h2 class="text-2xl font-semibold mt-12 mb-4">Try it</h2>
+
+      <h2 class="text-2xl font-semibold mt-8">Try it</h2>
       <p class="mb-4 text-neutral-700">Paste or type some text below.</p>
       <div class="relative">
         <textarea rows="8"
@@ -47,13 +47,12 @@
           >This is very unique and literally perfect.</textarea>
         <div class="absolute inset-0 pointer-events-none whitespace-pre-wrap p-4 text-transparent"></div>
       </div>
-      <div class="mt-6 prose prose-neutral max-w-none">
-        <h3>Issues</h3>
+
+        <h3 class="font-semibold mt-2">Issues</h3>
         <ul>
           <li><em>uncomparables</em> Comparison of an uncomparable: 'very unique' is not comparable.</li>
           <li><em>weasel_words.very</em> Substitute 'damn' every time you're inclined to write 'very'; your editor will delete it and the writing will be just as it should be.</li>
         </ul>
-      </div>
     </main>
 
     <footer class="max-w-2xl mx-auto px-6 pb-8 text-center">
