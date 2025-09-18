@@ -18,7 +18,6 @@ from proselint.config import paths as config_paths
 from proselint.log import log
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, OutputFormat, extract_files, verify_path
-from proselint.version import __version__
 
 if TYPE_CHECKING:
     from types import FrameType
@@ -117,6 +116,8 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
         return ExitStatus.UNACCEPTED_ARGS
 
     if args.subcommand == "version":
+        from proselint.version import __version__  # noqa: PLC0415
+
         log.info("Proselint %s", __version__)
         log.debug("Python %s", sys.version)
         return ExitStatus.SUCCESS
