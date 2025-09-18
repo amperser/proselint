@@ -61,12 +61,8 @@
         await navigator.clipboard.writeText(text).catch(() => {});
 
         element.classList.add('copied');
-        element.title = 'Copied!';
+        setTimeout(() => element.classList.remove('copied'), 500);
 
-          setTimeout(() => {
-            element.classList.remove('copied');
-            element.title = 'Click to copy';
-          }, 500);
       }
     </script>
   </body>
