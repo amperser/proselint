@@ -1,29 +1,73 @@
----
-layout: default
----
-<div class="home">
-<h1>A linter for prose.</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Proselint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+      font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+      line-height: 1.65;
+      }
+      h1, h2, h3 {
+      font-family: "Merriweather", Georgia, serif;
+      }
+      .copied {
+      background-color: #232323!important;
+      transition: background-color 0.3s ease !important;
+      }
+    </style>
+  </head>
+  <body class="bg-neutral-50 text-neutral-900">
+    <main class="max-w-2xl mx-auto my-16 px-6">
+      <h1 class="text-4xl font-bold mb-6">Proselint</h1>
+      <p class="mb-8 text-lg text-neutral-700">
+        <em>Proselint</em> is a linter for English prose.
+        It highlights <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and other stylistic issues,
+        much like a spellchecker for style.
+      </p>
+      <section class="mt-8">
+        <h2 class="text-2xl font-semibold mt-8 mb-4">Install &amp; Use</h2>
+        <p class="text-neutral-700 mb-4">Install via <em>pip</em> and try a quick example from the command line.</p>
+        <div class="space-y-4">
+          <pre onclick="copyCode(this)"
+            class="mt-3 bg-neutral-900 text-neutral-50 rounded p-3 text-sm hover:bg-neutral-800 transition-colors duration-200 cursor-pointer font-mono leading-6 whitespace-pre-wrap break-words"
+            title="Click to copy"><code><span class="text-blue-300 font-semibold">pip</span> <span class="text-purple-300">install</span> <span class="text-green-300">proselint</span></code></pre>
+          <pre onclick="copyCode(this)"
+            class="mt-3 bg-neutral-900 text-neutral-50 rounded p-3 text-sm hover:bg-neutral-800 transition-colors duration-200 cursor-pointer font-mono leading-6 whitespace-pre-wrap break-words"
+            title="Click to copy"><code><span class="text-blue-300 font-semibold">echo</span> <span class="text-green-300">"This is very unique and literally perfect."</span> <span class="text-red-300">|</span> <span class="text-blue-300 font-semibold">proselint</span> <span class="text-purple-300">check</span>
+<span class="text-blue-300 font-semibold">proselint</span> <span class="text-purple-300">check</span> <span class="text-yellow-300">README.md</span></code></pre>
+        </div>
+      </section>
+      <h2 class="text-2xl font-semibold mt-12 mb-4">Try it</h2>
+      <p class="mb-4 text-neutral-700">Paste or type some text below.</p>
+      <div class="relative">
+        <textarea rows="8"
+          class="w-full border border-neutral-300 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-serif"
+          >This is very unique and literally perfect.</textarea>
+        <div class="absolute inset-0 pointer-events-none whitespace-pre-wrap p-4 text-transparent"></div>
+      </div>
+      <div class="mt-6 prose prose-neutral max-w-none">
+        <h3>Issues</h3>
+        <ul>
+          <li><em>uncomparables</em> Comparison of an uncomparable: 'very unique' is not comparable.</li>
+          <li><em>weasel_words.very</em> Substitute 'damn' every time you're inclined to write 'very'; your editor will delete it and the writing will be just as it should be.</li>
+        </ul>
+      </div>
+    </main>
+    <script>
+      async function copyCode(element) {
+        const text = element.textContent;
+        await navigator.clipboard.writeText(text).catch(() => {});
 
-<p>Writing is notoriously hard, even for the best writers, and it's not for lack of good advice &mdash; a tremendous amount of knowledge about the craft is strewn across usage guides, dictionaries, technical manuals, essays, pamphlets, websites, and the hearts and minds of great authors and editors. But poring over Strunk &amp; White hardly makes one a better writer &mdash; it turns you into neither Strunk nor White. And nobody has the capacity to apply all the advice from <em>Garner’s Modern American Usage</em>, a 975-page usage guide, to everything they write. In fact, the whole notion that one becomes a better writer by reading advice on writing rests on untenable assumptions about learning and memory. The traditional formats of knowledge about writing are thus essentially inert, waiting to be transformed.</p>
+        element.classList.add('copied');
+        element.title = 'Copied!';
 
-<p>We devised a simple solution: <tt>proselint</tt>, a linter for prose. (A linter is a computer program that, like a spell checker, scans through a document and analyzes it.)</p>
-
-<p><tt>proselint</tt> places the world&rsquo;s greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You&rsquo;ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E.B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world&rsquo;s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.</p>
-
-<p>See a live demo at <a href="http://proselint.com/write">http://proselint.com/write</a>. (It's been tested only on the latest version of Chrome.)</p>
-
-<p>Currently, <tt>proselint</tt> is a command-line utility that is meant to be integrated into other tools. You can install it using pip: <tt>pip install proselint</tt>. There&rsquo;s a plugin for Sublime Text. It&rsquo;s open-source software available under the permissive BSD license. Work on <tt>proselint</tt> happens over <a href="https://github.com/amperser/proselint/">on GitHub</a>. We welcome <a href="/contributing">contributors.</a></p>
-
-<p>With time, <tt>proselint</tt> will become fast, precise, exhaustive, and authoritative. Eventually, it will be unthinkable to write without it by your side.</p>
-
-<hr/>
-
-<p>For more information, see:</p>
-<ul>
-    <li><p><a href="/contributing">How to contribute.</a></p></li>
-    <li><p><a href="/approach">Is this yet another awful grammar checker?</a></p></li>
-    <li><p><a href="/checks">What it looks for.</a></p></li>
-    <li><p><a href="/utility">The command-line utility.</a></p></li>
-</ul>
-
-</div>
+          setTimeout(() => {
+            element.classList.remove('copied');
+            element.title = 'Click to copy';
+          }, 500);
+      }
+    </script>
+  </body>
+</html>
