@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from enum import Enum, IntEnum
-from functools import cache
+from functools import cache, cached_property
 from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, TypeAlias
 
@@ -75,27 +75,33 @@ class Engine(IntEnum):
     FANCY = 1
 
 
-class RegexOptions(NamedTuple):
+class RegexOptions:
     """Options for the Regex `Engine`."""
 
-    case_insensitive: bool = True
-    multi_line: bool = False
+    case_insensitive: bool
+    multi_line: bool
 
-    @property
+    def __init__(
+        self, *, case_insensitive: bool = True, multi_line: bool = False
+    ) -> None:
+        """Set the options."""
+        self.case_insensitive = case_insensitive
+        self.multi_line = multi_line
+
+    @cached_property
     def re_flag(self) -> int | RegexFlag:
         """Return an `RegexFlag` corresponding to the set options."""
         return (int(self.case_insensitive) and RegexFlag.IGNORECASE) | (
             int(self.multi_line) and RegexFlag.MULTILINE
         )
 
-    @property
+    @cached_property
     def re2_opts(self) -> Options:
         """Return an `Options` corresponding to the set options."""
         opts = Options()
-        # TODO: cache static options instead of creating many new objects
         opts.perl_classes = True
         opts.word_boundary = True
-        # TODO: opts.never_capture?
+        opts.never_capture = True
         opts.case_sensitive = not self.case_insensitive
         opts.one_line = not self.multi_line
         return opts
