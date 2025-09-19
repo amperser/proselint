@@ -4,64 +4,19 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from itertools import islice
 from math import ceil
 from typing import TYPE_CHECKING, NamedTuple
 
-from proselint.registry.checks.engine import Matcher
+from proselint.registry.checks.engine import Matcher, Padding
 
 if TYPE_CHECKING:
-    from collections.abc import Collection, Iterator
+    from collections.abc import Iterator
 
     from proselint.registry.checks.types import CheckType
 
 BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
-
-
-class Padding(str, Enum):
-    """Regex padding types for checks."""
-
-    RAW = r"{}"
-    """Bare text with no padding."""
-    SAFE_JOIN = r"(?:{})"
-    """Encapsulate patterns in an anonymous group for joining, e.g. x|y|z."""
-    WORDS_IN_TEXT = r"\b{}\b"
-    """
-    Match word position boundaries around the pattern.
-
-    This matches any position between a word character and a non-word character
-    or position.
-    """
-    NONWORDS_IN_TEXT = r"\B{}\B"
-    """Match any position that is not a word boundary around the pattern."""
-    STRICT_WORDS_IN_TEXT = r"(?<![A-Za-z'-]){}(?![A-Za-z'-])"
-    """Lookaround-based `WORDS_IN_TEXT`, prohibiting hyphens and apostrophes."""
-
-    def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
-        """Calculate new offset values based on the applied padding."""
-        if self in {
-            Padding.RAW,
-            Padding.SAFE_JOIN,
-            Padding.WORDS_IN_TEXT,
-            Padding.STRICT_WORDS_IN_TEXT,
-        }:
-            return offset
-        return (offset[0] + 1, max(offset[1] - 1, 0))
-
-    @staticmethod
-    def safe_join(patterns: Collection[str]) -> str:
-        """Join a collection of patterns with `Padding.SAFE_JOIN`."""
-        return (
-            (
-                Padding.SAFE_JOIN.format("|".join(patterns))
-                if len(patterns) > 1
-                else next(iter(patterns))
-            )
-            if patterns
-            else ""
-        )
 
 
 # TODO: use position and span for (line, column) and (start_pos, end_pos)?

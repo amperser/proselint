@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from enum import IntEnum
+from enum import Enum, IntEnum
 from functools import cache
 from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple, TypeAlias
@@ -14,10 +14,43 @@ import re2
 from re2 import Options
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Collection, Iterator
 
 Pattern: TypeAlias = "re.Pattern[str] | re2._Regexp[str]"
 Match: TypeAlias = "re.Match[str] | re2._Match[str]"
+
+
+class Padding(str, Enum):
+    """Regex padding types for checks."""
+
+    RAW = r"{}"
+    """Bare text with no padding."""
+    SAFE_JOIN = r"(?:{})"
+    """Encapsulate patterns in an anonymous group for joining, e.g. x|y|z."""
+    WORDS_IN_TEXT = r"\b{}\b"
+    """
+    Match word position boundaries around the pattern.
+
+    This matches any position between a word character and a non-word character
+    or position.
+    """
+    NONWORDS_IN_TEXT = r"\B{}\B"
+    """Match any position that is not a word boundary around the pattern."""
+    STRICT_WORDS_IN_TEXT = r"(?<![A-Za-z'-]){}(?![A-Za-z'-])"
+    """Lookaround-based `WORDS_IN_TEXT`, prohibiting hyphens and apostrophes."""
+
+    @staticmethod
+    def safe_join(patterns: Collection[str]) -> str:
+        """Join a collection of patterns with `Padding.SAFE_JOIN`."""
+        return (
+            (
+                Padding.SAFE_JOIN.format("|".join(patterns))
+                if len(patterns) > 1
+                else next(iter(patterns))
+            )
+            if patterns
+            else ""
+        )
 
 
 class Anchor(IntEnum):
