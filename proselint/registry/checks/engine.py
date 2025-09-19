@@ -8,8 +8,16 @@ import re
 from abc import ABC, abstractmethod
 from enum import Enum, IntEnum
 from functools import cache, cached_property
+from itertools import chain
 from re import RegexFlag
-from typing import TYPE_CHECKING, TypeAlias, override
+from typing import (
+    TYPE_CHECKING,
+    Generic,
+    TypeAlias,
+    TypeVar,
+    cast,
+    override,
+)
 
 import re2
 from re2 import Options
@@ -19,6 +27,7 @@ if TYPE_CHECKING:
 
 Pattern: TypeAlias = "re.Pattern[str] | re2._Regexp[str]"
 Match: TypeAlias = "re.Match[str] | re2._Match[str]"
+PatternSet: TypeAlias = str | re2.Set
 
 
 class Padding(str, Enum):
@@ -67,6 +76,16 @@ class Anchor(IntEnum):
     """Match at the start of the text."""
     ANCHOR_BOTH = 2
     """Match at the start and end of the text."""
+
+    def to_re2_set(self, opts: Options | None = None) -> re2.Set:
+        """Create an `re2.Set` with the anchor and given options."""
+        match self:
+            case Anchor.UNANCHORED:
+                return re2.Set.SearchSet(opts)
+            case Anchor.ANCHOR_START:
+                return re2.Set.MatchSet(opts)
+            case Anchor.ANCHOR_BOTH:
+                return re2.Set.FullMatchSet(opts)
 
 
 class RegexOptions:
@@ -131,6 +150,16 @@ class Engine(ABC):
         """Compile and cache a pattern, then check if it matches in `text`."""
         return len(pattern) > 0 and self.search(pattern, text) is not None
 
+    @abstractmethod
+    def make_set(
+        self,
+        _padding: Padding,
+        _patterns: Collection[str],
+        _anchor: Anchor = Anchor.UNANCHORED,
+    ) -> MatchSet[str | re2.Set]:
+        """Create a `MatchSet` with the engine."""
+        ...
+
 
 class Fast(Engine):
     """The standard engine, based on RE2."""
@@ -143,6 +172,15 @@ class Fast(Engine):
     @override
     def compiled_pattern(self, pattern: str) -> re2._Regexp[str]:
         return Fast._compiled_pattern(pattern, self.opts)
+
+    @override
+    def make_set(
+        self,
+        padding: Padding,
+        patterns: Collection[str],
+        anchor: Anchor = Anchor.UNANCHORED,
+    ) -> FastSet:
+        return FastSet(self, padding, patterns, anchor)
 
 
 class Fancy(Engine):
@@ -161,3 +199,135 @@ class Fancy(Engine):
     @override
     def compiled_pattern(self, pattern: str) -> re.Pattern[str]:
         return Fancy._compiled_pattern(pattern, self.opts)
+
+    @override
+    def make_set(
+        self,
+        padding: Padding,
+        patterns: Collection[str],
+        _anchor: Anchor = Anchor.UNANCHORED,
+    ) -> FancySet:
+        return FancySet(self, padding, patterns)
+
+
+ST_co = TypeVar("ST_co", bound=str | re2.Set, covariant=True)
+
+
+class MatchSet(ABC, Generic[ST_co]):
+    """Abstract base class for Regex match sets."""
+
+    engine: Engine
+    padding: Padding
+    _set: ST_co
+
+    # TODO: find a way to expose *which* patterns matched
+
+    @abstractmethod
+    def construct_set(self, patterns: Collection[str]) -> ST_co:
+        """Construct and cache the set."""
+        ...
+
+    @abstractmethod
+    def exists_in(self, _text: str) -> bool:
+        """Determine whether a match exists in the text."""
+        ...
+
+    # TODO: explore possibility of a zipped match set for types.Consistency
+
+    @abstractmethod
+    def finditer(self, _text: str) -> Iterator[Match]:
+        """Return an iterator over matches in the text."""
+        ...
+
+
+class FastSet(MatchSet[re2.Set]):
+    """A match set based on the `Fast` engine."""
+
+    engine: Engine
+    padding: Padding
+    _anchor: Anchor
+    _patterns: tuple[str, ...]
+    _set: re2.Set
+
+    @cache
+    @staticmethod
+    def _construct_set(
+        engine: Engine,
+        padding: Padding,
+        patterns: Collection[str],
+        anchor: Anchor = Anchor.UNANCHORED,
+    ) -> re2.Set:
+        match_set = anchor.to_re2_set(engine.opts.re2_opts)
+        for pattern in map(padding.format, patterns):
+            _ = match_set.Add(pattern)
+        match_set.Compile()
+        return match_set
+
+    @override
+    def construct_set(self, patterns: Collection[str]) -> re2.Set:
+        return FastSet._construct_set(
+            self.engine, self.padding, patterns, self._anchor
+        )
+
+    def __init__(
+        self,
+        engine: Fast,
+        padding: Padding,
+        patterns: Collection[str],
+        anchor: Anchor = Anchor.UNANCHORED,
+    ) -> None:
+        """Initialise the match set."""
+        self.engine = engine
+        self.padding = padding
+
+        self._anchor = anchor
+        self._patterns = tuple(patterns)
+        self._set = self.construct_set(patterns)
+
+    @override
+    def exists_in(self, text: str) -> bool:
+        return self._set.Match(text) is not None
+
+    @override
+    def finditer(self, text: str) -> Iterator[Match]:
+        set_indices = cast("list[int] | None", self._set.Match(text))
+        if set_indices is None:
+            return iter(())
+
+        return chain.from_iterable(
+            self.engine.finditer(self._patterns[idx], text)
+            for idx in set_indices
+        )
+
+
+class FancySet(MatchSet[str]):
+    """A match set based on the `Fancy` engine."""
+
+    engine: Engine
+    padding: Padding
+    _set: str
+
+    @cache
+    @staticmethod
+    def _construct_set(padding: Padding, patterns: Collection[str]) -> str:
+        return padding.format(Padding.safe_join(patterns))
+
+    @override
+    def construct_set(self, patterns: Collection[str]) -> str:
+        return FancySet._construct_set(self.padding, patterns)
+
+    def __init__(
+        self, engine: Fancy, padding: Padding, patterns: Collection[str]
+    ) -> None:
+        """Initialise the match set."""
+        self.engine = engine
+        self.padding = padding
+        self._set = self.construct_set(patterns)
+
+    @override
+    def exists_in(self, text: str) -> bool:
+        return self.engine.exists_in(self._set, text)
+
+    @override
+    def finditer(self, text: str) -> Iterator[Match]:
+        return self.engine.finditer(self._set, text)

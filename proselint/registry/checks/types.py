@@ -6,7 +6,7 @@ from itertools import chain, filterfalse, zip_longest
 from typing import NamedTuple, TypeVar
 
 from proselint.registry.checks import Check, CheckResult, Padding
-from proselint.registry.checks.engine import Match
+from proselint.registry.checks.engine import Anchor, Match, MatchSet, PatternSet
 
 CheckFn = Callable[[str, Check], Iterator[CheckResult]]
 
@@ -107,9 +107,7 @@ class PreferredFormsSimple(NamedTuple):
         """Convert a `re.Match` object to a `CheckResult`."""
         original = match.group(0).strip()
         replacement = self.items.get(
-            original.lower()
-            if check.engine.opts.case_insensitive
-            else original
+            original.lower() if check.engine.opts.case_insensitive else original
         )
 
         return CheckResult(
@@ -124,18 +122,23 @@ class PreferredFormsSimple(NamedTuple):
         """Check for terms to be replaced with a preferred form in `text`."""
         map_match = partial(self.map_match, check)
 
-        pattern = self.padding.format(Padding.safe_join(self.items))
+        pattern = check.engine.make_set(self.padding, tuple(self.items.keys()))
 
-        return map(map_match, check.engine.finditer(pattern, text))
+        return map(map_match, pattern.finditer(text))
 
 
 def _process_existence(
-    pattern: str,
-    exceptions_pattern: str,
+    pattern: str | MatchSet[PatternSet],
+    exceptions: MatchSet[PatternSet],
     text: str,
     check: Check,
 ) -> Iterator[CheckResult]:
     """Match against `pattern` respecting `offset` in `text`."""
+    match_iter = (
+        check.engine.finditer(pattern, text)
+        if isinstance(pattern, str)
+        else pattern.finditer(text)
+    )
     return (
         CheckResult(
             start_pos=m.start() + check.offset[0],
@@ -144,10 +147,8 @@ def _process_existence(
             message=check.message.format(m_text),
             replacements=None,
         )
-        for m in check.engine.finditer(pattern, text)
-        if not check.engine.exists_in(
-            exceptions_pattern, m_text := m.group(0).strip()
-        )
+        for m in match_iter
+        if not exceptions.exists_in(m_text := m.group(0).strip())
     )
 
 
@@ -160,10 +161,12 @@ class Existence(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for the existence of terms in `text`."""
-        pattern = self.padding.format(Padding.safe_join(self.items))
-        exceptions_pattern = Padding.safe_join(self.exceptions)
+        pattern_set = check.engine.make_set(self.padding, self.items)
+        exception_set = check.engine.make_set(
+            self.padding, self.exceptions, Anchor.ANCHOR_BOTH
+        )
 
-        return _process_existence(pattern, exceptions_pattern, text, check)
+        return _process_existence(pattern_set, exception_set, text, check)
 
 
 class ExistenceSimple(NamedTuple):
@@ -174,10 +177,10 @@ class ExistenceSimple(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for the existence of a single pattern in `text`."""
-        exceptions_pattern = Padding.safe_join(self.exceptions)
-        return _process_existence(
-            self.pattern, exceptions_pattern, text, check
+        exception_set = check.engine.make_set(
+            Padding.RAW, self.exceptions, Anchor.ANCHOR_BOTH
         )
+        return _process_existence(self.pattern, exception_set, text, check)
 
 
 _DEFAULT_TOKENIZER = Padding.WORDS_IN_TEXT.format(
