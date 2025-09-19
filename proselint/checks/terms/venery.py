@@ -15,7 +15,6 @@ Names for groups of animals.
 """
 
 from collections.abc import Iterator
-from re import search
 
 from proselint.registry.checks import Check, CheckResult, Padding, types
 
@@ -75,9 +74,7 @@ GENERIC_TERMS = ("group", "bunch")
 
 def _check_venery(text: str, check: Check) -> Iterator[CheckResult]:
     """Check the text."""
-    if not search(
-        Padding.SAFE_JOIN.format("|".join(GENERIC_TERMS)), text, check.re_flag
-    ):
+    if not check.engine.make_set(Padding.RAW, GENERIC_TERMS).exists_in(text):
         return iter(())
 
     return types.PreferredFormsSimple(
