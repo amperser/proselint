@@ -45,7 +45,7 @@ MODIFIERS = {
 
 def _check_waxed(text: str, check: Check) -> Iterator[CheckResult]:
     """Suggest the preferred forms."""
-    if not check.matcher.exists_in(Padding.safe_join(WAXES), text):
+    if not check.engine.exists_in(Padding.safe_join(WAXES), text):
         return iter(())
 
     return types.PreferredFormsSimple(

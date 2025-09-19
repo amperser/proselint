@@ -177,7 +177,7 @@ check = Check(
     ),
     path="misc.preferred_forms",
     message="'{}' is the preferred form.",
-    matcher=engine.Matcher(engine=engine.Engine.FANCY),
+    engine=engine.Fancy(),
 )
 
 # fmt: off
@@ -187,7 +187,7 @@ check_meantime_capital = Check(
     ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
-    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 # fmt: on
 
@@ -197,7 +197,7 @@ check_meantime_clause = Check(
     ),
     path=CHECK_PATH,
     message=CHECK_MESSAGE,
-    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
     offset=(2, 0),
 )
 

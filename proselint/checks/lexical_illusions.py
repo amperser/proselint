@@ -26,7 +26,7 @@ check = Check(
     ),
     path="lexical_illusions",
     message="There's a lexical illusion in '{}' - a phrase is repeated.",
-    matcher=engine.Matcher(engine=engine.Engine.FANCY),
+    engine=engine.Fancy(),
 )
 
 __register__ = (check,)

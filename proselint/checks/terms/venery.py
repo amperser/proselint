@@ -74,7 +74,7 @@ GENERIC_TERMS = ("group", "bunch")
 
 def _check_venery(text: str, check: Check) -> Iterator[CheckResult]:
     """Check the text."""
-    if not check.matcher.exists_in(Padding.safe_join(GENERIC_TERMS), text):
+    if not check.engine.exists_in(Padding.safe_join(GENERIC_TERMS), text):
         return iter(())
 
     return types.PreferredFormsSimple(

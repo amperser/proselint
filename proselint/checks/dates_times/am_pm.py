@@ -18,7 +18,7 @@ check_lowercase_periods = Check(
     check_type=types.ExistenceSimple(pattern=r"\d{1,2} ?[ap]m"),
     path="dates_times.am_pm.lowercase_periods",
     message="It's standard to use periods for lowercase 'a.m.' or 'p.m.'.",
-    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 check_spacing = Check(

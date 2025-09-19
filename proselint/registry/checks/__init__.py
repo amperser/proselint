@@ -8,7 +8,7 @@ from itertools import islice
 from math import ceil
 from typing import TYPE_CHECKING, NamedTuple
 
-from proselint.registry.checks.engine import Matcher, Padding
+from proselint.registry.checks.engine import Engine, Fast, Padding
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -95,7 +95,7 @@ class Check(NamedTuple):
     """Carry a complete check specification."""
 
     check_type: CheckType
-    matcher: Matcher = Matcher()
+    engine: Engine = Fast()
     path: str = ""
     message: str = ""
     flags: CheckFlags = CheckFlags()

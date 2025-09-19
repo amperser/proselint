@@ -10,14 +10,13 @@ from proselint.config.paths import proselint_path
 from proselint.registry.checks import Check, Padding, engine
 
 
-def engine_from(padding: Padding) -> engine.Engine:
+def engine_from(
+    padding: Padding, opts: engine.RegexOptions | None = None
+) -> engine.Engine:
     """Return the correct engine to use for a given `padding`."""
-    return engine.Engine(int(padding == Padding.STRICT_WORDS_IN_TEXT))
-
-
-def matcher_from(padding: Padding) -> engine.Matcher:
-    """Return a matcher with the correct engine to use for a given `padding`."""
-    return engine.Matcher(engine=engine_from(padding))
+    return [engine.Fast, engine.Fancy][
+        int(padding == Padding.STRICT_WORDS_IN_TEXT)
+    ](opts)
 
 
 def assert_pass(check: Check, examples: tuple[str, ...]) -> None:

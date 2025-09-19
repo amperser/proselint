@@ -128,7 +128,7 @@ check_uncomparables = Check(
     check_type=_check_uncomparables,
     path="uncomparables",
     message="Comparison of an uncomparable: '{}' is not comparable.",
-    matcher=engine.Matcher(engine=engine.Engine.FANCY),
+    engine=engine.Fancy(),
 )
 
 __register__ = (check_uncomparables,)

@@ -26,7 +26,7 @@ check_very = Check(
         "Substitute 'damn' every time you're inclined to write 'very'; your"
         " editor will delete it and the writing will be just as it should be."
     ),
-    matcher=engine.Matcher(engine=engine.Engine.FANCY),
+    engine=engine.Fancy(),
 )
 
 __register__ = (check_very,)

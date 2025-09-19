@@ -12,7 +12,7 @@ from hypothesis import strategies as st
 from rstr import xeger
 
 from proselint.registry.checks import BATCH_COUNT, Check, Padding, engine, types
-from tests.common import engine_from, matcher_from
+from tests.common import engine_from
 
 PADDING_STRATEGY = st.sampled_from(Padding)
 
@@ -126,7 +126,7 @@ def test_preferred_smoke(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     assert list(check.check(noise)) == []
 
@@ -142,7 +142,7 @@ def test_preferred_values_smoke(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
     assert list(check.check(content)) == []
@@ -159,7 +159,7 @@ def test_preferred_in_text(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     selected_matches = list(
         chain.from_iterable(
@@ -202,7 +202,7 @@ def test_preferred_s_smoke(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     assert list(check.check(noise)) == []
 
@@ -216,9 +216,8 @@ def test_preferred_s_case_sensitive(
         check_type=types.PreferredFormsSimple(items=items, padding=padding),
         path=path,
         message="{} || {}",
-        matcher=engine.Matcher(
-            opts=engine.RegexOptions(case_insensitive=False),
-            engine=engine_from(padding),
+        engine=engine_from(
+            padding, engine.RegexOptions(case_insensitive=False)
         ),
     )
 
@@ -246,10 +245,7 @@ def test_preferred_s_case_insensitive(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=engine.Matcher(
-            opts=engine.RegexOptions(case_insensitive=True),
-            engine=engine_from(padding),
-        ),
+        engine=engine_from(padding, engine.RegexOptions(case_insensitive=True)),
     )
 
     text_variations = [
@@ -278,7 +274,7 @@ def test_preferred_s_values_smoke(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
     assert list(check.check(content)) == []
@@ -295,7 +291,7 @@ def test_preferred_s_in_text(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     selected_matches = list(
         chain.from_iterable(
@@ -363,7 +359,7 @@ def test_existence_smoke(
         check_type=check_type,
         path=path,
         message="{}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     assert list(check.check(noise)) == []
 
@@ -385,7 +381,7 @@ def test_existence_exceptions_smoke(
         check_type=check_type,
         path=path,
         message="{}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     content = " ".join(chain.from_iterable(map(repeat, exceptions, count)))
     assert list(check.check(content)) == []
@@ -408,7 +404,7 @@ def test_existence_in_text(
         check_type=check_type,
         path=path,
         message="{}",
-        matcher=matcher_from(padding),
+        engine=engine_from(padding),
     )
     selected_matches = list(
         chain.from_iterable(

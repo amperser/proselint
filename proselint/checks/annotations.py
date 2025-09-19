@@ -29,7 +29,7 @@ check = Check(
     ),
     path="annotations.misc",
     message="Annotation left in text.",
-    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (check,)

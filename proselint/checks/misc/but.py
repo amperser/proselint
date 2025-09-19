@@ -32,7 +32,7 @@ def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
             message=check.message,
             replacements=None,
         )
-        for m in check.matcher.finditer(PATTERN, text)
+        for m in check.engine.finditer(PATTERN, text)
     )
 
 
@@ -40,7 +40,7 @@ check = Check(
     check_type=_check_but_paragraphs,
     path="misc.but",
     message="No paragraph should start with a 'But'.",
-    matcher=engine.Matcher(opts=engine.RegexOptions(case_insensitive=False)),
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (check,)
