@@ -1,4 +1,6 @@
-# ruff: noqa: D100, D103, INP001
+#!/usr/bin/env python3
+
+# ruff: noqa: D100, D103
 
 import ast
 from pathlib import Path
