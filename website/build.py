@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# ruff: noqa: D100, D103
-
 import ast
 from pathlib import Path
 from shutil import copy2
