@@ -3,72 +3,46 @@
   <head>
     <meta charset="UTF-8">
     <title>Proselint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-      font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
-      line-height: 1.65;
-      }
-      h1, h2, h3 {
-      font-family: "Merriweather", Georgia, serif;
-      }
-      .copied {
-      border-color: #88e788 !important;
-      transition: border-color 0.3s ease !important;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body class="bg-neutral-50 text-neutral-900">
-    <main class="max-w-2xl mx-auto my-16 px-6">
-      <h1 class="text-4xl font-bold">Proselint</h1>
-      <p class="mb-8 text-lg text-neutral-700">
+  <body>
+    <main>
+      <h1>Proselint</h1>
+      <p>
         <em>Proselint</em> is a linter for English prose.
         It highlights <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and other stylistic issues,
         much like a spellchecker for style.
       </p>
 
-        <h2 class="text-2xl font-semibold mt-8">Install</h2>
-        <p class="text-neutral-700 mb-4">Install via <em>pip</em> and try a quick example from the command line.</p>
-        <div class="space-y-4">
-          <pre onclick="copyCode(this)"
-            class="text-sm mt-3 bg-white border border-neutral-300 text-neutral-900 rounded-lg p-4 hover:border-neutral-400 transition-colors duration-200 cursor-pointer font-mono leading-6 whitespace-pre-wrap break-words focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            title="Click to copy"><code><span class="text-blue-600 font-semibold">pip</span> <span class="text-purple-600">install</span> <span class="text-green-600">proselint</span></code></pre>
-          <pre onclick="copyCode(this)"
-            class="text-sm mt-3 bg-white border border-neutral-300 text-neutral-900 rounded-lg p-4 hover:border-neutral-400 transition-colors duration-200 cursor-pointer font-mono leading-6 whitespace-pre-wrap break-words focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            title="Click to copy"><code><span class="text-blue-600 font-semibold">echo</span> <span class="text-green-600">"This is very unique and literally perfect."</span> <span class="text-red-600">|</span> <span class="text-blue-600 font-semibold">proselint</span> <span class="text-purple-600">check</span>
-<span class="text-blue-600 font-semibold">proselint</span> <span class="text-purple-600">check</span> <span class="text-amber-600">README.md</span></code></pre>
+        <h2>Install</h2>
+        <p>Install via <em>pip</em> and try a quick example from the command line.</p>
+        <div>
+<pre onclick="copyCode(this)" title="Click to copy">
+<code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code>
+</pre>
+<pre onclick="copyCode(this)" title="Click to copy">
+<code><span class="blue">echo</span> <span class="green">"This is very unique and literally perfect."</span> <span class="red">|</span> <span class="blue">proselint</span> <span class="purple">check</span>
+<span class="blue">proselint</span> <span class="purple">check</span> <span class="amber">README.md</span></code>
+</pre>
         </div>
-
-      <h2 class="text-2xl font-semibold mt-8">Try it</h2>
-      <p class="mb-4 text-neutral-700">Paste or type some text below.</p>
-      <div class="relative">
-        <textarea rows="8"
-          class="w-full border border-neutral-300 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-serif"
-          >This is very unique and literally perfect.</textarea>
-        <div class="absolute inset-0 pointer-events-none whitespace-pre-wrap p-4 text-transparent"></div>
+      <h2>Try it</h2>
+      <p>Paste or type some text below.</p>
+      <div >
+        <textarea rows="8">This is very unique and literally perfect.</textarea>
+        <div id="result"></div>
       </div>
 
-        <h3 class="font-semibold mt-2">Issues</h3>
+        <h3>Issues</h3>
         <ul>
           <li><em>uncomparables</em> Comparison of an uncomparable: 'very unique' is not comparable.</li>
           <li><em>weasel_words.very</em> Substitute 'damn' every time you're inclined to write 'very'; your editor will delete it and the writing will be just as it should be.</li>
         </ul>
     </main>
 
-    <footer class="max-w-2xl mx-auto px-6 pb-8 text-center">
-      <p class="text-sm text-neutral-500">
-        Crafted by <a href="https://github.com/amperser" rel="noopener noreferrer" target="_blank" class="text-neutral-700 hover:text-neutral-900 underline">Amperser Labs</a>
+    <footer>
+      <p class="sm">
+        Crafted by <a href="https://github.com/amperser" rel="noopener noreferrer" target="_blank">Amperser Labs</a>
       </p>
     </footer>
-
-    <script>
-      async function copyCode(element) {
-        const text = element.textContent;
-        await navigator.clipboard.writeText(text).catch(() => {});
-
-        element.classList.add('copied');
-        setTimeout(() => element.classList.remove('copied'), 500);
-      }
-    </script>
   </body>
 </html>
