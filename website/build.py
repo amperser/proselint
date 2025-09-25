@@ -3,6 +3,7 @@
 import ast
 from pathlib import Path
 from shutil import copy2
+from string import Template
 
 
 def _extract_frontmatter(path: Path) -> dict[str, str] | None:
@@ -61,9 +62,14 @@ def main() -> None:
 
     toc = _build_toc(_collect_metadata(root))
 
-    _ = dist.mkdir(parents=True, exist_ok=True)
-    _ = copy2("index.html", dist / "index.html")
-    _ = (dist / "toc.html").write_text(toc, encoding="utf-8")
+    dist.mkdir(parents=True, exist_ok=True)
+    for name in ("index.html", "styles.css", "reset.css"):
+        _ = copy2(name, dist / name)
+
+    template = Path("rules.html").read_text(encoding="utf-8")
+    rules = Template(template).safe_substitute(rules=toc)
+
+    _ = (dist / "rules.html").write_text(rules, encoding="utf-8")
 
 
 if __name__ == "__main__":
