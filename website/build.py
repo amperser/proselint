@@ -37,7 +37,7 @@ def _collect_metadata(root: Path) -> list[dict[str, str]]:
     ]
 
 
-def _build_toc(entries: list[dict[str, str]]) -> str:
+def _build_rules(entries: list[dict[str, str]]) -> str:
     items: list[str] = []
     for entry in entries:
         date = f' <small>{entry["date"]}</small>' if entry.get("date") else ""
@@ -60,7 +60,7 @@ def main() -> None:
         print(f"directory {root} does not exist")
         return
 
-    toc = _build_toc(_collect_metadata(root))
+    toc = _build_rules(_collect_metadata(root))
 
     dist.mkdir(parents=True, exist_ok=True)
     for name in ("index.html", "styles.css", "reset.css"):
