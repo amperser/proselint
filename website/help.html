@@ -1,59 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Proselint</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
       <h1>Proselint</h1>
       <p>
-      More information and help on <em>proselint</em>, or <a href="/">go back.</a>.
+        More information and help on <em>proselint</em>, or
+        <a href="/">go back.</a>.
       </p>
 
-        <h2>Install</h2>
+      <h2>Install</h2>
       <div>
         <p>Via <em>Pip</em></p>
-<pre><code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
+        <pre><code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
       </div>
 
       <div>
         <p>Via <em>Apt</em> (Debian / Ubuntu)</p>
-<pre><code><span class="blue">apt</span> <span class="purple">install</span> <span class="green">python3-proselint</span></code></pre>
+        <pre><code><span class="blue">apt</span> <span class="purple">install</span> <span class="green">python3-proselint</span></code></pre>
       </div>
 
       <div>
         <p>Via <em>Homebrew</em> (macOS / Linux)</p>
-<pre><code><span class="blue">brew</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
+        <pre><code><span class="blue">brew</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
       </div>
 
       <div>
         <p>Via <em>Conda</em></p>
-<pre><code><span class="blue">conda</span> <span class="purple">install</span> <span class="green">conda-forge::proselint</span></code></pre>
+        <pre><code><span class="blue">conda</span> <span class="purple">install</span> <span class="green">conda-forge::proselint</span></code></pre>
       </div>
 
       <div>
         <p>Via <em>Nix</em></p>
-<pre><code><span class="purple">environment.systemPackages</span> <span class="green">=</span> <span class="blue">with pkgs;</span> [
+        <pre><code><span class="purple">environment.systemPackages</span> <span class="green">=</span> <span class="blue">with pkgs;</span> [
   <span class="green">proselint</span>
 ];</code></pre>
       </div>
 
       <div>
         <p>From <em>source</em></p>
-<pre><code><span class="blue">git</span> <span class="purple">clone</span> <span class="green">https://github.com/amperser/proselint.git</span>
+        <pre><code><span class="blue">git</span> <span class="purple">clone</span> <span class="green">https://github.com/amperser/proselint.git</span>
 <span class="blue">cd</span> <span class="green">proselint</span>
 
 <span class="blue">uv</span> <span class="purple">pip install</span> <span class="green">.</span> # or, with Nix
 <span class="blue">nix</span> <span class="purple">profile install</span> <span class="green">.</span></code></pre>
       </div>
-
     </main>
 
     <footer>
       <p class="sm">
-        Crafted by <a href="https://github.com/amperser" rel="noopener noreferrer" target="_blank">Amperser Labs</a>
+        Crafted by
+        <a
+          href="https://github.com/amperser"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Amperser Labs</a
+        >
       </p>
     </footer>
   </body>

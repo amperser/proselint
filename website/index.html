@@ -1,49 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Proselint</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
       <h1>Proselint</h1>
       <p>
-        <em>Proselint</em> is a linter for English prose.
-        It highlights <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and other stylistic issues,
-        much like a spellchecker for style. <br /> <br />
+        <em>Proselint</em> is a linter for English prose. It highlights
+        <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and
+        other stylistic issues, much like a spellchecker for style. <br />
+        <br />
 
-        You can navigate the available <a href="rules.html">rules</a> or get further <a href="help.html">help</a>.
+        You can navigate the available <a href="rules.html">rules</a> or get
+        further <a href="help.html">help</a>.
       </p>
 
-        <h2>Install</h2>
-        <p>Install via <em>pip</em> and try a quick example from the command line.</p>
-        <div>
-<pre title="Click to copy">
+      <h2>Install</h2>
+      <p>
+        Install via <em>pip</em> and try a quick example from the command line.
+      </p>
+      <div>
+        <pre title="Click to copy">
 <code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code>
 </pre>
-<pre title="Click to copy">
+        <pre title="Click to copy">
 <code><span class="blue">echo</span> <span class="green">"This is very unique and literally perfect."</span> <span class="red">|</span> <span class="blue">proselint</span> <span class="purple">check</span>
 <span class="blue">proselint</span> <span class="purple">check</span> <span class="amber">README.md</span></code>
 </pre>
-        </div>
+      </div>
       <h2>Try it</h2>
       <p>Paste or type some text below.</p>
-      <div >
+      <div>
         <textarea rows="8">This is very unique and literally perfect.</textarea>
         <div id="result"></div>
       </div>
 
-        <h3>Issues</h3>
-        <ul>
-          <li><em>uncomparables</em> Comparison of an uncomparable: 'very unique' is not comparable.</li>
-          <li><em>weasel_words.very</em> Substitute 'damn' every time you're inclined to write 'very'; your editor will delete it and the writing will be just as it should be.</li>
-        </ul>
+      <h3>Issues</h3>
+      <ul>
+        <li>
+          <em>uncomparables</em> Comparison of an uncomparable: 'very unique' is
+          not comparable.
+        </li>
+        <li>
+          <em>weasel_words.very</em> Substitute 'damn' every time you're
+          inclined to write 'very'; your editor will delete it and the writing
+          will be just as it should be.
+        </li>
+      </ul>
     </main>
 
     <footer>
       <p class="sm">
-        Crafted by <a href="https://github.com/amperser" rel="noopener noreferrer" target="_blank">Amperser Labs</a>
+        Crafted by
+        <a
+          href="https://github.com/amperser"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Amperser Labs</a
+        >
       </p>
     </footer>
   </body>
