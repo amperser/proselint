@@ -88,6 +88,16 @@ pre:focus {
   box-shadow: 0 0 0 2px #4f46e5;
 }
 
+code:not(pre code) {
+  padding: 0.1em 0.2em;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.75em;
+  background-color: #fff;
+  border: 1px solid #d4d4d4;
+  color: #171717;
+}
+
 code {
   font-family: inherit;
 }
@@ -112,6 +122,7 @@ code .red {
 code .amber {
   color: #f59e0b;
 }
+
 
 textarea {
   width: 100%;

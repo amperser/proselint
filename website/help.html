@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,7 +10,7 @@
       <h1>Proselint</h1>
       <p>
         More information and help on <em>proselint</em>, or
-        <a href="/">go back.</a>.
+        <a href="/">go back</a>.
       </p>
 
       <h2>Install</h2>
@@ -49,6 +49,66 @@
 <span class="blue">uv</span> <span class="purple">pip install</span> <span class="green">.</span> # or, with Nix
 <span class="blue">nix</span> <span class="purple">profile install</span> <span class="green">.</span></code></pre>
       </div>
+
+      <h2>Configuration</h2>
+      <p>The default configuration is:</p>
+      <pre><code>{
+    <span class="blue">"max_errors"</span>: <span class="green">1000</span>,
+    <span class="blue">"checks"</span>: {
+        <span class="blue">"annotations"</span>: <span class="green">true</span>,
+        <span class="blue">"archaism"</span>: <span class="green">true</span>,
+        <span class="blue">"cliches"</span>: <span class="green">true</span>,
+        <span class="blue">"dates_times"</span>: <span class="green">true</span>,
+        <span class="blue">"hedging"</span>: <span class="green">true</span>,
+        <span class="blue">"industrial_language"</span>: <span class="green">true</span>,
+        <span class="blue">"lexical_illusions"</span>: <span class="green">true</span>,
+        <span class="blue">"malapropisms"</span>: <span class="green">true</span>,
+        <span class="blue">"misc"</span>: <span class="green">true</span>,
+        <span class="blue">"mixed_metaphors"</span>: <span class="green">true</span>,
+        <span class="blue">"mondegreens"</span>: <span class="green">true</span>,
+        <span class="blue">"needless_variants"</span>: <span class="green">true</span>,
+        <span class="blue">"nonwords"</span>: <span class="green">true</span>,
+        <span class="blue">"oxymorons"</span>: <span class="green">true</span>,
+        <span class="blue">"psychology"</span>: <span class="green">true</span>,
+        <span class="blue">"redundancy"</span>: <span class="green">true</span>,
+        <span class="blue">"restricted"</span>: <span class="red">false</span>,
+        <span class="blue">"skunked_terms"</span>: <span class="green">true</span>,
+        <span class="blue">"social_awareness"</span>: <span class="green">true</span>,
+        <span class="blue">"spelling"</span>: <span class="green">true</span>,
+        <span class="blue">"terms"</span>: <span class="green">true</span>,
+        <span class="blue">"typography"</span>: <span class="green">true</span>,
+        <span class="blue">"uncomparables"</span>: <span class="green">true</span>,
+        <span class="blue">"weasel_words"</span>: <span class="green">true</span>
+    }
+}</code></pre>
+
+      <p>
+        Proselint searches for configuration files in the following order of
+        priority:
+      </p>
+      <ul>
+        <li><code>.proselintrc.json</code> in the current working directory</li>
+        <li><code>$XDG_CONFIG_HOME/proselint/config.json</code></li>
+        <li><code>$HOME/.proselintrc.json</code></li>
+        <li><code>/etc/proselintrc</code> (system-wide default)</li>
+      </ul>
+
+      <p>
+        Thus, if you want to override any rule locally, all you'd need to do is
+        create a <code>.proselintrc.json</code> and set the rule path to
+        <code>false</code>. For example, to disable
+        <code>typography.symbols.curly_quotes</code>:
+      </p>
+
+      <pre><code>{
+    <span class="blue">"checks"</span>: {
+        <span class="blue">"typography"</span>: {
+            <span class="blue">"symbols"</span>: {
+                <span class="blue">"curly_quotes"</span>: <span class="red">false</span>
+            }
+        }
+    }
+}</code></pre>
     </main>
 
     <footer>
