@@ -63,7 +63,7 @@ def main() -> None:
     toc = _build_rules(_collect_metadata(root))
 
     dist.mkdir(parents=True, exist_ok=True)
-    for name in ("index.html", "styles.css", "reset.css"):
+    for name in ("index.html", "help.html", "styles.css", "reset.css"):
         _ = copy2(name, dist / name)
 
     template = Path("rules.html").read_text(encoding="utf-8")
