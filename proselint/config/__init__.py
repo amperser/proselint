@@ -1,9 +1,10 @@
 """Configuration for proselint."""
 
 import json
+from collections.abc import Hashable
 from importlib.resources import files
 from pathlib import Path
-from typing import TypedDict
+from typing import TypedDict, TypeVar, cast
 from warnings import showwarning as warn
 
 from proselint import config
@@ -23,14 +24,22 @@ class Config(TypedDict):
     checks: dict[str, bool]
 
 
-DEFAULT: Config = json.loads((files(config) / "default.json").read_text())
+DEFAULT = cast(
+    "Config",
+    json.loads((files(config) / "default.json").read_text())
+)
+
+KT_co = TypeVar("KT_co", bound=Hashable, covariant=True)
+KV_co = TypeVar("KV_co", covariant=True)
 
 
-def _deepmerge_dicts(base: dict, overrides: dict) -> dict:
+def _deepmerge_dicts(
+        base: dict[KT_co, KV_co], overrides: dict[KT_co, KV_co]
+) -> dict[KT_co, KV_co]:
     # fmt: off
     return base | overrides | {
         key: (
-            _deepmerge_dicts(b_value, o_value)
+            _deepmerge_dicts(b_value, o_value)  # pyright: ignore[reportUnknownArgumentType]
             if isinstance(b_value := base[key], dict)
             else o_value
         )
@@ -50,9 +59,9 @@ def load_from(config_path: Path | None = None) -> Config:
 
     for path in config_paths:
         if path.is_file():
-            result: Config = _deepmerge_dicts(
-                result,
-                json.loads(path.read_text()),
+            result = _deepmerge_dicts(
+                dict(result),
+                json.loads(path.read_text()),  # pyright: ignore[reportAny]
             )
         if path.suffix == ".json" and (old := path.with_suffix("")).is_file():
             warn(
@@ -62,4 +71,4 @@ def load_from(config_path: Path | None = None) -> Config:
                 0,
             )
 
-    return result
+    return cast("Config", result)
