@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from enum import Enum
 from sys import stderr, stdout
-from typing import TYPE_CHECKING, TextIO
+from typing import TYPE_CHECKING, TextIO, cast
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -76,4 +76,4 @@ class Logger(logging.Logger):
 
 
 logging.setLoggerClass(Logger)
-log: Logger = logging.getLogger("proselint")  # pyright: ignore[reportAssignmentType]
+log = cast("Logger", logging.getLogger("proselint"))
