@@ -19,25 +19,6 @@ BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
 
 
-class LintResult(NamedTuple):
-    """Carry lint result information."""
-
-    check_path: str
-    message: str
-    span: tuple[int, int]
-    replacements: str | None
-    pos: tuple[int, int]
-
-    @property
-    def extent(self) -> int:
-        """The extent (span width) of the result."""
-        return self.span[1] - self.span[0]
-
-    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
-        """Convert the `LintResult` into a CLI-suitable format."""
-        return f":{self.pos[0]}:{self.pos[1]}: {self.check_path} {self.message}"
-
-
 class CheckResult(NamedTuple):
     """Carry check result information."""
 
