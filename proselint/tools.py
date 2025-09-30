@@ -16,6 +16,7 @@ from typing import NamedTuple, cast, overload
 from proselint.config import DEFAULT, Config
 from proselint.log import OutputFormat, log
 from proselint.registry import CheckRegistry
+from proselint.registry.checks import CheckResult
 
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 
@@ -107,20 +108,20 @@ def find_spans(
 class LintResult(NamedTuple):
     """Carry lint result information."""
 
-    check_path: str
-    message: str
-    span: tuple[int, int]
-    replacements: str | None
+    check_result: CheckResult
     pos: tuple[int, int]
 
     @property
     def extent(self) -> int:
         """The extent (span width) of the result."""
-        return self.span[1] - self.span[0]
+        return self.check_result.span[1] - self.check_result.span[0]
 
     def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
         """Convert the `LintResult` into a CLI-suitable format."""
-        return f":{self.pos[0]}:{self.pos[1]}: {self.check_path} {self.message}"
+        return (
+            f":{self.pos[0]}:{self.pos[1]}:"
+            f" {self.check_result.check_path} {self.check_result.message}"
+        )
 
 
 def errors_to_json(errors: list[LintResult]) -> str:
@@ -201,7 +202,7 @@ class LintFile:
         return sorted(
             islice(
                 (
-                    LintResult(*result, self.line_col_of(result.span[0]))
+                    LintResult(result, self.line_col_of(result.span[0]))
                     for check in registry.get_all_enabled(config["checks"])
                     for result in check.check_with_flags(self.content)
                     if (
@@ -211,7 +212,7 @@ class LintFile:
                 ),
                 config["max_errors"],
             ),
-            key=itemgetter(2, 3),  # sort by line and column
+            key=itemgetter(1),  # sort by line and column
         )
 
     def output_errors(
