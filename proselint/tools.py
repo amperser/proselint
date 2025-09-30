@@ -183,20 +183,12 @@ class LintFile:
         return sorted(
             islice(
                 (
-                    LintResult(
-                        result.check_path,
-                        result.message,
-                        *self.line_col_of(result.start_pos),
-                        start_pos=result.start_pos,
-                        end_pos=result.end_pos,
-                        severity="warning",
-                        replacements=result.replacements,
-                    )
+                    LintResult(*result, self.line_col_of(result.span[0]))
                     for check in registry.get_all_enabled(config["checks"])
                     for result in check.check_with_flags(self.content)
                     if (
                         check.flags.allow_quotes
-                        or not self.is_quoted_pos(result.start_pos)
+                        or not self.is_quoted_pos(result.span[0])
                     )
                 ),
                 config["max_errors"],

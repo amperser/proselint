@@ -24,10 +24,10 @@ PATTERN = r"(^|^\n|\n\n)But\b"
 def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
     return (
         CheckResult(
-            start_pos=(
-                m.start() + m.group(0).count("\n", 0, 2) + check.offset[0]
+            span=(
+                m.start() + m.group(0).count("\n", 0, 2) + check.offset[0],
+                m.end() + check.offset[1],
             ),
-            end_pos=m.end(),
             check_path=check.path,
             message=check.message,
             replacements=None,
