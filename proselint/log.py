@@ -23,10 +23,12 @@ def _init_stream_handler(
     stream: TextIO,
     level: int,
     log_filter: Callable[[logging.LogRecord], bool],
+    formatter: logging.Formatter | None = None,
 ) -> logging.StreamHandler[TextIO]:
     """Initialise a `StreamHandler` for logging with a level filter."""
     handler = logging.StreamHandler(stream)
     handler.setLevel(level)
+    handler.setFormatter(formatter)
     handler.addFilter(log_filter)
     return handler
 
@@ -40,28 +42,23 @@ class Logger(logging.Logger):
         base_handler = _init_stream_handler(
             stdout,
             logging.INFO,
-            lambda record: record.levelno == logging.INFO,
+            logging.INFO.__eq__,
         )
         err_handler = _init_stream_handler(
             stderr,
             logging.DEBUG,
-            lambda record: record.levelno != logging.INFO,
+            logging.INFO.__ne__,
+            logging.Formatter(
+                (
+                    "[%(asctime)s][proselint::%(module)s][%(levelname)s]"
+                    " %(message)s"
+                )
+                if verbose
+                else "%(message)s"
+            ),
         )
 
-        logging.basicConfig(
-            format=(
-                "[%(asctime)s][proselint::%(module)s][%(levelname)s]"
-                " %(message)s"
-            )
-            if verbose
-            else "%(message)s",
-            handlers=[base_handler, err_handler],
-        )
-
-    @property
-    def verbose(self) -> bool:
-        """Whether or not the logger is in verbose mode."""
-        return self.level == logging.DEBUG
+        logging.basicConfig(handlers=[base_handler, err_handler])
 
 
 logging.setLoggerClass(Logger)
