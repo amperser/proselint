@@ -19,19 +19,6 @@ class OutputFormat(str, Enum):
     COMPACT = "compact"
 
 
-def _level_clamp_filter(
-    *,
-    min_level: int = logging.NOTSET,
-    max_level: int = logging.CRITICAL,
-) -> Callable[[logging.LogRecord], bool]:
-    """Create a filter that allows log levels in the given closed interval."""
-
-    def _filter(record: logging.LogRecord) -> bool:
-        return min_level <= record.levelno <= max_level
-
-    return _filter
-
-
 def _init_stream_handler(
     stream: TextIO,
     level: int,
@@ -52,13 +39,13 @@ class Logger(logging.Logger):
         """Initialise the logger."""
         base_handler = _init_stream_handler(
             stdout,
-            logging.DEBUG if verbose else logging.INFO,
-            _level_clamp_filter(max_level=logging.INFO),
+            logging.INFO,
+            lambda record: record.levelno == logging.INFO,
         )
         err_handler = _init_stream_handler(
             stderr,
-            logging.WARNING,
-            _level_clamp_filter(min_level=logging.WARNING),
+            logging.DEBUG,
+            lambda record: record.levelno != logging.INFO,
         )
 
         logging.basicConfig(
