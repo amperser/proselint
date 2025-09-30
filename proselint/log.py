@@ -49,8 +49,10 @@ class Logger(logging.Logger):
         )
 
         logging.basicConfig(
-            level=logging.NOTSET,
-            format="[%(levelname)08s] %(name)s: %(message)s"
+            format=(
+                "[%(asctime)s][proselint::%(module)s][%(levelname)s]"
+                " %(message)s"
+            )
             if verbose
             else "%(message)s",
             handlers=[base_handler, err_handler],
