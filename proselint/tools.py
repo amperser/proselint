@@ -11,12 +11,11 @@ from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
 from sys import stdin
-from typing import cast, overload
+from typing import NamedTuple, cast, overload
 
 from proselint.config import DEFAULT, Config
 from proselint.log import OutputFormat, log
 from proselint.registry import CheckRegistry
-from proselint.registry.checks import LintResult
 
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 
@@ -103,6 +102,25 @@ def find_spans(
             spans.append((prev[1], span_end))
             prev = None
     return spans
+
+
+class LintResult(NamedTuple):
+    """Carry lint result information."""
+
+    check_path: str
+    message: str
+    span: tuple[int, int]
+    replacements: str | None
+    pos: tuple[int, int]
+
+    @property
+    def extent(self) -> int:
+        """The extent (span width) of the result."""
+        return self.span[1] - self.span[0]
+
+    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
+        """Convert the `LintResult` into a CLI-suitable format."""
+        return f":{self.pos[0]}:{self.pos[1]}: {self.check_path} {self.message}"
 
 
 def errors_to_json(errors: list[LintResult]) -> str:
