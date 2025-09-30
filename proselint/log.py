@@ -3,11 +3,20 @@
 from __future__ import annotations
 
 import logging
+from enum import Enum
 from sys import stderr, stdout
 from typing import TYPE_CHECKING, TextIO
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+
+class OutputFormat(str, Enum):
+    """The format to output results in."""
+
+    FULL = "full"
+    JSON = "json"
+    COMPACT = "compact"
 
 
 def _level_clamp_filter(

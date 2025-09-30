@@ -4,7 +4,6 @@ import json
 import stat
 from bisect import bisect_left
 from collections.abc import Callable
-from enum import Enum
 from itertools import accumulate, chain, islice
 from operator import itemgetter
 from os import walk
@@ -15,18 +14,9 @@ from sys import stdin
 from typing import cast, overload
 
 from proselint.config import DEFAULT, Config
-from proselint.log import log
+from proselint.log import OutputFormat, log
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import LintResult
-
-
-class OutputFormat(str, Enum):
-    """The format to output results in."""
-
-    FULL = "full"
-    JSON = "json"
-    COMPACT = "compact"
-
 
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 

@@ -15,9 +15,9 @@ from typing import TYPE_CHECKING
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
-from proselint.log import log
+from proselint.log import OutputFormat, log
 from proselint.registry import CheckRegistry
-from proselint.tools import LintFile, OutputFormat, extract_files, verify_path
+from proselint.tools import LintFile, extract_files, verify_path
 
 if TYPE_CHECKING:
     from types import FrameType
