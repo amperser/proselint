@@ -30,12 +30,12 @@ DEFAULT = cast(
 )
 
 KT_co = TypeVar("KT_co", bound=Hashable, covariant=True)
-KV_co = TypeVar("KV_co", covariant=True)
+VT_co = TypeVar("VT_co", covariant=True)
 
 
 def _deepmerge_dicts(
-        base: dict[KT_co, KV_co], overrides: dict[KT_co, KV_co]
-) -> dict[KT_co, KV_co]:
+        base: dict[KT_co, VT_co], overrides: dict[KT_co, VT_co]
+) -> dict[KT_co, VT_co]:
     # fmt: off
     return base | overrides | {
         key: (
