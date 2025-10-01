@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from importlib import import_module
 from itertools import chain
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, TypeAlias
 
 from proselint.config import DEFAULT
 
@@ -20,6 +21,22 @@ def build_modules_register(
         chain.from_iterable(
             import_module(module, package).__register__  # pyright: ignore[reportAny]
             for module in modules
+        )
+    )
+
+
+Config: TypeAlias = Mapping[str, "bool | Config"]
+
+
+def _flatten_config(config: Config, prefix: str = "") -> dict[str, bool]:
+    return dict(
+        chain.from_iterable(
+            _flatten_config(value, full_key).items()
+            if isinstance(value, Mapping)
+            else [(full_key, bool(value))]
+            for key, value in config.items()
+            for full_key in [f"{prefix}.{key}" if prefix else key]
+
         )
     )
 
@@ -54,10 +71,12 @@ class CheckRegistry:
         self, enabled: dict[str, bool] = DEFAULT["checks"]
     ) -> list[Check]:
         """Filter registered checks by config values based on their keys."""
-        self.enabled_checks = enabled
+        flattened = _flatten_config(enabled)
+        self.enabled_checks = flattened
 
         enabled_checks: list[str] = []
         skipped_checks: list[str] = []
+
         for key, key_enabled in self.enabled_checks.items():
             (skipped_checks, enabled_checks)[key_enabled].append(key)
 
