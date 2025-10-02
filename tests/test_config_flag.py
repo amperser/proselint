@@ -8,9 +8,10 @@ from pytest import LogCaptureFixture, raises
 from proselint.command_line import get_parser, proselint
 from proselint.config import (
     DEFAULT,
-    _deepmerge_dicts,  # pyright: ignore[reportUnknownVariableType, reportPrivateUsage]
+    _deepmerge_dicts,  # pyright: ignore[reportPrivateUsage]
     load_from,
 )
+from proselint.registry import CheckRegistry
 
 CONFIG_FILE = Path(__file__).parent / "test-proselintrc.json"
 PARSER = get_parser()
@@ -27,6 +28,44 @@ def test_deepmerge_dicts() -> None:
         "g": {"h": 5},
         "i": 6,
     }
+
+
+def test_specific_overrides_general() -> None:
+    """Test that specific config keys override general ones."""
+    checks = {
+            "typography": True,
+            "typography.symbols": False,
+            "typography.symbols.curly_quotes": True,
+            "typography.punctuation.hyperbole": False,
+    }
+
+    registry = CheckRegistry()
+    enabled = registry.get_all_enabled(checks)
+
+    paths = {check.path for check in enabled}
+
+    assert any(
+        "typography.symbols.curly_quotes" in path
+        for path in paths
+    )
+
+    assert len(
+            [path for path in paths
+            if path.startswith("typography.symbols.")
+            and "curly_quotes" not in path]
+            ) == 0
+
+    assert not any(
+        "typography.punctuation.hyperbole" in path
+        for path in paths
+    )
+
+    assert any(
+        path.startswith("typography.")
+        and not path.startswith("typography.symbols.")
+        and "hyperbole" not in path
+        for path in paths
+    )
 
 
 def test_load_from() -> None:
