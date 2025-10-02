@@ -145,6 +145,9 @@ class Check(NamedTuple):
 
     def matches_partial(self, partial: str) -> bool:
         """Check if `partial` is a subset key of the full check path."""
+        if self.path == partial:
+            return True
+
         partial_segments = partial.split(".")
 
         return self.path_segments[: len(partial_segments)] == partial_segments
