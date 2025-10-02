@@ -28,10 +28,6 @@ def build_modules_register(
 Config: TypeAlias = Mapping[str, "bool | Config"]
 
 
-def _prune(checks: list[str], key: str) -> list[str]:
-    return [k for k in checks if not (key.startswith(k + ".") or k == key)]
-
-
 def _flatten_config(config: Config, prefix: str = "") -> dict[str, bool]:
     return dict(
         chain.from_iterable(
@@ -75,27 +71,23 @@ class CheckRegistry:
         self, enabled: dict[str, bool] = DEFAULT["checks"]
     ) -> list[Check]:
         """Filter registered checks by config values based on their keys."""
-        self.enabled_checks = dict(sorted(
-            _flatten_config(enabled).items(), key=lambda x: x[0].count('.')
-        ))
-
-        enabled_checks: list[str] = []
-        skipped_checks: list[str] = []
-
-        for key, key_enabled in self.enabled_checks.items():
-            if key_enabled:
-                skipped_checks = _prune(skipped_checks, key)
-                enabled_checks.append(key)
-            else:
-                enabled_checks = _prune(enabled_checks, key)
-                skipped_checks.append(key)
+        self.enabled_checks = _flatten_config(enabled)
+        by_specificity = sorted(
+            self.enabled_checks.items(),
+            key=lambda x: x[0].count("."),
+            reverse=True,
+        )
 
         return [
             check
             for check in self.checks
-            if not any(check.matches_partial(key) for key in skipped_checks)
-            and any(
-                check.path == key or check.matches_partial(key)
-                for key in enabled_checks
+            if next(
+                (
+                    value
+                    for prefix, value in by_specificity
+                    if check.path == prefix
+                    or check.path.startswith(prefix + ".")
+                ),
+                False,
             )
         ]
