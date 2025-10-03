@@ -68,8 +68,7 @@ class CheckRegistry:
                 (
                     value
                     for prefix, value in by_specificity
-                    if check.path == prefix
-                    or check.path.startswith(prefix + ".")
+                    if check.matches_partial(prefix + ".")
                 ),
                 False,
             )
