@@ -6,7 +6,7 @@ from importlib import import_module
 from itertools import chain
 from typing import TYPE_CHECKING, ClassVar
 
-from proselint.config import DEFAULT, flatten_config
+from proselint.config import DEFAULT
 
 if TYPE_CHECKING:
     from proselint.registry.checks import Check
@@ -54,7 +54,7 @@ class CheckRegistry:
         self, enabled: dict[str, bool] = DEFAULT["checks"]
     ) -> list[Check]:
         """Filter registered checks by config values based on their keys."""
-        self.enabled_checks = flatten_config(enabled)
+        self.enabled_checks = enabled
         by_specificity = sorted(
             self.enabled_checks.items(),
             key=lambda x: x[0].count("."),

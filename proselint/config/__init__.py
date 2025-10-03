@@ -49,15 +49,14 @@ def _deepmerge_dicts(
     }
 
 
-def flatten_config(
+def _flatten_config(
         config: Mapping[str, object], prefix: str = ""
-) -> dict[str, bool]:
-    """Flatten a nested config dictionary using dot notation."""
+) -> Mapping[str, bool]:
     return dict(
         chain.from_iterable(
-            flatten_config(
+            _flatten_config(
                 cast("Mapping[str, object]", value), full_key
-                ).items()
+            ).items()
             if isinstance(value, Mapping)
             else [(full_key, bool(value))]
             for key, value in config.items()
@@ -79,7 +78,7 @@ def load_from(config_path: Path | None = None) -> Config:
     for path in config_paths:
         if path.is_file():
             result = _deepmerge_dicts(
-                dict(result),
+                cast("dict[str, object]", result),
                 json.loads(path.read_text()),  # pyright: ignore[reportAny]
             )
         if path.suffix == ".json" and (old := path.with_suffix("")).is_file():
@@ -90,4 +89,4 @@ def load_from(config_path: Path | None = None) -> Config:
                 0,
             )
 
-    return cast("Config", result)
+    return cast("Config", _flatten_config(result))
