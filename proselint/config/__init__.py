@@ -5,7 +5,7 @@ from collections.abc import Hashable, Mapping
 from importlib.resources import files
 from itertools import chain
 from pathlib import Path
-from typing import TypedDict, TypeVar, cast
+from typing import TypeAlias, TypedDict, TypeVar, cast
 from warnings import showwarning as warn
 
 from proselint import config
@@ -49,19 +49,21 @@ def _deepmerge_dicts(
     }
 
 
-def _flatten_config(
-        config: Mapping[str, object], prefix: str = ""
-) -> Mapping[str, bool]:
+Checks: TypeAlias = Mapping[str, "bool | Checks"]
+
+
+def _flatten_checks(
+        checks: Checks, prefix: str = ""
+) -> dict[str, bool]:
     return dict(
         chain.from_iterable(
-            _flatten_config(
-                cast("Mapping[str, object]", value), full_key
+            _flatten_checks(
+                cast("Mapping[str, bool]", value), full_key
             ).items()
-            if isinstance(value, Mapping)
+            if isinstance(value, dict)
             else [(full_key, bool(value))]
-            for key, value in config.items()
+            for key, value in checks.items()
             for full_key in [f"{prefix}.{key}" if prefix else key]
-
         )
     )
 
@@ -89,4 +91,9 @@ def load_from(config_path: Path | None = None) -> Config:
                 0,
             )
 
-    return cast("Config", _flatten_config(result))
+    return Config(
+        max_errors=cast("int", result.get("max_errors", 0)),
+        checks=_flatten_checks(
+            cast("dict[str, bool]", result.get("checks", {}))
+        ),
+    )
