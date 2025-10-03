@@ -1,4 +1,4 @@
-"""Tests the registry module."""
+"""Test the registry module."""
 
 from proselint.config import (
     _sort_by_specificity,  # pyright: ignore[reportPrivateUsage]
