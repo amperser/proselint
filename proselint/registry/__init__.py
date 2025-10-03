@@ -55,11 +55,6 @@ class CheckRegistry:
     ) -> list[Check]:
         """Filter registered checks by config values based on their keys."""
         self.enabled_checks = enabled
-        by_specificity = sorted(
-            self.enabled_checks.items(),
-            key=lambda x: x[0].count("."),
-            reverse=True,
-        )
 
         return [
             check
@@ -67,7 +62,7 @@ class CheckRegistry:
             if next(
                 (
                     value
-                    for prefix, value in by_specificity
+                    for prefix, value in self.enabled_checks.items()
                     if check.matches_partial(prefix)
                 ),
                 False,

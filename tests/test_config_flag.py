@@ -10,6 +10,7 @@ from proselint.config import (
     DEFAULT,
     _deepmerge_dicts,  # pyright: ignore[reportPrivateUsage]
     _flatten_checks,  # pyright: ignore[reportPrivateUsage]
+    _sort_by_specificity,  # pyright: ignore[reportPrivateUsage]
     load_from,
 )
 
@@ -28,6 +29,28 @@ def test_deepmerge_dicts() -> None:
         "g": {"h": 5},
         "i": 6,
     }
+
+
+def test_sort_by_specificity() -> None:
+    """Test sort_by_specificity sorts by dot count descending."""
+    unsorted = {
+        "a": True,
+        "a.b.c": False,
+        "x.y": True,
+        "a.b": True,
+    }
+
+    sorted_checks = _sort_by_specificity(unsorted)
+    keys = list(sorted_checks.keys())
+
+    dots = [key.count(".") for key in keys]
+
+    assert dots == sorted(dots, reverse=True)
+    assert keys[0] == "a.b.c"
+    assert keys[-1] == "a"
+
+    assert sorted_checks["a.b.c"] is False
+    assert sorted_checks["a"] is True
 
 
 def test_flatten_checks() -> None:

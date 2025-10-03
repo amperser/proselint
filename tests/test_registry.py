@@ -1,16 +1,19 @@
 """Tests the registry module."""
 
+from proselint.config import (
+    _sort_by_specificity,  # pyright: ignore[reportPrivateUsage]
+)
 from proselint.registry import CheckRegistry
 
 
 def test_specific_overrides_general() -> None:
     """Test that specific config keys override general ones."""
-    checks = {
-            "typography": True,
-            "typography.symbols": False,
-            "typography.symbols.curly_quotes": True,
-            "typography.punctuation.hyperbole": False,
-    }
+    checks = _sort_by_specificity({
+        "typography": True,
+        "typography.symbols": False,
+        "typography.symbols.curly_quotes": True,
+        "typography.punctuation.hyperbole": False,
+    })
 
     registry = CheckRegistry()
     enabled = registry.get_all_enabled(checks)

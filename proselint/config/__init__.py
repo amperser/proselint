@@ -66,6 +66,17 @@ def _flatten_checks(
     )
 
 
+def _sort_by_specificity(checks: dict[str, bool]) -> dict[str, bool]:
+    """Sort checks by specificity in descending order."""
+    return dict(
+        sorted(
+            checks.items(),
+            key=lambda x: x[0].count("."),
+            reverse=True,
+        )
+    )
+
+
 def load_from(config_path: Path | None = None) -> Config:
     """
     Read various config paths, allowing user overrides.
@@ -91,7 +102,7 @@ def load_from(config_path: Path | None = None) -> Config:
 
     return Config(
         max_errors=cast("int", result.get("max_errors", 0)),
-        checks=_flatten_checks(
+        checks=_sort_by_specificity(_flatten_checks(
             cast("dict[str, bool]", result.get("checks", {}))
-        ),
+        )),
     )
