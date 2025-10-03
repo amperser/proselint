@@ -52,9 +52,9 @@ def _deepmerge_dicts(
 def _flatten_checks(checks: Checks, prefix: str = "") -> dict[str, bool]:
     return dict(
         chain.from_iterable(
-            _flatten_checks(cast("Mapping[str, bool]", value), full_key).items()
-            if isinstance(value, dict)
-            else [(full_key, bool(value))]
+            [(full_key, value)]
+            if isinstance(value, bool)
+            else _flatten_checks(value, full_key).items()
             for key, value in checks.items()
             for full_key in [f"{prefix}.{key}" if prefix else key]
         )
@@ -95,9 +95,9 @@ def load_from(config_path: Path | None = None) -> Config:
                 0,
             )
 
+    result = cast("Config", result)
+
     return Config(
-        max_errors=cast("int", result.get("max_errors", 0)),
-        checks=_sort_by_specificity(
-            _flatten_checks(cast("dict[str, bool]", result.get("checks", {})))
-        ),
+        max_errors=result.get("max_errors", 0),
+        checks=_sort_by_specificity(_flatten_checks(result.get("checks", {}))),
     )
