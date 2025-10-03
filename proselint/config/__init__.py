@@ -30,6 +30,7 @@ DEFAULT = cast(
     json.loads((files(config) / "default.json").read_text())
 )
 
+Checks: TypeAlias = Mapping[str, "bool | Checks"]
 KT_co = TypeVar("KT_co", bound=Hashable, covariant=True)
 VT_co = TypeVar("VT_co", covariant=True)
 
@@ -47,9 +48,6 @@ def _deepmerge_dicts(
         for key in set(base) & set(overrides)
         if isinstance(o_value := overrides[key], dict)
     }
-
-
-Checks: TypeAlias = Mapping[str, "bool | Checks"]
 
 
 def _flatten_checks(

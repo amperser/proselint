@@ -68,7 +68,7 @@ class CheckRegistry:
                 (
                     value
                     for prefix, value in by_specificity
-                    if check.matches_partial(prefix + ".")
+                    if check.matches_partial(prefix)
                 ),
                 False,
             )
