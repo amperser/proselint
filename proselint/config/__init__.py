@@ -67,7 +67,7 @@ def _flatten_checks(
 
 
 def _sort_by_specificity(checks: dict[str, bool]) -> dict[str, bool]:
-    """Sort checks by specificity in descending order."""
+    """Sort selected checks by depth (specificity) in descending order."""
     return dict(
         sorted(
             checks.items(),
