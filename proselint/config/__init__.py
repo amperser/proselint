@@ -1,8 +1,9 @@
 """Configuration for proselint."""
 
 import json
-from collections.abc import Hashable
+from collections.abc import Hashable, Mapping
 from importlib.resources import files
+from itertools import chain
 from pathlib import Path
 from typing import TypedDict, TypeVar, cast
 from warnings import showwarning as warn
@@ -46,6 +47,24 @@ def _deepmerge_dicts(
         for key in set(base) & set(overrides)
         if isinstance(o_value := overrides[key], dict)
     }
+
+
+def flatten_config(
+        config: Mapping[str, object], prefix: str = ""
+) -> dict[str, bool]:
+    """Flatten a nested config dictionary using dot notation."""
+    return dict(
+        chain.from_iterable(
+            flatten_config(
+                cast("Mapping[str, object]", value), full_key
+                ).items()
+            if isinstance(value, Mapping)
+            else [(full_key, bool(value))]
+            for key, value in config.items()
+            for full_key in [f"{prefix}.{key}" if prefix else key]
+
+        )
+    )
 
 
 def load_from(config_path: Path | None = None) -> Config:
