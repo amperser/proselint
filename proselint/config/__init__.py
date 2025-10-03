@@ -26,8 +26,7 @@ class Config(TypedDict):
 
 
 DEFAULT = cast(
-    "Config",
-    json.loads((files(config) / "default.json").read_text())
+    "Config", json.loads((files(config) / "default.json").read_text())
 )
 
 Checks: TypeAlias = Mapping[str, "bool | Checks"]
@@ -36,7 +35,7 @@ VT_co = TypeVar("VT_co", covariant=True)
 
 
 def _deepmerge_dicts(
-        base: dict[KT_co, VT_co], overrides: dict[KT_co, VT_co]
+    base: dict[KT_co, VT_co], overrides: dict[KT_co, VT_co]
 ) -> dict[KT_co, VT_co]:
     # fmt: off
     return base | overrides | {
@@ -50,14 +49,10 @@ def _deepmerge_dicts(
     }
 
 
-def _flatten_checks(
-        checks: Checks, prefix: str = ""
-) -> dict[str, bool]:
+def _flatten_checks(checks: Checks, prefix: str = "") -> dict[str, bool]:
     return dict(
         chain.from_iterable(
-            _flatten_checks(
-                cast("Mapping[str, bool]", value), full_key
-            ).items()
+            _flatten_checks(cast("Mapping[str, bool]", value), full_key).items()
             if isinstance(value, dict)
             else [(full_key, bool(value))]
             for key, value in checks.items()
@@ -102,7 +97,7 @@ def load_from(config_path: Path | None = None) -> Config:
 
     return Config(
         max_errors=cast("int", result.get("max_errors", 0)),
-        checks=_sort_by_specificity(_flatten_checks(
-            cast("dict[str, bool]", result.get("checks", {}))
-        )),
+        checks=_sort_by_specificity(
+            _flatten_checks(cast("dict[str, bool]", result.get("checks", {})))
+        ),
     )
