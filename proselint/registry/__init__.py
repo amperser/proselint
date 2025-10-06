@@ -53,20 +53,24 @@ class CheckRegistry:
     def get_all_enabled(
         self, enabled: dict[str, bool] = DEFAULT["checks"]
     ) -> list[Check]:
-        """Filter registered checks by config values based on their keys."""
-        self.enabled_checks = enabled
+        """
+        Filter registered checks by config values based on their keys.
 
-        enabled_checks: list[str] = []
-        skipped_checks: list[str] = []
-        for key, key_enabled in self.enabled_checks.items():
-            (skipped_checks, enabled_checks)[key_enabled].append(key)
+        This assumes that keys are not nested, and sorted in descending order
+        of depth (specificity). For example, all keys should look like
+        `a.b.c`, and `a.b.c` should come before `a.b`.
+        """
+        self.enabled_checks = enabled
 
         return [
             check
             for check in self.checks
-            if not any(check.matches_partial(key) for key in skipped_checks)
-            and any(
-                check.path == key or check.matches_partial(key)
-                for key in enabled_checks
+            if next(
+                (
+                    value
+                    for prefix, value in self.enabled_checks.items()
+                    if check.matches_partial(prefix)
+                ),
+                False,
             )
         ]
