@@ -115,6 +115,7 @@
 
 							packages = [
 								virtualenv
+								pkgs.nodePackages_latest.prettier
 								pkgs.git-cliff
 								pkgs.typos
 								pkgs.uv
