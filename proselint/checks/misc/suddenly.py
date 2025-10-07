@@ -27,13 +27,13 @@ shift in emotional calibration.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, engine, types
 
 check = Check(
     check_type=types.ExistenceSimple(pattern="Suddenly,"),
     path="misc.suddenly",
     message="Suddenly is nondescript, slows the action, and warns your reader.",
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (check,)

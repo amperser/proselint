@@ -16,7 +16,10 @@ classifiers = [
 	"License :: OSI Approved :: BSD License",
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "google-re2>=1.1.20250805",
+    "google-re2-stubs>=0.1.1",
+]
 
 [project.urls]
 Homepage = "https://github.com/amperser/proselint"
