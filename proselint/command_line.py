@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
-from proselint.log import OutputFormat, log
+from proselint.log import OutputFormat, ResponseError, log
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, extract_files, verify_path
 
@@ -30,6 +30,7 @@ class ExitStatus(IntEnum):
     SUCCESS_ERR = 1
     UNACCEPTED_ARGS = 2
     INTERRUPT = 3
+    ERROR = 4
 
 
 def interrupt_handler(signalnum: int, _frame: FrameType | None) -> None:
@@ -144,9 +145,18 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     num_errors = 0
 
     for lint_file in lint_files:
-        results = lint_file.lint(config)
+        try:
+            results = lint_file.lint(config)
+        except Exception as err:
+            log.write_lint_exception(
+                log.format_source(lint_file.source),
+                ResponseError.from_exception(err),
+            )
+            continue
         num_errors += len(results)
-        lint_file.output_errors(results, args.output_format)
+        log.write_results(log.format_source(lint_file.source), results)
+
+    log.flush()
 
     return ExitStatus.SUCCESS_ERR if num_errors else ExitStatus.SUCCESS
 
@@ -159,6 +169,10 @@ def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
 
-    log.setup(verbose=args.verbose)
+    log.setup(verbose=args.verbose, fmt=args.output_format)
 
-    sys.exit(proselint(args, parser))
+    try:
+        sys.exit(proselint(args, parser))
+    except Exception as err:
+        log.write_error(ResponseError.from_exception(err))
+        sys.exit(ExitStatus.ERROR)

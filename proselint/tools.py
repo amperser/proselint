@@ -14,7 +14,6 @@ from sys import stdin
 from typing import NamedTuple, cast, overload
 
 from proselint.config import DEFAULT, Config
-from proselint.log import OutputFormat, log
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import CheckResult
 
@@ -116,12 +115,11 @@ class LintResult(NamedTuple):
         """The extent (span width) of the result."""
         return self.check_result.span[1] - self.check_result.span[0]
 
-    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
-        """Convert the `LintResult` into a CLI-suitable format."""
-        return (
-            f":{self.pos[0]}:{self.pos[1]}:"
-            f" {self.check_result.check_path} {self.check_result.message}"
-        )
+    def into_dict(self) -> dict[str, object]:
+        """Convert the `LintResult` into a flattened dictionary."""
+        result = self._asdict() | self.check_result._asdict()
+        del result["check_result"]
+        return result
 
 
 def errors_to_json(errors: list[LintResult]) -> str:
@@ -214,20 +212,3 @@ class LintFile:
             ),
             key=itemgetter(1),  # sort by line and column
         )
-
-    def output_errors(
-        self,
-        results: list[LintResult],
-        output_format: OutputFormat,
-    ) -> None:
-        """Log lint results from the LintFile."""
-        if output_format is OutputFormat.JSON:
-            log.warning(errors_to_json(results))
-            return
-
-        name = (
-            "-" if output_format is OutputFormat.COMPACT else self.source_name
-        )
-
-        for result in results:
-            log.warning(f"{name}{result}")
