@@ -14,6 +14,7 @@
       </p>
 
       <h2>Install</h2>
+
       <div>
         <p>Via <em>Pip</em></p>
         <pre><code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
@@ -52,6 +53,7 @@
 
       <h2>Configuration</h2>
       <p>The default configuration is:</p>
+
       <pre><code>{
     <span class="blue">"max_errors"</span>: <span class="green">1000</span>,
     <span class="blue">"checks"</span>: {
@@ -104,17 +106,17 @@
     <span class="blue">"checks.typography.symbols.curly_quotes"</span>: <span class="red">false</span>
 }</code></pre>
 
-
       <h2>Wire Output</h2>
+
       <p>
         <em>Proselint</em> supports structured output for programmatic usage
         with the <code>--output-format json</code> flag, like so:
-
-        <pre><code><span class="blue">proselint</span> <span class="purple">--output-format</span> <span class="green">json</span> syllabus.md</code></pre>
       </p>
 
+      <pre><code><span class="blue">proselint</span> <span class="purple">--output-format</span> <span class="green">json</span> syllabus.md</code></pre>
 
       <p>The output schema is:</p>
+
       <pre><code><span class="purple">enum</span> <span class="blue">ErrorCode</span> {
     <span class="green">Unknown</span> = -31999,
     <span class="green">FileError</span> = -31998,
@@ -148,8 +150,16 @@
     <span class="green">error</span>?: ResponseError;
 }</code></pre>
 
-      <p>Every invocation of <em>proselint</em> produces exactly one <code>ProselintOutput</code> object. Both <code>ProselintOutput</code> and <code>FileOutput</code> are tagged unions. <br /> <br />
-      This means that <code>ProselintOutput</code> will always contain one of <code>result</code> or <code>error</code>, but never both, and the same applies to <code>diagnostics</code> and <code>error</code> for <code>FileOutput</code>.</p>
+      <p>
+        Every invocation of <em>proselint</em> produces exactly one
+        <code>ProselintOutput</code> object. Both
+        <code>ProselintOutput</code> and <code>FileOutput</code> are tagged
+        unions. <br /><br />
+        This means that <code>ProselintOutput</code> will always contain one of
+        <code>result</code> or <code>error</code>, but never both, and the same
+        applies to <code>diagnostics</code> and <code>error</code> for
+        <code>FileOutput</code>.
+      </p>
     </main>
 
     <footer>

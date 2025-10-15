@@ -1,13 +1,16 @@
 @import "./reset.css";
 
 body {
-  font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  font-family:
+    "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
   line-height: 1.65;
   color: #171717;
   background-color: #fafafa;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "Merriweather", "Georgia", serif;
 }
 
@@ -36,8 +39,8 @@ p {
   font-size: 1.125rem;
   color: #404040;
 
-  margin-top: .3rem !important;
-  margin-bottom: .8rem !important;
+  margin-top: 0.3rem !important;
+  margin-bottom: 0.8rem !important;
 }
 
 p.sm {
@@ -122,7 +125,6 @@ code .red {
 code .amber {
   color: #f59e0b;
 }
-
 
 textarea {
   width: 100%;

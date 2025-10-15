@@ -113,13 +113,13 @@
 						pkgs.mkShell {
 							buildInputs = check.enabledPackages;
 
-							packages = [
-								virtualenv
-								pkgs.nodePackages_latest.prettier
-								pkgs.git-cliff
-								pkgs.typos
-								pkgs.uv
-							];
+							packages =
+								builtins.attrValues {
+									inherit virtualenv;
+
+									inherit (pkgs) git-cliff typos uv nodejs;
+									inherit (pkgs.nodePackages) pnpm prettier;
+								};
 
 							env = {
 								UV_NO_SYNC = "1";
