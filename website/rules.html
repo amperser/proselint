@@ -13,19 +13,20 @@
         <a href="/">go back</a>.
       </p>
 
-      $rules
+      <ul>
+        <% for (const entry of rules) { %>
+        <li>
+          <a href="<%= entry.source_url || '#' %>">
+            <%= entry.title || entry.__file__ || 'untitled' %>
+          </a>
+          <% if (entry.date) { %>
+          <small> <%= entry.date %></small>
+          <% } %>
+        </li>
+        <% } %>
+      </ul>
     </main>
 
-    <footer>
-      <p class="sm">
-        Crafted by
-        <a
-          href="https://github.com/amperser"
-          rel="noopener noreferrer"
-          target="_blank"
-          >Amperser Labs</a
-        >
-      </p>
-    </footer>
+    <%- include('partials/footer.ejs') %>
   </body>
 </html>
