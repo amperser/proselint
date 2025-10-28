@@ -22,7 +22,7 @@ check = Check(
         pattern=Padding.STRICT_WORDS_IN_TEXT.format(
             r"(\w+(?:\s+\w+){0,3})(\s+\1)+"
         ),
-        exceptions=(r"had had", r"that that"),
+        exceptions=(r"^had had$", r"^that that$"),
     ),
     path="lexical_illusions",
     message="There's a lexical illusion in '{}' - a phrase is repeated.",
