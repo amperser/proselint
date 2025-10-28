@@ -1,4 +1,4 @@
-# pyright: reportPrivateUsage=false
+# pyright: reportPrivateUsage=false, reportImplicitOverride=false
 # ruff: noqa: SLF001
 """Wrap RE2 and re into a unified layer."""
 
@@ -16,7 +16,6 @@ from typing import (
     TypeAlias,
     TypeVar,
     cast,
-    override,
 )
 
 import re2
@@ -169,11 +168,9 @@ class Fast(Engine):
     def _compiled_pattern(pattern: str, opts: RegexOptions) -> re2._Regexp[str]:
         return re2.compile(pattern, opts.re2_opts)
 
-    @override
     def compiled_pattern(self, pattern: str) -> re2._Regexp[str]:
         return Fast._compiled_pattern(pattern, self.opts)
 
-    @override
     def make_set(
         self,
         padding: Padding,
@@ -196,11 +193,9 @@ class Fancy(Engine):
     def _compiled_pattern(pattern: str, opts: RegexOptions) -> re.Pattern[str]:
         return re.compile(pattern, opts.re_flag)
 
-    @override
     def compiled_pattern(self, pattern: str) -> re.Pattern[str]:
         return Fancy._compiled_pattern(pattern, self.opts)
 
-    @override
     def make_set(
         self,
         padding: Padding,
@@ -263,7 +258,6 @@ class FastSet(MatchSet[re2.Set]):
         match_set.Compile()
         return match_set
 
-    @override
     def construct_set(self, patterns: Collection[str]) -> re2.Set:
         return FastSet._construct_set(
             self.engine, self.padding, patterns, self._anchor
@@ -284,11 +278,9 @@ class FastSet(MatchSet[re2.Set]):
         self._patterns = tuple(patterns)
         self._set = self.construct_set(patterns)
 
-    @override
     def exists_in(self, text: str) -> bool:
         return self._set.Match(text) is not None
 
-    @override
     def finditer(self, text: str) -> Iterator[Match]:
         set_indices = cast("list[int] | None", self._set.Match(text))
         if set_indices is None:
@@ -312,7 +304,6 @@ class FancySet(MatchSet[str]):
     def _construct_set(padding: Padding, patterns: Collection[str]) -> str:
         return padding.format(Padding.safe_join(patterns))
 
-    @override
     def construct_set(self, patterns: Collection[str]) -> str:
         return FancySet._construct_set(self.padding, patterns)
 
@@ -324,10 +315,8 @@ class FancySet(MatchSet[str]):
         self.padding = padding
         self._set = self.construct_set(patterns)
 
-    @override
     def exists_in(self, text: str) -> bool:
         return self.engine.exists_in(self._set, text)
 
-    @override
     def finditer(self, text: str) -> Iterator[Match]:
         return self.engine.finditer(self._set, text)
