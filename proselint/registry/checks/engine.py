@@ -97,7 +97,7 @@ class RegexOptions:
 
     @cached_property
     def re_flag(self) -> int | RegexFlag:
-        """Return an `RegexFlag` corresponding to the set options."""
+        """Return a `RegexFlag` corresponding to the set options."""
         return (int(self.case_insensitive) and RegexFlag.IGNORECASE) | (
             int(self.multi_line) and RegexFlag.MULTILINE
         )
