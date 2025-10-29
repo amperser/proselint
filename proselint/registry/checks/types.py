@@ -3,17 +3,10 @@
 from collections.abc import Callable, Generator, Iterable, Iterator
 from functools import partial
 from itertools import chain, filterfalse, zip_longest
-from re import (
-    Match,
-    Pattern,
-    RegexFlag,
-    finditer,
-    search,
-)
-from re import compile as rcompile
 from typing import NamedTuple, TypeVar
 
 from proselint.registry.checks import Check, CheckResult, Padding
+from proselint.registry.checks.engine import Anchor, Match, MatchSet, PatternSet
 
 CheckFn = Callable[[str, Check], Iterator[CheckResult]]
 
@@ -43,17 +36,18 @@ class Consistency(NamedTuple):
     def process_pair(
         text: str,
         check: Check,
-        flag: RegexFlag | int,
         pair: tuple[str, str],
     ) -> Iterator[CheckResult]:
         """Check a term pair over `text`."""
         # Unzip the zip of pair matches while both of the last pair were truthy
         # Reads the minimum possible elements to generate results
-        matches: tuple[tuple[Match[str] | None, ...], ...] = tuple(
+        matches: tuple[tuple[Match | None, ...], ...] = tuple(
             zip(
                 *_takewhile_peek(
                     all,
-                    zip_longest(*(finditer(term, text, flag) for term in pair)),
+                    zip_longest(
+                        *(check.engine.finditer(term, text) for term in pair)
+                    ),
                 ),
                 strict=True,
             )
@@ -66,8 +60,7 @@ class Consistency(NamedTuple):
         majority_term = pair[not idx_minority]
         return (
             CheckResult(
-                start_pos=m.start() + check.offset[0],
-                end_pos=m.end() + check.offset[1],
+                span=(m.start() + check.offset[0], m.end() + check.offset[1]),
                 check_path=check.path,
                 message=check.message.format(majority_term, m.group(0)),
                 replacements=majority_term,
@@ -77,8 +70,7 @@ class Consistency(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check the consistency of given term pairs in `text`."""
-        flag = check.re_flag
-        process_pair = partial(Consistency.process_pair, text, check, flag)
+        process_pair = partial(Consistency.process_pair, text, check)
 
         return chain.from_iterable(map(process_pair, self.term_pairs))
 
@@ -91,19 +83,15 @@ class PreferredForms(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for terms to be replaced with a preferred form in `text`."""
-        offset = self.padding.to_offset_from(check.offset)
-        flag = check.re_flag
-
         return (
             CheckResult(
-                start_pos=m.start() + offset[0],
-                end_pos=m.end() + offset[1],
+                span=(m.start() + check.offset[0], m.end() + check.offset[1]),
                 check_path=check.path,
                 message=check.message.format(replacement, m.group(0).strip()),
                 replacements=replacement,
             )
             for original, replacement in self.items.items()
-            for m in finditer(self.padding.format(original), text, flag)
+            for m in check.engine.finditer(self.padding.format(original), text)
         )
 
 
@@ -113,18 +101,18 @@ class PreferredFormsSimple(NamedTuple):
     items: dict[str, str]
     padding: Padding = Padding.WORDS_IN_TEXT
 
-    def map_match(
-        self, check: Check, offset: tuple[int, int], match: Match[str]
-    ) -> CheckResult:
+    def map_match(self, check: Check, match: Match) -> CheckResult:
         """Convert a `re.Match` object to a `CheckResult`."""
         original = match.group(0).strip()
         replacement = self.items.get(
-            original.lower() if check.ignore_case else original
+            original.lower() if check.engine.opts.case_insensitive else original
         )
 
         return CheckResult(
-            start_pos=match.start() + offset[0],
-            end_pos=match.end() + offset[1],
+            span=(
+                match.start() + check.offset[0],
+                match.end() + check.offset[1],
+            ),
             check_path=check.path,
             message=check.message.format(replacement, original),
             replacements=replacement,
@@ -132,42 +120,34 @@ class PreferredFormsSimple(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for terms to be replaced with a preferred form in `text`."""
-        offset = self.padding.to_offset_from(check.offset)
-        flag = check.re_flag
-        map_match = partial(self.map_match, check, offset)
+        map_match = partial(self.map_match, check)
 
-        pattern = self.padding.format(
-            Padding.SAFE_JOIN.format("|".join(self.items.keys()))
-            if len(self.items) > 1
-            else next(iter(self.items))
-        )
+        pattern = check.engine.make_set(self.padding, tuple(self.items.keys()))
 
-        return map(map_match, finditer(pattern, text, flag))
+        return map(map_match, pattern.finditer(text))
 
 
 def _process_existence(
-    pattern: str,
-    exceptions: tuple[str, ...],
-    offset: tuple[int, int],
+    pattern: str | MatchSet[PatternSet],
+    exceptions: MatchSet[PatternSet],
     text: str,
     check: Check,
 ) -> Iterator[CheckResult]:
     """Match against `pattern` respecting `offset` in `text`."""
-    flag = check.re_flag
-
+    match_iter = (
+        check.engine.finditer(pattern, text)
+        if isinstance(pattern, str)
+        else pattern.finditer(text)
+    )
     return (
         CheckResult(
-            start_pos=m.start() + offset[0],
-            end_pos=m.end() + offset[1],
+            span=(m.start() + check.offset[0], m.end() + check.offset[1]),
             check_path=check.path,
-            message=check.message.format(m.group(0).strip()),
+            message=check.message.format(m_text),
             replacements=None,
         )
-        for m in finditer(pattern, text, flag)
-        if not any(
-            search(exception, m.group(0).strip(), flag)
-            for exception in exceptions
-        )
+        for m in match_iter
+        if not exceptions.exists_in(m_text := m.group(0).strip())
     )
 
 
@@ -180,15 +160,12 @@ class Existence(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for the existence of terms in `text`."""
-        offset = self.padding.to_offset_from(check.offset)
-
-        pattern = self.padding.format(
-            Padding.SAFE_JOIN.format("|".join(self.items))
-            if len(self.items) > 1
-            else next(iter(self.items))
+        pattern_set = check.engine.make_set(self.padding, self.items)
+        exception_set = check.engine.make_set(
+            self.padding, self.exceptions, Anchor.ANCHOR_BOTH
         )
 
-        return _process_existence(pattern, self.exceptions, offset, text, check)
+        return _process_existence(pattern_set, exception_set, text, check)
 
 
 class ExistenceSimple(NamedTuple):
@@ -199,13 +176,14 @@ class ExistenceSimple(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for the existence of a single pattern in `text`."""
-        return _process_existence(
-            self.pattern, self.exceptions, check.offset, text, check
+        exception_set = check.engine.make_set(
+            Padding.RAW, self.exceptions, Anchor.ANCHOR_BOTH
         )
+        return _process_existence(self.pattern, exception_set, text, check)
 
 
-_DEFAULT_TOKENIZER = rcompile(
-    Padding.WORDS_IN_TEXT.format(r"[a-zA-Z_][a-zA-Z_'-]+[a-zA-Z_]")
+_DEFAULT_TOKENIZER = Padding.WORDS_IN_TEXT.format(
+    r"[a-zA-Z_][a-zA-Z_'-]+[a-zA-Z_]"
 )
 
 
@@ -214,32 +192,36 @@ class ReverseExistence(NamedTuple):
 
     allowed: set[str]
 
-    TOKENIZER: Pattern[str] = _DEFAULT_TOKENIZER
+    TOKENIZER: str = _DEFAULT_TOKENIZER
 
     @staticmethod
     def _allowed_match(
-        allowed: set[str], match: Match[str], *, ignore_case: bool = True
+        allowed: set[str], match: Match, *, case_insensitive: bool = True
     ) -> bool:
         m_text = match.group(0)
-        return (m_text.lower() if ignore_case else m_text) in allowed
+        return (m_text.lower() if case_insensitive else m_text) in allowed
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check for words in `text` that are not `allowed`."""
         allowed_match = partial(
             ReverseExistence._allowed_match,
             self.allowed,
-            ignore_case=check.ignore_case,
+            case_insensitive=check.engine.opts.case_insensitive,
         )
 
         return (
             CheckResult(
-                start_pos=m.start() + check.offset[0] + 1,
-                end_pos=m.end() + check.offset[1],
+                span=(
+                    m.start() + check.offset[0] + 1,
+                    m.end() + check.offset[1],
+                ),
                 check_path=check.path,
                 message=check.message.format(m.group(0)),
                 replacements=None,
             )
-            for m in filterfalse(allowed_match, self.TOKENIZER.finditer(text))
+            for m in filterfalse(
+                allowed_match, check.engine.finditer(self.TOKENIZER, text)
+            )
         )
 
 

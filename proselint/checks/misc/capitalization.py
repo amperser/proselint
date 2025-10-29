@@ -14,7 +14,7 @@ Incorrect capitalization.
 
 """
 
-from proselint.registry.checks import Check, types
+from proselint.registry.checks import Check, engine, types
 
 check_terms = Check(
     check_type=types.PreferredFormsSimple(
@@ -27,7 +27,7 @@ check_terms = Check(
     ),
     path="misc.capitalization.terms",
     message="Incorrect capitalization. '{}' is the preferred form.",
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 check_seasons = Check(
@@ -41,7 +41,7 @@ check_seasons = Check(
     ),
     path="misc.capitalization.seasons",
     message="Seasons shouldn't be capitalized. '{}' is the preferred form.",
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 check_months = Check(
@@ -63,7 +63,7 @@ check_months = Check(
     ),
     path="misc.capitalization.months",
     message="Months should be capitalized. '{}' is the preferred form.",
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 check_days = Check(
@@ -82,7 +82,7 @@ check_days = Check(
     message=(
         "Days of the week should be capitalized. '{}' is the preferred form."
     ),
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (
