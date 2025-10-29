@@ -26,12 +26,18 @@ def verify_path(
     resolve: bool = False,
     reject_file: bool = False,
     reject_dir: bool = False,
+    must_exist: bool = False,
 ) -> Path:
     """Check a path for specified conditions."""
     if resolve:
         path = path.resolve()
 
-    stat_res = path.stat()
+    try:
+        stat_res = path.stat()
+    except FileNotFoundError as err:
+        if must_exist:
+            raise err
+        return path
 
     if reject_file and stat.S_ISREG(stat_res.st_mode):
         raise OSError("Files not permitted - found file %s", path)
@@ -154,16 +160,11 @@ class LintFile:
 
         self.source = source
 
-        # NOTE: necessary to prevent edge cases for padding and line boundaries
-        content = content or cast("Path", source).read_text()
-        self.content = f"\n{content}\n"
-
-        self.line_bounds = self._line_bounds()
-        self.quote_bounds = tuple(
-            chain.from_iterable(
-                find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
-            )
-        )
+        if content:
+            self.content = f"\n{content}\n"
+            self._compute_bounds()
+            return
+        self.content, self.line_bounds, self.quote_bounds = ("", (), ())
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
@@ -174,6 +175,28 @@ class LintFile:
     def source_name(self) -> str:
         """Return the source name (filename or otherwise) of the `LintFile`."""
         return self.source if isinstance(self.source, str) else self.source.name
+
+    def _compute_bounds(self) -> None:
+        if not self.content:
+            raise ValueError("Content must be available to compute boundaries.")
+
+        self.line_bounds = self._line_bounds()
+        self.quote_bounds = tuple(
+            chain.from_iterable(
+                find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
+            )
+        )
+
+    def _read(self) -> None:
+        """Read the source contents and compute boundaries."""
+        if self.content:
+            return
+
+        # NOTE: necessary to prevent edge cases for padding and line boundaries
+        content = cast("Path", self.source).read_text()
+        self.content = f"\n{content}\n"
+
+        self._compute_bounds()
 
     def _line_bounds(self) -> tuple[int, ...]:
         """Return the starting positions of each line in the text."""
@@ -196,6 +219,7 @@ class LintFile:
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
         """Run the linter against the file."""
+        self._read()
         registry = CheckRegistry()
         return sorted(
             islice(
