@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from enum import Enum, IntEnum
 from functools import cache, cached_property
 from itertools import chain
@@ -87,18 +88,12 @@ class Anchor(IntEnum):
                 return re2.Set.FullMatchSet(opts)
 
 
+@dataclass(frozen=True)
 class RegexOptions:
     """Options for the Regex `Engine`."""
 
-    case_insensitive: bool
-    multi_line: bool
-
-    def __init__(
-        self, *, case_insensitive: bool = True, multi_line: bool = False
-    ) -> None:
-        """Set the options."""
-        self.case_insensitive = case_insensitive
-        self.multi_line = multi_line
+    case_insensitive: bool = True
+    multi_line: bool = False
 
     @cached_property
     def re_flag(self) -> int | RegexFlag:
