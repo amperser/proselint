@@ -15,7 +15,7 @@ and this happens most often between line breaks.
 
 """
 
-from proselint.registry.checks import Check, Padding, types
+from proselint.registry.checks import Check, Padding, engine, types
 
 check = Check(
     check_type=types.ExistenceSimple(
@@ -26,6 +26,7 @@ check = Check(
     ),
     path="lexical_illusions",
     message="There's a lexical illusion in '{}' - a phrase is repeated.",
+    engine=engine.Fancy(),
 )
 
 __register__ = (check,)
