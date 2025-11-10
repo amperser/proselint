@@ -17,7 +17,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "google-re2>=1.1.20250805",
+    "google-re2>=1.1.20251105",
     "google-re2-stubs>=0.1.1",
 ]
 
