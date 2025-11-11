@@ -78,7 +78,7 @@ def test_load_from() -> None:
 
 def test_config_flag(caplog: LogCaptureFixture) -> None:
     """Test the --config CLI argument."""
-    with caplog.at_level("WARNING", "proselint"):
+    with caplog.at_level("INFO", "proselint"):
         _ = proselint(
             PARSER.parse_args(
                 (

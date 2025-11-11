@@ -19,36 +19,12 @@ BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
 
 
-# TODO: use position and span for (line, column) and (start_pos, end_pos)?
-class LintResult(NamedTuple):
-    """Carry lint result information."""
-
-    check_path: str
-    message: str
-    line: int
-    column: int
-    start_pos: int
-    end_pos: int
-    severity: str
-    replacements: str | None
-
-    @property
-    def extent(self) -> int:
-        """The extent (span width) of the result."""
-        return self.end_pos - self.start_pos
-
-    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
-        """Convert the `LintResult` into a CLI-suitable format."""
-        return f":{self.line}:{self.column}: {self.check_path} {self.message}"
-
-
 class CheckResult(NamedTuple):
     """Carry check result information."""
 
-    start_pos: int
-    end_pos: int
     check_path: str
     message: str
+    span: tuple[int, int]
     replacements: str | None
 
 
@@ -75,8 +51,7 @@ class CheckFlags(NamedTuple):
         req_results = max(ceil((threshold / 1e6) * max(length, 1000)), 2)
         return (
             CheckResult(
-                start_pos=result.start_pos,
-                end_pos=result.end_pos,
+                span=result.span,
                 check_path=result.check_path,
                 message=f"{result.message} Surpassed {threshold} ppm.",
                 replacements=None,
@@ -123,4 +98,4 @@ class Check(NamedTuple):
         return self.flags.apply(self.check(text), len(text))
 
 
-__all__ = ("Check", "CheckFlags", "CheckResult", "LintResult", "Padding")
+__all__ = ("Check", "CheckFlags", "CheckResult", "Padding")

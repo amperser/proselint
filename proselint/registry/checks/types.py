@@ -60,8 +60,7 @@ class Consistency(NamedTuple):
         majority_term = pair[not idx_minority]
         return (
             CheckResult(
-                start_pos=m.start() + check.offset[0],
-                end_pos=m.end() + check.offset[1],
+                span=(m.start() + check.offset[0], m.end() + check.offset[1]),
                 check_path=check.path,
                 message=check.message.format(majority_term, m.group(0)),
                 replacements=majority_term,
@@ -86,8 +85,7 @@ class PreferredForms(NamedTuple):
         """Check for terms to be replaced with a preferred form in `text`."""
         return (
             CheckResult(
-                start_pos=m.start() + check.offset[0],
-                end_pos=m.end() + check.offset[1],
+                span=(m.start() + check.offset[0], m.end() + check.offset[1]),
                 check_path=check.path,
                 message=check.message.format(replacement, m.group(0).strip()),
                 replacements=replacement,
@@ -111,8 +109,10 @@ class PreferredFormsSimple(NamedTuple):
         )
 
         return CheckResult(
-            start_pos=match.start() + check.offset[0],
-            end_pos=match.end() + check.offset[1],
+            span=(
+                match.start() + check.offset[0],
+                match.end() + check.offset[1],
+            ),
             check_path=check.path,
             message=check.message.format(replacement, original),
             replacements=replacement,
@@ -141,8 +141,7 @@ def _process_existence(
     )
     return (
         CheckResult(
-            start_pos=m.start() + check.offset[0],
-            end_pos=m.end() + check.offset[1],
+            span=(m.start() + check.offset[0], m.end() + check.offset[1]),
             check_path=check.path,
             message=check.message.format(m_text),
             replacements=None,
@@ -212,8 +211,10 @@ class ReverseExistence(NamedTuple):
 
         return (
             CheckResult(
-                start_pos=m.start() + check.offset[0] + 1,
-                end_pos=m.end() + check.offset[1],
+                span=(
+                    m.start() + check.offset[0] + 1,
+                    m.end() + check.offset[1],
+                ),
                 check_path=check.path,
                 message=check.message.format(m.group(0)),
                 replacements=None,
