@@ -108,9 +108,17 @@ def get_parser() -> ArgumentParser:
 
 def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
-    config = load_from(
-        args.config and verify_path(args.config, resolve=True, reject_dir=True)
-    )
+    try:
+        config = load_from(
+            args.config
+            and verify_path(
+                args.config, resolve=True, reject_dir=True, must_exist=True
+            )
+        )
+    except FileNotFoundError as err:
+        raise FileNotFoundError(
+            f"Configuration file '{args.config}' could not be read."
+        ) from err
 
     if args.subcommand is None:
         parser.print_help()
