@@ -108,13 +108,10 @@
 									(final: prev: {
 											google-re2 =
 												prev.google-re2.overrideAttrs (old: rec {
-														version = "1.1.20251105";
-														src =
-															pkgs.fetchPypi {
-																pname = "google_re2";
-																inherit version;
-																hash = "sha256-HbFKKS7oMDuR6R58N+BawX08Rn8pQWx5rHCni+PmW9o=";
-															};
+														nativeBuildInputs =
+															(old.nativeBuildInputs or [])
+															++ (with final; [setuptools pybind11])
+															++ (with pkgs; [re2 abseil-cpp]);
 													});
 										})
 								]
