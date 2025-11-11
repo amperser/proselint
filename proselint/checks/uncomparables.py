@@ -49,21 +49,20 @@ attention and expects you to have done the same.
 from collections.abc import Iterator
 from itertools import product
 
-from proselint.registry.checks import Check, CheckResult, types
+from proselint.registry.checks import Check, CheckResult, Padding, engine, types
 
 COMPARATORS = (
-    "most",
-    "more",
-    "less",
-    "least",
-    "very",
-    "quite",
-    "largely",
     "extremely",
     "increasingly",
     "kind of",
+    "largely",
+    "less",
     "mildly",
+    "more",
+    "quite",
+    "very",
 )
+FANCY_COMPARATORS = ("least", "most")
 UNCOMPARABLES = (
     "absolute",
     "adequate",
@@ -109,25 +108,46 @@ EXCEPTIONS = (
 )
 
 
+CHECK_PATH = "uncomparables"
+CHECK_MESSAGE = "Comparison of an uncomparable: '{}' is not comparable."
+
+
+def _check_fancy_uncomparables(
+    text: str, check: Check
+) -> Iterator[CheckResult]:
+    """Check the text for fancy uncomparables."""
+    return types.Existence(
+        items=tuple(
+            rf"(?<!at\s)\b{comp}\s+{adj}\b"
+            for comp, adj in product(FANCY_COMPARATORS, UNCOMPARABLES)
+        ),
+        padding=Padding.RAW,
+    ).check(text, check)
+
+
 def _check_uncomparables(text: str, check: Check) -> Iterator[CheckResult]:
     """Check the text for uncomparables."""
     return types.Existence(
         items=tuple(
-            (
-                rf"(?<!at\s)\b{comp}\s+{adj}\b"
-                if comp in {"least", "most"}
-                else rf"\b{comp}\s+{adj}\b"
-            )
+            rf"{comp}\s+{adj}"
             for comp, adj in product(COMPARATORS, UNCOMPARABLES)
             if (comp, adj) not in EXCEPTIONS
-        )
+        ),
     ).check(text, check)
 
 
 check_uncomparables = Check(
     check_type=_check_uncomparables,
-    path="uncomparables",
-    message="Comparison of an uncomparable: '{}' is not comparable.",
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    engine=engine.Fast(),
 )
 
-__register__ = (check_uncomparables,)
+check_fancy_uncomparables = Check(
+    check_type=_check_fancy_uncomparables,
+    path=CHECK_PATH,
+    message=CHECK_MESSAGE,
+    engine=engine.Fancy(),
+)
+
+__register__ = (check_uncomparables, check_fancy_uncomparables)

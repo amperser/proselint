@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from itertools import islice
 from math import ceil
-from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple
+
+from proselint.registry.checks.engine import Engine, Fast, Padding
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -17,37 +17,6 @@ if TYPE_CHECKING:
 
 BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
-
-
-class Padding(str, Enum):
-    """Regex padding types for checks."""
-
-    RAW = r"{}"
-    """Bare text with no padding."""
-    SAFE_JOIN = r"(?:{})"
-    """Encapsulate patterns in an anonymous group for joining, e.g. x|y|z."""
-    WORDS_IN_TEXT = r"\b{}\b"
-    """
-    Match word position boundaries around the pattern.
-
-    This matches any position between a word character and a non-word character
-    or position.
-    """
-    NONWORDS_IN_TEXT = r"\B{}\B"
-    """Match any position that is not a word boundary around the pattern."""
-    STRICT_WORDS_IN_TEXT = r"(?<![A-Za-z'-]){}(?![A-Za-z'-])"
-    """Lookaround-based `WORDS_IN_TEXT`, prohibiting hyphens and apostrophes."""
-
-    def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
-        """Calculate new offset values based on the applied padding."""
-        if self in {
-            Padding.RAW,
-            Padding.SAFE_JOIN,
-            Padding.WORDS_IN_TEXT,
-            Padding.STRICT_WORDS_IN_TEXT,
-        }:
-            return offset
-        return (offset[0] + 1, max(offset[1] - 1, 0))
 
 
 # TODO: use position and span for (line, column) and (start_pos, end_pos)?
@@ -126,17 +95,11 @@ class Check(NamedTuple):
     """Carry a complete check specification."""
 
     check_type: CheckType
+    engine: Engine = Fast()
     path: str = ""
     message: str = ""
     flags: CheckFlags = CheckFlags()
-    ignore_case: bool = True
     offset: tuple[int, int] = (0, 0)
-
-    # TODO: for 3.11+, RegexFlag.NOFLAG exists
-    @property
-    def re_flag(self) -> int:
-        """Return a corresponding `RegexFlag` for the `ignore_case` setting."""
-        return RegexFlag.IGNORECASE if self.ignore_case else 0
 
     @property
     def path_segments(self) -> list[str]:
@@ -158,3 +121,6 @@ class Check(NamedTuple):
     def check_with_flags(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`, including specified `CheckFlags`."""
         return self.flags.apply(self.check(text), len(text))
+
+
+__all__ = ("Check", "CheckFlags", "CheckResult", "LintResult", "Padding")

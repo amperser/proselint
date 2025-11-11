@@ -14,12 +14,11 @@ Paragraphs should not start with certain bad words.
 
 """
 
-import re
 from collections.abc import Iterator
 
-from proselint.registry.checks import Check, CheckResult
+from proselint.registry.checks import Check, CheckResult, engine
 
-PATTERN = re.compile(r"(^|^\n|\n\n)But\b")
+PATTERN = r"(^|^\n|\n\n)But\b"
 
 
 def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
@@ -33,7 +32,7 @@ def _check_but_paragraphs(text: str, check: Check) -> Iterator[CheckResult]:
             message=check.message,
             replacements=None,
         )
-        for m in re.finditer(PATTERN, text)
+        for m in check.engine.finditer(PATTERN, text)
     )
 
 
@@ -41,7 +40,7 @@ check = Check(
     check_type=_check_but_paragraphs,
     path="misc.but",
     message="No paragraph should start with a 'But'.",
-    ignore_case=False,
+    engine=engine.Fast(opts=engine.RegexOptions(case_insensitive=False)),
 )
 
 __register__ = (check,)
