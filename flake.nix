@@ -118,6 +118,7 @@
 								pkgs.git-cliff
 								pkgs.typos
 								pkgs.uv
+								pythonSet.setuptools # required for legacy build fallback
 							];
 
 							env = {

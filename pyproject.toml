@@ -49,7 +49,6 @@ test = [
 dev = [
 	"ruff>=0.1.14",
 	"poethepoet>=0.34.0",
-	"setuptools>=80.9.0", # required to build re2 if wheels are unavailable
 ]
 web = [
 	"APScheduler>=3.5.3",
