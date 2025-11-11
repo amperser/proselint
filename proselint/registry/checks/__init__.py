@@ -98,4 +98,4 @@ class Check(NamedTuple):
         return self.flags.apply(self.check(text), len(text))
 
 
-__all__ = ("Check", "CheckFlags", "CheckResult", "LintResult", "Padding")
+__all__ = ("Check", "CheckFlags", "CheckResult", "Padding")
