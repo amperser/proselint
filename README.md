@@ -1,8 +1,4 @@
-<img
-  src="https://raw.githubusercontent.com/amperser/proselint/main/logo.png"
-  alt="proselint logo"
-  width="200"
->
+<img src="https://raw.githubusercontent.com/amperser/proselint/main/logo.png" alt="proselint logo" width="200">
 
 ![Workflow status](https://github.com/amperser/proselint/actions/workflows/ci-lint-test.yml/badge.svg)
 [![codecov](https://codecov.io/gh/amperser/proselint/branch/main/graph/badge.svg?token=8E0I9sRpot)](https://codecov.io/gh/amperser/proselint)
