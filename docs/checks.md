@@ -18,6 +18,15 @@ consistent, we use a standard set of terms.
 
 ## Technical Requirements
 
+Checks can be rather cumbersome, particularly in large volumes. To combat this,
+we have devised a set of implementation requirements:
+
+- Checks with more than 150 entries should be batched into chunks of 150
+- Checks with more than 50 entries should have their contents factored out into
+  a separate file, formatted as a CSV and bearing the same name as the last
+  element of the check path. For example, `cliches.misc.write_good` has the
+  associated file `write-good`
+
 ## Suitability
 
 It is difficult to ensure Proselint's catalog of checks remains both tidy and
