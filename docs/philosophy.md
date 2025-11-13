@@ -45,9 +45,9 @@ the right thing. Thus our score metric is defined as
 
 $$T \left(\frac{T}{F + T}\right)^k$$
 
-where *T* is the number of true positives (hits), *F* is the number of false
-positives (false alarms), and *k* > 0 is a temperature parameter that determines
-the penalty for imprecision. In general, we choose as large a value of *k* as we
+where $T$ is the number of true positives (hits), $F$ is the number of false
+positives (false alarms), and $k > 0$ is a temperature parameter that determines
+the penalty for imprecision. In general, we choose as large a value of $k$ as we
 can stomach, one that strongly discourages the creation of rules that can't be
-trusted. Suppose that *k* = 2. Then if the linter detects 100 errors, of which
-10 are false positives, the score is 72.9.
+trusted. Suppose that $k = 2$. Then if the linter detects $100$ errors, of which
+$10$ are false positives, the score is $72.9$.
