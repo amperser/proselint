@@ -137,7 +137,7 @@ following our [stable wire schema].
           // Name of the check that output this suggestion.
           "check_path": "uncomparables",
           // Message to describe the suggestion
-          "message": "Comparison of an uncomparable: 'very unique' is not comparable."
+          "message": "Comparison of an uncomparable: 'very unique' is not comparable.",
           // Line and column where the error begins in the source
           "pos": [1, 9],
           // Absolute start and end of the error in the source
