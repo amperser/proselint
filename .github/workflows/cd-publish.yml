@@ -45,9 +45,9 @@ jobs:
       - name: "[VERSION] Bump & Commit"
         run: |
           nix develop --command uv version ${{ github.event.inputs.version }}
-          nix develop --command git-cliff -c cliff.toml \
+          nix develop --command git-cliff -c cliff.toml -u \
           --tag v${{ github.event.inputs.version }} \
-          -o CHANGELOG.md
+          -p CHANGELOG.md
 
           git commit -am "chore: prepare release v${{ github.event.inputs.version }}" || echo "no changes to commit"
 
@@ -96,7 +96,7 @@ jobs:
       - name: "[CHANGELOG] Generate release notes"
         run: |
           nix develop --command git-cliff -c cliff.toml \
-            --unreleased --verbose \
+            --latest --verbose \
             -o dist/RELEASE_NOTES.md
 
       - name: "[VERIFY] Provenance"
@@ -149,6 +149,7 @@ jobs:
     name: Publish to PyPI
     runs-on: ubuntu-latest
     needs: [build]
+    environment: release
     permissions:
       id-token: write
     steps:
