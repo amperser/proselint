@@ -166,5 +166,8 @@ jobs:
           name: dist-artifacts
           path: dist/
 
+      - name: "[INIT] Remove release notes"
+        run: rm dist/RELEASE_NOTES.md
+
       - name: "[PUBLISH] PyPI"
         uses: pypa/gh-action-pypi-publish@release/v1
