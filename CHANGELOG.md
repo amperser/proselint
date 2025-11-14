@@ -1,5 +1,75 @@
 # Change Log
 
+## [0.15.0](https://github.com/amperser/proselint/compare/0.14.0..v0.15.0) - 2025-11-14
+
+### ⛰️  Features
+
+- *(registry)* Add strict padding for checks ([#1428](https://github.com/amperser/proselint/issues/1428)) - ([f1894bc](https://github.com/amperser/proselint/commit/f1894bccf5cb9344eca5daba64ad0b3ec8577784))
+- Override keys and dot-prop ([#1440](https://github.com/amperser/proselint/issues/1440)) - ([ddebe9f](https://github.com/amperser/proselint/commit/ddebe9f182ebd6fb152f7699dc3ad38cac16ebe5))
+- Add flag to prevent filtering quotes in lintfile ([#1404](https://github.com/amperser/proselint/issues/1404)) - ([109f58f](https://github.com/amperser/proselint/commit/109f58f8c52ab2b2bf838ad94718e7ba6ca6d664))
+- Implement check registry ([#1396](https://github.com/amperser/proselint/issues/1396)) - ([3bc0d13](https://github.com/amperser/proselint/commit/3bc0d1347eae8b13429507617719303b58677489))
+
+### 🐛 Bug Fixes
+
+- *(checks)* Ignore least and most in uncomparables after at ([#1433](https://github.com/amperser/proselint/issues/1433)) - ([b94542c](https://github.com/amperser/proselint/commit/b94542c66f2a176b77bc01060ff5389612b2c986))
+- *(checks)* Allow very well in weasel_words ([#1426](https://github.com/amperser/proselint/issues/1426)) - ([616e855](https://github.com/amperser/proselint/commit/616e855bb1d29c9b98d11bbbc1e16f41c6da4f52))
+- *(checks)* Resolve meantime/meanwhile conflict in misc.preferred_forms ([#1425](https://github.com/amperser/proselint/issues/1425)) - ([18ecce6](https://github.com/amperser/proselint/commit/18ecce6409ffd63c6a809e7668edf9e539cec6a2))
+- *(registry)* [**breaking**] Remove results_limit ([#1421](https://github.com/amperser/proselint/issues/1421)) - ([d77cd1b](https://github.com/amperser/proselint/commit/d77cd1b8c8d2bfa8511a87d2607c6ed983f316b6))
+- Move chocolatey to spelling.consistency ([#1432](https://github.com/amperser/proselint/issues/1432)) - ([7a2d503](https://github.com/amperser/proselint/commit/7a2d503b784d426d84f90f84a59c17361327dcd6))
+- Simplify but check and properly count lines ([#1423](https://github.com/amperser/proselint/issues/1423)) - ([68be196](https://github.com/amperser/proselint/commit/68be19657cb304c97234ca8b6d7f97b958f2f2ee))
+- Rectify capitalisation in preferred forms ([#1413](https://github.com/amperser/proselint/issues/1413)) - ([81d2ea1](https://github.com/amperser/proselint/commit/81d2ea15f164159f7ee1b2c7261e8c20c91d338d))
+- Check venery-waxed return types ([#1414](https://github.com/amperser/proselint/issues/1414)) - ([b481488](https://github.com/amperser/proselint/commit/b4814886f6e7e6c270b135d1ce358ef455d589ae))
+- Update Sublime plugin for SublimeLinter4 ([#1107](https://github.com/amperser/proselint/issues/1107)) - ([8df0966](https://github.com/amperser/proselint/commit/8df0966636f84f3b0746ef4647ab02a85ff7ba26))
+
+### 🚜 Refactor
+
+- *(cli)* Switch click -> argparse and add logging ([#1400](https://github.com/amperser/proselint/issues/1400)) - ([01b507e](https://github.com/amperser/proselint/commit/01b507e3d6eb23f21a009913556468c974b14082))
+- *(config)* Remove unused copy import ([#1402](https://github.com/amperser/proselint/issues/1402)) - ([cd19388](https://github.com/amperser/proselint/commit/cd1938898b0523d0312071bba3032ae544c7975c))
+- *(tools)* Upgrade internals ([#1399](https://github.com/amperser/proselint/issues/1399)) - ([d9db2c5](https://github.com/amperser/proselint/commit/d9db2c55dd1916b7cdb528f9c042ef09f588892f))
+- Stabilise wire logging ([#1444](https://github.com/amperser/proselint/issues/1444)) - ([02e85a8](https://github.com/amperser/proselint/commit/02e85a8fe89e33f2e786cee33985741be7ecef0c))
+- [**breaking**] Upgrade to python 3.10 ([#1435](https://github.com/amperser/proselint/issues/1435)) - ([1b986fe](https://github.com/amperser/proselint/commit/1b986fefe78492a94dde1c713300043dc21b1c1a))
+- [**breaking**] Remove unused corpus scoring ([#1403](https://github.com/amperser/proselint/issues/1403)) - ([85fde74](https://github.com/amperser/proselint/commit/85fde74ca2166702267099ca14c865e814901564))
+- Implement iterators for check results ([#1398](https://github.com/amperser/proselint/issues/1398)) - ([fa73970](https://github.com/amperser/proselint/commit/fa73970af1b3a39aa9c973782cc754753634b566))
+- Modernise config ([#1394](https://github.com/amperser/proselint/issues/1394)) - ([0e1feba](https://github.com/amperser/proselint/commit/0e1feba9a4b1b7bc702bdddc1ebbcfcfb6836307))
+- Tidy checks ([#1383](https://github.com/amperser/proselint/issues/1383)) - ([053295c](https://github.com/amperser/proselint/commit/053295cd316dc7ab53393489e94f8a981eace4f4))
+
+### 📚 Documentation
+
+- Update treewide documentation ([#1445](https://github.com/amperser/proselint/issues/1445)) - ([7296f20](https://github.com/amperser/proselint/commit/7296f204e524b3f277091e512af326dc776bd2c0))
+
+### ⚡ Performance
+
+- *(checks)* [**breaking**] Use dual engine system ([#1436](https://github.com/amperser/proselint/issues/1436)) - ([e12a943](https://github.com/amperser/proselint/commit/e12a943b86525bbebaede47bc34f7f6a70025109))
+- *(cli)* Import version lazily ([#1438](https://github.com/amperser/proselint/issues/1438)) - ([7bfb8f1](https://github.com/amperser/proselint/commit/7bfb8f15d341ecae9163215346a8a2a84ed435df))
+- *(registry)* Early exit matches_partial ([#1441](https://github.com/amperser/proselint/issues/1441)) - ([9fa6339](https://github.com/amperser/proselint/commit/9fa6339225b7ba64382f92c5a8686a5eefc442bf))
+- *(tools)* Use bisect for boundary checks ([#1407](https://github.com/amperser/proselint/issues/1407)) - ([c80ef08](https://github.com/amperser/proselint/commit/c80ef0833da5c1d2730d761847af70bbd934f029))
+
+### ⚙️ Miscellaneous Tasks
+
+- *(gh)* Remove pr frontmatter - ([da58e87](https://github.com/amperser/proselint/commit/da58e8752898789d46b4b33f3421dddd1d997518))
+- *(publish)* Bypass protections ([#1447](https://github.com/amperser/proselint/issues/1447)) - ([200a817](https://github.com/amperser/proselint/commit/200a8174dcd75bc857fc65b75e4e28ad846a9723))
+- *(publish)* Fix release configurations ([#1446](https://github.com/amperser/proselint/issues/1446)) - ([79885f8](https://github.com/amperser/proselint/commit/79885f8cae206042c133b749d0cc99d7438fe756))
+- Use nix for workflows ([#1416](https://github.com/amperser/proselint/issues/1416)) - ([9c24e8c](https://github.com/amperser/proselint/commit/9c24e8ced7253e059ef0ccee89c9b100bd5c9530))
+- Update issue templates ([#1420](https://github.com/amperser/proselint/issues/1420)) - ([35e7686](https://github.com/amperser/proselint/commit/35e7686967545dc8440311948557970aed81ba17))
+- Update workflows ([#1419](https://github.com/amperser/proselint/issues/1419)) - ([7280204](https://github.com/amperser/proselint/commit/7280204898a46da9a38a035267b5f11518776a14))
+- Ignore .envrc and .direnv ([#1415](https://github.com/amperser/proselint/issues/1415)) - ([6bf7ab5](https://github.com/amperser/proselint/commit/6bf7ab5f3216cac18e3a665618ab58fbbceb6cc5))
+- Remove danger ([#1384](https://github.com/amperser/proselint/issues/1384)) - ([def7995](https://github.com/amperser/proselint/commit/def7995436c75333d3333b82446ab43ea616cbe4))
+- Update ci and flake ([#1386](https://github.com/amperser/proselint/issues/1386)) - ([35e48a0](https://github.com/amperser/proselint/commit/35e48a08aa7eebf0139aa7a86a57cb3b1b47534b))
+- Update tooling ([#1381](https://github.com/amperser/proselint/issues/1381)) - ([9132ee4](https://github.com/amperser/proselint/commit/9132ee44ebb9265ab66841875fee75fa3e06f4a8))
+- Remove duplicate items from lists ([#1369](https://github.com/amperser/proselint/issues/1369)) - ([f01742d](https://github.com/amperser/proselint/commit/f01742d683be956cec6964bad6f302aeecebe89a))
+- Pin runner image versions ([#1368](https://github.com/amperser/proselint/issues/1368)) - ([03a7360](https://github.com/amperser/proselint/commit/03a73606ef052730b27cd0158d294e6845d80d32))
+
+### Build
+
+- Fix distribution ([#1417](https://github.com/amperser/proselint/issues/1417)) - ([481a2a6](https://github.com/amperser/proselint/commit/481a2a622c25513c390fcaea7a042ee7ae6210f9))
+
+## New Contributors ❤️
+
+* @renovate[bot] made their first contribution in [#1443](https://github.com/amperser/proselint/pull/1443)
+* @drainpixie made their first contribution in [#1440](https://github.com/amperser/proselint/pull/1440)
+* @Yoshanuikabundi made their first contribution in [#1107](https://github.com/amperser/proselint/pull/1107)
+* @ferdnyc made their first contribution in [#1370](https://github.com/amperser/proselint/pull/1370)
+
 ## [proselint@0.14.0](https://github.com/amperser/proselint/compare/0.13.0...0.14.0)
 
 ### Bug Fixes
