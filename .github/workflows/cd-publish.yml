@@ -96,7 +96,7 @@ jobs:
       - name: "[CHANGELOG] Generate release notes"
         run: |
           nix develop --command git-cliff -c cliff.toml \
-            --unreleased --verbose \
+            --latest --verbose \
             -o dist/RELEASE_NOTES.md
 
       - name: "[VERIFY] Provenance"
