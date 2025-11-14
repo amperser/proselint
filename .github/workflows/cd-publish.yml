@@ -143,13 +143,16 @@ jobs:
           echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
 
+      - name: "[INIT] Move release notes"
+        run: mv dist/RELEASE_NOTES.md ./RELEASE_NOTES.md
+
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.input.outputs.tag }}
           tag_name: ${{ steps.input.outputs.tag }}
           prerelease: ${{ steps.input.outputs.prerelease }}
-          body_path: dist/RELEASE_NOTES.md
+          body_path: ./RELEASE_NOTES.md
           files: dist/*
 
   pypi-publish:
@@ -165,6 +168,9 @@ jobs:
         with:
           name: dist-artifacts
           path: dist/
+
+      - name: "[INIT] Remove release notes"
+        run: rm dist/RELEASE_NOTES.md
 
       - name: "[PUBLISH] PyPI"
         uses: pypa/gh-action-pypi-publish@release/v1
