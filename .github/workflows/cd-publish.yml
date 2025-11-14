@@ -20,10 +20,18 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: "[INIT] Get privileged app token"
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_KEY }}
+
       - name: "[INIT] Checkout"
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: "[INIT] Git Config"
         run: |
@@ -40,7 +48,6 @@ jobs:
         with:
           name: amperser
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
 
       - name: "[VERSION] Bump & Commit"
         run: |
