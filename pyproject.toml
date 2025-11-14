@@ -1,7 +1,7 @@
 [project]
 name = "proselint"
 description = "A linter for prose."
-version = "0.15.0"
+version = "0.16.0"
 license = {file = "LICENSE.md"}
 authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
 readme = "README.md"
