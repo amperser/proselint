@@ -83,19 +83,22 @@ nix profile install nixpkgs#proselint
 `proselint` is available on:
 
 - A [demo editor](http://proselint.com/write)
-- [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
-- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
 - Emacs via [Flycheck](http://www.flycheck.org/) or via [Flymake](https://sr.ht/~manuel-uberti/flymake-proselint/)
 - Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
+- Neovim via [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) (none-ls has [diagnostics](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint-1) and [code actions](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint) for proselint)
+- [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
+- [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
+
+The following plugins are also available, but they are archived or unmaintained:
+
+- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
+- [coala](https://github.com/coala/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
+- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
+- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
 - Neovim via [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) (null-ls has [diagnostics](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/diagnostics/proselint.lua) and [code actions](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/code_actions/proselint.lua) for proselint)
 - [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
+- [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
 - [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
-- [coala](https://github.com/coala-analyzer/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
-- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
-- [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
-- [Statick](https://github.com/sscpac/statick-md)
-- [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
 
 ### Usage
 
