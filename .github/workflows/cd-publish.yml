@@ -20,10 +20,18 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: "[INIT] Get privileged app token"
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_KEY }}
+
       - name: "[INIT] Checkout"
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: "[INIT] Git Config"
         run: |
@@ -41,15 +49,14 @@ jobs:
           name: amperser
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-
       - name: "[VERSION] Bump & Commit"
         run: |
           nix develop --command uv version ${{ github.event.inputs.version }}
-          nix develop --command git-cliff -c cliff.toml \
+          nix develop --command git-cliff -c cliff.toml -u \
           --tag v${{ github.event.inputs.version }} \
-          -o CHANGELOG.md
+          -p CHANGELOG.md
 
-          git commit -am "chore: prepare release v${{ github.event.inputs.version }}" || echo "no changes to commit"
+          git commit -am "chore: prepare release v${{ github.event.inputs.version }}" --no-verify || echo "no changes to commit"
 
       - name: "[GIT] Create tag"
         run: |
@@ -96,7 +103,7 @@ jobs:
       - name: "[CHANGELOG] Generate release notes"
         run: |
           nix develop --command git-cliff -c cliff.toml \
-            --unreleased --verbose \
+            --latest --verbose \
             -o dist/RELEASE_NOTES.md
 
       - name: "[VERIFY] Provenance"
@@ -105,7 +112,7 @@ jobs:
           subject-path: 'dist/*'
 
       - name: "[UPLOAD] Artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist-artifacts
           path: dist/
@@ -124,7 +131,7 @@ jobs:
           fetch-depth: 0
 
       - name: "[DOWNLOAD] Artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dist-artifacts
           path: dist/
@@ -136,27 +143,34 @@ jobs:
           echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
 
+      - name: "[INIT] Move release notes"
+        run: mv dist/RELEASE_NOTES.md ./RELEASE_NOTES.md
+
       - name: "[RELEASE] Create GitHub release"
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.input.outputs.tag }}
           tag_name: ${{ steps.input.outputs.tag }}
           prerelease: ${{ steps.input.outputs.prerelease }}
-          body_path: dist/RELEASE_NOTES.md
+          body_path: ./RELEASE_NOTES.md
           files: dist/*
 
   pypi-publish:
     name: Publish to PyPI
     runs-on: ubuntu-latest
     needs: [build]
+    environment: release
     permissions:
       id-token: write
     steps:
       - name: "[DOWNLOAD] Artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dist-artifacts
           path: dist/
+
+      - name: "[INIT] Remove release notes"
+        run: rm dist/RELEASE_NOTES.md
 
       - name: "[PUBLISH] PyPI"
         uses: pypa/gh-action-pypi-publish@release/v1

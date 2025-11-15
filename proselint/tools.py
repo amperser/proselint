@@ -4,7 +4,6 @@ import json
 import stat
 from bisect import bisect_left
 from collections.abc import Callable
-from enum import Enum
 from itertools import accumulate, chain, islice
 from operator import itemgetter
 from os import walk
@@ -12,21 +11,11 @@ from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
 from sys import stdin
-from typing import cast, overload
+from typing import NamedTuple, cast, overload
 
 from proselint.config import DEFAULT, Config
-from proselint.log import log
 from proselint.registry import CheckRegistry
-from proselint.registry.checks import LintResult
-
-
-class OutputFormat(str, Enum):
-    """The format to output results in."""
-
-    FULL = "full"
-    JSON = "json"
-    COMPACT = "compact"
-
+from proselint.registry.checks import CheckResult
 
 ACCEPTED_EXTENSIONS = {".md", ".txt", ".rtf", ".html", ".tex", ".markdown"}
 
@@ -37,12 +26,18 @@ def verify_path(
     resolve: bool = False,
     reject_file: bool = False,
     reject_dir: bool = False,
+    must_exist: bool = False,
 ) -> Path:
     """Check a path for specified conditions."""
     if resolve:
         path = path.resolve()
 
-    stat_res = path.stat()
+    try:
+        stat_res = path.stat()
+    except FileNotFoundError as err:
+        if must_exist:
+            raise err
+        return path
 
     if reject_file and stat.S_ISREG(stat_res.st_mode):
         raise OSError("Files not permitted - found file %s", path)
@@ -115,6 +110,24 @@ def find_spans(
     return spans
 
 
+class LintResult(NamedTuple):
+    """Carry lint result information."""
+
+    check_result: CheckResult
+    pos: tuple[int, int]
+
+    @property
+    def extent(self) -> int:
+        """The extent (span width) of the result."""
+        return self.check_result.span[1] - self.check_result.span[0]
+
+    def into_dict(self) -> dict[str, object]:
+        """Convert the `LintResult` into a flattened dictionary."""
+        result = self._asdict() | self.check_result._asdict()
+        del result["check_result"]
+        return result
+
+
 def errors_to_json(errors: list[LintResult]) -> str:
     """Convert the errors to JSON."""
     return json.dumps(
@@ -147,16 +160,11 @@ class LintFile:
 
         self.source = source
 
-        # NOTE: necessary to prevent edge cases for padding and line boundaries
-        content = content or cast("Path", source).read_text()
-        self.content = f"\n{content}\n"
-
-        self.line_bounds = self._line_bounds()
-        self.quote_bounds = tuple(
-            chain.from_iterable(
-                find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
-            )
-        )
+        if content:
+            self.content = f"\n{content}\n"
+            self._compute_bounds()
+            return
+        self.content, self.line_bounds, self.quote_bounds = ("", (), ())
 
     @classmethod
     def from_stdin(cls) -> "LintFile":
@@ -167,6 +175,28 @@ class LintFile:
     def source_name(self) -> str:
         """Return the source name (filename or otherwise) of the `LintFile`."""
         return self.source if isinstance(self.source, str) else self.source.name
+
+    def _compute_bounds(self) -> None:
+        if not self.content:
+            raise ValueError("Content must be available to compute boundaries.")
+
+        self.line_bounds = self._line_bounds()
+        self.quote_bounds = tuple(
+            chain.from_iterable(
+                find_spans(self.content, QUOTE_PATTERN, check_matching_quotes)
+            )
+        )
+
+    def _read(self) -> None:
+        """Read the source contents and compute boundaries."""
+        if self.content:
+            return
+
+        # NOTE: necessary to prevent edge cases for padding and line boundaries
+        content = cast("Path", self.source).read_text()
+        self.content = f"\n{content}\n"
+
+        self._compute_bounds()
 
     def _line_bounds(self) -> tuple[int, ...]:
         """Return the starting positions of each line in the text."""
@@ -189,44 +219,20 @@ class LintFile:
 
     def lint(self, config: Config = DEFAULT) -> list[LintResult]:
         """Run the linter against the file."""
+        self._read()
         registry = CheckRegistry()
         return sorted(
             islice(
                 (
-                    LintResult(
-                        result.check_path,
-                        result.message,
-                        *self.line_col_of(result.start_pos),
-                        start_pos=result.start_pos,
-                        end_pos=result.end_pos,
-                        severity="warning",
-                        replacements=result.replacements,
-                    )
+                    LintResult(result, self.line_col_of(result.span[0]))
                     for check in registry.get_all_enabled(config["checks"])
                     for result in check.check_with_flags(self.content)
                     if (
                         check.flags.allow_quotes
-                        or not self.is_quoted_pos(result.start_pos)
+                        or not self.is_quoted_pos(result.span[0])
                     )
                 ),
                 config["max_errors"],
             ),
-            key=itemgetter(2, 3),  # sort by line and column
+            key=itemgetter(1),  # sort by line and column
         )
-
-    def output_errors(
-        self,
-        results: list[LintResult],
-        output_format: OutputFormat,
-    ) -> None:
-        """Log lint results from the LintFile."""
-        if output_format is OutputFormat.JSON:
-            log.warning(errors_to_json(results))
-            return
-
-        name = (
-            "-" if output_format is OutputFormat.COMPACT else self.source_name
-        )
-
-        for result in results:
-            log.warning(f"{name}{result}")

@@ -7,7 +7,16 @@ from pathlib import Path
 from types import ModuleType
 
 from proselint.config.paths import proselint_path
-from proselint.registry.checks import Check
+from proselint.registry.checks import Check, Padding, engine
+
+
+def engine_from(
+    padding: Padding, opts: engine.RegexOptions | None = None
+) -> engine.Engine:
+    """Return the correct engine to use for a given `padding`."""
+    return [engine.Fast, engine.Fancy][
+        int(padding == Padding.STRICT_WORDS_IN_TEXT)
+    ](opts)
 
 
 def assert_pass(check: Check, examples: tuple[str, ...]) -> None:

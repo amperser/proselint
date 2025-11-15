@@ -1,22 +1,25 @@
 [project]
 name = "proselint"
 description = "A linter for prose."
-version = "0.14.0"
+version = "0.16.0"
 license = {file = "LICENSE.md"}
 authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
 readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
-	"Programming language :: Python :: 3",
-	"Programming language :: Python :: 3.10",
-	"Programming language :: Python :: 3.11",
-	"Programming language :: Python :: 3.12",
-	"Programming language :: Python :: 3.13",
-	"Programming language :: Python :: 3.14",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
 	"License :: OSI Approved :: BSD License",
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "google-re2>=1.1.20251105",
+    "google-re2-stubs>=0.1.1",
+]
 
 [project.urls]
 Homepage = "https://github.com/amperser/proselint"
@@ -107,3 +110,4 @@ preview = true
 "tests/**" = ["S101", "SLF001", "PLC2701"]
 "proselint/checks/**" = ["RUF001"]
 "website/**" = ["D100", "D103", "D104"]
+"proselint/registry/checks/engine.py" = ["D102"] # docs are inherited from base classes

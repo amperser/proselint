@@ -11,7 +11,8 @@ from hypothesis import assume, given
 from hypothesis import strategies as st
 from rstr import xeger
 
-from proselint.registry.checks import BATCH_COUNT, Check, Padding, types
+from proselint.registry.checks import BATCH_COUNT, Check, Padding, engine, types
+from tests.common import engine_from
 
 PADDING_STRATEGY = st.sampled_from(Padding)
 
@@ -121,7 +122,12 @@ def test_preferred_smoke(
     """Return no matches when no elements are present."""
     assume(all(item not in noise.lower() for item in items))
     check_type = types.PreferredForms(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     assert list(check.check(noise)) == []
 
 
@@ -132,7 +138,12 @@ def test_preferred_values_smoke(
     """Return no matches when only replacements are present."""
     count = n_counts(data, len(items))
     check_type = types.PreferredForms(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
     assert list(check.check(content)) == []
 
@@ -144,7 +155,12 @@ def test_preferred_in_text(
     """Return correct matches when elements are present."""
     count = n_counts(data, len(items))
     check_type = types.PreferredForms(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)
@@ -182,7 +198,12 @@ def test_preferred_s_smoke(
     """Return no matches when no elements are present."""
     assume(all(item not in noise.lower() for item in items))
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     assert list(check.check(noise)) == []
 
 
@@ -190,12 +211,14 @@ def test_preferred_s_smoke(
 def test_preferred_s_case_sensitive(
     items: dict[str, str], padding: Padding, path: str
 ) -> None:
-    """Return correct matches when ignore_case=False with case variations."""
+    """Return correct matches in case-sensitive mode with case variations."""
     check = Check(
         check_type=types.PreferredFormsSimple(items=items, padding=padding),
         path=path,
         message="{} || {}",
-        ignore_case=False,
+        engine=engine_from(
+            padding, engine.RegexOptions(case_insensitive=False)
+        ),
     )
 
     text = " ".join(items.keys())
@@ -214,7 +237,7 @@ def test_preferred_s_case_sensitive(
 def test_preferred_s_case_insensitive(
     items: dict[str, str], padding: Padding, path: str
 ) -> None:
-    """Return correct matches when ignore_case=True with case variations."""
+    """Return correct matches in case-insensitive mode with case variations."""
     normalised = {k.lower(): v for k, v in items.items()}
 
     check_type = types.PreferredFormsSimple(items=normalised, padding=padding)
@@ -222,7 +245,7 @@ def test_preferred_s_case_insensitive(
         check_type=check_type,
         path=path,
         message="{} || {}",
-        ignore_case=True,
+        engine=engine_from(padding, engine.RegexOptions(case_insensitive=True)),
     )
 
     text_variations = [
@@ -247,7 +270,12 @@ def test_preferred_s_values_smoke(
     """Return no matches when only replacements are present."""
     count = n_counts(data, len(items))
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     content = " ".join(chain.from_iterable(map(repeat, items.values(), count)))
     assert list(check.check(content)) == []
 
@@ -259,7 +287,12 @@ def test_preferred_s_in_text(
     """Return correct matches when elements are present."""
     count = n_counts(data, len(items))
     check_type = types.PreferredFormsSimple(items=items, padding=padding)
-    check = Check(check_type=check_type, path=path, message="{} || {}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{} || {}",
+        engine=engine_from(padding),
+    )
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)
@@ -322,7 +355,12 @@ def test_existence_smoke(
     check_type = types.Existence(
         items=items, padding=padding, exceptions=exceptions
     )
-    check = Check(check_type=check_type, path=path, message="{}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{}",
+        engine=engine_from(padding),
+    )
     assert list(check.check(noise)) == []
 
 
@@ -339,7 +377,12 @@ def test_existence_exceptions_smoke(
     check_type = types.Existence(
         items=items, padding=padding, exceptions=exceptions
     )
-    check = Check(check_type=check_type, path=path, message="{}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{}",
+        engine=engine_from(padding),
+    )
     content = " ".join(chain.from_iterable(map(repeat, exceptions, count)))
     assert list(check.check(content)) == []
 
@@ -357,7 +400,12 @@ def test_existence_in_text(
     check_type = types.Existence(
         items=items, padding=padding, exceptions=exceptions
     )
-    check = Check(check_type=check_type, path=path, message="{}")
+    check = Check(
+        check_type=check_type,
+        path=path,
+        message="{}",
+        engine=engine_from(padding),
+    )
     selected_matches = list(
         chain.from_iterable(
             repeat(xeger(padding.format(escape(a))), b)

@@ -105,6 +105,15 @@
 															};
 													});
 										})
+									(final: prev: {
+											google-re2 =
+												prev.google-re2.overrideAttrs (old: rec {
+														nativeBuildInputs =
+															(old.nativeBuildInputs or [])
+															++ (with final; [setuptools pybind11])
+															++ (with pkgs; [re2 abseil-cpp]);
+													});
+										})
 								]
 							);
 
@@ -125,6 +134,7 @@
 								UV_NO_SYNC = "1";
 								UV_PYTHON = python.interpreter;
 								UV_PYTHON_DOWNLOADS = "never";
+								LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
 							};
 
 							shellHook =

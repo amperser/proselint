@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from itertools import islice
 from math import ceil
-from re import RegexFlag
 from typing import TYPE_CHECKING, NamedTuple
+
+from proselint.registry.checks.engine import Engine, Fast, Padding
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -19,67 +19,12 @@ BATCH_COUNT = 150
 """The maximum number of entries per batch for splitting larger checks."""
 
 
-class Padding(str, Enum):
-    """Regex padding types for checks."""
-
-    RAW = r"{}"
-    """Bare text with no padding."""
-    SAFE_JOIN = r"(?:{})"
-    """Encapsulate patterns in an anonymous group for joining, e.g. x|y|z."""
-    WORDS_IN_TEXT = r"\b{}\b"
-    """
-    Match word position boundaries around the pattern.
-
-    This matches any position between a word character and a non-word character
-    or position.
-    """
-    NONWORDS_IN_TEXT = r"\B{}\B"
-    """Match any position that is not a word boundary around the pattern."""
-    STRICT_WORDS_IN_TEXT = r"(?<![A-Za-z'-]){}(?![A-Za-z'-])"
-    """Lookaround-based `WORDS_IN_TEXT`, prohibiting hyphens and apostrophes."""
-
-    def to_offset_from(self, offset: tuple[int, int]) -> tuple[int, int]:
-        """Calculate new offset values based on the applied padding."""
-        if self in {
-            Padding.RAW,
-            Padding.SAFE_JOIN,
-            Padding.WORDS_IN_TEXT,
-            Padding.STRICT_WORDS_IN_TEXT,
-        }:
-            return offset
-        return (offset[0] + 1, max(offset[1] - 1, 0))
-
-
-# TODO: use position and span for (line, column) and (start_pos, end_pos)?
-class LintResult(NamedTuple):
-    """Carry lint result information."""
-
-    check_path: str
-    message: str
-    line: int
-    column: int
-    start_pos: int
-    end_pos: int
-    severity: str
-    replacements: str | None
-
-    @property
-    def extent(self) -> int:
-        """The extent (span width) of the result."""
-        return self.end_pos - self.start_pos
-
-    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
-        """Convert the `LintResult` into a CLI-suitable format."""
-        return f":{self.line}:{self.column}: {self.check_path} {self.message}"
-
-
 class CheckResult(NamedTuple):
     """Carry check result information."""
 
-    start_pos: int
-    end_pos: int
     check_path: str
     message: str
+    span: tuple[int, int]
     replacements: str | None
 
 
@@ -106,8 +51,7 @@ class CheckFlags(NamedTuple):
         req_results = max(ceil((threshold / 1e6) * max(length, 1000)), 2)
         return (
             CheckResult(
-                start_pos=result.start_pos,
-                end_pos=result.end_pos,
+                span=result.span,
                 check_path=result.check_path,
                 message=f"{result.message} Surpassed {threshold} ppm.",
                 replacements=None,
@@ -126,17 +70,11 @@ class Check(NamedTuple):
     """Carry a complete check specification."""
 
     check_type: CheckType
+    engine: Engine = Fast()
     path: str = ""
     message: str = ""
     flags: CheckFlags = CheckFlags()
-    ignore_case: bool = True
     offset: tuple[int, int] = (0, 0)
-
-    # TODO: for 3.11+, RegexFlag.NOFLAG exists
-    @property
-    def re_flag(self) -> int:
-        """Return a corresponding `RegexFlag` for the `ignore_case` setting."""
-        return RegexFlag.IGNORECASE if self.ignore_case else 0
 
     @property
     def path_segments(self) -> list[str]:
@@ -145,9 +83,7 @@ class Check(NamedTuple):
 
     def matches_partial(self, partial: str) -> bool:
         """Check if `partial` is a subset key of the full check path."""
-        partial_segments = partial.split(".")
-
-        return self.path_segments[: len(partial_segments)] == partial_segments
+        return self.path == partial or self.path.startswith(f"{partial}.")
 
     def check(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`."""
@@ -160,3 +96,6 @@ class Check(NamedTuple):
     def check_with_flags(self, text: str) -> Iterator[CheckResult]:
         """Apply the check over `text`, including specified `CheckFlags`."""
         return self.flags.apply(self.check(text), len(text))
+
+
+__all__ = ("Check", "CheckFlags", "CheckResult", "Padding")

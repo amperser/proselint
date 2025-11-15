@@ -19,7 +19,7 @@ from proselint.registry.checks import Check, types
 check = Check(
     check_type=types.Existence(
         items=(
-            r"up to \d{1,3}% ?[-\u2014\u2013]{0,3} ?(?:or|and) more\W?",
+            r"up to \d{1,3}% ?[-\x{2014}\x{2013}]{0,3} ?(?:or|and) more\W?",
             "between you and I",
             "on accident",
             "somewhat of a",

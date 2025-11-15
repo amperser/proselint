@@ -8,7 +8,9 @@ from pytest import LogCaptureFixture, raises
 from proselint.command_line import get_parser, proselint
 from proselint.config import (
     DEFAULT,
-    _deepmerge_dicts,  # pyright: ignore[reportUnknownVariableType, reportPrivateUsage]
+    _deepmerge_dicts,  # pyright: ignore[reportPrivateUsage]
+    _flatten_checks,  # pyright: ignore[reportPrivateUsage]
+    _sort_by_specificity,  # pyright: ignore[reportPrivateUsage]
     load_from,
 )
 
@@ -29,6 +31,44 @@ def test_deepmerge_dicts() -> None:
     }
 
 
+def test_sort_by_specificity() -> None:
+    """Test sort_by_specificity sorts by dot count descending."""
+    unsorted = {
+        "a": True,
+        "a.b.c": False,
+        "x.y": True,
+        "a.b": True,
+    }
+
+    sorted_checks = _sort_by_specificity(unsorted)
+    keys = list(sorted_checks.keys())
+
+    dots = [key.count(".") for key in keys]
+
+    assert dots == sorted(dots, reverse=True)
+    assert keys[0] == "a.b.c"
+    assert keys[-1] == "a"
+
+    assert sorted_checks["a.b.c"] is False
+    assert sorted_checks["a"] is True
+
+
+def test_flatten_checks() -> None:
+    """Test flatten_checks."""
+    assert _flatten_checks({"a": True, "b": False}) == {
+        "a": True,
+        "b": False,
+    }
+
+    assert _flatten_checks({"x": {"y": True, "z": False}, "w": True}) == {
+        "x.y": True,
+        "x.z": False,
+        "w": True,
+    }
+
+    assert _flatten_checks({"a": {"b": {"c": True}}}) == {"a.b.c": True}
+
+
 def test_load_from() -> None:
     """Test load_options by specifying a user options path."""
     overrides = load_from(CONFIG_FILE)
@@ -38,7 +78,7 @@ def test_load_from() -> None:
 
 def test_config_flag(caplog: LogCaptureFixture) -> None:
     """Test the --config CLI argument."""
-    with caplog.at_level("WARNING", "proselint"):
+    with caplog.at_level("INFO", "proselint"):
         _ = proselint(
             PARSER.parse_args(
                 (

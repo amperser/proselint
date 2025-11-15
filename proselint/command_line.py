@@ -15,10 +15,9 @@ from typing import TYPE_CHECKING
 from proselint.checks import __register__
 from proselint.config import DEFAULT, load_from
 from proselint.config import paths as config_paths
-from proselint.log import log
+from proselint.log import OutputFormat, ResponseError, log
 from proselint.registry import CheckRegistry
-from proselint.tools import LintFile, OutputFormat, extract_files, verify_path
-from proselint.version import __version__
+from proselint.tools import LintFile, extract_files, verify_path
 
 if TYPE_CHECKING:
     from types import FrameType
@@ -31,6 +30,7 @@ class ExitStatus(IntEnum):
     SUCCESS_ERR = 1
     UNACCEPTED_ARGS = 2
     INTERRUPT = 3
+    ERROR = 4
 
 
 def interrupt_handler(signalnum: int, _frame: FrameType | None) -> None:
@@ -108,15 +108,25 @@ def get_parser() -> ArgumentParser:
 
 def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     """Create the CLI for proselint, a linter for prose."""
-    config = load_from(
-        args.config and verify_path(args.config, resolve=True, reject_dir=True)
-    )
+    try:
+        config = load_from(
+            args.config
+            and verify_path(
+                args.config, resolve=True, reject_dir=True, must_exist=True
+            )
+        )
+    except FileNotFoundError as err:
+        raise FileNotFoundError(
+            f"Configuration file '{args.config}' could not be read."
+        ) from err
 
     if args.subcommand is None:
         parser.print_help()
         return ExitStatus.UNACCEPTED_ARGS
 
     if args.subcommand == "version":
+        from proselint.version import __version__  # noqa: PLC0415
+
         log.info("Proselint %s", __version__)
         log.debug("Python %s", sys.version)
         return ExitStatus.SUCCESS
@@ -143,9 +153,18 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
     num_errors = 0
 
     for lint_file in lint_files:
-        results = lint_file.lint(config)
+        try:
+            results = lint_file.lint(config)
+        except Exception as err:
+            log.write_lint_exception(
+                log.format_source(lint_file.source),
+                ResponseError.from_exception(err),
+            )
+            continue
         num_errors += len(results)
-        lint_file.output_errors(results, args.output_format)
+        log.write_results(log.format_source(lint_file.source), results)
+
+    log.flush()
 
     return ExitStatus.SUCCESS_ERR if num_errors else ExitStatus.SUCCESS
 
@@ -158,6 +177,10 @@ def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
 
-    log.setup(verbose=args.verbose)
+    log.setup(verbose=args.verbose, fmt=args.output_format)
 
-    sys.exit(proselint(args, parser))
+    try:
+        sys.exit(proselint(args, parser))
+    except Exception as err:
+        log.write_error(ResponseError.from_exception(err))
+        sys.exit(ExitStatus.ERROR)

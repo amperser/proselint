@@ -16,7 +16,7 @@ TEXT_WITH_NO_NEWLINE = """A very bad sentence."""
 
 def test_errors_sorted() -> None:
     """Test that errors are sorted by line and column number."""
-    lines_and_cols = [(e.line, e.column) for e in LintFile("", TEXT).lint()]
+    lines_and_cols = [e.pos for e in LintFile("", TEXT).lint()]
     assert sorted(lines_and_cols) == lines_and_cols
 
 
