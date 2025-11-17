@@ -160,7 +160,7 @@ class LintFile:
 
         self.source = source
 
-        if content:
+        if content is not None:
             self.content = f"\n{content}\n"
             self._compute_bounds()
             return
