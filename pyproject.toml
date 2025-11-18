@@ -2,7 +2,7 @@
 name = "proselint"
 description = "A linter for prose."
 version = "0.16.0"
-license = {file = "LICENSE.md"}
+license = { file = "LICENSE.md" }
 authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
 readme = "README.md"
 classifiers = [
@@ -13,7 +13,6 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
 	"Programming Language :: Python :: 3.14",
-	"License :: OSI Approved :: BSD License",
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -30,8 +29,8 @@ Issues = "https://github.com/amperser/proselint/issues"
 proselint = "proselint.command_line:main"
 
 [build-system]
-requires = ["uv_build>=0.7.22,<0.8.0"]
-build-backend = "uv_build"
+requires = ["pdm-backend>=2.0.0"]
+build-backend = "pdm.backend"
 
 [tool.poe.tasks]
 test = "pytest"
@@ -63,10 +62,9 @@ web = [
 	"rq>=0.12.0",
 ]
 
-[tool.uv.build-backend]
-module-name = "proselint"
-module-root = ""
-source-include = ["tests/**"]
+[tool.pdm.build]
+includes = ["proselint/"]
+source-includes = ["tests/"]
 
 [tool.ruff]
 line-length = 80
