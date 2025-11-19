@@ -16,6 +16,27 @@ This release is not backwards compatible. The following breaking changes have be
   - `--time` and `--clean` have been removed
   - `--debug` is now `--verbose`
   - `--json` and `--compact` are now `--output-format json` and `--output-format compact`
+- Several checks have been removed and renamed as an implementation of [#1373](https://github.com/amperser/proselint/issues/1373).
+  User configurations will need to be modified accordingly
+  - `airlinese`, `bureaucratese`, `chatspeak`, `commercialese`, `corporate_speak`, and `jargon` have been recategorized under `industrial_language`.
+  - `security`, `links`, and `cursing` (except for `cursing.nword`) have been removed
+  - `sexism`, `lgbtq`, and `cursing.nword`have been recategorized under `social_awareness`
+  - `consistency.spacing` has been moved to `typography.punctuation.spacing`
+  - `typography.exclamation` and `hyperbole` have been merged and moved to `typography.punctuation.hyperbole`
+  - `consistency.spelling` has been moved to `spelling.consistency`
+  - `consistency` has been removed
+  - All modules that previously contained a single check file have been flattened
+    - `archaism.misc` is now `archaism`
+    - `hedging.misc` is now `hedging`
+    - `lexical_illusions.misc` is now `lexical_illusions`
+    - `malapropisms.misc` is now `malapropisms`
+    - `mixed_metaphors.misc.bottleneck` is now `mixed_metaphors.bottleneck`
+    - `misc.mondegreens` is now `mondegreens`
+    - `needless_variants.misc` is now `needless_variants`
+    - `nonwords.misc` is now `nonwords`
+    - `oxymorons.misc` is now `oxymorons`
+    - `skunked_terms.misc` is now `skunked_terms`
+    - `uncomparables.misc` is now `uncomparables`
 - There is a new JSON output schema for `--output-format json`. This is [documented](https://github.com/amperser/proselint/blob/v0.16.0/docs/wire-schema.md), stable, and versioned. Plugins will require updates.
 - The on-disk cache has been removed
 
