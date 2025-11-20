@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "[INIT] Install Nix"
         uses: cachix/install-nix-action@v31
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: "[INIT] Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "[INIT] Install Nix (Unix)"
         if: runner.os != 'Windows'
