@@ -1,6 +1,6 @@
 {
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 		hooks = {
 			url = "github:cachix/git-hooks.nix";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -14,6 +14,11 @@
 			};
 		};
 
+		pyproject = {
+			url = "github:pyproject-nix/pyproject.nix";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+
 		build-systems = {
 			url = "github:pyproject-nix/build-system-pkgs";
 			inputs = {
@@ -21,11 +26,6 @@
 				nixpkgs.follows = "nixpkgs";
 				pyproject-nix.follows = "pyproject";
 			};
-		};
-
-		pyproject = {
-			url = "github:pyproject-nix/pyproject.nix";
-			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 
@@ -82,7 +82,7 @@
 					pythonSet,
 					...
 				}: let
-					check = self.checks.${system}.pre-commit-check;
+					check = self.checks.${system}.pre-commit;
 				in {
 					default = let
 						editableOverlay =
@@ -105,6 +105,7 @@
 															};
 													});
 										})
+
 									(final: prev: {
 											google-re2 =
 												prev.google-re2.overrideAttrs (old: rec {
@@ -176,14 +177,17 @@
 					pkgs,
 					...
 				}: {
-					pre-commit-check =
+					pre-commit =
 						hooks.lib.${system}.run {
 							src = ./.;
+							package = pkgs.prek;
+
 							hooks = {
 								trim-trailing-whitespace.enable = true;
 								end-of-file-fixer.enable = true;
 								mixed-line-endings.enable = true;
 								markdownlint.enable = true;
+
 								ruff.enable = true;
 								pyright = let
 									pyright = pkgs.basedpyright;
@@ -192,7 +196,9 @@
 									package = pyright;
 									entry = "${pyright}/bin/basedpyright";
 								};
+
 								convco.enable = true;
+
 								alejandra.enable = true;
 								statix = {
 									enable = true;
