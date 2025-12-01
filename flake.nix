@@ -108,7 +108,7 @@
 
 									(final: prev: {
 											google-re2 =
-												prev.google-re2.overrideAttrs (old: rec {
+												prev.google-re2.overrideAttrs (old: {
 														nativeBuildInputs =
 															(old.nativeBuildInputs or [])
 															++ (with final; [setuptools pybind11])
