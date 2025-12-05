@@ -1,8 +1,6 @@
 """Verify that the CLI behaves correctly."""
 
 import logging
-import sys
-from io import StringIO
 
 from pytest import LogCaptureFixture, MonkeyPatch
 
@@ -33,7 +31,7 @@ def test_version(caplog: LogCaptureFixture) -> None:
 def test_empty_stdin(monkeypatch: MonkeyPatch) -> None:
     """Ensure that running the linter with empty input does not crash."""
     with monkeypatch.context() as m:
-        m.setattr(sys, "stdin", StringIO())
+        m.setattr("sys.stdin.read", lambda: "")
         assert (
             proselint(PARSER.parse_args(("check",)), PARSER)
             == ExitStatus.SUCCESS
