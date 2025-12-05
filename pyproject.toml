@@ -15,7 +15,7 @@ classifiers = [
 	"Programming Language :: Python :: 3.14",
 ]
 requires-python = ">=3.10"
-dependencies = [
+optional-dependencies = [
     "google-re2>=1.1.20251105",
     "google-re2-stubs>=0.1.1",
 ]
@@ -120,3 +120,6 @@ preview = true
 "tests/**" = ["S101", "SLF001", "PLC2701"]
 "proselint/checks/**" = ["RUF001"]
 "proselint/registry/checks/engine.py" = ["D102"] # docs are inherited from base classes
+
+[tool.pyright]
+enableTypeIgnoreComments = true # note: temporariliy for engine.py
