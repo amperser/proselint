@@ -574,7 +574,9 @@ wheels = [
 name = "proselint"
 version = "0.16.0"
 source = { editable = "." }
-dependencies = [
+
+[package.optional-dependencies]
+re2 = [
     { name = "google-re2" },
     { name = "google-re2-stubs" },
 ]
@@ -605,9 +607,10 @@ web = [
 
 [package.metadata]
 requires-dist = [
-    { name = "google-re2", specifier = ">=1.1.20251105" },
-    { name = "google-re2-stubs", specifier = ">=0.1.1" },
+    { name = "google-re2", marker = "extra == 're2'", specifier = ">=1.1.20251105" },
+    { name = "google-re2-stubs", marker = "extra == 're2'", specifier = ">=0.1.1" },
 ]
+provides-extras = ["re2"]
 
 [package.metadata.requires-dev]
 dev = [
