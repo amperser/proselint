@@ -2,7 +2,7 @@
 
 import logging
 
-from pytest import LogCaptureFixture
+from pytest import LogCaptureFixture, MonkeyPatch
 
 from proselint.command_line import ExitStatus, get_parser, proselint
 from proselint.version import __version__
@@ -26,3 +26,13 @@ def test_version(caplog: LogCaptureFixture) -> None:
         assert caplog.record_tuples == [
             ("proselint", logging.INFO, f"Proselint {__version__}")
         ]
+
+
+def test_empty_stdin(monkeypatch: MonkeyPatch) -> None:
+    """Ensure that running the linter with empty input does not crash."""
+    with monkeypatch.context() as m:
+        m.setattr("sys.stdin.read", lambda: "")
+        assert (
+            proselint(PARSER.parse_args(("check",)), PARSER)
+            == ExitStatus.SUCCESS
+        )
