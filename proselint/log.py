@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import sys
 from enum import Enum, IntEnum
 from json import dump
 from sys import stderr, stdout
@@ -174,6 +175,18 @@ class Logger(logging.Logger):
         self.error(
             "Error encountered while linting %s: %s", source, err.message
         )
+
+    def write_version(self) -> None:
+        """Print the current version of Proselint."""
+        from proselint.version import __version__  # noqa: PLC0415
+
+        if self.fmt == OutputFormat.JSON:
+            Logger.write_dict({
+                "version": __version__, "python": sys.version_info[:3]
+            })
+            return
+        self.info("Proselint %s", __version__)
+        self.debug("Python %s", sys.version)
 
     def write_error(self, err: ResponseError) -> None:
         """Print an unrecoverable error."""
