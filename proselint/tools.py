@@ -11,7 +11,7 @@ from pathlib import Path
 from re import Pattern, finditer
 from re import compile as rcompile
 from sys import stdin
-from typing import NamedTuple, cast, overload
+from typing import NamedTuple, overload
 
 from proselint.config import DEFAULT, Config
 from proselint.registry import CheckRegistry
@@ -160,7 +160,7 @@ class LintFile:
 
         self.source = source
 
-        if content is not None:
+        if content:
             self.content = f"\n{content}\n"
             self._compute_bounds()
             return
@@ -189,11 +189,11 @@ class LintFile:
 
     def _read(self) -> None:
         """Read the source contents and compute boundaries."""
-        if self.content:
+        if self.content or isinstance(self.source, str):
             return
 
         # NOTE: necessary to prevent edge cases for padding and line boundaries
-        content = cast("Path", self.source).read_text()
+        content = self.source.read_text()
         self.content = f"\n{content}\n"
 
         self._compute_bounds()
