@@ -133,10 +133,7 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
         return ExitStatus.UNACCEPTED_ARGS
 
     if args.subcommand == "version":
-        from proselint.version import __version__  # noqa: PLC0415
-
-        log.info("Proselint %s", __version__)
-        log.debug("Python %s", sys.version)
+        log.write_version()
         return ExitStatus.SUCCESS
 
     if args.subcommand == "dump-config":
