@@ -58,6 +58,11 @@ def get_parser() -> ArgumentParser:
     global_parser.add_argument(
         "--verbose", "-v", action="store_true", help="enable verbose logging"
     )
+    global_parser.add_argument(
+        "--version",
+        action="store_true",
+        help="display the current version and exit"
+    )
 
     parser = ArgumentParser(
         parents=(global_parser,),
@@ -119,6 +124,9 @@ def proselint(args: Namespace, parser: ArgumentParser) -> ExitStatus:
         raise FileNotFoundError(
             f"Configuration file '{args.config}' could not be read."
         ) from err
+
+    if args.version:
+        args.subcommand = "version"
 
     if args.subcommand is None:
         parser.print_help()
