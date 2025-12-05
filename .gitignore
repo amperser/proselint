@@ -1,8 +1,8 @@
 # Nix
 .direnv/
 .envrc
-.result/
 .pre-commit-config.yaml
+result/
 
 # Python
 *.egg
