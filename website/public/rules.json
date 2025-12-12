@@ -1,0 +1,547 @@
+[
+  {
+    "layout": "post",
+    "source": "SublimeLinter-annotations",
+    "source_url": "http",
+    "title": "archaism",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "annotations.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "archaism",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "archaism.py"
+  },
+  {
+    "layout": "post",
+    "source": "???",
+    "source_url": "???",
+    "title": "yelling",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "cliches/hell.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "a.m. & p.m.",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "dates_times/am_pm.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "dates",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "dates_times/dates.py"
+  },
+  {
+    "layout": "post",
+    "source": "Pinker's book on writing",
+    "source_url": "???",
+    "title": "hedging",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "hedging.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Airlinese",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "industrial_language/airlinese.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "bureaucratese",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "industrial_language/bureaucratese.py"
+  },
+  {
+    "layout": "post",
+    "source": "???",
+    "source_url": "???",
+    "title": "textese",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "industrial_language/chatspeak.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "commercialese",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "industrial_language/commercialese.py"
+  },
+  {
+    "layout": "post",
+    "source": "Travis Bradberry for Inc.com",
+    "source_url": "http",
+    "title": "corporate speak",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "industrial_language/corporate_speak.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Jargon",
+    "date": "2014-06-10",
+    "categories": "writing",
+    "__file__": "industrial_language/jargon.py"
+  },
+  {
+    "layout": "post",
+    "source": "write-good",
+    "source_url": "https",
+    "title": "Lexical illusion present",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "lexical_illusions.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Malaproprisms",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "malapropisms.py"
+  },
+  {
+    "layout": "post",
+    "source": "Pinker's book on writing",
+    "source_url": "???",
+    "title": "excessive apologizing",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/apologizing.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "back-formations",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/back_formations.py"
+  },
+  {
+    "source": "Justin Jungé",
+    "date": "2016-03-10 12",
+    "categories": "writing",
+    "__file__": "misc/but.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "incorrect captalization",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/capitalization.py"
+  },
+  {
+    "layout": "post",
+    "source": "Strunk & White",
+    "source_url": "???",
+    "title": "Elementary Principles of Composition",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "* MDPNB": "Principle of recency.",
+    "* Ex": "He was not very often on time. -> He usually came late.",
+    "__file__": "misc/composition.py"
+  },
+  {
+    "layout": "post",
+    "source": "SublimeLinter-annotations",
+    "source_url": "http",
+    "title": "symbols",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/currency.py"
+  },
+  {
+    "layout": "post",
+    "source": "???",
+    "source_url": "???",
+    "title": "???",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/debased.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "False plurals.",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/false_plurals.py"
+  },
+  {
+    "layout": "post",
+    "source": "Strunk & White",
+    "source_url": "???",
+    "title": "Use of greylisted words",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/greylist.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Illogic",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/illogic.py"
+  },
+  {
+    "layout": "post",
+    "source": "Fowler's Modern English Usage",
+    "source_url": "bit.ly/1YBG8QJ",
+    "title": "Inferior / Superior",
+    "date": "2016-03-10 17",
+    "categories": "writing",
+    "__file__": "misc/inferior_superior.py"
+  },
+  {
+    "layout": "post",
+    "source": "Institution's webpage",
+    "source_url": "http",
+    "title": "Institution Name",
+    "date": "2016-11-16 11",
+    "categories": "writing",
+    "__file__": "misc/institution_name.py"
+  },
+  {
+    "layout": "post",
+    "source": "The sense of style",
+    "source_url": "http",
+    "title": "???",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/latin.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Many a singular.",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/many_a.py"
+  },
+  {
+    "layout": "post",
+    "source": "Pinker's book on writing",
+    "source_url": "???",
+    "title": "metadiscourse",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/metadiscourse.py"
+  },
+  {
+    "layout": "post",
+    "source": "Pinker's book on writing",
+    "source_url": "???",
+    "title": "professional narcissism",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/narcissism.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Not guilty beyond a reasonable doubt.",
+    "date": "2016-03-09 15",
+    "categories": "writing",
+    "charges is this": "a defendant is guilty only if the evidence shows, beyond a",
+    "__file__": "misc/not_guilty.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Phrasal adjectives",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/phrasal_adjectives.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "preferred forms",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/preferred_forms.py"
+  },
+  {
+    "layout": "post",
+    "source": "David Ogilvy",
+    "source_url": "???",
+    "title": "???",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/pretension.py"
+  },
+  {
+    "layout": "post",
+    "title": "Professions",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/professions.py"
+  },
+  {
+    "layout": "post",
+    "source": "Pinker's book on writing",
+    "source_url": "???",
+    "title": "misuse of scare quotes",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/scare_quotes.py"
+  },
+  {
+    "layout": "post",
+    "source": "Reference for Writers",
+    "source_url": "http",
+    "title": "suddenly",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/suddenly.py"
+  },
+  {
+    "layout": "post",
+    "source": "DFW's Tense Present",
+    "source_url": "http",
+    "title": "Tense present",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/tense_present.py"
+  },
+  {
+    "layout": "post",
+    "source": "Fowler's Modern English Usage",
+    "source_url": "bit.ly/1YBG8QJ",
+    "title": "Waxed lyrical",
+    "date": "2016-03-10 14",
+    "categories": "writing",
+    "__file__": "misc/waxed.py"
+  },
+  {
+    "layout": "post",
+    "source": "unknown",
+    "source_url": "unknown",
+    "title": "whence",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "misc/whence.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "mondegreens",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "mondegreens.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "needless variants",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "needless_variants.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "nonwords",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "nonwords.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Oxymorons",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "oxymorons.py"
+  },
+  {
+    "layout": "post",
+    "source": "Scott O. Lilienfeld, et al.",
+    "source_url": "http",
+    "title": "psychological and psychiatric terms to avoid",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "psychology.py"
+  },
+  {
+    "layout": "Website",
+    "source": "The Basic Spelling Vocabulary List",
+    "source_url": "https",
+    "title": "elementary",
+    "date": "2023-04-20 11",
+    "categories": "writing",
+    "__file__": "restricted/elementary.py"
+  },
+  {
+    "layout": "Website",
+    "source": "THE UP-GOER FIVE TEXT EDITOR",
+    "source_url": "https",
+    "title": "?",
+    "date": "2023-04-16 16",
+    "categories": "writing/app",
+    "__file__": "restricted/top1000.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Skunked terms.",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "skunked_terms.py"
+  },
+  {
+    "layout": "post",
+    "source": "GLAAD Media Reference Guide - 9th Edition",
+    "source_url": "http",
+    "title": "GLAAD Guidelines",
+    "date": "2016-07-06",
+    "categories": "writing",
+    "__file__": "social_awareness/lgbtq.py"
+  },
+  {
+    "layout": "post",
+    "source": "???",
+    "source_url": "???",
+    "title": "the 'n-word'",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "social_awareness/nword.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "sexism",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "social_awareness/sexism.py"
+  },
+  {
+    "layout": "post",
+    "source": "The Wall Street Journal",
+    "source_url": "http",
+    "title": "misspellings",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "spelling/athletes.py"
+  },
+  {
+    "layout": "post",
+    "source": "Intelligent Editing Ltd.",
+    "source_url": "http",
+    "title": "Inconsistent spelling",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "is preferred, one thing is always wrong": "you mustn't use two different",
+    "__file__": "spelling/consistency.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "misspellings",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "spelling/misc.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "animal words",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "terms/animal_adjectives.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "Eponymous adjectives",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "terms/eponymous_adjectives.py"
+  },
+  {
+    "layout": "post",
+    "source": "Oxford Dictionaries",
+    "source_url": "http",
+    "title": "Names for groups of animals",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "terms/venery.py"
+  },
+  {
+    "layout": "post",
+    "source": "Garner's Modern American Usage",
+    "source_url": "http",
+    "title": "dates",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "typography/punctuation.py"
+  },
+  {
+    "source": "Butterick's Practical Typography",
+    "source_url": "http",
+    "__file__": "typography/symbols.py"
+  },
+  {
+    "layout": "post",
+    "source": "David Foster Wallace",
+    "source_url": "http",
+    "title": "Comparing an uncomparable",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "states": "something is either false or it's not; something is either inevitable",
+    "__file__": "uncomparables.py"
+  },
+  {
+    "layout": "post",
+    "source": "William Allen White",
+    "source_url": "http",
+    "title": "very",
+    "date": "2014-06-10 12",
+    "categories": "writing",
+    "__file__": "weasel_words.py"
+  }
+]
