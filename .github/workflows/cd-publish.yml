@@ -112,7 +112,7 @@ jobs:
           subject-path: 'dist/*'
 
       - name: "[UPLOAD] Artifacts"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: dist-artifacts
           path: dist/
@@ -131,7 +131,7 @@ jobs:
           fetch-depth: 0
 
       - name: "[DOWNLOAD] Artifacts"
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dist-artifacts
           path: dist/
@@ -164,7 +164,7 @@ jobs:
       id-token: write
     steps:
       - name: "[DOWNLOAD] Artifacts"
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dist-artifacts
           path: dist/
