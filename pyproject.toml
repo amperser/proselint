@@ -50,16 +50,9 @@ dev = [
 	"poethepoet>=0.34.0",
 ]
 web = [
-	"APScheduler>=3.5.3",
-	"Flask-API>=1.0",
-	"Flask-Cors>=3.0.4",
-	"Flask>=1.1.4",
-	"Flask-Limiter>=1.0.1",
-	"gunicorn>=19.8.1",
-	"gmail @ git+https://github.com/charlierguo/gmail.git",
-	"redis>=2.10.6",
-	"requests>=2.19.1",
-	"rq>=0.12.0",
+  "slowapi>=0.1.9",
+  "fastapi>=0.124.4",
+  "fastapi-cli>=0.0.16",
 ]
 
 [tool.pdm.build]
