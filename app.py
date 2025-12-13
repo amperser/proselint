@@ -16,7 +16,7 @@ from proselint.tools import LintFile, LintResult
 
 
 def _lint(input_text: str) -> list[LintResult]:
-    return LintFile(content=input_text, source="<worker>").lint()
+    return LintFile(content=input_text, source="<api>").lint()
 
 
 app: FastAPI = FastAPI()
