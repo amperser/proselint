@@ -118,7 +118,7 @@
 								]
 							);
 
-						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev"];};
+						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web"];};
 					in
 						pkgs.mkShell {
 							buildInputs = check.enabledPackages;
