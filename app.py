@@ -15,11 +15,6 @@ from proselint.tools import LintFile, LintResult
 
 if TYPE_CHECKING:
     from slowapi import ViewRateLimit
-else:
-    class ViewRateLimit:
-        """Stub."""
-
-        pass
 
 
 def _lint(input_text: str) -> list[LintResult]:
