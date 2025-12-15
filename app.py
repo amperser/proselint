@@ -1,11 +1,10 @@
 """A simple FastAPI app that serves a REST API for proselint."""
 
-
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import Limiter, ViewRateLimit
+from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from starlette.responses import JSONResponse
@@ -13,6 +12,14 @@ from starlette.responses import JSONResponse
 from proselint.checks import __register__
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, LintResult
+
+if TYPE_CHECKING:
+    from slowapi import ViewRateLimit
+else:
+    class ViewRateLimit:
+        """Stub."""
+
+        pass
 
 
 def _lint(input_text: str) -> list[LintResult]:

@@ -1,3 +1,0 @@
-from starlette.requests import Request
-
-def get_remote_address(request: Request) -> str: ...
