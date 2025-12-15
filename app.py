@@ -16,6 +16,19 @@ def _lint(input_text: str) -> list[LintResult]:
     return LintFile(content=input_text, source="<api>").lint()
 
 
+def _error(
+    status: int,
+    message: str,
+) -> HTTPException:
+    return HTTPException(
+        status_code=status,
+        detail={
+            "status": "error",
+            "message": message,
+        },
+    )
+
+
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
 
@@ -54,17 +67,17 @@ async def index(request: Request) -> dict[str, object]:
     body = await request.body()
 
     if not body:
-        raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="request body must contain text"
+        raise _error(
+                status.HTTP_400_BAD_REQUEST,
+                "request body must contain text"
                 )
 
     try:
         text = body.decode("utf-8")
     except UnicodeDecodeError:
-        raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="request body must be valid utf-8 text"
+        raise _error(
+                status.HTTP_400_BAD_REQUEST,
+                "request body must be valid utf-8 text"
                 ) from None
 
     return {
