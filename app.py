@@ -1,5 +1,7 @@
 """A simple FastAPI app that serves a REST API for proselint."""
 
+from os import getenv
+
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter
@@ -10,6 +12,9 @@ from starlette.responses import JSONResponse
 from proselint.checks import __register__
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, LintResult
+
+MAX_BODY_BYTES = int(getenv("MAX_BODY_BYTES", str(64 * 1024)))
+RATELIMIT = getenv("RATELIMIT", "60/minute")
 
 
 def _lint(input_text: str) -> list[LintResult]:
@@ -67,7 +72,7 @@ async def health() -> dict[str, str]:
 
 
 @app.post("/v1")
-@limiter.limit("60/minute")
+@limiter.limit(RATELIMIT)
 async def index(request: Request) -> dict[str, object]:
     """Endpoint that lints text using proselint."""
     body = await request.body()
@@ -76,6 +81,12 @@ async def index(request: Request) -> dict[str, object]:
         raise _error(
                 status.HTTP_400_BAD_REQUEST,
                 "request body must contain text"
+                )
+
+    if len(body) > MAX_BODY_BYTES:
+        raise _error(
+                status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                f"request body must be at most {MAX_BODY_BYTES} bytes"
                 )
 
     try:
