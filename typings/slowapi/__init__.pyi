@@ -7,9 +7,6 @@ class ViewRateLimit(Protocol):
     reset: int
     remaining: int
 
-class RequestState(Protocol):
-    view_rate_limit: ViewRateLimit
-
 F = TypeVar("F", bound=Callable[..., Any])
 KeyFunc = Callable[[Request], str]
 
