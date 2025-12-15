@@ -60,6 +60,12 @@ def rate_limit_exceeded_handler(
     )
 
 
+@app.get("/v1/health")
+async def health() -> dict[str, str]:
+    """Endpoint to check if the service is alive."""
+    return {"status": "ok"}
+
+
 @app.post("/v1")
 @limiter.limit("60/minute")
 async def index(request: Request) -> dict[str, object]:
@@ -81,6 +87,6 @@ async def index(request: Request) -> dict[str, object]:
                 ) from None
 
     return {
-        "detail": "successfully linted",
+        "status": "success",
         "data": [r.into_dict() for r in _lint(text)],
     }
