@@ -1,7 +1,5 @@
 """A simple FastAPI app that serves a REST API for proselint."""
 
-from typing import TYPE_CHECKING, cast
-
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter
@@ -12,9 +10,6 @@ from starlette.responses import JSONResponse
 from proselint.checks import __register__
 from proselint.registry import CheckRegistry
 from proselint.tools import LintFile, LintResult
-
-if TYPE_CHECKING:
-    from slowapi import ViewRateLimit
 
 
 def _lint(input_text: str) -> list[LintResult]:
@@ -35,21 +30,20 @@ app.add_middleware(
 CheckRegistry().register_many(__register__)
 
 
-# NOTE: We don't use slowapi's handler due to the error key name.
 @app.exception_handler(RateLimitExceeded)
 def rate_limit_exceeded_handler(
-    request: Request,
+    _: Request,
     exc: RateLimitExceeded,
 ) -> Response:
     """Middleware to handle exceeded ratelimits."""
-    response = JSONResponse(
-        {"detail": f"rate limit exceeded: {exc.detail}"},
+    return JSONResponse(
+        {
+            "status": "error",
+            "message": "rate limit exceeded",
+            "limit": str(exc.detail),
+        },
         status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-    )
-
-    rate_limit = cast("ViewRateLimit", request.state.view_rate_limit)
-    return limiter._inject_headers(  # noqa: SLF001
-        response, rate_limit
+        headers=getattr(exc, "headers", None),
     )
 
 
