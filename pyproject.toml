@@ -43,7 +43,7 @@ test = [
 	"rstr>=3.2.2",
 ]
 dev = ["ruff>=0.1.14", "poethepoet>=0.34.0"]
-web = ["slowapi>=0.1.9", "fastapi>=0.124.4", "fastapi-cli>=0.0.16"]
+web = ["slowapi>=0.1.9", "fastapi>=0.124.4", "uvicorn[standard]>=0.38.0"]
 
 [tool.pdm.build]
 includes = ["proselint/"]
