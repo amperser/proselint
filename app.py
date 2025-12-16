@@ -79,23 +79,21 @@ async def index(request: Request) -> dict[str, object]:
 
     if not body:
         raise _error(
-                status.HTTP_400_BAD_REQUEST,
-                "request body must contain text"
-                )
+            status.HTTP_400_BAD_REQUEST, "request body must contain text"
+        )
 
     if len(body) > MAX_BODY_BYTES:
         raise _error(
-                status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-                f"request body must be at most {MAX_BODY_BYTES} bytes"
-                )
+            status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            f"request body must be at most {MAX_BODY_BYTES} bytes",
+        )
 
     try:
         text = body.decode("utf-8")
     except UnicodeDecodeError:
         raise _error(
-                status.HTTP_400_BAD_REQUEST,
-                "request body must be valid utf-8 text"
-                ) from None
+            status.HTTP_400_BAD_REQUEST, "request body must be valid utf-8 text"
+        ) from None
 
     return {
         "status": "success",

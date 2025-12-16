@@ -3,7 +3,7 @@ name = "proselint"
 description = "A linter for prose."
 version = "0.16.0"
 license = { file = "LICENSE.md" }
-authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
+authors = [{ name = "Amperser Labs", email = "hello@amperser.com" }]
 readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
@@ -15,10 +15,7 @@ classifiers = [
 	"Programming Language :: Python :: 3.14",
 ]
 requires-python = ">=3.10"
-dependencies = [
-    "google-re2>=1.1.20251105",
-    "google-re2-stubs>=0.1.1",
-]
+dependencies = ["google-re2>=1.1.20251105", "google-re2-stubs>=0.1.1"]
 
 [project.urls]
 Homepage = "https://github.com/amperser/proselint"
@@ -45,15 +42,8 @@ test = [
 	"pytest-cov>=6.2.1",
 	"rstr>=3.2.2",
 ]
-dev = [
-	"ruff>=0.1.14",
-	"poethepoet>=0.34.0",
-]
-web = [
-  "slowapi>=0.1.9",
-  "fastapi>=0.124.4",
-  "fastapi-cli>=0.0.16",
-]
+dev = ["ruff>=0.1.14", "poethepoet>=0.34.0"]
+web = ["slowapi>=0.1.9", "fastapi>=0.124.4", "fastapi-cli>=0.0.16"]
 
 [tool.pdm.build]
 includes = ["proselint/"]
@@ -102,14 +92,16 @@ select = [
 	"YTT",  # flake8-2020
 ]
 ignore = [
-	"COM812",  # trailing comma -> done by formatter
-	"D203",    # no blank lines between classes and documentation
-	"D212",    # consistent start level for multi-line edocumentation
-	"D415",    # first line of docs should end with a period
+	"COM812", # trailing comma -> done by formatter
+	"D203",   # no blank lines between classes and documentation
+	"D212",   # consistent start level for multi-line edocumentation
+	"D415",   # first line of docs should end with a period
 ]
 preview = true
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "SLF001", "PLC2701"]
 "proselint/checks/**" = ["RUF001"]
-"proselint/registry/checks/engine.py" = ["D102"] # docs are inherited from base classes
+"proselint/registry/checks/engine.py" = [
+	"D102",
+] # docs are inherited from base classes
