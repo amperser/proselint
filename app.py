@@ -68,7 +68,7 @@ def rate_limit_exceeded_handler(
 @app.get("/v1/health")
 async def health() -> dict[str, str]:
     """Endpoint to check if the service is alive."""
-    return {"status": "ok"}
+    return {"status": "success", "message": "service is healthy"}
 
 
 @app.post("/v1")
