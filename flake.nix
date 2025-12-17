@@ -118,7 +118,7 @@
 								]
 							);
 
-						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev"];};
+						virtualenv = editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web"];};
 					in
 						pkgs.mkShell {
 							buildInputs = check.enabledPackages;
@@ -147,7 +147,11 @@
 				});
 
 		packages =
-			forAllSystems ({pythonSet, ...}: {
+			forAllSystems ({
+					pythonSet,
+					pkgs,
+					...
+				}: {
 					default = pythonSet.mkVirtualEnv "proselint-env" workspace.deps.default;
 
 					wheel =
@@ -161,6 +165,34 @@
 							}).overrideAttrs (old: {
 								env.uvBuildType = "sdist";
 							});
+
+					api = let
+						env =
+							pythonSet.mkVirtualEnv "proselint-api-env" {
+								proselint = ["web"];
+							};
+					in
+						pkgs.stdenv.mkDerivation {
+							name = "proselint-api";
+							src = ./.;
+
+							dontBuild = true;
+							dontConfigure = true;
+
+							installPhase = ''
+								mkdir -p $out/bin $out/share/proselint-api
+
+								cp $src/app.py $out/share/proselint-api
+
+								cat > $out/bin/proselint-api-run <<-EOF
+								#!${pkgs.bash}/bin/bash
+								cd $out/share/proselint-api
+								exec ${env}/bin/uvicorn app:app "\$@"
+								EOF
+
+								chmod +x $out/bin/proselint-api-run
+							'';
+						};
 				});
 
 		apps =
@@ -168,6 +200,11 @@
 					default = {
 						type = "app";
 						program = "${self.packages.${system}.default}/bin/proselint";
+					};
+
+					api = {
+						type = "app";
+						program = "${self.packages.${system}.api}/bin/proselint-api-run";
 					};
 				});
 
