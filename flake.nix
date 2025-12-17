@@ -1,6 +1,7 @@
 {
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+
 		hooks = {
 			url = "github:cachix/git-hooks.nix";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -199,12 +200,12 @@
 			forAllSystems ({system, ...}: {
 					default = {
 						type = "app";
-						program = "${self.packages.${system}.default}/bin/proselint";
+						program = lib.getExe' self.packages.${system}.default "proselint";
 					};
 
 					api = {
 						type = "app";
-						program = "${self.packages.${system}.api}/bin/proselint-api-run";
+						program = lib.getExe' self.packages.${system}.api "proselint-api-run";
 					};
 				});
 
@@ -224,22 +225,19 @@
 								end-of-file-fixer.enable = true;
 								mixed-line-endings.enable = true;
 								markdownlint.enable = true;
-
-								ruff.enable = true;
-								pyright = let
-									pyright = pkgs.basedpyright;
-								in {
-									enable = true;
-									package = pyright;
-									entry = "${pyright}/bin/basedpyright";
-								};
-
-								convco.enable = true;
-
 								alejandra.enable = true;
+								convco.enable = true;
+								ruff.enable = true;
+
 								statix = {
 									enable = true;
 									settings.ignore = ["/.direnv"];
+								};
+
+								pyright = {
+									enable = true;
+									package = pkgs.basedpyright;
+									entry = lib.getExe pkgs.basedpyright;
 								};
 							};
 						};
