@@ -1,11 +1,9 @@
 {
-	attrs,
-	self,
 	lib,
+	self,
+	system,
 	...
-}: let
-	inherit (attrs) system;
-in {
+}: {
 	default = {
 		type = "app";
 		program = lib.getExe' self.packages.${system}.default "proselint";

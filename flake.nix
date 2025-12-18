@@ -43,7 +43,11 @@
 		overlay = workspace.mkPyprojectOverlay {sourcePreference = "wheel";};
 
 		importWithAttrs = path:
-			forAllSystems (attrs: import path {inherit workspace self lib attrs;});
+			forAllSystems (attrs:
+					import path {
+						inherit workspace self lib;
+						inherit (attrs) pkgs system python pythonSet;
+					});
 	in {
 		devShells = importWithAttrs ./nix/dev-shells.nix;
 		packages = importWithAttrs ./nix/packages.nix;

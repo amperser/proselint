@@ -1,10 +1,12 @@
 {
 	workspace,
-	attrs,
 	self,
 	lib,
+	system,
+	pkgs,
+	python,
+	pythonSet,
 }: let
-	inherit (attrs) system pkgs python pythonSet;
 	check = self.checks.${system}.pre-commit;
 
 	editablePythonSet =

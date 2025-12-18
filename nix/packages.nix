@@ -1,10 +1,9 @@
 {
 	workspace,
-	attrs,
+	pythonSet,
+	pkgs,
 	...
-}: let
-	inherit (attrs) pkgs pythonSet;
-in {
+}: {
 	default = pythonSet.mkVirtualEnv "proselint-env" workspace.deps.default;
 
 	wheel = pythonSet.proselint.override {pyprojectHook = pythonSet.pyprojectDistHook;};

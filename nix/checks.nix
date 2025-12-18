@@ -1,11 +1,10 @@
 {
-	attrs,
-	self,
 	lib,
+	self,
+	pkgs,
+	system,
 	...
-}: let
-	inherit (attrs) system pkgs;
-in {
+}: {
 	pre-commit =
 		self.inputs.hooks.lib.${system}.run {
 			src = ./.;
