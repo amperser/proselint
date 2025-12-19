@@ -7,7 +7,10 @@ const rules = await readFile(
   resolve(__dirname, "public", "rules.json"),
   "utf8",
 );
-const pages = await readdir(resolve(__dirname, "src", "pages"));
+
+const pages = (await readdir(resolve(__dirname, "src"))).filter((x) =>
+  x.endsWith(".html"),
+);
 
 export default defineConfig({
   root: "src",
@@ -22,7 +25,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: Object.fromEntries(
-        pages.map((x) => [x, resolve(__dirname, "src", "pages", x)]),
+        pages.map((x) => [x, resolve(__dirname, "src", x)]),
       ),
     },
   },
