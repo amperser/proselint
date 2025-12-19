@@ -2,6 +2,58 @@
 
 ## [0.16.0](https://github.com/amperser/proselint/compare/0.14.0..v0.16.0) - 2025-11-14
 
+### 💥 Breaking Changes
+
+This release is not backwards compatible. The following breaking changes have been made.
+
+#### As a program
+
+- Python 3.9 is now end-of-life, and no longer supported
+- Different calling conventions. See `--help` for a full list of options
+  - `proselint --version` is now `proselint version`, for consistency with other linters
+  - `proselint` is now `proselint check`
+  - `proselint --dump-config` and `--dump-default-config` are now `proselint dump-config` and `dump-config --default`
+  - `--time` and `--clean` have been removed
+  - `--debug` is now `--verbose`
+  - `--json` and `--compact` are now `--output-format json` and `--output-format compact`
+- Several checks have been removed and renamed as an implementation of [#1373](https://github.com/amperser/proselint/issues/1373).
+  User configurations will need to be modified accordingly
+  - `airlinese`, `bureaucratese`, `chatspeak`, `commercialese`, `corporate_speak`, and `jargon` have been recategorized under `industrial_language`.
+  - `security`, `links`, and `cursing` (except for `cursing.nword`) have been removed
+  - `sexism`, `lgbtq`, and `cursing.nword`have been recategorized under `social_awareness`
+  - `consistency.spacing` has been moved to `typography.punctuation.spacing`
+  - `typography.exclamation` and `hyperbole` have been merged and moved to `typography.punctuation.hyperbole`
+  - `consistency.spelling` has been moved to `spelling.consistency`
+  - `consistency` has been removed
+  - All modules that previously contained a single check file have been flattened
+    - `archaism.misc` is now `archaism`
+    - `hedging.misc` is now `hedging`
+    - `lexical_illusions.misc` is now `lexical_illusions`
+    - `malapropisms.misc` is now `malapropisms`
+    - `mixed_metaphors.misc.bottleneck` is now `mixed_metaphors.bottleneck`
+    - `misc.mondegreens` is now `mondegreens`
+    - `needless_variants.misc` is now `needless_variants`
+    - `nonwords.misc` is now `nonwords`
+    - `oxymorons.misc` is now `oxymorons`
+    - `skunked_terms.misc` is now `skunked_terms`
+    - `uncomparables.misc` is now `uncomparables`
+- There is a new JSON output schema for `--output-format json`. This is [documented](https://github.com/amperser/proselint/blob/v0.16.0/docs/wire-schema.md), stable, and versioned. Plugins will require updates.
+- The on-disk cache has been removed
+
+#### As a library
+
+- The cache has been removed, along with all related features in `proselint.tools`
+- The `score` module has been removed
+- The build backend is now `uv_build`
+- The `topics` and `context` features of `proselint.tools` have been removed
+- The `_check` functions of `proselint.tools` have been replaced by classes in `proselint.registry.checks.types`
+- Checks are now specified with `Check` in `proselint.registry.checks`
+- Lint runs are executed with `LintFile` and return `LintResult`, both in `proselint.tools`
+- The `ppm_threshold` wrapper in `proselint.tools` has been replaced by `CheckFlags` in `proselint.registry.checks`
+- The `max_errors` wrapper in `proselint.tools` has been removed
+- `load_options` in `proselint.tools` has been replaced by the `proselint.config` module
+- `errors_to_json`  in `proselint.tools` has been replaced by `LintResult.into_dict`
+
 ### ⛰️  Features
 
 - *(registry)* Add strict padding for checks ([#1428](https://github.com/amperser/proselint/issues/1428)) - ([f1894bc](https://github.com/amperser/proselint/commit/f1894bccf5cb9344eca5daba64ad0b3ec8577784))

@@ -15,6 +15,11 @@ body = """
         {% if commit.breaking %}[**breaking**] {% endif %}\
         {{ commit.message | upper_first }} - \
         ([{{ commit.id | truncate(length=7, end="") }}]({{ self::remote_url() }}/commit/{{ commit.id }}))\
+        {% if commit.breaking %}\
+            {% for breakingChange in commit.footers | filter(attribute="breaking", value=true) %}\
+                \n{% raw %}  {% endraw %}- 💥 **{{ breakingChange.token }}{{ breakingChange.separator }}** {{ breakingChange.value }}\
+            {% endfor %}\
+        {% endif %}\
 {% endmacro -%}
 
 {% raw %}\n{% endraw %}\

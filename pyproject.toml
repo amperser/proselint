@@ -2,8 +2,8 @@
 name = "proselint"
 description = "A linter for prose."
 version = "0.16.0"
-license = {file = "LICENSE.md"}
-authors = [{ name = "Amperser Labs", email = "hello@amperser.com"}]
+license = { file = "LICENSE.md" }
+authors = [{ name = "Amperser Labs", email = "hello@amperser.com" }]
 readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
@@ -13,13 +13,9 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
 	"Programming Language :: Python :: 3.14",
-	"License :: OSI Approved :: BSD License",
 ]
 requires-python = ">=3.10"
-dependencies = [
-    "google-re2>=1.1.20251105",
-    "google-re2-stubs>=0.1.1",
-]
+dependencies = ["google-re2>=1.1.20251105", "google-re2-stubs>=0.1.1"]
 
 [project.urls]
 Homepage = "https://github.com/amperser/proselint"
@@ -30,8 +26,8 @@ Issues = "https://github.com/amperser/proselint/issues"
 proselint = "proselint.command_line:main"
 
 [build-system]
-requires = ["uv_build>=0.7.22,<0.8.0"]
-build-backend = "uv_build"
+requires = ["pdm-backend>=2.0.0"]
+build-backend = "pdm.backend"
 
 [tool.poe.tasks]
 test = "pytest"
@@ -46,15 +42,12 @@ test = [
 	"pytest-cov>=6.2.1",
 	"rstr>=3.2.2",
 ]
-dev = [
-	"ruff>=0.1.14",
-	"poethepoet>=0.34.0",
-]
+dev = ["ruff>=0.1.14", "poethepoet>=0.34.0"]
+web = ["slowapi>=0.1.9", "fastapi>=0.124.4", "uvicorn[standard]>=0.38.0"]
 
-[tool.uv.build-backend]
-module-name = "proselint"
-module-root = ""
-source-include = ["tests/**"]
+[tool.pdm.build]
+includes = ["proselint/"]
+source-includes = ["tests/"]
 
 [tool.ruff]
 line-length = 80
@@ -99,10 +92,10 @@ select = [
 	"YTT",  # flake8-2020
 ]
 ignore = [
-	"COM812",  # trailing comma -> done by formatter
-	"D203",    # no blank lines between classes and documentation
-	"D212",    # consistent start level for multi-line edocumentation
-	"D415",    # first line of docs should end with a period
+	"COM812", # trailing comma -> done by formatter
+	"D203",   # no blank lines between classes and documentation
+	"D212",   # consistent start level for multi-line edocumentation
+	"D415",   # first line of docs should end with a period
 ]
 preview = true
 
@@ -111,3 +104,6 @@ preview = true
 "proselint/checks/**" = ["RUF001"]
 "website/**" = ["D100", "D103", "D104"]
 "proselint/registry/checks/engine.py" = ["D102"] # docs are inherited from base classes
+"proselint/registry/checks/engine.py" = [
+	"D102",
+] # docs are inherited from base classes
