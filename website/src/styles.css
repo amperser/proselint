@@ -1,23 +1,39 @@
 @import "./reset.css";
 
+:root {
+  --bg: #fafafa;
+  --fg: #171717;
+  --serif:
+    Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --focus-ring: 0 0 0 2px #4f46e5;
+}
+
 body {
-  font-family:
-    "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  font-family: var(--serif);
   line-height: 1.65;
-  color: #171717;
-  background-color: #fafafa;
+  color: var(--fg);
+  background-color: var(--bg);
+}
+
+main,
+footer {
+  max-width: 42rem;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+}
+
+footer {
+  margin-top: 0;
+  padding-bottom: 2rem;
+  text-align: center;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Merriweather", "Georgia", serif;
-}
-
-main {
-  max-width: 42rem;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 600;
 }
 
 h1 {
@@ -28,19 +44,12 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
-  font-weight: 600;
-}
-
-h3 {
-  font-weight: 600;
 }
 
 p {
   font-size: 1.125rem;
   color: #404040;
-
-  margin-top: 0.3rem !important;
-  margin-bottom: 0.8rem !important;
+  margin: 0.3rem 0 0.8rem !important;
 }
 
 p.sm {
@@ -54,55 +63,43 @@ a {
 }
 
 a:hover {
-  color: #171717;
+  color: var(--fg);
+}
+
+em {
+  font-style: italic;
+  color: #2c2c2c;
+  margin-right: 0.05rem;
 }
 
 pre {
   font-size: 0.875rem;
   margin-top: 0.75rem;
+  padding: 1rem;
   background-color: #fff;
   border: 1px solid #d4d4d4;
-  color: #171717;
-  padding: 1rem;
   border-radius: 0.5rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   line-height: 1.5rem;
   white-space: pre-wrap;
   word-break: break-word;
   cursor: pointer;
   transition: border-color 0.2s;
+  color: var(--fg);
+  font-family: var(--mono);
 }
 
 pre:hover {
   border-color: #a3a3a3;
-}
-
-pre:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #4f46e5;
-}
-
-pre:hover {
-  border-color: #a3a3a3;
-}
-
-pre:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #4f46e5;
 }
 
 code:not(pre code) {
   padding: 0.1em 0.2em;
   border-radius: 4px;
-  font-family: monospace;
   font-size: 0.75em;
   background-color: #fff;
   border: 1px solid #d4d4d4;
-  color: #171717;
-}
-
-code {
-  font-family: inherit;
+  font-family: var(--mono);
+  color: var(--fg);
 }
 
 code .blue {
@@ -126,23 +123,52 @@ code .amber {
   color: #f59e0b;
 }
 
-textarea {
+textarea,
+#preview {
   width: 100%;
-  border: 1px solid #d4d4d4;
-  border-radius: 0.5rem;
   padding: 1rem;
-  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-family: var(--serif);
 }
 
+textarea {
+  border: 1px solid #d4d4d4;
+  resize: vertical;
+  caret-color: black;
+  color: transparent;
+  z-index: 100;
+}
+
+textarea::selection {
+  background: rgba(251, 255, 36, 0.6);
+  color: transparent;
+}
+
+pre:focus,
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #4f46e5;
+  box-shadow: var(--focus-ring);
 }
 
-footer {
-  max-width: 42rem;
-  margin: 0 auto;
-  padding: 0 1.5rem 2rem;
-  text-align: center;
+#editor {
+  position: relative;
+  width: 100%;
+}
+
+#preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid transparent;
+  pointer-events: none;
+}
+
+.highlight {
+  background-color: #fbff24;
+  color: var(--fg);
 }

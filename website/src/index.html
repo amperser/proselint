@@ -33,10 +33,12 @@
       </div>
       <h2>Try it</h2>
       <p>Paste or type some text below.</p>
-      <div>
+      <div id="editor">
         <textarea id="input" rows="8">
 This is very unique and literally perfect.</textarea
         >
+        <!-- prettier-ignore -->
+        <div id="preview">This is <span class="highlight" title="Comparison of an uncomparable: 'very unique' is not comparable.">very unique</span> and literally perfect.</div>
       </div>
 
       <h3>Issues</h3>
@@ -56,9 +58,39 @@ This is very unique and literally perfect.</textarea
     <%- include('partials/footer.ejs') %>
 
     <script>
+      const baseApiURL = "<%= apiURL %>";
+
       const input = document.getElementById("input");
       const issues = document.getElementById("issues");
-      const baseApiURL = "<%= apiURL %>";
+      const preview = document.getElementById("preview");
+
+      function highlight(text, issues) {
+        const spans = [...issues].sort((a, b) => a.span[0] - b.span[0]);
+
+        let result = "";
+        let cursor = 0;
+
+        for (const { span, message } of spans) {
+          let [start, end] = span;
+
+          start--;
+          end--;
+
+          if (start < cursor) {
+            continue;
+          }
+
+          result += text.slice(cursor, start);
+          result += `<span class="highlight" title="${message}">`;
+          result += text.slice(start, end);
+          result += `</span>`;
+
+          cursor = end;
+        }
+
+        result += text.slice(cursor);
+        return result;
+      }
 
       function debounce(fn, delay) {
         let timer;
@@ -72,6 +104,8 @@ This is very unique and literally perfect.</textarea
       async function check() {
         if (input.value.trim() === "") {
           issues.innerHTML = "<li>No issues found.</li>";
+          preview.textContent = input.value;
+
           return;
         }
 
@@ -100,8 +134,14 @@ This is very unique and literally perfect.</textarea
           li.innerHTML = `<em>${issue.check_path}</em> ${issue.message}`;
           issues.appendChild(li);
         }
+
+        preview.innerHTML = highlight(input.value, json.data);
       }
 
+      input.addEventListener(
+        "input",
+        () => (preview.textContent = input.value),
+      );
       input.addEventListener("input", debounce(check, 300));
     </script>
   </body>
