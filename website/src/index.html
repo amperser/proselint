@@ -58,6 +58,7 @@ This is very unique and literally perfect.</textarea
     <script>
       const input = document.getElementById("input");
       const issues = document.getElementById("issues");
+      const baseApiURL = "<%= apiURL %>";
 
       function debounce(fn, delay) {
         let timer;
@@ -74,7 +75,7 @@ This is very unique and literally perfect.</textarea
           return;
         }
 
-        const res = await fetch("http://localhost:8000/v1", {
+        const res = await fetch(`${baseApiURL}/v1`, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: input.value,
@@ -101,7 +102,7 @@ This is very unique and literally perfect.</textarea
         }
       }
 
-      input.addEventListener("input", debounce(checkText, 300));
+      input.addEventListener("input", debounce(check, 300));
     </script>
   </body>
 </html>
