@@ -34,12 +34,13 @@
       <h2>Try it</h2>
       <p>Paste or type some text below.</p>
       <div>
-        <textarea rows="8">This is very unique and literally perfect.</textarea>
-        <div id="result"></div>
+        <textarea id="input" rows="8">
+This is very unique and literally perfect.</textarea
+        >
       </div>
 
       <h3>Issues</h3>
-      <ul>
+      <ul id="issues">
         <li>
           <em>uncomparables</em> Comparison of an uncomparable: 'very unique' is
           not comparable.
@@ -53,5 +54,54 @@
     </main>
 
     <%- include('partials/footer.ejs') %>
+
+    <script>
+      const input = document.getElementById("input");
+      const issues = document.getElementById("issues");
+
+      function debounce(fn, delay) {
+        let timer;
+
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+      }
+
+      async function check() {
+        if (input.value.trim() === "") {
+          issues.innerHTML = "<li>No issues found.</li>";
+          return;
+        }
+
+        const res = await fetch("http://localhost:8000/v1", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: input.value,
+        });
+
+        const json = await res.json();
+
+        if (json.status !== "success") {
+          issues.innerHTML = `<li>Couldn't check, ${json.message}.</li>`;
+          return;
+        }
+
+        if (json.data.length === 0) {
+          issues.innerHTML = "<li>No issues found.</li>";
+          return;
+        }
+
+        issues.innerHTML = "";
+
+        for (const issue of json.data) {
+          const li = document.createElement("li");
+          li.innerHTML = `<em>${issue.check_path}</em> ${issue.message}`;
+          issues.appendChild(li);
+        }
+      }
+
+      input.addEventListener("input", debounce(checkText, 300));
+    </script>
   </body>
 </html>
