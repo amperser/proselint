@@ -103,7 +103,6 @@ preview = true
 "tests/**" = ["S101", "SLF001", "PLC2701"]
 "proselint/checks/**" = ["RUF001"]
 "website/**" = ["D100", "D103", "D104"]
-"proselint/registry/checks/engine.py" = ["D102"] # docs are inherited from base classes
 "proselint/registry/checks/engine.py" = [
 	"D102",
 ] # docs are inherited from base classes
