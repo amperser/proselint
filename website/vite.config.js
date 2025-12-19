@@ -1,28 +1,28 @@
 import { defineConfig } from "vite";
 import { ViteEjsPlugin } from "vite-plugin-ejs";
 import { resolve } from "node:path";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+
+const rules = await readFile(
+  resolve(__dirname, "public", "rules.json"),
+  "utf8",
+);
+const pages = await readdir(resolve(__dirname, "src", "pages"));
 
 export default defineConfig({
-  root: process.cwd(),
+  root: "src",
   publicDir: "public",
   plugins: [
     ViteEjsPlugin({
-      rules: await readFile(resolve(__dirname, "rules.json"), "utf8").then(
-        JSON.parse,
-      ),
+      rules: JSON.parse(rules),
     }),
   ],
   build: {
-    outDir: "dist",
+    outDir: "../dist",
     emptyOutDir: true,
     rollupOptions: {
-      input: ["index", "rules", "help"].reduce(
-        (acc, name) => ({
-          ...acc,
-          [name]: resolve(__dirname, `${name}.html`),
-        }),
-        {},
+      input: Object.fromEntries(
+        pages.map((x) => [x, resolve(__dirname, "src", "pages", x)]),
       ),
     },
   },
