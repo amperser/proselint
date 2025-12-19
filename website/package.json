@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13",
+    "vite": "^7.1.9"
+  },
+  "scripts": {
+    "prebuild": "node ./rules.mjs",
+    "predev": "node ./rules.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vite-plugin-ejs": "^1.7.0"
+  }
+}
