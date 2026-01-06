@@ -18,7 +18,7 @@ export default defineConfig({
   plugins: [
     ViteEjsPlugin({
       rules: JSON.parse(rules),
-      apiURL: "http://localhost:8000",
+      apiURL: process.env.VITE_API_URL ?? "http://localhost:8000",
     }),
   ],
   build: {

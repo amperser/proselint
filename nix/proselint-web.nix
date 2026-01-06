@@ -3,6 +3,7 @@
 	nodejs,
 	pnpm,
 	lib,
+	apiURL ? "http://localhost:8000",
 	...
 }: let
 	inherit (lib) importJSON fileset;
@@ -40,6 +41,7 @@ in
 			'';
 
 			buildPhase = ''
+				export VITE_API_URL="${apiURL}"
 				pnpm run build
 			'';
 
