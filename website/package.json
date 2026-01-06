@@ -1,4 +1,6 @@
 {
+  "name": "proselint-web",
+  "version": "1.0.0",
   "type": "module",
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",
