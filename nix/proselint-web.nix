@@ -17,10 +17,9 @@ in
 				fileset.toSource {
 					root = ../.;
 					fileset =
-						fileset.unions [
-							../website
-							../proselint/checks
-						];
+						fileset.union
+						../website
+						../proselint/checks;
 				};
 
 			pname = name;
