@@ -4,3 +4,4 @@
   entry: proselint
   language: python
   types: [text]
+  args: [check]
