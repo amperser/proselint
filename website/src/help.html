@@ -17,71 +17,71 @@
 
       <div>
         <p>Via <em>Pip</em></p>
-        <pre><code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
+        <pre><code class="language-bash">pip install proselint</code></pre>
       </div>
 
       <div>
         <p>Via <em>Apt</em> (Debian / Ubuntu)</p>
-        <pre><code><span class="blue">apt</span> <span class="purple">install</span> <span class="green">python3-proselint</span></code></pre>
+        <pre><code class="language-bash">apt install python3-proselint</code></pre>
       </div>
 
       <div>
         <p>Via <em>Homebrew</em> (macOS / Linux)</p>
-        <pre><code><span class="blue">brew</span> <span class="purple">install</span> <span class="green">proselint</span></code></pre>
+        <pre><code class="language-bash">brew install proselint</code></pre>
       </div>
 
       <div>
         <p>Via <em>Conda</em></p>
-        <pre><code><span class="blue">conda</span> <span class="purple">install</span> <span class="green">conda-forge::proselint</span></code></pre>
+        <pre><code class="language-bash">conda install conda-forge::proselint</code></pre>
       </div>
 
       <div>
         <p>Via <em>Nix</em></p>
-        <pre><code><span class="purple">environment.systemPackages</span> <span class="green">=</span> <span class="blue">with pkgs;</span> [
-  <span class="green">proselint</span>
+        <pre><code class="language-nix">environment.systemPackages = with pkgs; [
+  proselint
 ];</code></pre>
       </div>
 
       <div>
         <p>From <em>source</em></p>
-        <pre><code><span class="blue">git</span> <span class="purple">clone</span> <span class="green">https://github.com/amperser/proselint.git</span>
-<span class="blue">cd</span> <span class="green">proselint</span>
+        <pre><code class="language-bash">git clone https://github.com/amperser/proselint.git
+cd proselint
 
-<span class="blue">uv</span> <span class="purple">pip install</span> <span class="green">.</span> # or, with Nix
-<span class="blue">nix</span> <span class="purple">profile install</span> <span class="green">.</span></code></pre>
+uv pip install . # or, with Nix
+nix profile install .</code></pre>
       </div>
 
       <h2>Configuration</h2>
       <p>The default configuration is:</p>
 
-      <pre><code>{
-    <span class="blue">"max_errors"</span>: <span class="green">1000</span>,
-    <span class="blue">"checks"</span>: {
-        <span class="blue">"annotations"</span>: <span class="green">true</span>,
-        <span class="blue">"archaism"</span>: <span class="green">true</span>,
-        <span class="blue">"cliches"</span>: <span class="green">true</span>,
-        <span class="blue">"dates_times"</span>: <span class="green">true</span>,
-        <span class="blue">"hedging"</span>: <span class="green">true</span>,
-        <span class="blue">"industrial_language"</span>: <span class="green">true</span>,
-        <span class="blue">"lexical_illusions"</span>: <span class="green">true</span>,
-        <span class="blue">"malapropisms"</span>: <span class="green">true</span>,
-        <span class="blue">"misc"</span>: <span class="green">true</span>,
-        <span class="blue">"mixed_metaphors"</span>: <span class="green">true</span>,
-        <span class="blue">"mondegreens"</span>: <span class="green">true</span>,
-        <span class="blue">"needless_variants"</span>: <span class="green">true</span>,
-        <span class="blue">"nonwords"</span>: <span class="green">true</span>,
-        <span class="blue">"oxymorons"</span>: <span class="green">true</span>,
-        <span class="blue">"psychology"</span>: <span class="green">true</span>,
-        <span class="blue">"redundancy"</span>: <span class="green">true</span>,
-        <span class="blue">"restricted"</span>: <span class="red">false</span>,
-        <span class="blue">"skunked_terms"</span>: <span class="green">true</span>,
-        <span class="blue">"social_awareness"</span>: <span class="green">true</span>,
-        <span class="blue">"spelling"</span>: <span class="green">true</span>,
-        <span class="blue">"terms"</span>: <span class="green">true</span>,
-        <span class="blue">"typography"</span>: <span class="green">true</span>,
-        <span class="blue">"uncomparables"</span>: <span class="green">true</span>,
-        <span class="blue">"weasel_words"</span>: <span class="green">true</span>
-    }
+      <pre><code class="language-json">{
+  "max_errors": 1000,
+  "checks": {
+    "annotations": true,
+    "archaism": true,
+    "cliches": true,
+    "dates_times": true,
+    "hedging": true,
+    "industrial_language": true,
+    "lexical_illusions": true,
+    "malapropisms": true,
+    "misc": true,
+    "mixed_metaphors": true,
+    "mondegreens": true,
+    "needless_variants": true,
+    "nonwords": true,
+    "oxymorons": true,
+    "psychology": true,
+    "redundancy": true,
+    "restricted": false,
+    "skunked_terms": true,
+    "social_awareness": true,
+    "spelling": true,
+    "terms": true,
+    "typography": true,
+    "uncomparables": true,
+    "weasel_words": true
+  }
 }</code></pre>
 
       <p>
@@ -92,76 +92,72 @@
         <li><code>.proselintrc.json</code> in the current working directory</li>
         <li><code>$XDG_CONFIG_HOME/proselint/config.json</code></li>
         <li><code>$HOME/.proselintrc.json</code></li>
-        <li><code>/etc/proselintrc</code> (system-wide default)</li>
+        <li><code>/etc/proselintrc</code></li>
       </ul>
 
       <p>
-        Thus, if you want to override any rule locally, all you'd need to do is
-        create a <code>.proselintrc.json</code> and set the rule path to
-        <code>false</code>. For example, to disable
-        <code>typography.symbols.curly_quotes</code>:
+        To override a rule locally, create <code>.proselintrc.json</code>. For
+        example:
       </p>
 
-      <pre><code>{
-    <span class="blue">"checks.typography.symbols.curly_quotes"</span>: <span class="red">false</span>
+      <pre><code class="language-json">{
+  "checks.typography.symbols.curly_quotes": false
 }</code></pre>
 
       <h2>Wire Output</h2>
 
       <p>
-        <em>Proselint</em> supports structured output for programmatic usage
-        with the <code>--output-format json</code> flag, like so:
+        Structured output can be enabled with
+        <code>--output-format json</code>:
       </p>
 
-      <pre><code><span class="blue">proselint</span> <span class="purple">--output-format</span> <span class="green">json</span> syllabus.md</code></pre>
+      <pre><code class="language-bash">proselint --output-format json syllabus.md</code></pre>
 
       <p>The output schema is:</p>
 
-      <pre><code><span class="purple">enum</span> <span class="blue">ErrorCode</span> {
-    <span class="green">Unknown</span> = -31999,
-    <span class="green">FileError</span> = -31998,
-    <span class="green">LintError</span> = -31997,
+      <pre><code class="language-typescript">enum ErrorCode {
+  Unknown = -31999,
+  FileError = -31998,
+  LintError = -31997,
 }
 
-<span class="purple">interface</span> <span class="blue">ResponseError</span> {
-    <span class="green">code</span>: ErrorCode;
-    <span class="green">message</span>: string;
-    <span class="green">data</span>?: any;
+interface ResponseError {
+  code: ErrorCode;
+  message: string;
+  data?: any;
 }
 
-<span class="purple">interface</span> <span class="blue">CheckResult</span> {
-    <span class="green">check_path</span>: string;
-    <span class="green">message</span>: string;
-    <span class="green">span</span>: [number, number];
-    <span class="green">replacements</span>: string | null;
+interface CheckResult {
+  check_path: string;
+  message: string;
+  span: [number, number];
+  replacements: string | null;
 }
 
-<span class="purple">interface</span> <span class="blue">LintResult</span> <span class="purple">extends</span> <span class="blue">CheckResult</span> {
-    <span class="green">pos</span>: [number, number];
+interface LintResult extends CheckResult {
+  pos: [number, number];
 }
 
-<span class="purple">interface</span> <span class="blue">FileOutput</span> {
-    <span class="green">diagnostics</span>?: LintResult[];
-    <span class="green">error</span>?: ResponseError;
+interface FileOutput {
+  diagnostics?: LintResult[];
+  error?: ResponseError;
 }
 
-<span class="purple">interface</span> <span class="blue">ProselintOutput</span> {
-    <span class="green">result</span>?: Record&lt;string, FileOutput&gt;;
-    <span class="green">error</span>?: ResponseError;
+interface ProselintOutput {
+  result?: Record<string, FileOutput>;
+  error?: ResponseError;
 }</code></pre>
 
       <p>
-        Every invocation of <em>proselint</em> produces exactly one
-        <code>ProselintOutput</code> object. Both
-        <code>ProselintOutput</code> and <code>FileOutput</code> are tagged
-        unions. <br /><br />
-        This means that <code>ProselintOutput</code> will always contain one of
-        <code>result</code> or <code>error</code>, but never both, and the same
-        applies to <code>diagnostics</code> and <code>error</code> for
-        <code>FileOutput</code>.
+        Each invocation produces exactly one
+        <code>ProselintOutput</code>. Both
+        <code>ProselintOutput</code> and
+        <code>FileOutput</code> are tagged unions.
       </p>
     </main>
 
     <%- include('partials/footer.ejs') %>
+
+    <script type="module" src="/main.js"></script>
   </body>
 </html>

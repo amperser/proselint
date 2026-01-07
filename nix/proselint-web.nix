@@ -32,7 +32,7 @@ in
 					inherit (final) pname;
 					src = ../website;
 
-					hash = "sha256-kxKZuowOGgxXKMyn66pqkPQv/xgJlnpVE5r5rYyuBOk=";
+					hash = "sha256-ygq9WGXveRKZMum3kcyShrFrxafJasgZKKaae7jOQeQ=";
 					fetcherVersion = 2;
 				};
 

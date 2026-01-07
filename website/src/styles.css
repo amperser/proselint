@@ -73,10 +73,10 @@ em {
 }
 
 pre {
-  font-size: 0.875rem;
+  font-size: 0.875rem !important;
   margin-top: 0.75rem;
   padding: 1rem;
-  background-color: #fff;
+  background-color: #fff !important;
   border: 1px solid #d4d4d4;
   border-radius: 0.5rem;
   line-height: 1.5rem;
@@ -84,7 +84,6 @@ pre {
   word-break: break-word;
   cursor: pointer;
   transition: border-color 0.2s;
-  color: var(--fg);
   font-family: var(--mono);
 }
 
@@ -100,27 +99,6 @@ code:not(pre code) {
   border: 1px solid #d4d4d4;
   font-family: var(--mono);
   color: var(--fg);
-}
-
-code .blue {
-  color: #2563eb;
-  font-weight: 600;
-}
-
-code .purple {
-  color: #9333ea;
-}
-
-code .green {
-  color: #16a34a;
-}
-
-code .red {
-  color: #dc2626;
-}
-
-code .amber {
-  color: #f59e0b;
 }
 
 textarea,
@@ -166,9 +144,4 @@ textarea:focus {
   left: 0;
   border: 1px solid transparent;
   pointer-events: none;
-}
-
-.highlight {
-  background-color: #fbff24;
-  color: var(--fg);
 }

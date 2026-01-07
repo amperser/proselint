@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>Proselint</title>
+
     <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="/main.js"></script>
   </head>
   <body>
     <main>
       <h1>Proselint</h1>
+
       <p>
         <em>Proselint</em> is a linter for English prose. It highlights
         <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and
-        other stylistic issues, much like a spellchecker for style. <br />
-        <br />
-
+        other stylistic issues, much like a spellchecker for style. <br /><br />
         You can navigate the available <a href="rules.html">rules</a> or get
         further <a href="help.html">help</a>.
       </p>
@@ -22,36 +23,25 @@
       <p>
         Install via <em>pip</em> and try a quick example from the command line.
       </p>
-      <div>
-        <pre title="Click to copy">
-<code><span class="blue">pip</span> <span class="purple">install</span> <span class="green">proselint</span></code>
-</pre>
-        <pre title="Click to copy">
-<code><span class="blue">echo</span> <span class="green">"This is very unique and literally perfect."</span> <span class="red">|</span> <span class="blue">proselint</span> <span class="purple">check</span>
-<span class="blue">proselint</span> <span class="purple">check</span> <span class="amber">README.md</span></code>
-</pre>
-      </div>
+
+      <pre><code class="language-bash">pip install proselint</code></pre>
+
+      <pre><code class="language-bash">echo "This is very unique and literally perfect." | proselint check
+proselint check README.md</code></pre>
+
       <h2>Try it</h2>
       <p>Paste or type some text below.</p>
+
       <div id="editor">
         <textarea id="input" rows="8">
 This is very unique and literally perfect.</textarea
         >
-        <!-- prettier-ignore -->
-        <div id="preview">This is <span class="highlight" title="Comparison of an uncomparable: 'very unique' is not comparable.">very unique</span> and literally perfect.</div>
+        <div id="preview">This is very unique and literally perfect.</div>
       </div>
 
       <h3>Issues</h3>
       <ul id="issues">
-        <li>
-          <em>uncomparables</em> Comparison of an uncomparable: 'very unique' is
-          not comparable.
-        </li>
-        <li>
-          <em>weasel_words.very</em> Substitute 'damn' every time you're
-          inclined to write 'very'; your editor will delete it and the writing
-          will be just as it should be.
-        </li>
+        <li>No issues found.</li>
       </ul>
     </main>
 
@@ -72,18 +62,15 @@ This is very unique and literally perfect.</textarea
 
         for (const { span, message } of spans) {
           let [start, end] = span;
-
           start--;
           end--;
 
-          if (start < cursor) {
-            continue;
-          }
+          if (start < cursor) continue;
 
           result += text.slice(cursor, start);
-          result += `<span class="highlight" title="${message}">`;
+          result += `<mark title="${message}">`;
           result += text.slice(start, end);
-          result += `</span>`;
+          result += `</mark>`;
 
           cursor = end;
         }
@@ -94,7 +81,6 @@ This is very unique and literally perfect.</textarea
 
       function debounce(fn, delay) {
         let timer;
-
         return function (...args) {
           clearTimeout(timer);
           timer = setTimeout(() => fn.apply(this, args), delay);
@@ -105,7 +91,6 @@ This is very unique and literally perfect.</textarea
         if (input.value.trim() === "") {
           issues.innerHTML = "<li>No issues found.</li>";
           preview.textContent = input.value;
-
           return;
         }
 
@@ -124,6 +109,7 @@ This is very unique and literally perfect.</textarea
 
         if (json.data.length === 0) {
           issues.innerHTML = "<li>No issues found.</li>";
+          preview.textContent = input.value;
           return;
         }
 

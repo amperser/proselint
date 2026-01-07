@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
-    "autoprefixer": "^10.4.21",
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.13",
-    "vite": "^7.1.9"
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.1"
   },
   "scripts": {
     "prebuild": "node ./rules.mjs",
@@ -17,6 +17,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "prismjs": "^1.30.0",
     "vite-plugin-ejs": "^1.7.0"
   }
 }
