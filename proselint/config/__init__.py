@@ -77,7 +77,7 @@ def apply_file_config(config: Config, file: Path) -> dict[str, bool]:
     return _deepmerge_dicts(
         config["checks"],
         config["file_checks"].get(
-            next(filter(file.match, config["file_checks"])), {}
+            next(filter(file.match, config["file_checks"]), ""), {}
         ),
     )
 
