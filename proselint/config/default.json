@@ -22,7 +22,7 @@
         "social_awareness": true,
         "spelling": true,
         "terms": true,
-        "typography": true,
+        "typography": false,
         "uncomparables": true,
         "weasel_words": true
     }
