@@ -23,6 +23,7 @@ class Config(TypedDict):
 
     max_errors: int
     checks: dict[str, bool]
+    file_checks: dict[str, dict[str, bool]]
 
 
 DEFAULT = cast(
@@ -72,6 +73,16 @@ def _sort_by_specificity(checks: dict[str, bool]) -> dict[str, bool]:
     )
 
 
+def apply_file_config(config: Config, file: Path) -> dict[str, bool]:
+    """Return check config merged with any applicable file-specific config."""
+    return _deepmerge_dicts(
+        config["checks"],
+        config["file_checks"].get(
+            next(filter(file.match, config["file_checks"])), {}
+        ),
+    )
+
+
 def load_from(config_path: Path | None = None) -> Config:
     """
     Read various config paths, allowing user overrides.
@@ -100,4 +111,8 @@ def load_from(config_path: Path | None = None) -> Config:
     return Config(
         max_errors=result.get("max_errors", 0),
         checks=_sort_by_specificity(_flatten_checks(result.get("checks", {}))),
+        file_checks={
+            name: _sort_by_specificity(_flatten_checks(file_config))
+            for name, file_config in result.get("file_checks", {}).items()
+        },
     )
