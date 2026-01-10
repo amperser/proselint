@@ -64,6 +64,21 @@ sudo apt install python3-proselint
 
 `proselint` is packaged by [`nixpkgs`].
 
+### pre-commit
+
+To use proselint with [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey)), point its config at this repository:
+
+```yaml
+repos:
+  - repo: https://github.com/amperser/proselint
+    rev: v0.16.0
+    hooks:
+      - id: proselint
+```
+
+Be sure to change `rev` to use the desired `proselint` git tag or revision.
+
+
 #### Declarative
 
 ```nix
@@ -86,7 +101,6 @@ nix profile install nixpkgs#proselint
 - Emacs via [Flycheck](http://www.flycheck.org/) or via [Flymake](https://sr.ht/~manuel-uberti/flymake-proselint/)
 - Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
 - Neovim via [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) (none-ls has [diagnostics](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint-1) and [code actions](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint) for proselint)
-- [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey))
 - [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
 
 The following plugins are also available, but they are archived or unmaintained:
