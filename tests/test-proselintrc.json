@@ -25,5 +25,6 @@
         "typography": true,
         "uncomparables": false,
         "weasel_words": true
-    }
+    },
+	"file_checks": {}
 }
