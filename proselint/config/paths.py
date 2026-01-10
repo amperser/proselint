@@ -20,10 +20,13 @@ def _get_xdg_path(env_var: str, default: Path) -> Path:
 config_global_path = Path("/etc/proselintrc")
 config_user_path = _get_xdg_path(XDG_CONFIG_VAR, home_path / ".config")
 
-config_paths = [
-    # NOTE: This is in reverse priority order - the order config gets merged in
-    config_global_path,
-    home_path / ".proselintrc.json",
-    config_user_path / "proselint" / "config.json",
-    cwd / ".proselintrc.json",
-]
+config_paths = (
+    [
+        # NOTE: Config is overridden in this order, from least to most important
+        config_global_path,
+        home_path / ".proselintrc.json",
+        config_user_path / "proselint" / "config.json",
+    ]
+    + [path / ".proselintrc.json" for path in reversed(cwd.parents)]
+    + [cwd / ".proselintrc.json"]
+)
