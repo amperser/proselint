@@ -22,5 +22,6 @@ config_user_path = _get_xdg_path(XDG_CONFIG_VAR, home_path / ".config")
 config_paths = [
     # NOTE: This is in reverse priority order - the order config gets merged in
     config_user_path / "proselint" / "config.json",
+    *(parent_path / "proselint.json" for parent_path in reversed(cwd.parents)),
     cwd / "proselint.json",
 ]
