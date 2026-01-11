@@ -100,7 +100,9 @@ The following plugins are also available, but they are archived or unmaintained:
 - [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
 - [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
 
-### Usage
+## Usage
+
+### From the command line
 
 Suppose you have a document `text.md` with the following text:
 
@@ -154,6 +156,8 @@ following our [stable wire schema].
 }
 ```
 
+### As a library
+
 To run the linter as part of another Python program, you can use the `LintFile`
 class in `proselint.tools`. This requires `CheckRegistry` to be populated.
 
@@ -182,15 +186,24 @@ This will return a list of suggestions:
 
 [stable wire schema]: https://github.com/amperser/proselint/blob/main/docs/wire-schema.md
 
-### Checks
+### Configuration
 
-You can disable any of the checks by modifying
-`$XDG_CONFIG_HOME/proselint/config.json`. If `$XDG_CONFIG_HOME` is not set or
-empty, `~/.config/proselint/config.json` will be used. Additionally, for
-compatibility reasons, the legacy configurations `~/.proselintrc` and
-`$XDG_CONFIG_HOME/proselint/config` will be checked if
-`$XDG_CONFIG_HOME/proselint/config.json` does not exist. Check selection is
-granular at any level, illustrated in the following example:
+> [!WARNING]
+> Currently, configuration files are implicitly merged together, starting from
+> the default configuration as a base. This may cause surprising behaviour if
+> you have multiple configuration files in different locations.
+>
+> This occurs in the following order, merging any found files:
+>
+> 1. `/etc/proselintrc`
+> 2. `~/.proselintrc.json`
+> 3. `$XDG_CONFIG_HOME/proselint/config.json` (defaulting to
+>    `~/.config/proselint/config.json` if `XDG_CONFIG_HOME` is not set)
+> 4. All paths walking down from the root (`/.proselintrc.json`) to your current
+>    working directory (`./.proselintrc.json`) for per-project configuration
+> 5. Any configuration given by the flag `--config`
+
+Check selection is granular at any level, illustrated in the following example:
 
 ```json
 {
@@ -208,7 +221,9 @@ This configuration would enable all checks in the `typography` module, excluding
 preserving `typography.symbols.curly_quotes`. Using this system allows you to
 concisely and precisely select checks at an individual level.
 
-| ID    | Description     |
+## Checks
+
+| ID | Description |
 | ----- | --------------- |
 | `annotations` | Catch annotations left in the text |
 | `archaism` | Avoid archaic forms |
