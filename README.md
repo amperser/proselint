@@ -200,10 +200,7 @@ This will return a list of suggestions:
 
 You can disable any of the checks by modifying
 `$XDG_CONFIG_HOME/proselint/config.json`. If `$XDG_CONFIG_HOME` is not set or
-empty, `~/.config/proselint/config.json` will be used. Additionally, for
-compatibility reasons, the legacy configurations `~/.proselintrc` and
-`$XDG_CONFIG_HOME/proselint/config` will be checked if
-`$XDG_CONFIG_HOME/proselint/config.json` does not exist. Check selection is
+empty, `~/.config/proselint/config.json` will be used. Check selection is
 granular at any level, illustrated in the following example:
 
 ```json
