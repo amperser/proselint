@@ -77,16 +77,14 @@ def load_from(config_path: Path | None = None) -> Config:
 
     NOTE: This assumes that a `config_path` is valid if one is provided.
     """
-    result = DEFAULT
-    config_paths = paths.config_paths + ([config_path] if config_path else [])
-
-    for path in filter(Path.is_file, config_paths):
-        result = _deepmerge_dicts(
-            cast("dict[str, object]", result),
-            json.loads(path.read_text()),  # pyright: ignore[reportAny]
+    config_paths = ([config_path] if config_path else []) + paths.config_paths
+    try:
+        result = cast(
+            "Config",
+            json.loads(next(filter(Path.is_file, config_paths)).read_text()),
         )
-
-    result = cast("Config", result)
+    except StopIteration:
+        return DEFAULT
 
     return Config(
         max_errors=result.get("max_errors", 0),
