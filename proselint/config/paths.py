@@ -1,6 +1,7 @@
 """Configuration paths for proselint."""
 
 import os
+from itertools import repeat
 from pathlib import Path
 
 XDG_CONFIG_VAR = "XDG_CONFIG_HOME"
@@ -21,5 +22,6 @@ config_user_path = _get_xdg_path(XDG_CONFIG_VAR, home_path / ".config")
 
 config_paths = [
     cwd / "proselint.json",
+    *map(Path.__truediv__, cwd.parents, repeat("proselint.json")),
     config_user_path / "proselint" / "config.json",
 ]
