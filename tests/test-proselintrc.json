@@ -26,5 +26,5 @@
         "uncomparables": false,
         "weasel_words": true
     },
-	"file_checks": {}
+    "per_file_checks": {}
 }
