@@ -18,11 +18,14 @@ class Config(TypedDict):
     Keys:
     - `max_errors`: the maximum allowable number of errors proselint can output
     - `checks`: a dictionary of check modules to enable or disable
+    - `per_file_checks`: a dictionary of dictionaries of check modules to enable
+      or disable on a per-file basis. the keys of this dictionary are parsed as
+      a non-recursive glob (see `pathlib.PurePath.match`).
     """
 
     max_errors: int
     checks: dict[str, bool]
-    file_checks: dict[str, dict[str, bool]]
+    per_file_checks: dict[str, dict[str, bool]]
 
 
 DEFAULT = cast(
@@ -72,14 +75,18 @@ def _sort_by_specificity(checks: dict[str, bool]) -> dict[str, bool]:
     )
 
 
-def apply_file_config(config: Config, file: Path) -> dict[str, bool]:
-    """Return check config merged with any applicable file-specific config."""
-    return _deepmerge_dicts(
-        config["checks"],
-        config["file_checks"].get(
-            next(filter(file.match, config["file_checks"]), ""), {}
-        ),
-    )
+def file_config_for(config: Config, file: Path) -> dict[str, bool]:
+    """
+    Return file-specific check config if available.
+
+    If there is no applicable file-specific check config, return the user's
+    given global check config (`config["checks"]`).
+    """
+    try:
+        key = next(filter(file.match, config["per_file_checks"]))
+    except StopIteration:
+        return config["checks"]
+    return config["per_file_checks"][key]
 
 
 def load_from(config_path: Path | None = None) -> Config:
@@ -97,11 +104,14 @@ def load_from(config_path: Path | None = None) -> Config:
     except StopIteration:
         return DEFAULT
 
+    checks = _sort_by_specificity(_flatten_checks(result.get("checks", {})))
     return Config(
         max_errors=result.get("max_errors", 0),
-        checks=_sort_by_specificity(_flatten_checks(result.get("checks", {}))),
-        file_checks={
-            name: _sort_by_specificity(_flatten_checks(file_config))
-            for name, file_config in result.get("file_checks", {}).items()
+        checks=checks,
+        per_file_checks={
+            name: _deepmerge_dicts(
+                checks, _sort_by_specificity(_flatten_checks(file_config))
+            )
+            for name, file_config in result.get("per_file_checks", {}).items()
         },
     )

@@ -13,7 +13,7 @@ from re import compile as rcompile
 from sys import stdin
 from typing import NamedTuple, overload
 
-from proselint.config import DEFAULT, Config, apply_file_config
+from proselint.config import DEFAULT, Config, file_config_for
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import CheckResult
 
@@ -223,7 +223,7 @@ class LintFile:
         registry = CheckRegistry()
 
         file_config = (
-            apply_file_config(config, self.source)
+            file_config_for(config, self.source)
             if isinstance(self.source, Path)
             else config["checks"]
         )
