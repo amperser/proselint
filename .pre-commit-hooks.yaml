@@ -3,5 +3,5 @@
   description: This hook checks language usage and style in text files.
   entry: proselint
   language: python
-  types: [html, markdown, plain-text, tex]
+  types_or: [html, markdown, plain-text, tex]
   args: [check]
