@@ -6,7 +6,6 @@ from importlib.resources import files
 from itertools import chain
 from pathlib import Path
 from typing import TypeAlias, TypedDict, TypeVar, cast
-from warnings import showwarning as warn
 
 from proselint import config
 from proselint.config import paths
@@ -81,19 +80,11 @@ def load_from(config_path: Path | None = None) -> Config:
     result = DEFAULT
     config_paths = paths.config_paths + ([config_path] if config_path else [])
 
-    for path in config_paths:
-        if path.is_file():
-            result = _deepmerge_dicts(
-                cast("dict[str, object]", result),
-                json.loads(path.read_text()),  # pyright: ignore[reportAny]
-            )
-        if path.suffix == ".json" and (old := path.with_suffix("")).is_file():
-            warn(
-                f"{old} was found instead of a JSON file. Rename to {path}.",
-                DeprecationWarning,
-                "",
-                0,
-            )
+    for path in filter(Path.is_file, config_paths):
+        result = _deepmerge_dicts(
+            cast("dict[str, object]", result),
+            json.loads(path.read_text()),  # pyright: ignore[reportAny]
+        )
 
     result = cast("Config", result)
 
