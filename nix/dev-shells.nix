@@ -37,6 +37,8 @@
 			]
 		);
 in {
+	frictionless = pkgs.callPackage ./frictionless.nix {};
+
 	default =
 		pkgs.mkShell {
 			buildInputs = check.enabledPackages;

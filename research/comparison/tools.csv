@@ -1,4 +1,4 @@
-Tool,Link,Languages,Web Editor,Desktop App,CLI,Word Plugin,Web Service,Outlook Plugin,AbiWord Plugin,Firefox Plugin,Chrome Plugin,Wordpress Plugin
+tool,link,languages,web_editor,desktop_app,cli,word_plugin,web_service,outlook_plugin,abiword_plugin,firefox_plugin,chrome_plugin,wordpress_plugin
 1Checker,http://www.1checker.com/,en,1,1,0,1,0,0,0,0,0,0
 AbiWord's grammar checker,http://www.abisource.com/,en,0,0,0,0,0,0,1,0,0,0
 After the Deadline,https://openatd.wordpress.com/,"en,nl,fr,de,id,it,pl,pt,sp,ru",1,0,1,0,0,0,0,1,1,1
