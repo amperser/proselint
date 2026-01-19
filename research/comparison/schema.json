@@ -1,0 +1,58 @@
+{
+  "$schema": "https://specs.frictionlessdata.io/schemas/table-schema.json",
+  "fields": [
+    {
+      "name": "tool",
+      "type": "string"
+    },
+    {
+      "name": "link",
+      "type": "string",
+      "format": "uri"
+    },
+    {
+      "name": "languages",
+      "type": "string"
+    },
+    {
+      "name": "web_editor",
+      "type": "boolean"
+    },
+    {
+      "name": "desktop_app",
+      "type": "boolean"
+    },
+    {
+      "name": "cli",
+      "type": "boolean"
+    },
+    {
+      "name": "word_plugin",
+      "type": "boolean"
+    },
+    {
+      "name": "web_service",
+      "type": "boolean"
+    },
+    {
+      "name": "outlook_plugin",
+      "type": "boolean"
+    },
+    {
+      "name": "abiword_plugin",
+      "type": "boolean"
+    },
+    {
+      "name": "firefox_plugin",
+      "type": "boolean"
+    },
+    {
+      "name": "chrome_plugin",
+      "type": "boolean"
+    },
+    {
+      "name": "wordpress_plugin",
+      "type": "boolean"
+    }
+  ]
+}
