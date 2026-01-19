@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Proselint</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Proselint</h1>
+      <p>
+        More information and help on <em>proselint</em>, or
+        <a href="/">go back</a>.
+      </p>
+
+      <h2>Install</h2>
+
+      <div>
+        <p>Via <em>Pip</em></p>
+        <pre><code class="language-bash">pip install proselint</code></pre>
+      </div>
+
+      <div>
+        <p>Via <em>Apt</em> (Debian / Ubuntu)</p>
+        <pre><code class="language-bash">apt install python3-proselint</code></pre>
+      </div>
+
+      <div>
+        <p>Via <em>Homebrew</em> (macOS / Linux)</p>
+        <pre><code class="language-bash">brew install proselint</code></pre>
+      </div>
+
+      <div>
+        <p>Via <em>Conda</em></p>
+        <pre><code class="language-bash">conda install conda-forge::proselint</code></pre>
+      </div>
+
+      <div>
+        <p>Via <em>Nix</em></p>
+        <pre><code class="language-nix">environment.systemPackages = with pkgs; [
+  proselint
+];</code></pre>
+      </div>
+
+      <div>
+        <p>From <em>source</em></p>
+        <pre><code class="language-bash">git clone https://github.com/amperser/proselint.git
+cd proselint
+
+uv pip install . # or, with Nix
+nix profile install .</code></pre>
+      </div>
+
+      <h2>Configuration</h2>
+      <p>The default configuration is:</p>
+
+      <pre><code class="language-json">{
+  "max_errors": 1000,
+  "checks": {
+    "annotations": true,
+    "archaism": true,
+    "cliches": true,
+    "dates_times": true,
+    "hedging": true,
+    "industrial_language": true,
+    "lexical_illusions": true,
+    "malapropisms": true,
+    "misc": true,
+    "mixed_metaphors": true,
+    "mondegreens": true,
+    "needless_variants": true,
+    "nonwords": true,
+    "oxymorons": true,
+    "psychology": true,
+    "redundancy": true,
+    "restricted": false,
+    "skunked_terms": true,
+    "social_awareness": true,
+    "spelling": true,
+    "terms": true,
+    "typography": true,
+    "uncomparables": true,
+    "weasel_words": true
+  }
+}</code></pre>
+
+      <p>
+        Proselint searches for configuration files in the following order of
+        priority:
+      </p>
+      <ul>
+        <li><code>.proselintrc.json</code> in the current working directory</li>
+        <li><code>$XDG_CONFIG_HOME/proselint/config.json</code></li>
+        <li><code>$HOME/.proselintrc.json</code></li>
+        <li><code>/etc/proselintrc</code></li>
+      </ul>
+
+      <p>
+        To override a rule locally, create <code>.proselintrc.json</code>. For
+        example:
+      </p>
+
+      <pre><code class="language-json">{
+  "checks.typography.symbols.curly_quotes": false
+}</code></pre>
+
+      <h2>Wire Output</h2>
+
+      <p>
+        Structured output can be enabled with
+        <code>--output-format json</code>:
+      </p>
+
+      <pre><code class="language-bash">proselint --output-format json syllabus.md</code></pre>
+
+      <p>The output schema is:</p>
+
+      <pre><code class="language-typescript">enum ErrorCode {
+  Unknown = -31999,
+  FileError = -31998,
+  LintError = -31997,
+}
+
+interface ResponseError {
+  code: ErrorCode;
+  message: string;
+  data?: any;
+}
+
+interface CheckResult {
+  check_path: string;
+  message: string;
+  span: [number, number];
+  replacements: string | null;
+}
+
+interface LintResult extends CheckResult {
+  pos: [number, number];
+}
+
+interface FileOutput {
+  diagnostics?: LintResult[];
+  error?: ResponseError;
+}
+
+interface ProselintOutput {
+  result?: Record<string, FileOutput>;
+  error?: ResponseError;
+}</code></pre>
+
+      <p>
+        Each invocation produces exactly one
+        <code>ProselintOutput</code>. Both
+        <code>ProselintOutput</code> and
+        <code>FileOutput</code> are tagged unions.
+      </p>
+    </main>
+
+    <%- include('partials/footer.ejs') %>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

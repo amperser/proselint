@@ -10,4 +10,5 @@
 	sdist = (pythonSet.proselint.override {pyprojectHook = pythonSet.pyprojectDistHook;}).overrideAttrs (old: {env.uvBuildType = "sdist";});
 
 	api = pkgs.callPackage ./proselint-api.nix {inherit pythonSet;};
+	web = pkgs.callPackage ./proselint-web.nix {};
 }

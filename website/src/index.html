@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Proselint</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="/main.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Proselint</h1>
+
+      <p>
+        <em>Proselint</em> is a linter for English prose. It highlights
+        <em>clichés</em>, <em>jargon</em>, <em>illogical phrasing</em>, and
+        other stylistic issues, much like a spellchecker for style. <br /><br />
+        You can navigate the available <a href="rules.html">rules</a> or get
+        further <a href="help.html">help</a>.
+      </p>
+
+      <h2>Install</h2>
+      <p>
+        Install via <em>pip</em> and try a quick example from the command line.
+      </p>
+
+      <pre><code class="language-bash">pip install proselint</code></pre>
+
+      <pre><code class="language-bash">echo "This is very unique and literally perfect." | proselint check
+proselint check README.md</code></pre>
+
+      <h2>Try it</h2>
+      <p>Paste or type some text below.</p>
+
+      <div id="editor">
+        <textarea id="input" rows="8">
+This is very unique and literally perfect.</textarea
+        >
+        <div id="preview">This is very unique and literally perfect.</div>
+      </div>
+
+      <h3>Issues</h3>
+      <ul id="issues">
+        <li>No issues found.</li>
+      </ul>
+    </main>
+
+    <%- include('partials/footer.ejs') %>
+
+    <script>
+      const baseApiURL = "<%= apiURL %>";
+
+      const input = document.getElementById("input");
+      const issues = document.getElementById("issues");
+      const preview = document.getElementById("preview");
+
+      function highlight(text, issues) {
+        const spans = [...issues].sort((a, b) => a.span[0] - b.span[0]);
+
+        let result = "";
+        let cursor = 0;
+
+        for (const { span, message } of spans) {
+          let [start, end] = span;
+          start--;
+          end--;
+
+          if (start < cursor) continue;
+
+          result += text.slice(cursor, start);
+          result += `<mark title="${message}">`;
+          result += text.slice(start, end);
+          result += `</mark>`;
+
+          cursor = end;
+        }
+
+        result += text.slice(cursor);
+        return result;
+      }
+
+      function debounce(fn, delay) {
+        let timer;
+        return function (...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+      }
+
+      async function check() {
+        if (input.value.trim() === "") {
+          issues.innerHTML = "<li>No issues found.</li>";
+          preview.textContent = input.value;
+          return;
+        }
+
+        const res = await fetch(`${baseApiURL}/v1`, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: input.value,
+        });
+
+        const json = await res.json();
+
+        if (json.status !== "success") {
+          issues.innerHTML = `<li>Couldn't check, ${json.message}.</li>`;
+          return;
+        }
+
+        if (json.data.length === 0) {
+          issues.innerHTML = "<li>No issues found.</li>";
+          preview.textContent = input.value;
+          return;
+        }
+
+        issues.innerHTML = "";
+
+        for (const issue of json.data) {
+          const li = document.createElement("li");
+          li.innerHTML = `<em>${issue.check_path}</em> ${issue.message}`;
+          issues.appendChild(li);
+        }
+
+        preview.innerHTML = highlight(input.value, json.data);
+      }
+
+      input.addEventListener(
+        "input",
+        () => (preview.textContent = input.value),
+      );
+      input.addEventListener("input", debounce(check, 300));
+    </script>
+  </body>
+</html>
