@@ -13,7 +13,7 @@ from re import compile as rcompile
 from sys import stdin
 from typing import NamedTuple, overload
 
-from proselint.config import DEFAULT, Config
+from proselint.config import DEFAULT, Config, file_config_for
 from proselint.registry import CheckRegistry
 from proselint.registry.checks import CheckResult
 
@@ -221,11 +221,18 @@ class LintFile:
         """Run the linter against the file."""
         self._read()
         registry = CheckRegistry()
+
+        file_config = (
+            file_config_for(config, self.source)
+            if isinstance(self.source, Path)
+            else config["checks"]
+        )
+
         return sorted(
             islice(
                 (
                     LintResult(result, self.line_col_of(result.span[0]))
-                    for check in registry.get_all_enabled(config["checks"])
+                    for check in registry.get_all_enabled(file_config)
                     for result in check.check_with_flags(self.content)
                     if (
                         check.flags.allow_quotes
