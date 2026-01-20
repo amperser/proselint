@@ -102,7 +102,8 @@ brief, the data, and the description. Below you will find descriptions of each.
   folded-style stripping block scalar (`>-`) according to the YAML specification
   - `title`: The Title Cased name of the check module
   - `source`: The source of the checks, formatted according to the citation
-    style of the 9th edition MLA Handbook, omitting the dates and URL
+    style of the 9th edition MLA Handbook of The Modern Language Association of
+    America ([summary]). You should omit the dates, URL, and location
   - `source_url`: A link to a reliable archive hosting the source if it is
     open-access, or the link to its DOI otherwise
   - `format`: The type of source cited. This is expected to be `book` in most
@@ -133,3 +134,5 @@ date_retrieved:
 <detailed explanation with source excerpts>
 """
 ```
+
+[summary]: https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_formatting_and_style_guide.html
