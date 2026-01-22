@@ -80,3 +80,59 @@ Another relevant factor is consistency. Two opposing solutions may not be
 necessarily wrong on their own, but they are definitely wrong when they are
 mixed. An elementary example of this is spellings from British English and
 American English.
+
+## Verification
+
+Retaining the trust of users is essential to the advisory role of Proselint. We
+are responsible for providing an explanation and justification for every check
+we implement, and in this section we will explore the format such information
+should be laid out in.
+
+All check modules must have documentation strings with three sections: the
+brief, the data, and the description. Below you will find descriptions of each.
+
+- **The Brief**: In line with our code style, this is a single line of no more
+  than 80 characters summarizing what the module helps the user to achieve in
+  the imperative tense. For example, `hedging` has the brief "Avoid undermining
+  yourself with uncertainty"
+- **The Data**: This is a YAML header section enclosed with single lines of
+  three dashes on both sides. It has several fields designed to store useful
+  information about the module and where its checks originate. Any fields in
+  this section exceeding 80 characters to one line should be broken up with a
+  folded-style stripping block scalar (`>-`) according to the YAML specification
+  - `title`: The Title Cased name of the check module
+  - `source`: The source of the checks, formatted according to the citation
+    style of the 9th edition MLA Handbook of The Modern Language Association of
+    America ([summary]). You should omit the dates, URL, and location
+  - `source_url`: A link to a reliable archive hosting the source if it is
+    open-access, or the link to its DOI otherwise
+  - `format`: The type of source cited. This is expected to be `book` in most
+    cases, but the kebab-cased form of any MLA source type is acceptable
+  - `date_published`: The date the source was published, formatted as a
+    delimited ISO 8601 date
+  - `date_retrieved`: The date you accessed the source
+- **The Description**: This is where the module's checks are described and
+  justified in more detail, with references to and excerpts from the source
+
+These sections are to be laid out in that order and separated with a single
+blank line each. All together, the format can be summarized with the following
+bare template.
+
+```py
+"""
+<brief description>
+
+---
+title:
+source:
+source_url:
+format:
+date_published:
+date_retrieved:
+---
+
+<detailed explanation with source excerpts>
+"""
+```
+
+[summary]: https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_formatting_and_style_guide.html
