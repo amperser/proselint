@@ -97,11 +97,9 @@ nix profile install nixpkgs#proselint
 
 ```bash
 lint-prose:
-  image:
-    name: bengt/alpine-proselint:alpine-3.23
+  image: bengt/alpine-proselint:alpine-3.23
   script:
-    - proselint check README.md .gitlab/README.md
-  stage: lint
+    - proselint check *.md
 ```
 
 ### Plugins for other software
