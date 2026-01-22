@@ -95,7 +95,7 @@ nix profile install nixpkgs#proselint
 
 ### GitLab CICD Pipeline Job
 
-```bash
+```yaml
 lint-prose:
   image: bengt/alpine-proselint:alpine-3.23
   script:
