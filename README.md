@@ -93,7 +93,7 @@ nix profile install nixpkgs#proselint
 
 [`nixpkgs`]: https://search.nixos.org/packages?channel=25.05&show=proselint
 
-### GitLab CICD Pipeline Job
+### GitLab CI/CD Pipeline Job
 
 ```yaml
 lint-prose:
