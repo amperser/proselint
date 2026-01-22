@@ -93,6 +93,17 @@ nix profile install nixpkgs#proselint
 
 [`nixpkgs`]: https://search.nixos.org/packages?channel=25.05&show=proselint
 
+### GitLab CICD Pipeline Job
+
+```bash
+lint-prose:
+  image:
+    name: bengt/alpine-proselint:alpine-3.23
+  script:
+    - proselint check README.md .gitlab/README.md
+  stage: lint
+```
+
 ### Plugins for other software
 
 `proselint` is available on:
