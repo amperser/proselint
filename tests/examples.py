@@ -600,6 +600,26 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         ("Smoke phrase with nothing flagged.",),
     ),
     (
+        "social_awareness.speciesism",
+        (
+            "Let's not beat a dead horse about this.",
+            "We need to kill two birds with one stone here.",
+            "She really works like a dog at the office.",
+            "He eats like a pig at every meal.",
+            "It was a wild goose chase from the start.",
+            "He was the guinea pig for the new process.",
+            "She is stubborn as a mule about it.",
+        ),
+        (
+            "Smoke phrase with nothing flagged.",
+            "Let's not belabor the point about this.",
+            "We need to solve two problems at once here.",
+            "She really works relentlessly.",
+            "I saw a horse in the field.",
+            "The pig ate its food.",
+        ),
+    ),
+    (
         "social_awareness.sexism",
         (
             "The legal team had two lawyers and a lady lawyer.",
