@@ -4,7 +4,7 @@ Speciesism.
 ---
 layout:     post
 source:     Dunayer, J. (2001). Animal Equality: Language and Liberation.
-source_url: https://doi.org/10.1080/10350330109384726
+source_url: https://doi.org/10.1017/S0962728600024489
 title:      speciesism
 date:       2026-04-08 12:00:00
 categories: writing
@@ -65,7 +65,7 @@ check_derogatory = Check(
             "fat as a pig": "overweight",
             "sweating like a pig": "sweating heavily",
             "slow as a snail": "extremely slow",
-            "memory like a goldfish": "very short memory",
+            "memory like a goldfish": "short memory",
         }
     ),
     path=CHECK_PATH,
