@@ -613,6 +613,23 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
         ),
     ),
     (
+        "social_awareness.speciesism",
+        (
+            "We need to kill two birds with one stone here.",
+            "Stop beating a dead horse.",
+            "He used a guinea pig for his experiment.",
+            "There's an elephant in the room.",
+            "She eats like a pig.",
+            "He's as stubborn as a mule.",
+        ),
+        (
+            "Smoke phrase with nothing flagged.",
+            "We need to solve two problems at once.",
+            "Stop belaboring the point.",
+            "He used a test subject for his experiment.",
+        ),
+    ),
+    (
         "spelling.consistency",
         (
             "The centre of the arts is the art center.",
