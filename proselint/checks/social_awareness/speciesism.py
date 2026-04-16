@@ -10,8 +10,29 @@ date:       2026-04-08 12:00:00
 categories: writing
 ---
 
-Points out speciesist idioms and animal comparisons used as insults,
-and suggests clearer alternatives.
+Speciesism is the assumption of human superiority over other animals,
+expressed linguistically through idioms that treat animals as objects,
+nuisances, or inherently inferior beings. Joan Dunayer's *Animal Equality:
+Language and Liberation* (2001) is a foundational academic text examining
+how everyday language encodes and reinforces this bias.
+
+This check flags two categories of speciesist language:
+
+1. **Speciesist idioms** — common phrases whose imagery frames animals as
+   instruments (e.g. 'kill two birds with one stone'), pests (e.g. 'rat
+   race'), or property (e.g. 'cash cow'). Replacing these with neutral
+   alternatives improves clarity and avoids reinforcing the view that
+   animals exist primarily as means to human ends.
+
+2. **Animal comparisons used as insults** — similes that invoke animals to
+   describe human failings (e.g. 'eat like a pig', 'stubborn as a mule').
+   These expressions demean both the person and the animal, and clearer
+   alternatives are nearly always available.
+
+The idiom list uses Dunayer (2001) as its academic grounding. The specific
+phrases included draw on widely recognised speciesist language patterns in
+English usage; they are not all direct quotations or enumerated examples
+from that text.
 
 """
 
