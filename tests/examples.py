@@ -165,6 +165,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "It happened at 7 a.m.",
             "It happened at noon.",
             "It happened at 7 a.m.",
+            "8 amino acids",
         ),
     ),
     (
