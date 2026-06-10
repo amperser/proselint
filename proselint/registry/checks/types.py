@@ -30,12 +30,14 @@ class Consistency(NamedTuple):
     """Carry consistency check information."""
 
     term_pairs: tuple[tuple[str, str], ...]
+    padding: Padding = Padding.WORDS_IN_TEXT
 
     # TODO: from 3.11+, flag should be a RegexFlag
     @staticmethod
     def process_pair(
         text: str,
         check: Check,
+        padding: Padding,
         pair: tuple[str, str],
     ) -> Iterator[CheckResult]:
         """Check a term pair over `text`."""
@@ -46,7 +48,10 @@ class Consistency(NamedTuple):
                 *_takewhile_peek(
                     all,
                     zip_longest(
-                        *(check.engine.finditer(term, text) for term in pair)
+                        *(
+                            check.engine.finditer(padding.format(term), text)
+                            for term in pair
+                        )
                     ),
                 ),
                 strict=True,
@@ -70,7 +75,9 @@ class Consistency(NamedTuple):
 
     def check(self, text: str, check: Check) -> Iterator[CheckResult]:
         """Check the consistency of given term pairs in `text`."""
-        process_pair = partial(Consistency.process_pair, text, check)
+        process_pair = partial(
+            Consistency.process_pair, text, check, self.padding
+        )
 
         return chain.from_iterable(map(process_pair, self.term_pairs))
 
