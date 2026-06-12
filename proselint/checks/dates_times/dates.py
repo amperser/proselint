@@ -30,7 +30,10 @@ checks_decade_apostrophes = tuple(
 )
 
 check_dash_and_from = Check(
-    check_type=types.ExistenceSimple(pattern=r"from \d+[^ \t\n\r\f\v\w_\.]\d+"),
+    check_type=types.ExistenceSimple(
+        pattern=r"from \d+[^ \t\n\r\f\v\w_\.]\d+",
+        exceptions=(r"from \d{4}-\d{2}-\d{2}",),
+    ),
     path="dates_times.dates.dash_and_from",
     message="When specifying a date range, write 'from X to Y'.",
 )

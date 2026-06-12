@@ -177,6 +177,9 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "It happened in August of 2008.",
             "The 50's were swell.",
             "From 1999-2002, Sally served as chair of the committee.",
+            "From 2026-02-24 to 2026-02-25",
+            "From 2026/02/24 to 2026/02/25",
+            "From 10:00-11:00",
         ),
         (
             "Smoke phrase with nothing flagged.",
