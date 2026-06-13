@@ -16,7 +16,7 @@ Dates.
 
 import calendar
 
-from proselint.registry.checks import Check, Padding, types
+from proselint.registry.checks import Check, Padding, engine, types
 
 REGEX_MONTHS = Padding.SAFE_JOIN.format("|".join(calendar.month_name[1:]))
 
@@ -30,7 +30,10 @@ checks_decade_apostrophes = tuple(
 )
 
 check_dash_and_from = Check(
-    check_type=types.ExistenceSimple(pattern=r"from \d+[^ \t\n\r\f\v\w_\.]\d+"),
+    check_type=types.ExistenceSimple(
+        pattern=r"from \d+(?![-/]\d{2}[-/]\d{2}|:\d{2})[^ \t\n\r\f\v\w_\.]\d+"
+    ),
+    engine=engine.Fancy(),
     path="dates_times.dates.dash_and_from",
     message="When specifying a date range, write 'from X to Y'.",
 )

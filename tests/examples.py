@@ -186,6 +186,9 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "It happened from 2000 to 2005.",
             "It happened in August 2008.",
             "It happened in August 2008.",
+            "From 2026-02-24 to 2026-02-25",
+            "From 2026/02/24 to 2026/02/25",
+            "From 10:00-11:00",
         ),
     ),
     (
