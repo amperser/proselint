@@ -622,6 +622,7 @@ data: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
             "Smoke phrase with nothing flagged.",
             "The centre for the arts is the art centre.",
             "The center for the arts is the art center.",
+            "One's labours must be spent on collaboration.",
         ),
     ),
     (

@@ -12,6 +12,7 @@ categories: writing
 """
 
 from proselint.registry.checks import Check, CheckFlags, types
+from proselint.registry.checks.engine import Padding
 
 check_misplaced = Check(
     check_type=types.Existence(items=(r"et\. al", r"et\. al\.")),
@@ -33,7 +34,9 @@ check_hyperbole = Check(
 )
 
 check_spacing = Check(
-    check_type=types.Consistency(term_pairs=((r"[\.\?!] \w", r"[\.\?!]  \w"),)),
+    check_type=types.Consistency(
+        padding=Padding.RAW, term_pairs=((r"[\.\?!] \w", r"[\.\?!]  \w"),)
+    ),
     path="typography.punctuation.spacing",
     message="Inconsistent spacing after period (1 vs. 2 spaces).",
 )
