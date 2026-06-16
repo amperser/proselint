@@ -83,7 +83,7 @@ def file_config_for(config: Config, file: Path) -> dict[str, bool]:
     given global check config (`config["checks"]`).
     """
     try:
-        key = next(filter(file.match, config["per_file_checks"]))
+        key = next(filter(file.match, config.get("per_file_checks", {})))
     except StopIteration:
         return config["checks"]
     return config["per_file_checks"][key]
