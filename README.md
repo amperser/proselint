@@ -64,7 +64,7 @@ sudo apt install python3-proselint
 
 ### pre-commit
 
-To use `proselint` with [`pre-commit`], by [Andy Airey](https://github.com/aairey), point its config at this repository:
+To use `proselint` with [`pre-commit`], or [`prek`], point its config at this repository:
 
 ```yaml
 repos:
@@ -75,6 +75,7 @@ repos:
 ```
 
 Be sure to change `rev` to use the desired `proselint` git tag or revision.
+Thanks to [Andy Airey](https://github.com/aairey) for the [`pre-commit`] configuration.
 
 #### Declarative
 
@@ -91,27 +92,41 @@ nix profile install nixpkgs#proselint
 [`pip`]: https://packaging.python.org/installing/#use-pip-for-installing
 [`nixpkgs`]: https://search.nixos.org/packages?show=proselint
 [`pre-commit`]: https://pre-commit.com
+[`prek`]: https://prek.j178.dev
 
 ### Plugins for other software
 
 `proselint` is available on:
 
-- A [demo editor](http://proselint.com/write)
-- Emacs via [Flycheck](http://www.flycheck.org/) or via [Flymake](https://sr.ht/~manuel-uberti/flymake-proselint/)
-- Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
-- Neovim via [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) (none-ls has [diagnostics](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint-1) and [code actions](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint) for proselint)
-- [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
+- Vim via [`ALE`]
+- Emacs via [`Flycheck`]
+- CI/CD via [`MegaLinter`]
+- Neovim via [`none-ls.nvim`]
 
 The following plugins are also available, but they are archived or unmaintained:
 
-- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
-- [coala](https://github.com/coala/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
-- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
-- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
-- Neovim via [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) (null-ls has [diagnostics](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/diagnostics/proselint.lua) and [code actions](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/code_actions/proselint.lua) for proselint)
-- [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
-- [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
+- [`IntelliJ`] [plugin](https://github.com/kropp/intellij-proselint) by [Victor Kropp](https://github.com/kropp)
+- [`Flymake`] [plugin](https://git.sr.ht/~manuel-uberti/flymake-proselint) by [Manuel Uberti](https://manueluberti.eu)
+- [`Sublime Text`] [plugin](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint) by [Jordan Suchow](https://github.com/suchow)
+- [`Phabricator Arc`] [plugin](https://github.com/google/arc-proselint) by [Jeff Verkoeyen](https://github.com/jverkoey)
+- [`Visual Studio Code`] [plugin](https://github.com/ppeszko/vscode-proselint) by [Patryk Peszko](https://github.com/ppeszko)
+- [`Coala`] [plugin](https://github.com/coala/bear-docs/blob/master/docs/ProseLintBear.rst) by the [Coala Development Group](https://github.com/coala)
+- [`Danger`] [plugin](https://github.com/dbgrandi/danger-prose) by [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta)
+- [`Syntastic`] [plugin](https://github.com/vim-syntastic/syntastic/blob/8d5e37c29cf5952fbf300b9230bffe424c61a488/doc/syntastic-checkers.txt#L7325-L7353) by [LCD 047](https://github.com/lcd047), [M Bussonnier](https://github.com/Carreau), and [Daniel M. Cappella](https://github.com/polyzen)
+
+[`Flycheck`]: http://www.flycheck.org/
+[`Ale`]: https://github.com/dense-analysis/ale
+[`none-ls.nvim`]: https://github.com/nvimtools/none-ls.nvim
+[`MegaLinter`]: https://megalinter.io/latest/
+
+[`IntelliJ`]: https://www.jetbrains.com/
+[`Flymake`]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Flymake.html
+[`Coala`]: https://github.com/coala/coala
+[`Danger`]: https://github.com/danger/danger
+[`Sublime Text`]: https://www.sublimetext.com
+[`Visual Studio Code`]: https://code.visualstudio.com
+[`Syntastic`]: https://github.com/vim-syntastic/syntastic
+[`Phabricator Arc`]: https://github.com/google/arc-proselint
 
 ### Usage
 
