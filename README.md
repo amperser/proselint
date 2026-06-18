@@ -223,7 +223,7 @@ granular at any level, illustrated in the following example:
     "typography": true,
     "typography.symbols": false,
     "typography.symbols.curly_quotes": true,
-    "typography.punctuation.hyperbole": false,
+    "typography.punctuation.hyperbole": false
   }
 }
 ```
