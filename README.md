@@ -33,13 +33,11 @@ other tools, scripts, and workflows.
 
 ## Installation
 
-To get this up and running, install it using [pip].
+To get this up and running, install it using [`pip`].
 
 ```bash
 pip install proselint
 ```
-
-[pip]: https://packaging.python.org/installing/#use-pip-for-installing
 
 ### Fedora
 
@@ -66,7 +64,7 @@ sudo apt install python3-proselint
 
 ### pre-commit
 
-To use proselint with [pre-commit](https://pre-commit.com/) (by [Andy Airey](https://github.com/aairey)), point its config at this repository:
+To use `proselint` with [`pre-commit`], or [`prek`], point its config at this repository:
 
 ```yaml
 repos:
@@ -77,7 +75,7 @@ repos:
 ```
 
 Be sure to change `rev` to use the desired `proselint` git tag or revision.
-
+Thanks to [Andy Airey](https://github.com/aairey) for the [`pre-commit`] configuration.
 
 #### Declarative
 
@@ -91,28 +89,44 @@ environment.systemPackages = [pkgs.proselint];
 nix profile install nixpkgs#proselint
 ```
 
-[`nixpkgs`]: https://search.nixos.org/packages?channel=25.05&show=proselint
+[`pip`]: https://packaging.python.org/installing/#use-pip-for-installing
+[`nixpkgs`]: https://search.nixos.org/packages?show=proselint
+[`pre-commit`]: https://pre-commit.com
+[`prek`]: https://prek.j178.dev
 
 ### Plugins for other software
 
 `proselint` is available on:
 
-- A [demo editor](http://proselint.com/write)
-- Emacs via [Flycheck](http://www.flycheck.org/) or via [Flymake](https://sr.ht/~manuel-uberti/flymake-proselint/)
-- Vim via [ALE](https://github.com/w0rp/ale) or [Syntastic](https://github.com/vim-syntastic/syntastic) (thanks to @lcd047, @Carreau, and [Daniel M. Capella](https://github.com/polyzen))
-- Neovim via [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) (none-ls has [diagnostics](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint-1) and [code actions](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md#proselint) for proselint)
-- [MegaLinter](https://oxsecurity.github.io/megalinter/latest/descriptors/spell_proselint/)
+- Vim via [`ALE`]
+- Emacs via [`Flycheck`]
+- CI/CD via [`MegaLinter`]
+- Neovim via [`none-ls.nvim`]
 
 The following plugins are also available, but they are archived or unmaintained:
 
-- [Atom Editor](https://github.com/smockle/linter-proselint) (thanks to [Clay Miller](https://github.com/smockle)).
-- [coala](https://github.com/coala/bear-docs/blob/master/docs/ProseLintBear.rst) (thanks to the [coala Development Group](https://github.com/coala-analyzer))
-- [Danger](https://github.com/dbgrandi/danger-prose) (thanks to [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta))
-- [IntelliJ](https://github.com/kropp/intellij-proselint) (by [Victor Kropp](https://github.com/kropp))
-- Neovim via [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) (null-ls has [diagnostics](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/diagnostics/proselint.lua) and [code actions](https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/code_actions/proselint.lua) for proselint)
-- [Phabricator's `arc` CLI](https://github.com/google/arc-proselint) (thanks to [Jeff Verkoeyen](https://github.com/jverkoey))
-- [Sublime Text](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint)
-- [Visual Studio Code](https://github.com/ppeszko/vscode-proselint) (thanks to [Patryk Peszko](https://github.com/ppeszko))
+- [`IntelliJ`] [plugin](https://github.com/kropp/intellij-proselint) by [Victor Kropp](https://github.com/kropp)
+- [`Flymake`] [plugin](https://git.sr.ht/~manuel-uberti/flymake-proselint) by [Manuel Uberti](https://manueluberti.eu)
+- [`Sublime Text`] [plugin](https://github.com/amperser/proselint/tree/main/plugins/sublime/SublimeLinter-contrib-proselint) by [Jordan Suchow](https://github.com/suchow)
+- [`Phabricator Arc`] [plugin](https://github.com/google/arc-proselint) by [Jeff Verkoeyen](https://github.com/jverkoey)
+- [`Visual Studio Code`] [plugin](https://github.com/ppeszko/vscode-proselint) by [Patryk Peszko](https://github.com/ppeszko)
+- [`Coala`] [plugin](https://github.com/coala/bear-docs/blob/master/docs/ProseLintBear.rst) by the [Coala Development Group](https://github.com/coala)
+- [`Danger`] [plugin](https://github.com/dbgrandi/danger-prose) by [David Grandinetti](https://github.com/dbgrandi) and [Orta Therox](https://github.com/orta)
+- [`Syntastic`] [plugin](https://github.com/vim-syntastic/syntastic/blob/8d5e37c29cf5952fbf300b9230bffe424c61a488/doc/syntastic-checkers.txt#L7325-L7353) by [LCD 047](https://github.com/lcd047), [M Bussonnier](https://github.com/Carreau), and [Daniel M. Cappella](https://github.com/polyzen)
+
+[`Flycheck`]: http://www.flycheck.org/
+[`Ale`]: https://github.com/dense-analysis/ale
+[`none-ls.nvim`]: https://github.com/nvimtools/none-ls.nvim
+[`MegaLinter`]: https://megalinter.io/latest/
+
+[`IntelliJ`]: https://www.jetbrains.com/
+[`Flymake`]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Flymake.html
+[`Coala`]: https://github.com/coala/coala
+[`Danger`]: https://github.com/danger/danger
+[`Sublime Text`]: https://www.sublimetext.com
+[`Visual Studio Code`]: https://code.visualstudio.com
+[`Syntastic`]: https://github.com/vim-syntastic/syntastic
+[`Phabricator Arc`]: https://github.com/google/arc-proselint
 
 ### Usage
 
@@ -209,7 +223,7 @@ granular at any level, illustrated in the following example:
     "typography": true,
     "typography.symbols": false,
     "typography.symbols.curly_quotes": true,
-    "typography.punctuation.hyperbole": false,
+    "typography.punctuation.hyperbole": false
   }
 }
 ```
@@ -219,84 +233,84 @@ This configuration would enable all checks in the `typography` module, excluding
 preserving `typography.symbols.curly_quotes`. Using this system allows you to
 concisely and precisely select checks at an individual level.
 
-| ID    | Description     |
-| ----- | --------------- |
-| `annotations` | Catch annotations left in the text |
-| `archaism` | Avoid archaic forms |
-| `cliches.hell` | Avoid a common cliché regarding hell |
-| `cliches.misc` | Avoid clichés |
-| `dates_times.am_pm` | Format the time of day correctly |
-| `dates_times.dates` | Format dates appropriately |
-| `hedging` | Avoid undermining yourself with uncertainty |
-| `industrial_language.airlinese` | Avoid jargon of the airline industry |
-| `industrial_language.bureaucratese` | Avoid bureaucratese |
-| `industrial_language.chatspeak` | Avoid lolling and other chatspeak |
-| `industrial_language.commercialese` | Avoid jargon of the commercial world |
-| `industrial_language.corporate_speak` | Avoid corporate buzzwords |
-| `industrial_language.jargon` | Avoid miscellaneous jargon |
-| `lexical_illusions` | Avoid repeating words or phrases |
-| `malapropisms` | Avoid common malapropisms |
-| `misc.apologizing` | Be confident and avoid excessive apologizing |
-| `misc.back_formations` | Avoid redundant backformations |
-| `misc.but` | Do not start a paragraph with "But..." |
-| `misc.capitalization` | Capitalize only what ought to be capitalized |
-| `misc.composition` | Adhere to principles of composition |
-| `misc.currency` | Avoid redundant currency symbols |
-| `misc.debased` | Avoid debased language |
-| `misc.false_plurals` | Avoid false plurals |
-| `misc.greylist` | Avoid greylisted terms |
-| `misc.illogic` | Avoid illogical forms |
-| `misc.inferior_superior` | Superior to, not than |
-| `misc.institution_name` | Use the correct names of institutions |
-| `misc.latin` | Avoid overuse of Latin phrases |
-| `misc.many_a` | Use singular forms with "many a" |
-| `misc.metadiscourse` | Avoid discussing the discussion |
-| `misc.narcissism` | Talk about the subject, not its study |
-| `misc.not_guilty` | Avoid "not guilty beyond a reasonable doubt" |
-| `misc.phrasal_adjectives` | Hyphenate phrasal adjectives correctly |
-| `misc.preferred_forms` | Use the preferred forms of terms |
-| `misc.pretension` | Do not be pretentious |
-| `misc.professions` | Use the right names for jobs |
-| `misc.scare_quotes` | Do not misuse scare quotes |
-| `misc.suddenly` | Retain suddenness by not using "suddenly" |
-| `misc.tense_present` | Follow advice from Tense Present |
-| `misc.waxed` | Use adjectives for waxed, as in "wax poetic" |
-| `misc.whence` | Avoid redundancy with "whence" |
-| `mixed_metaphors` | Do not mix metaphors |
-| `mondegreens` | Avoid mondegreens |
-| `needless_variants` | Use preferred forms over uncommon variants |
-| `nonwords` | Do not use nonwords |
-| `oxymorons` | Avoid oxymorons |
-| `psychology` | Avoid misusing psychological terms |
-| `redundancy.misc` | Avoid redundancy in phrases |
-| `redundancy.ras_syndrome` | Avoid redundancy in acronyms |
-| `restricted.elementary` | Restrict writing to terms from elementary school |
-| `restricted.top1000` | Restrict writing to the top 1000 words by usage |
-| `skunked_terms` | Avoid using skunked terms |
-| `social_awareness.lgbtq` | Be aware of LGBTQ+ terminology |
-| `social_awareness.nword` | Take responsibility for use of "the n-word" |
-| `social_awareness.sexism` | Be aware of sexist language |
-| `spelling.able_atable` | Use the correct form of -able and -atable |
-| `spelling.able_ible` | Use the correct form of -able and -ible |
-| `spelling.ally_ly` | Use the correct form of -ally and -ly |
-| `spelling.ance_ence` | Use the correect form of -ance and -ence |
-| `spelling.athletes` | Spell the names of athletes correctly |
-| `spelling.consistency` | Be consistent in spelling |
-| `spelling.ely_ly` | Use the correct form of -ely and -ly |
-| `spelling.em_im_en_in` | Use the correct form of -em, -im, -en, and -in |
-| `spelling.er_or` | Use the correct form of -er and -or |
-| `spelling.in_un` | Use the correct form of -in and -un |
-| `spelling.misc` | Spell miscellaneous terms correctly |
-| `spelling.ve_of` | Use the correct form of -ve and -of |
-| `terms.animal_adjectives` | Use the right adjectives for likening animals |
-| `terms.denizen_labels` | Use the right names for denizens |
-| `terms.eponymous_adjectives` | Use the right names for likening people |
-| `terms.venery` | Use the right names for groups of animals |
-| `typography.diacritical_marks` | Use diacritical marks |
-| `typography.punctuation` | Use punctuation correctly |
-| `typography.symbols` | Use symbols correctly |
-| `uncomparables` | Do not compare uncomparables |
-| `weasel_words` | Avoid weasel words |
+| ID                                    | Description                                      |
+| ------------------------------------- | ------------------------------------------------ |
+| `annotations`                         | Catch annotations left in the text               |
+| `archaism`                            | Avoid archaic forms                              |
+| `cliches.hell`                        | Avoid a common cliché regarding hell             |
+| `cliches.misc`                        | Avoid clichés                                    |
+| `dates_times.am_pm`                   | Format the time of day correctly                 |
+| `dates_times.dates`                   | Format dates appropriately                       |
+| `hedging`                             | Avoid undermining yourself with uncertainty      |
+| `industrial_language.airlinese`       | Avoid jargon of the airline industry             |
+| `industrial_language.bureaucratese`   | Avoid bureaucratese                              |
+| `industrial_language.chatspeak`       | Avoid lolling and other chatspeak                |
+| `industrial_language.commercialese`   | Avoid jargon of the commercial world             |
+| `industrial_language.corporate_speak` | Avoid corporate buzzwords                        |
+| `industrial_language.jargon`          | Avoid miscellaneous jargon                       |
+| `lexical_illusions`                   | Avoid repeating words or phrases                 |
+| `malapropisms`                        | Avoid common malapropisms                        |
+| `misc.apologizing`                    | Be confident and avoid excessive apologizing     |
+| `misc.back_formations`                | Avoid redundant backformations                   |
+| `misc.but`                            | Do not start a paragraph with "But..."           |
+| `misc.capitalization`                 | Capitalize only what ought to be capitalized     |
+| `misc.composition`                    | Adhere to principles of composition              |
+| `misc.currency`                       | Avoid redundant currency symbols                 |
+| `misc.debased`                        | Avoid debased language                           |
+| `misc.false_plurals`                  | Avoid false plurals                              |
+| `misc.greylist`                       | Avoid greylisted terms                           |
+| `misc.illogic`                        | Avoid illogical forms                            |
+| `misc.inferior_superior`              | Superior to, not than                            |
+| `misc.institution_name`               | Use the correct names of institutions            |
+| `misc.latin`                          | Avoid overuse of Latin phrases                   |
+| `misc.many_a`                         | Use singular forms with "many a"                 |
+| `misc.metadiscourse`                  | Avoid discussing the discussion                  |
+| `misc.narcissism`                     | Talk about the subject, not its study            |
+| `misc.not_guilty`                     | Avoid "not guilty beyond a reasonable doubt"     |
+| `misc.phrasal_adjectives`             | Hyphenate phrasal adjectives correctly           |
+| `misc.preferred_forms`                | Use the preferred forms of terms                 |
+| `misc.pretension`                     | Do not be pretentious                            |
+| `misc.professions`                    | Use the right names for jobs                     |
+| `misc.scare_quotes`                   | Do not misuse scare quotes                       |
+| `misc.suddenly`                       | Retain suddenness by not using "suddenly"        |
+| `misc.tense_present`                  | Follow advice from Tense Present                 |
+| `misc.waxed`                          | Use adjectives for waxed, as in "wax poetic"     |
+| `misc.whence`                         | Avoid redundancy with "whence"                   |
+| `mixed_metaphors`                     | Do not mix metaphors                             |
+| `mondegreens`                         | Avoid mondegreens                                |
+| `needless_variants`                   | Use preferred forms over uncommon variants       |
+| `nonwords`                            | Do not use nonwords                              |
+| `oxymorons`                           | Avoid oxymorons                                  |
+| `psychology`                          | Avoid misusing psychological terms               |
+| `redundancy.misc`                     | Avoid redundancy in phrases                      |
+| `redundancy.ras_syndrome`             | Avoid redundancy in acronyms                     |
+| `restricted.elementary`               | Restrict writing to terms from elementary school |
+| `restricted.top1000`                  | Restrict writing to the top 1000 words by usage  |
+| `skunked_terms`                       | Avoid using skunked terms                        |
+| `social_awareness.lgbtq`              | Be aware of LGBTQ+ terminology                   |
+| `social_awareness.nword`              | Take responsibility for use of "the n-word"      |
+| `social_awareness.sexism`             | Be aware of sexist language                      |
+| `spelling.able_atable`                | Use the correct form of -able and -atable        |
+| `spelling.able_ible`                  | Use the correct form of -able and -ible          |
+| `spelling.ally_ly`                    | Use the correct form of -ally and -ly            |
+| `spelling.ance_ence`                  | Use the correect form of -ance and -ence         |
+| `spelling.athletes`                   | Spell the names of athletes correctly            |
+| `spelling.consistency`                | Be consistent in spelling                        |
+| `spelling.ely_ly`                     | Use the correct form of -ely and -ly             |
+| `spelling.em_im_en_in`                | Use the correct form of -em, -im, -en, and -in   |
+| `spelling.er_or`                      | Use the correct form of -er and -or              |
+| `spelling.in_un`                      | Use the correct form of -in and -un              |
+| `spelling.misc`                       | Spell miscellaneous terms correctly              |
+| `spelling.ve_of`                      | Use the correct form of -ve and -of              |
+| `terms.animal_adjectives`             | Use the right adjectives for likening animals    |
+| `terms.denizen_labels`                | Use the right names for denizens                 |
+| `terms.eponymous_adjectives`          | Use the right names for likening people          |
+| `terms.venery`                        | Use the right names for groups of animals        |
+| `typography.diacritical_marks`        | Use diacritical marks                            |
+| `typography.punctuation`              | Use punctuation correctly                        |
+| `typography.symbols`                  | Use symbols correctly                            |
+| `uncomparables`                       | Do not compare uncomparables                     |
+| `weasel_words`                        | Avoid weasel words                               |
 
 ### Contributing
 
