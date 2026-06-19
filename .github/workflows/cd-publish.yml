@@ -147,7 +147,7 @@ jobs:
         run: mv dist/RELEASE_NOTES.md ./RELEASE_NOTES.md
 
       - name: "[RELEASE] Create GitHub release"
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: Release ${{ steps.input.outputs.tag }}
           tag_name: ${{ steps.input.outputs.tag }}
