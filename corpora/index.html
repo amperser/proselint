@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="h-full">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>* { font-family: 'Montserrat', sans-serif; }</style>
+</head>
+<body class="h-full flex antialiased divide-x divide-neutral-100 bg-white text-neutral-900">
+  <textarea
+    id="input"
+    class="flex-1 h-full p-10 resize-none outline-none bg-white text-sm leading-relaxed text-neutral-500 placeholder-neutral-400"
+    placeholder="Input..."
+  ></textarea>
+
+  <div class="relative flex-1 flex">
+    <textarea
+      id="output"
+      class="flex-1 h-full p-10 resize-none outline-none bg-stone-50 text-sm leading-relaxed text-neutral-500 placeholder-neutral-400"
+      placeholder="Output..."
+      readonly
+    ></textarea>
+
+    <button
+      id="copy"
+      class="absolute bottom-6 right-7 text-xs text-neutral-500 hover:text-neutral-700 transition-colors duration-150 cursor-pointer select-none"
+    >copy</button>
+  </div>
+
+  <script>
+  const removeHardHyphenation = (text) =>
+    text.replace(/(\w)-\r?\n(\w)/g, (_, a, b) => a + b);
+
+  const ignoreMetadata = (text) => {
+    const lines = text.split(/\r?\n/);
+    return { metadata: lines.slice(0, 3).join("\n"), body: lines.slice(3).join("\n") };
+  };
+
+  const joinSoftWrappedLines = (text) =>
+    text
+      .split(/\r?\n\r?\n+/)
+      .map(para => para.split(/\r?\n/).map(l => l.trim()).filter(Boolean).join(" "))
+      .filter(Boolean)
+      .join("\n\n");
+
+  const processText = (raw) => {
+    const { metadata, body } = ignoreMetadata(raw);
+    const processed = joinSoftWrappedLines(removeHardHyphenation(body))
+      .replace(/[ \t]+/g, " ")
+      .trim();
+
+    return `${metadata}\n\n${processed}`;
+  };
+
+  const output = document.getElementById("output");
+  const input = document.getElementById("input");
+  const copy = document.getElementById("copy");
+
+  input.addEventListener("input", () => output.value = processText(input.value));
+
+  const syncScroll = (source, target) => {
+    const pct = source.scrollTop / (source.scrollHeight - source.clientHeight);
+    target.scrollTop = pct * (target.scrollHeight - target.clientHeight);
+  };
+
+  let syncing = false;
+
+  const makeScrollHandler = (source, target) => () => {
+    if (syncing) return;
+
+    syncing = true;
+    syncScroll(source, target);
+    syncing = false;
+  };
+
+  input.addEventListener("scroll", makeScrollHandler(input, output));
+  output.addEventListener("scroll", makeScrollHandler(output, input));
+
+  copy.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(output.value);
+
+    copy.textContent = "copied";
+    setTimeout(() => (copy.textContent = "copy"), 1500);
+  });
+  </script>
+</body>
+</html>
