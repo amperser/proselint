@@ -43,13 +43,16 @@ in {
 		pkgs.mkShell {
 			buildInputs = check.enabledPackages;
 
-			packages = [
-				(editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web"];})
-
-				pkgs.git-cliff
-				pkgs.typos
-				pkgs.uv
-			];
+			packages =
+				[(editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web"];})]
+				++ (with pkgs; [
+						git-cliff
+						prettier
+						nodejs
+						typos
+						pnpm
+						uv
+					]);
 
 			env = {
 				UV_NO_SYNC = "1";

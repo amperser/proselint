@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Proselint</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Proselint</h1>
+      <p>
+        A list of the rules that <em>proselint</em> checks against, or
+        <a href="/">go back</a>.
+      </p>
+
+      <ul>
+        <% for (const entry of rules) { %>
+        <li>
+          <a href="<%= entry.source_url || '#' %>">
+            <%= entry.title || entry.__file__ || 'untitled' %>
+          </a>
+          <% if (entry.date) { %>
+          <small> <%= entry.date %></small>
+          <% } %>
+        </li>
+        <% } %>
+      </ul>
+    </main>
+
+    <%- include('partials/footer.ejs') %>
+  </body>
+</html>
