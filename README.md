@@ -75,6 +75,7 @@ repos:
 ```
 
 Be sure to change `rev` to use the desired `proselint` git tag or revision.
+
 Thanks to [Andy Airey](https://github.com/aairey) for the [`pre-commit`] configuration.
 
 #### Declarative
@@ -128,7 +129,9 @@ The following plugins are also available, but they are archived or unmaintained:
 [`Syntastic`]: https://github.com/vim-syntastic/syntastic
 [`Phabricator Arc`]: https://github.com/google/arc-proselint
 
-### Usage
+## Usage
+
+### On the command line
 
 Suppose you have a document `text.md` with the following text:
 
@@ -182,6 +185,8 @@ following our [stable wire schema].
 }
 ```
 
+### As a library
+
 To run the linter as part of another Python program, you can use the `LintFile`
 class in `proselint.tools`. This requires `CheckRegistry` to be populated.
 
@@ -210,12 +215,41 @@ This will return a list of suggestions:
 
 [stable wire schema]: https://github.com/amperser/proselint/blob/main/docs/wire-schema.md
 
-### Checks
+## Configuring
 
-You can disable any of the checks by modifying
-`$XDG_CONFIG_HOME/proselint/config.json`. If `$XDG_CONFIG_HOME` is not set or
-empty, `~/.config/proselint/config.json` will be used. Check selection is
-granular at any level, illustrated in the following example:
+> [!NOTE]
+> `proselint` searches for configuration files in the order described below, and
+> loads the first file it finds. If no configuration files are found, it falls
+> back to its built in defaults.
+>
+> 1. The file given by the `--config` flag, if specified
+> 2. `proselint.json` in the current working directory
+> 3. `proselint.json` in any directory above the current working directory
+> 4. `$XDG_CONFIG_HOME/proselint/config.json`, defaulting to
+>    `~/.config/proselint/config.json` if `XDG_CONFIG_HOME` is not set
+
+This section's examples use JSONC for comments and trailing commas. Please
+ensure you remove these features from your own configuration to avoid errors.
+
+The configuration schema and defaults are as follows:
+
+```jsonc
+{
+    // The maximum allowable number of results proselint can output.
+    "max_errors": 1000,
+    // Checks to select or deselect.
+    "checks": {
+        // ...
+    },
+    // Checks to select or deselect on a per-file basis. These are merged with
+    // the selections specified in "checks" so you don't have to repeat them.
+    "per_file_checks": {},
+}
+```
+
+### Check selection
+
+Check selection is granular at any level, illustrated in the following example:
 
 ```json
 {
@@ -232,6 +266,38 @@ This configuration would enable all checks in the `typography` module, excluding
 `typography.punctuation.hyperbole` and those in `typography.symbols`, but
 preserving `typography.symbols.curly_quotes`. Using this system allows you to
 concisely and precisely select checks at an individual level.
+
+### Per-file checks
+
+> [!WARNING]
+> The path globs described in this section work differently than you may be
+> used to. Refer to the Python documentation for [partial non-recursive globs]
+> for more information.
+
+You can select different checks for different files, or files matching given
+partial globs. Take the following example.
+
+```jsonc
+{
+    "checks": {
+        "typography": true,
+        // ...
+    },
+    "per_file_checks": {
+        "*.md": {
+            "typography": false,
+        },
+    },
+}
+```
+
+This configuration would select `typography` for all files except markdown
+files. Values in `per_file_checks` are the same as in `checks`, and have exactly
+the same features.
+
+[partial non-recursive globs]: https://docs.python.org/3.14/library/pathlib.html#pathlib.PurePath.match
+
+## Checks
 
 | ID                                    | Description                                      |
 | ------------------------------------- | ------------------------------------------------ |
