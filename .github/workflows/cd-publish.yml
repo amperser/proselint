@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: "[INIT] Get privileged app token"
         id: app-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_KEY }}
