@@ -32,6 +32,9 @@ for root, subdirs, files in listing:
         if is_check(fn):
             M = ast.parse(''.join(open(os.path.join(checks_dir, fn))))
             docstring = ast.get_docstring(M)
+            if not docstring:
+                print(f"Warning: no docstring in {fn}, skipping")
+                continue
             head, sep, tail = docstring.partition("title: ")
             docstring = head + sep + "     &#58;" + tail[4:]
 
