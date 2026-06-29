@@ -26,10 +26,6 @@ profile_output
 .hypothesis/
 tests/corpus/newyorker/*
 
-# Corpora
-corpora/*
-!corpora/README.md
-
 # Editor
 proselint/proselint_develop.sublime-workspace
 .proselint/proselint_develop.sublime-project
