@@ -11,7 +11,12 @@ nearly cleanly over this corpus, which we occasionally verify by hand.
 + [Eminent Victorians] by [Lytton Strachey]
 + [A Hunger Artist] by [Franz Kafka]
 + [De Profundis] by [Oscar Wilde]
++ [Climate and health at a critical juncture] by [PLOS]
++ [Publishing with purpose: Bringing lived experiences into journal
+  development] by [PLOS]
 
+[Publishing with purpose: Bringing lived experiences into journal development]: https://doi.org/10.1371/journal.pmen.0000635
+[Climate and health at a critical juncture]: https://doi.org/10.1371/journal.pclm.0000895
 [Politics and the English Language]: https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/
 [Men I'm Not Married To]: https://www.gutenberg.org/ebooks/55672
 [Eminent Victorians]: https://www.gutenberg.org/ebooks/2447
@@ -23,3 +28,4 @@ nearly cleanly over this corpus, which we occasionally verify by hand.
 [George Orwell]: https://en.wikipedia.org/wiki/George_Orwell
 [Franz Kafka]: https://en.wikipedia.org/wiki/Franz_Kafka
 [Oscar Wilde]: https://en.wikipedia.org/wiki/Oscar_Wilde
+[PLOS]: https://plos.org/
