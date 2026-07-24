@@ -1,0 +1,3 @@
+[submodule "corpus"]
+	path = corpus
+	url = ssh://git@codeberg.org/amperser/corpus.git
