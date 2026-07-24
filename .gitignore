@@ -30,3 +30,6 @@ tests/corpus/newyorker/*
 proselint/proselint_develop.sublime-workspace
 .proselint/proselint_develop.sublime-project
 .site/write/*
+
+# IMPORTANT: Temporary, remove after PR is merged.
+corpus.json
