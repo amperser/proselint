@@ -31,7 +31,7 @@
 									nativeBuildInputs =
 										(old.nativeBuildInputs or [])
 										++ (with final; [setuptools pybind11])
-										++ (with pkgs; [re2 abseil-cpp]);
+										++ (with pkgs; [re2 abseil-cpp cmake]);
 								});
 					})
 			]
