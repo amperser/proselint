@@ -44,7 +44,7 @@ in {
 			buildInputs = check.enabledPackages;
 
 			packages = [
-				(editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web"];})
+				(editablePythonSet.mkVirtualEnv "proselint-env" {proselint = ["test" "dev" "web" "scripts"];})
 
 				pkgs.git-cliff
 				pkgs.typos
