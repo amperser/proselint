@@ -29,7 +29,7 @@ from proselint.tools import LintFile, LintResult
 
 CheckRegistry().register_many(__register__)
 
-ROOT_DIR = Path.cwd().resolve()
+ROOT_DIR = Path(__file__).resolve().parents[1]
 CORPUS_DIR = ROOT_DIR / "corpus" / "works"
 RESULT_PATH = ROOT_DIR / "corpus.json"
 
