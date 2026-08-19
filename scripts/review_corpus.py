@@ -140,7 +140,8 @@ def _read_corpus(path: Path) -> dict[str, _Entry]:
 
 def _write_corpus(path: Path, corpus_data: dict[str, _Entry]) -> None:
     _ = path.write_text(
-        dumps(corpus_data, indent=2, default=_json_default), encoding="utf-8"
+        dumps(corpus_data, indent="\t", sort_keys=True, default=_json_default),
+        encoding="utf-8",
     )
 
 
