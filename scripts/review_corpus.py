@@ -25,6 +25,7 @@ from textual.widgets import (
 import corpus.scripts.generate_readme_corpus as corpus
 from proselint.checks import __register__
 from proselint.registry import CheckRegistry
+from proselint.registry.checks import CheckResult
 from proselint.tools import LintFile, LintResult
 
 CheckRegistry().register_many(__register__)
@@ -42,14 +43,10 @@ class _Status(IntEnum):
 
 
 class _Detection(TypedDict):
-    message: str
-    context: str
-    check_name: str
-    explanation: str
-
     highlight: tuple[int, int]
-    span: tuple[int, int]
     pos: tuple[int, int]
+    check: CheckResult
+    context: str
 
     status: _Status
 
@@ -103,13 +100,10 @@ def _to_detection(result: LintResult, source: str) -> _Detection:
 
     return _Detection(
         pos=result.pos,
-        span=result.check_result.span,
-        message=result.check_result.message,
-        check_name=result.check_result.check_path,
+        check=result.check_result,
         status=_Status.NOT_REVIEWED,
         context=context,
         highlight=highlight,
-        explanation="",
     )
 
 
@@ -123,16 +117,17 @@ def _json_default(obj: object) -> object:
     return str(obj)
 
 
+def _decode_detection(raw: _Detection) -> _Detection:
+    raw["check"] = CheckResult(*raw["check"])
+    raw["status"] = _Status(raw["status"])
+
+    return raw
+
+
 def _decode_entry(raw: _Entry) -> _Entry:
-    return _Entry(
-        work=raw["work"],
-        author=raw["author"],
-        source=raw["source"],
-        positives=[
-            _Detection(detection, status=_Status(detection["status"]))
-            for detection in raw["positives"]
-        ],
-    )
+    raw["positives"] = [_decode_detection(d) for d in raw["positives"]]
+
+    return raw
 
 
 def _read_corpus(path: Path) -> dict[str, _Entry]:
@@ -199,8 +194,8 @@ class _DetectionItem(_ReviewItem):
     def render_label(self) -> Text:
         return (
             _mark(done=self.detection["status"] == _Status.REVIEWED)
-            .append(self.detection["check_name"], style="bold cyan")
-            .append(f" {self.detection['message']}")
+            .append(self.detection["check"].check_path, style="bold cyan")
+            .append(f" {self.detection['check'].message}")
         )
 
 
@@ -301,9 +296,9 @@ class _Corpus(App[None]):
 
         text = (
             Text()
-            .append(detection["check_name"], style="bold cyan")
+            .append(detection["check"].check_path, style="bold cyan")
             .append(f" {line}:{col}\n\n", style="dim")
-            .append(detection["message"])
+            .append(detection["check"].message)
             .append("\n")
         )
 
@@ -311,20 +306,18 @@ class _Corpus(App[None]):
 
         context = Text().append(detection["context"])
         context.stylize("reverse bold", start, end)
-        _ = text.append(context)
 
-        if detection["explanation"]:
-            _ = (
-                text.append(f"\n\n{detection['explanation']}")
-                .append("\n\n")
-                .append(
-                    "Reviewed" if reviewed else "Not reviewed",
-                    style="bold green" if reviewed else "bold red",
-                )
-                .append("\nPress ", style="dim")
-                .append("R", style="bold dim")
-                .append(" to toggle", style="dim")
+        _ = (
+            text.append(context)
+            .append("\n\n")
+            .append(
+                "Reviewed" if reviewed else "Not reviewed",
+                style="bold green" if reviewed else "bold red",
             )
+            .append("\nPress ", style="dim")
+            .append("R", style="bold dim")
+            .append(" to toggle", style="dim")
+        )
 
         self.query_one("#detail-body", Static).update(text)
 
