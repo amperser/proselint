@@ -11,7 +11,7 @@ from rich.text import Text
 from textual import work
 from textual.app import App, ComposeResult
 from textual.binding import Binding, BindingType
-from textual.containers import Horizontal, Vertical
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import (
     Label,
@@ -94,8 +94,7 @@ def _context(
         bounds[last_line_idx] if last_line_idx < len(bounds) else len(content)
     )
 
-    # Requires `.rstrip` as `keepends=True` leaves trailing newlines.
-    context = content[context_start:context_end].rstrip("\n")
+    context = content[context_start:context_end]
 
     # Translate `span` into offsets for `Text.stylize`.
     # span (source) -> absolute, 1-indexed
@@ -250,7 +249,8 @@ class _Corpus(App[None]):
 
             with Vertical(id="detail"):
                 yield Label(Text("Detail", style="bold"))
-                yield Static(id="detail-body")
+                with VerticalScroll(id="detail-body-scroll"):
+                    yield Static(id="detail-body")
 
     def on_mount(self) -> None:
         self.theme = "ansi-dark"
