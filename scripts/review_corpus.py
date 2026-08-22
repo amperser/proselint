@@ -72,8 +72,8 @@ class _Statistics:
         return _Statistics(len(entry["positives"]), reviewed)
 
 
-def _clamp(value: int, upper: int) -> int:
-    return max(0, min(value, upper))
+def _clamp(lower: int, value: int, upper: int) -> int:
+    return max(lower, min(value, upper))
 
 
 def _context(
@@ -84,13 +84,15 @@ def _context(
 ) -> tuple[str, tuple[int, int]]:
     """Extract a window of `radius` lines around `line`."""
     content = file.content
-    bounds = file._line_bounds()  # pyright: ignore[reportPrivateUsage] # noqa: SLF001
+    bounds = file.line_bounds
 
-    first = max(0, line - 1 - radius)
-    last = min(len(bounds), line + radius)
+    first_line_idx = max(0, line - 1 - radius)
+    last_line_idx = min(len(bounds), line + radius)
 
-    context_start = bounds[first]
-    context_end = bounds[last] if last < len(bounds) else len(content)
+    context_start = bounds[first_line_idx]
+    context_end = (
+        bounds[last_line_idx] if last_line_idx < len(bounds) else len(content)
+    )
 
     # Requires `.rstrip` as `keepends=True` leaves trailing newlines.
     context = content[context_start:context_end].rstrip("\n")
@@ -100,8 +102,8 @@ def _context(
     # Text.stylize  -> relative to window, 0-indexed
     start, end = span
     highlight = (
-        _clamp(start - context_start, len(context)),
-        _clamp(end - context_start, len(context)),
+        _clamp(0, start - context_start, len(context)),
+        _clamp(0, end - context_start, len(context)),
     )
 
     return context, highlight
@@ -122,7 +124,7 @@ def _to_detections(key: str, content: str) -> list[_Detection]:
             highlight=highlight,
         )
 
-    return [to_detection(result) for result in file.lint()]
+    return list(map(to_detection, file.lint()))
 
 
 def _decode_detection(raw: _Detection) -> _Detection:
@@ -133,7 +135,7 @@ def _decode_detection(raw: _Detection) -> _Detection:
 
 
 def _decode_entry(raw: _Entry) -> _Entry:
-    raw["positives"] = [_decode_detection(d) for d in raw["positives"]]
+    raw["positives"] = list(map(_decode_detection, raw["positives"]))
 
     return raw
 
@@ -187,7 +189,7 @@ class _EntryItem(_ReviewItem):
     @override
     def render_label(self) -> Text:
         stats = _Statistics.from_entry(self.entry)
-        done = bool(stats.total) and not stats.remaining
+        done = stats.total > 0 and not stats.remaining
 
         return (
             _mark(done=done)
