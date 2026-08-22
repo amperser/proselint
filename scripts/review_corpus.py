@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Calculate a lint score which we use to evaluate proselint's performance."""
 
-from dataclasses import asdict, dataclass, is_dataclass
+from dataclasses import dataclass
 from enum import IntEnum
 from json import dumps, loads
 from pathlib import Path
@@ -66,55 +66,63 @@ class _Statistics:
 
     @staticmethod
     def from_entry(entry: _Entry) -> "_Statistics":
-        reviewed = sum(
-            detection["status"] == _Status.REVIEWED
-            for detection in entry["positives"]
-        )
+        positives = entry["positives"]
+        reviewed = sum(d["status"] == _Status.REVIEWED for d in positives)
 
-        return _Statistics(total=len(entry["positives"]), reviewed=reviewed)
+        return _Statistics(len(entry["positives"]), reviewed)
+
+
+def _clamp(value: int, upper: int) -> int:
+    return max(0, min(value, upper))
 
 
 def _context(
-    source: str, line: int, span: tuple[int, int], radius: int = CONTEXT_RADIUS
+    file: LintFile,
+    line: int,
+    span: tuple[int, int],
+    radius: int = CONTEXT_RADIUS,
 ) -> tuple[str, tuple[int, int]]:
-    lines = source.splitlines(keepends=True)
+    """Extract a window of `radius` lines around `line`."""
+    content = file.content
+    bounds = file._line_bounds()  # pyright: ignore[reportPrivateUsage] # noqa: SLF001
 
     first = max(0, line - 1 - radius)
-    last = min(len(lines), line + radius)
+    last = min(len(bounds), line + radius)
 
-    context_start = sum(len(line) for line in lines[:first])
-    context = "".join(lines[first:last]).rstrip("\n")
+    context_start = bounds[first]
+    context_end = bounds[last] if last < len(bounds) else len(content)
 
+    # Requires `.rstrip` as `keepends=True` leaves trailing newlines.
+    context = content[context_start:context_end].rstrip("\n")
+
+    # Translate `span` into offsets for `Text.stylize`.
+    # span (source) -> absolute, 1-indexed
+    # Text.stylize  -> relative to window, 0-indexed
     start, end = span
     highlight = (
-        max(0, min(start - 1 - context_start, len(context))),
-        max(0, min(end - 1 - context_start, len(context))),
+        _clamp(start - context_start, len(context)),
+        _clamp(end - context_start, len(context)),
     )
 
     return context, highlight
 
 
-def _to_detection(result: LintResult, source: str) -> _Detection:
-    line, _ = result.pos
-    context, highlight = _context(source, line, result.check_result.span)
+def _to_detections(key: str, content: str) -> list[_Detection]:
+    file = LintFile(key, content=content)
 
-    return _Detection(
-        pos=result.pos,
-        check=result.check_result,
-        status=_Status.NOT_REVIEWED,
-        context=context,
-        highlight=highlight,
-    )
+    def to_detection(result: LintResult) -> _Detection:
+        line, _ = result.pos
+        context, highlight = _context(file, line, result.check_result.span)
 
+        return _Detection(
+            pos=result.pos,
+            check=result.check_result,
+            status=_Status.NOT_REVIEWED,
+            context=context,
+            highlight=highlight,
+        )
 
-def _json_default(obj: object) -> object:
-    if isinstance(obj, _Status):
-        return obj.value
-
-    if is_dataclass(obj) and not isinstance(obj, type):
-        return asdict(obj)
-
-    return str(obj)
+    return [to_detection(result) for result in file.lint()]
 
 
 def _decode_detection(raw: _Detection) -> _Detection:
@@ -140,7 +148,11 @@ def _read_corpus(path: Path) -> dict[str, _Entry]:
 
 def _write_corpus(path: Path, corpus_data: dict[str, _Entry]) -> None:
     _ = path.write_text(
-        dumps(corpus_data, indent="\t", sort_keys=True, default=_json_default),
+        dumps(
+            corpus_data,
+            indent="\t",
+            sort_keys=True,
+        ),
         encoding="utf-8",
     )
 
@@ -283,13 +295,14 @@ class _Corpus(App[None]):
             for detection in item.entry["positives"]
         ]
 
-        if items:
-            await detections.mount(*items)
-            detections.index = 0
-
-            self._show_detail(item.entry["positives"][0])
-        else:
+        if not items:
             self.query_one("#detail-body", Static).update("")
+            return
+
+        await detections.mount(*items)
+        detections.index = 0
+
+        self._show_detail(item.entry["positives"][0])
 
     def _show_detail(self, detection: _Detection) -> None:
         line, col = detection["pos"]
@@ -359,15 +372,13 @@ class _Corpus(App[None]):
 
         for path in CORPUS_DIR.glob("*"):
             parsed = corpus.parse_entry(path)
-            source = parsed["content"]
+            content = parsed["content"]
             key = str(parsed["path"].relative_to(ROOT_DIR))
 
-            detections = [
-                _to_detection(result, source)
-                for result in LintFile(key, source).lint()
-            ]
+            entry = _Entry(
+                **parsed["meta"], positives=_to_detections(key, content)
+            )
 
-            entry = _Entry(**parsed["meta"], positives=detections)
             _ = entry.pop("content", None)
             _ = entry.pop("path", None)
 
