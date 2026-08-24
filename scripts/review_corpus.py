@@ -3,7 +3,7 @@
 
 from dataclasses import dataclass
 from enum import IntEnum
-from json import dumps, loads
+from json import dump, loads
 from pathlib import Path
 from typing import ClassVar, TypedDict, cast, final, override
 
@@ -148,14 +148,8 @@ def _read_corpus(path: Path) -> dict[str, _Entry]:
 
 
 def _write_corpus(path: Path, corpus_data: dict[str, _Entry]) -> None:
-    _ = path.write_text(
-        dumps(
-            corpus_data,
-            indent="\t",
-            sort_keys=True,
-        ),
-        encoding="utf-8",
-    )
+    with path.open("w", encoding="utf-8") as fp:
+        dump(corpus_data, fp, indent="\t", sort_keys=True)
 
 
 def _mark(*, done: bool) -> Text:
