@@ -35,6 +35,9 @@ RESULT_PATH = ROOT_DIR / "corpus.json"
 
 CONTEXT_RADIUS = 1
 
+TRESHOLD_MOSTLY_TRUE = 0.75
+TRESHOLD_HALF_TRUE = 0.5
+
 
 class _Detection(TypedDict):
     highlight: tuple[int, int]
@@ -177,11 +180,21 @@ class _EntryItem(_ReviewItem):
     def render_label(self) -> Text:
         stats = _Statistics.from_entry(self.entry)
         done = stats.total > 0 and not stats.remaining
+        percentage = stats.positives / stats.total if stats.total else 0
+
+        color = "dim"
+
+        if percentage >= TRESHOLD_MOSTLY_TRUE:
+            color = "red"
+        elif percentage >= TRESHOLD_HALF_TRUE:
+            color = "yellow"
+        else:
+            color = "green"
 
         return (
             _mark(done=done)
             .append(self.entry["work"]["name"], style="bold cyan")
-            .append(f" ({stats.positives}/{stats.total})")
+            .append(f" ({percentage * 100:.1f}%)", style=color)
         )
 
 
@@ -313,7 +326,7 @@ class _Corpus(App[None]):
             .append("\n\n")
             .append(
                 "Positive" if marked else "False-positive",
-                style="bold green" if marked else "bold red",
+                style="bold red" if marked else "bold green",
             )
             .append("\nPress ", style="dim")
             .append("R", style="bold dim")
