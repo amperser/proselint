@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Calculate a lint score which we use to evaluate proselint's performance."""
+"""Helper TUI to review the corpus."""
 
 from dataclasses import dataclass
-from enum import IntEnum
 from json import dump, loads
 from pathlib import Path
 from typing import ClassVar, TypedDict, cast, final, override
@@ -37,39 +36,34 @@ RESULT_PATH = ROOT_DIR / "corpus.json"
 CONTEXT_RADIUS = 1
 
 
-class _Status(IntEnum):
-    NOT_REVIEWED = 0
-    REVIEWED = 1
-
-
 class _Detection(TypedDict):
     highlight: tuple[int, int]
     pos: tuple[int, int]
     check: CheckResult
     context: str
-
-    status: _Status
+    marked: bool
 
 
 class _Entry(corpus.Metadata):
-    positives: list[_Detection]
+    detections: list[_Detection]
 
 
 @dataclass
 class _Statistics:
     total: int
-    reviewed: int
+    positives: int
 
     @property
     def remaining(self) -> int:
-        return self.total - self.reviewed
+        return self.total - self.positives
 
     @staticmethod
     def from_entry(entry: _Entry) -> "_Statistics":
-        positives = entry["positives"]
-        reviewed = sum(d["status"] == _Status.REVIEWED for d in positives)
+        detections = entry["detections"]
 
-        return _Statistics(len(entry["positives"]), reviewed)
+        return _Statistics(
+            len(detections), sum(d["marked"] for d in detections)
+        )
 
 
 def _clamp(lower: int, value: int, upper: int) -> int:
@@ -118,7 +112,7 @@ def _to_detections(key: str, content: str) -> list[_Detection]:
         return _Detection(
             pos=result.pos,
             check=result.check_result,
-            status=_Status.NOT_REVIEWED,
+            marked=False,
             context=context,
             highlight=highlight,
         )
@@ -128,18 +122,18 @@ def _to_detections(key: str, content: str) -> list[_Detection]:
 
 def _decode_detection(raw: _Detection) -> _Detection:
     raw["check"] = CheckResult(*raw["check"])
-    raw["status"] = _Status(raw["status"])
 
     return raw
 
 
 def _decode_entry(raw: _Entry) -> _Entry:
-    raw["positives"] = list(map(_decode_detection, raw["positives"]))
+    raw["detections"] = list(map(_decode_detection, raw["detections"]))
 
     return raw
 
 
-def _read_corpus(path: Path) -> dict[str, _Entry]:
+def read_corpus(path: Path) -> dict[str, _Entry]:
+    """Read corpus file and decode it."""
     if not path.exists():
         return {}
 
@@ -187,7 +181,7 @@ class _EntryItem(_ReviewItem):
         return (
             _mark(done=done)
             .append(self.entry["work"]["name"], style="bold cyan")
-            .append(f" ({stats.reviewed}/{stats.total})")
+            .append(f" ({stats.positives}/{stats.total})")
         )
 
 
@@ -201,7 +195,7 @@ class _DetectionItem(_ReviewItem):
     @override
     def render_label(self) -> Text:
         return (
-            _mark(done=self.detection["status"] == _Status.REVIEWED)
+            _mark(done=self.detection["marked"])
             .append(self.detection["check"].check_path, style="bold cyan")
             .append(f" {self.detection['check'].message}")
         )
@@ -213,7 +207,7 @@ class _Corpus(App[None]):
     ENABLE_COMMAND_PALETTE = False
 
     BINDINGS: ClassVar[list[BindingType]] = [
-        Binding("r", "toggle_reviewed", "Toggle reviewed"),
+        Binding("r", "toggle_marked", "Toggle marked"),
     ]
 
     _loading = reactive(default=True)
@@ -243,7 +237,7 @@ class _Corpus(App[None]):
 
             with Vertical(id="detail"):
                 yield Label(Text("Detail", style="bold"))
-                with VerticalScroll(id="detail-body-scroll"):
+                with VerticalScroll(id="detail-body-scroll", can_focus=False):
                     yield Static(id="detail-body")
 
     def on_mount(self) -> None:
@@ -260,18 +254,15 @@ class _Corpus(App[None]):
         ):
             self._show_detail(item.detection)
 
-    def action_toggle_reviewed(self) -> None:
+    def action_toggle_marked(self) -> None:
         detections = self.query_one("#detections-li", ListView)
         item = detections.highlighted_child
 
         if not isinstance(item, _DetectionItem):
             return
 
-        item.detection["status"] = (
-            _Status.NOT_REVIEWED
-            if item.detection["status"] == _Status.REVIEWED
-            else _Status.REVIEWED
-        )
+        print(item.detection["marked"])
+        item.detection["marked"] = not item.detection["marked"]
 
         item.refresh_label()
         self._show_detail(item.detection)
@@ -288,7 +279,7 @@ class _Corpus(App[None]):
 
         items = [
             _DetectionItem(item.key, detection)
-            for detection in item.entry["positives"]
+            for detection in item.entry["detections"]
         ]
 
         if not items:
@@ -298,11 +289,11 @@ class _Corpus(App[None]):
         await detections.mount(*items)
         detections.index = 0
 
-        self._show_detail(item.entry["positives"][0])
+        self._show_detail(item.entry["detections"][0])
 
     def _show_detail(self, detection: _Detection) -> None:
         line, col = detection["pos"]
-        reviewed = detection["status"] == _Status.REVIEWED
+        marked = detection["marked"]
 
         text = (
             Text()
@@ -321,12 +312,12 @@ class _Corpus(App[None]):
             text.append(context)
             .append("\n\n")
             .append(
-                "Reviewed" if reviewed else "Not reviewed",
-                style="bold green" if reviewed else "bold red",
+                "Positive" if marked else "False-positive",
+                style="bold green" if marked else "bold red",
             )
             .append("\nPress ", style="dim")
             .append("R", style="bold dim")
-            .append(" to toggle", style="dim")
+            .append(" to mark", style="dim")
         )
 
         self.query_one("#detail-body", Static).update(text)
@@ -334,7 +325,7 @@ class _Corpus(App[None]):
     @work(thread=True)
     def _ensure_corpus(self) -> None:
         data = (
-            _read_corpus(RESULT_PATH)
+            read_corpus(RESULT_PATH)
             if RESULT_PATH.exists()
             else self._generate()
         )
@@ -372,7 +363,7 @@ class _Corpus(App[None]):
             key = str(parsed["path"].relative_to(ROOT_DIR))
 
             entry = _Entry(
-                **parsed["meta"], positives=_to_detections(key, content)
+                **parsed["meta"], detections=_to_detections(key, content)
             )
 
             _ = entry.pop("content", None)
