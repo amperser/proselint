@@ -2,6 +2,7 @@
 """Helper TUI to review the corpus."""
 
 from dataclasses import dataclass
+from itertools import batched
 from json import dump, loads
 from pathlib import Path
 from typing import ClassVar, TypedDict, cast, final, override
@@ -33,6 +34,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 CORPUS_DIR = ROOT_DIR / "corpus" / "works"
 RESULT_PATH = ROOT_DIR / "corpus.json"
 
+CHUNK_SIZE = 40
 CONTEXT_RADIUS = 1
 
 TRESHOLD_MOSTLY_TRUE = 0.75
@@ -287,22 +289,20 @@ class _Corpus(App[None]):
 
     @work(exclusive=True)
     async def _show_detections(self, item: _EntryItem) -> None:
-        detections = self.query_one("#detections-li", ListView)
-        await detections.clear()
+        li = self.query_one("#detections-li", ListView)
+        await li.clear()
 
-        items = [
-            _DetectionItem(item.key, detection)
-            for detection in item.entry["detections"]
-        ]
+        detections = item.entry["detections"]
 
-        if not items:
+        if not detections:
             self.query_one("#detail-body", Static).update("")
             return
 
-        await detections.mount(*items)
-        detections.index = 0
+        for chunk in batched(detections, CHUNK_SIZE):
+            await li.mount(*(_DetectionItem(item.key, d) for d in chunk))
 
-        self._show_detail(item.entry["detections"][0])
+        li.index = 0
+        self._show_detail(detections[0])
 
     def _show_detail(self, detection: _Detection) -> None:
         line, col = detection["pos"]
