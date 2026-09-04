@@ -185,11 +185,11 @@ class _EntryItem(_ReviewItem):
         color = "dim"
 
         if percentage >= TRESHOLD_MOSTLY_TRUE:
-            color = "red"
+            color = "green"
         elif percentage >= TRESHOLD_HALF_TRUE:
             color = "yellow"
         else:
-            color = "green"
+            color = "red"
 
         return (
             _mark(done=done)
@@ -326,7 +326,7 @@ class _Corpus(App[None]):
             .append("\n\n")
             .append(
                 "Positive" if marked else "False-positive",
-                style="bold red" if marked else "bold green",
+                style="bold green" if marked else "bold red",
             )
             .append("\nPress ", style="dim")
             .append("R", style="bold dim")

@@ -15,16 +15,17 @@ def _score(positives: int, falses: int, k: float = 2.0) -> float:
     return positives / (falses + positives) * k
 
 
-detections = [
-    d
-    for entry in read_corpus(RESULT_PATH).values()
-    for d in entry["detections"]
-]
+if __name__ == "__main__":
+    detections = [
+        d
+        for entry in read_corpus(RESULT_PATH).values()
+        for d in entry["detections"]
+    ]
 
-positives = sum(d["marked"] for d in detections)
+    positives = sum(d["marked"] for d in detections)
 
-print(
-    _score(positives, len(detections) - positives)
-    if detections
-    else "No detections to score."
-)
+    print(
+        _score(positives, len(detections) - positives)
+        if detections
+        else "No detections to score."
+    )
